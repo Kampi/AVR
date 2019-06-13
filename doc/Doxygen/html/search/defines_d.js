@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['usart_5fbuffer_5fsize',['USART_BUFFER_SIZE',['../_x_mega256_a3_b_u_8h.html#a3b8a4842ee8af67b851ddc35c7837654',1,'USART_BUFFER_SIZE():&#160;XMega256A3BU.h'],['../_x_mega384_c3_8h.html#a3b8a4842ee8af67b851ddc35c7837654',1,'USART_BUFFER_SIZE():&#160;XMega384C3.h']]],
+  ['usart_5fchannel',['USART_CHANNEL',['../_x_mega256_a3_b_u_8h.html#a16dbac98336503e4f69ee82460f67ea1',1,'USART_CHANNEL():&#160;XMega256A3BU.h'],['../_x_mega384_c3_8h.html#a16dbac98336503e4f69ee82460f67ea1',1,'USART_CHANNEL():&#160;XMega384C3.h']]],
+  ['usart_5fdefault_5fecho',['USART_DEFAULT_ECHO',['../_x_mega256_a3_b_u_8h.html#a31f5b0664c8c2c3389edaea0718ecfaf',1,'USART_DEFAULT_ECHO():&#160;XMega256A3BU.h'],['../_x_mega384_c3_8h.html#a31f5b0664c8c2c3389edaea0718ecfaf',1,'USART_DEFAULT_ECHO():&#160;XMega384C3.h']]],
+  ['usart_5fdevices',['USART_DEVICES',['../_x_mega256_a3_b_u_8h.html#a50333c640e71a777765c0dc8a71ad9b3',1,'USART_DEVICES():&#160;XMega256A3BU.h'],['../_x_mega384_c3_8h.html#a50333c640e71a777765c0dc8a71ad9b3',1,'USART_DEVICES():&#160;XMega384C3.h']]],
+  ['usart_5frx0_5fpin',['USART_RX0_PIN',['../_x_mega256_a3_b_u_8h.html#af5471b0912d6740dec0c8d7fd7aa66c8',1,'USART_RX0_PIN():&#160;XMega256A3BU.h'],['../_x_mega384_c3_8h.html#af5471b0912d6740dec0c8d7fd7aa66c8',1,'USART_RX0_PIN():&#160;XMega384C3.h']]],
+  ['usart_5frx1_5fpin',['USART_RX1_PIN',['../_x_mega256_a3_b_u_8h.html#ad7ca87e976a574105d640132a075a40b',1,'USART_RX1_PIN():&#160;XMega256A3BU.h'],['../_x_mega384_c3_8h.html#ad7ca87e976a574105d640132a075a40b',1,'USART_RX1_PIN():&#160;XMega384C3.h']]],
+  ['usart_5ftx0_5fpin',['USART_TX0_PIN',['../_x_mega256_a3_b_u_8h.html#a6e478263eff6f098f22db58e278afc55',1,'USART_TX0_PIN():&#160;XMega256A3BU.h'],['../_x_mega384_c3_8h.html#a6e478263eff6f098f22db58e278afc55',1,'USART_TX0_PIN():&#160;XMega384C3.h']]],
+  ['usart_5ftx1_5fpin',['USART_TX1_PIN',['../_x_mega256_a3_b_u_8h.html#a228ae466d7e095249358edf761b30424',1,'USART_TX1_PIN():&#160;XMega256A3BU.h'],['../_x_mega384_c3_8h.html#a228ae466d7e095249358edf761b30424',1,'USART_TX1_PIN():&#160;XMega384C3.h']]],
+  ['usart_5fxck0_5fpin',['USART_XCK0_PIN',['../_x_mega256_a3_b_u_8h.html#a755242c51e946fd123d9bb55135cb303',1,'USART_XCK0_PIN():&#160;XMega256A3BU.h'],['../_x_mega384_c3_8h.html#a755242c51e946fd123d9bb55135cb303',1,'USART_XCK0_PIN():&#160;XMega384C3.h']]],
+  ['usart_5fxck1_5fpin',['USART_XCK1_PIN',['../_x_mega256_a3_b_u_8h.html#aa437dde8b393e62d0fc8c563e111de3d',1,'USART_XCK1_PIN():&#160;XMega256A3BU.h'],['../_x_mega384_c3_8h.html#aa437dde8b393e62d0fc8c563e111de3d',1,'USART_XCK1_PIN():&#160;XMega384C3.h']]],
+  ['usartc_5fid',['USARTC_ID',['../_x_mega_2_u_s_a_r_t_2_u_s_a_r_t_8h.html#a4394025fe22a7579fac133b309e2385d',1,'USART.h']]],
+  ['usartd_5fid',['USARTD_ID',['../_x_mega_2_u_s_a_r_t_2_u_s_a_r_t_8h.html#ad03eea119e289ae062a8293dd8abc75e',1,'USART.h']]],
+  ['usarte_5fid',['USARTE_ID',['../_x_mega_2_u_s_a_r_t_2_u_s_a_r_t_8h.html#a8b6550fffee643749aee33b876b41463',1,'USART.h']]],
+  ['usartf_5fid',['USARTF_ID',['../_x_mega_2_u_s_a_r_t_2_u_s_a_r_t_8h.html#a051a2b0ae6a0ce8843512201d0141ee5',1,'USART.h']]],
+  ['usb_5fcurrent_5fconsumption',['USB_CURRENT_CONSUMPTION',['../_standard_descriptor_8h.html#ad59d4e4ec8057b12315fc5ec76ab4123',1,'StandardDescriptor.h']]],
+  ['usb_5fmask2config',['USB_MASK2CONFIG',['../_standard_descriptor_8h.html#acba4fde76b80a496d29780384e196dc8',1,'StandardDescriptor.h']]],
+  ['usb_5fmask2endpoint',['USB_MASK2ENDPOINT',['../_standard_descriptor_8h.html#ac81274b2b07dbea2c1d25f5029b76f8a',1,'StandardDescriptor.h']]],
+  ['usb_5fversion',['USB_VERSION',['../_standard_descriptor_8h.html#a9e1a215b4db4ee09ef8af20a7175a17c',1,'StandardDescriptor.h']]]
+];
