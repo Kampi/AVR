@@ -94,7 +94,6 @@
  #define USART_XCK1_PIN									3							/**< Pin number of USART XCK1 pin */
  #define USART_RX1_PIN									6							/**< Pin number of USART RXD1 pin */
  #define USART_TX1_PIN									7							/**< Pin number of USART TXD1 pin */
- #define USART_DEFAULT_ECHO								TRUE						/**< Enable default echo */
  
  /*
 	Timer 0

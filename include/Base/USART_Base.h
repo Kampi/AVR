@@ -48,11 +48,6 @@
 	 /** @} */ // end of Serial-Commands
  /** @} */ // end of Serial
 
- #ifndef USART_DEFAULT_ECHO
-	#define USART_DEFAULT_ECHO						TRUE
-	#warning "Using default echo"
- #endif
-
  /** @brief	USART callback definition
  */
  typedef void (*USART_Callback_t)(void);

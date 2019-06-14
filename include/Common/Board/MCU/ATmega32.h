@@ -43,7 +43,6 @@
  */
  #define USART_DEVICES									1
  #define USART_BUFFER_SIZE								32
- #define USART_DEFAULT_ECHO								TRUE
 
  /*
 	ADC

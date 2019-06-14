@@ -60,7 +60,7 @@
 	 USART_t* Device;							/**< Pointer to USART device object */
 	 USART_CallbackType_t Source;				/**< USART interrupt type */
 	 Interrupt_Level_t InterruptLevel;			/**< Interrupt level */
-	 USART_Callback_t Callback;					/**< Function pointer to USART callback */
+	 void* Callback;							/**< Function pointer to USART callback */
  } USART_InterruptConfig_t;
 
  /** 
@@ -78,6 +78,7 @@
 	 int8_t BSCALE;								/**< BSCALE value for baud rate */
 	 Bool_t EnableDoubleSpeed;					/**< Set #TRUE to enable double speed */
 	 Bool_t EnableInterruptSupport;				/**< Set to #TRUE to enable interrupt support */
+	 Bool_t EnableEcho;							/**< Set to #TRUE to enable the USART echo */
 	 Interrupt_Level_t InterruptLevel;			/**< Interrupt level for interrupt support
 													 NOTE: Only needed if you use interrupt driven transmissions */
  } USART_Config_t;
@@ -178,7 +179,7 @@
  static inline void USART_SetDirection(USART_t* Device, const USART_Direction_t Direction) __attribute__ ((always_inline));
  static inline void USART_SetDirection(USART_t* Device, const USART_Direction_t Direction)
  {
-	 Device->CTRLB = (Device->CTRLC & (~(0x03 << 0x03))) | (Direction << 0x03);
+	 Device->CTRLB = (Device->CTRLB & (~(0x03 << 0x03))) | (Direction << 0x03);
  }
 
  /** @brief			Get the direction of the USART interface.
