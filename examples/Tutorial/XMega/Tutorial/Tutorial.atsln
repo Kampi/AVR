@@ -35,6 +35,8 @@ Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "CRC_Example", "..\CRC_Examp
 EndProject
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "NVM_Example", "..\NVM_Example\NVM_Example\NVM_Example.cproj", "{3D438444-E712-4071-90F7-236F00DB8F56}"
 EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "Bootloader", "..\Bootloader\Bootloader\Bootloader.cproj", "{BB442EE7-397F-4E46-B35E-54F830CEED2E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AVR = Debug|AVR
@@ -105,6 +107,10 @@ Global
 		{3D438444-E712-4071-90F7-236F00DB8F56}.Debug|AVR.Build.0 = Debug|AVR
 		{3D438444-E712-4071-90F7-236F00DB8F56}.Release|AVR.ActiveCfg = Release|AVR
 		{3D438444-E712-4071-90F7-236F00DB8F56}.Release|AVR.Build.0 = Release|AVR
+		{BB442EE7-397F-4E46-B35E-54F830CEED2E}.Debug|AVR.ActiveCfg = Debug|AVR
+		{BB442EE7-397F-4E46-B35E-54F830CEED2E}.Debug|AVR.Build.0 = Debug|AVR
+		{BB442EE7-397F-4E46-B35E-54F830CEED2E}.Release|AVR.ActiveCfg = Release|AVR
+		{BB442EE7-397F-4E46-B35E-54F830CEED2E}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
