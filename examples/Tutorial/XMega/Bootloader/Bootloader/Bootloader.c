@@ -47,21 +47,16 @@ static void Bootloader_PutChar(const uint8_t Data)
 void Bootloader_Init(void)
 {
 	// Enable the default clock
-	SysClock_SetClockSource(CLOCK_SOURCE_INT2MHZ);
-	 uint8_t Flags = CPU_IRQSave();
-
 	asm volatile(	"movw r30,  %0"		"\n\t"
 					"ldi  r16,  %2"     "\n\t"
 					"out   %3, r16"     "\n\t"
 					"st     Z,  %1"     "\n\t"
 					::	"r" (&CLK.CTRL), 
-						"r" (Source), 
+						"r" (0x00), 
 						"M" (CCP_IOREG_gc), 
 						"i" (&CCP) 
 					: "r16", "r30"
 				);
-				
-	 CPU_IRQRestore(Flags);
 
 	// Enable the USART interface
 	((PORT_t*)(&PORT_NAME(BOOTLOADER_INTERFACE)))->DIRSET = (0x01 << BOOTLOADER_TX);

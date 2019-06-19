@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Config/Config_Bootloader.h
+/** @file config/Config_Bootloader.h
  *  @brief Configuration file for the AVR bootloader.
  *
  *  @author Daniel Kampert

@@ -33,14 +33,10 @@
 #ifndef BOOTLOADER_H_
 #define BOOTLOADER_H_
 
+ #include <avr/io.h>
+
  #include "Config_Bootloader.h"
  #include "Bootloader_Preprocessing.h"
-
- #if(MCU_ARCH == MCU_ARCH_XMEGA)
-	 #include "Arch/XMega/ClockManagement/SysClock.h"
- #else
-	 #error "Architecture not supported"
- #endif
 
  void Bootloader_Init(void);
 
