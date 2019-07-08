@@ -28,6 +28,7 @@
  *  Software for the XMega SD card example from
  *  https://www.kampis-elektroecke.de/2018/11/avr-mit-einer-sd-karte-erweitern-teil-1/
  *  https://www.kampis-elektroecke.de/2019/04/avr-mit-einer-sd-karte-erweitern-teil-2/
+ * 	https://www.kampis-elektroecke.de/2019/05/avr-mit-einer-sd-karte-erweitern-teil-3/
  *
  *  @author Daniel Kampert
  */
