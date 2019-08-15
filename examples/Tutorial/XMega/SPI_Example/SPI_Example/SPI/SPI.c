@@ -96,6 +96,8 @@ uint8_t SPIM_Status(void)
 
 void SPIS_Init(uint8_t* ReceiveBuffer, uint8_t* TransmitBuffer)
 {
+	SPI_Master = 0x00;
+	
 	PORTC.DIRSET = (0x01 << 0x06);
 	
 	SPIC.CTRL |= (SPI_ENABLE_bm | SPI_MODE_0_gc);
@@ -142,7 +144,7 @@ ISR(SPIC_INT_vect)
 	{
 		SlaveBuffer.RxBuffer[SlaveBuffer.BytesProcessed] = SPIC.DATA;
 		
-		if(SlaveBuffer.BytesProcessed < (SPI_BUFFER_SIZE - 1))
+		if(!(SlaveBuffer.BytesProcessed < (SPI_BUFFER_SIZE - 1)))
 		{
 			SPIC.DATA = SlaveBuffer.TxBuffer[++SlaveBuffer.BytesProcessed];
 		}
@@ -151,7 +153,5 @@ ISR(SPIC_INT_vect)
 			SlaveBuffer.BytesProcessed = 0x00;
 			SlaveBuffer.Status = 0x01;
 		}
-		SPIM_Deselect(CurrentMessage.Port, CurrentMessage.Pin);
-		CurrentMessage.Status = 0x01;
 	}
 }

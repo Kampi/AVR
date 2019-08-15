@@ -218,11 +218,17 @@ int main(void)
 		*/
 			
 		/*
-			Initialize SS pin
-				-> Pin C.4 as output
+			Initialize SS pin for the USART/SPI master
+				-> Pin E.0 as output
 		*/
-		PORTC.DIR |= (0x01 << 0x04);
-		PORTC.OUTSET = (0x01 << 0x04);
+		PORTE.DIR |= (0x01 << 0x00);
+		PORTE.OUTSET = (0x01 << 0x00);
+
+		// Fill the master transmit buffer
+		for(uint8_t i = 0x00; i < SPI_BUFFER_SIZE; i++)
+		{
+			SPI_TransmitBuffer[i] = i + 0x03;
+		}
 
 		/*
 			Initialize the USART in master mode SPI
@@ -233,13 +239,42 @@ int main(void)
 				-> 250 kHz clock frequency @ 2 MHz
 		*/
 		USART_SPI_InitInterrupt();
+
+		SPI_Message_t Message = {
+			.BufferIn = SPI_ReceiveBuffer,
+			.BufferOut = SPI_TransmitBuffer,
+			.Length = SPI_BUFFER_SIZE,
+			.Port = &PORTE,
+			.Pin = 0
+		};
+
+		// Fill the slave transmit buffer
+		for(uint8_t i = 0x00; i < SPI_BUFFER_SIZE; i++)
+		{
+			SPI_TxSlaveBuffer[i] = i + 0x03;
+		}
 		
 		/*
 			Initialize slave mode SPI
 				-> Data interrupt (low level)
 		*/
 		SPIS_Init(SPI_RxSlaveBuffer, SPI_TxSlaveBuffer);
+
+		/*
+			Initialize the interrupts
+				-> Enable low level interrupts
+				-> Enable global interrupts
+		*/
+		PMIC.CTRL = PMIC_LOLVLEN_bm;
+		sei();
 		
+		// Send and wait for transmission end
+		USART_SPI_Transmit(&Message);
+		while(!USART_SPI_Status());
+
+		// Wait until the master release the slave
+		while(SPIS_ActiveTransmission());
+
 	#endif
 
     while(1) 
