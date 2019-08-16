@@ -36,7 +36,7 @@
  #define WITH_SSD1306
  
  #define DISPLAY_INTERFACE_TYPE						INTERFACE_USART_SPI
- #define DISPLAY_INTERFACE							&USARTD0
+ #define DISPLAY_INTERFACE							USARTD, 0
  #define DISPLAY_CLOCK								1000000
 
  // OLED interface definitions
@@ -53,7 +53,7 @@
  #define WITH_ST7565R
 
  #define DISPLAY_INTERFACE_TYPE						INTERFACE_USART_SPI
- #define DISPLAY_INTERFACE							&USARTD0
+ #define DISPLAY_INTERFACE							USARTD, 0
  #define DISPLAY_CLOCK								1000000
 
  // LCD interface definitions
