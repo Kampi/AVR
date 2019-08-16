@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file config/Config_Bootloader.h
+/** @file Config/Config_Bootloader.h
  *  @brief Configuration file for the AVR bootloader.
  *
  *  @author Daniel Kampert
@@ -31,9 +31,7 @@
 #ifndef CONFIG_BOOTLOADER_H_
 #define CONFIG_BOOTLOADER_H_
  
- #define BOOTLOADER_INTERFACE					E,0						/**< USART interface used by the bootloader. */
- #define BOOTLOADER_BAUD						9600					/**< USART baudrate used by the bootloader. */
- #define BOOTLOADER_TX							3						/**< USART Tx pin used by the bootloader. */
- #define BOOTLOADER_RX							2						/**< USART Rx pin used by the bootloader. */
+ #define BOOTLOADER_INTERFACE					C, 0					/**< USART interface used by the bootloader. */
+ #define BOOTLOADER_BAUD						19200					/**< USART baud rate used by the bootloader. */
 
 #endif /* CONFIG_BOOTLOADER_H_ */

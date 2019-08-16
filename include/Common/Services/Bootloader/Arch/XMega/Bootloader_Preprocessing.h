@@ -25,7 +25,7 @@
 /** @file Common/Services/Bootloader/Bootloader_Preprocessing.h
  *  @brief Configuration preprocessing for the AVR XMega bootloader.
  *
- *  This contains the prototypes and definitions for the bootloader.
+ *  This contains the prototypes and definitions for the AVR XMega bootloader.
  *
  *  @author Daniel Kampert
  */
@@ -33,14 +33,18 @@
 #ifndef BOOTLOADER_PREPROCESSING_H_
 #define BOOTLOADER_PREPROCESSING_H_
 
- #define CATENATE(Prefix, Name)				Prefix##Name
+ #define CATENATE(A, B)						A ## B
+ #define CATENATE3(A, B, C)					A ## B ## C
  #define FIRST_ARG(A, B)					A
  #define SECOND_ARG(A, B)					B
 
- #define MAKE_USART_NAME(Uart)				CATENATE(USART, Uart)
+ #define MAKE_USART_NAME(Usart)				CATENATE(USART, Usart)
  #define MAKE_PORT_NAME(Port)				CATENATE(PORT, Port)
  #define USART_NAME(Name)					MAKE_USART_NAME(CATENATE(Name))
  #define PORT_NAME(Name)					MAKE_PORT_NAME(FIRST_ARG(Name))
+
+ #define MAKE_ISR_NAME(Usart)				CATENATE3(USART, Usart, _RXC_vect)
+ #define ISR_NAME(Name)						MAKE_ISR_NAME(CATENATE(Name))
 
  #if(BOOTLOADER_BAUD == 9600)
 	 #define BOOTLOADER_BRREG_VALUE			12

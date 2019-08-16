@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: AVR XMega bootloader.
+ *  File info: AVR bootloader definitions.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,10 +22,8 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Bootloader/Bootloader.h
- *  @brief AVR XMega bootloader.
- *
- *  This contains the prototypes and definitions for the bootloader.
+/** @file Common/Services/Bootloader/Bootloader.h
+ *  @brief AVR bootloader definitions.
  *
  *  @author Daniel Kampert
  */
@@ -33,11 +31,13 @@
 #ifndef BOOTLOADER_H_
 #define BOOTLOADER_H_
 
- #include <avr/io.h>
+ #include "Arch/XMega/Bootloader_XMega.h"
+ /*
+	Function prototypes used by the bootloader.
+ */
 
- #include "Config_Bootloader.h"
- #include "Bootloader_Preprocessing.h"
-
+ /** @brief	Initialize all necessary peripherals and the bootloader.
+  */
  void Bootloader_Init(void);
 
 #endif /* BOOTLOADER_H_ */

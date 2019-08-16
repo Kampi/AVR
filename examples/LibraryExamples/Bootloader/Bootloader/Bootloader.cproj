@@ -118,7 +118,6 @@
       <Value>%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\include</Value>
       <Value>../../../../../include</Value>
       <Value>../include</Value>
-      <Value>../config</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
@@ -145,25 +144,22 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Bootloader.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="config\Config_Bootloader.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="include\Bootloader.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="include\Bootloader_Preprocessing.h">
+    <Compile Include="include\Config_Bootloader.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="source\Common\Services\Bootloader\Bootloader_XMega.c">
+      <SubType>compile</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="include" />
-    <Folder Include="config" />
+    <Folder Include="source" />
+    <Folder Include="source\Common" />
+    <Folder Include="source\Common\Services" />
+    <Folder Include="source\Common\Services\Bootloader" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>
