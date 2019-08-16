@@ -61,8 +61,9 @@
  #define DISPLAYMANAGER_LCD_FRAMEBUFFER_SIZE		((DISPLAYMANAGER_LCD_WIDTH * DISPLAYMANAGER_LCD_HEIGHT) / DISPLAYMANAGER_LCD_PIXEL_PER_BYTE)	/**< Size of the display frame buffer */
 
  /*
-	Function prototypes used by the display manager
+	Function prototypes used by the display manager.
  */
+
  /** @brief			Initialize the display and the interface.
   *  @param Config	Pointer to display configuration object.
   */

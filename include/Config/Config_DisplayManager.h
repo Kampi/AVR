@@ -40,12 +40,9 @@
  #define DISPLAY_CLOCK								1000000
 
  // OLED interface definitions
- #define SSD1306_DATA_CMD_PORT						&PORTD
- #define SSD1306_DATA_CMD_PIN						0
- #define SSD1306_RESET_PORT							&PORTA
- #define SSD1306_RESET_PIN							3
- #define SSD1306_SS_PORT							&PORTF
- #define SSD1306_SS_PIN								3
+ #define SSD1306_DATA								PORTD, 0
+ #define SSD1306_RESET								PORTA, 3
+ #define SSD1306_SS									PORTF, 3
 
  // Display definitions
  #define DISPLAY_WIDTH								128
@@ -75,6 +72,6 @@
  #define DISPLAY_BYTES_PER_PIXEL					8
  #define DISPLAY_CONTRAST_MAX						40
  #define DISPLAY_CONTRAST_MIN						30
-*/
+*/ 
  
 #endif /* CONFIG_SSD1306_H_ */
