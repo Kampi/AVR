@@ -32,6 +32,7 @@
 #define DEFINITIONS_H_
 
  #include "Doxygen.h"
+ #include "Macros.h"
 
  /** @defgroup Interfaces
   *  @ingroup Configuration
