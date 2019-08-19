@@ -31,7 +31,7 @@
  *  @author Daniel Kampert
  */
 
-#include "XMega/BatteryBackup/BatteryBackup.h"
+#include "Arch/XMega/BatteryBackup/BatteryBackup.h"
 
 void BatteryBackup_Reset(void)
 {

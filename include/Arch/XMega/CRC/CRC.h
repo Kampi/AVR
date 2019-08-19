@@ -36,8 +36,6 @@
 
  #include "Common/Common.h"
 
- #include "Arch/XMega/NVM/NVM.h"
-
  /** 
   * Preset the checksum with zeros or ones.
   */

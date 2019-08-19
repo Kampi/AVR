@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega CRC
+ *  File info: Driver for XMega CRC.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file CRC.c
+/** @file Arch/XMega/CRC/CRC.c
  *  @brief Driver for XMega CRC.
  *
  *  This file contains the implementation of the XMega CRC driver.
@@ -31,7 +31,8 @@
  *  @author Daniel Kampert
  */
 
-#include "XMega/CRC/CRC.h"
+#include "Arch/XMega/CRC/CRC.h"
+#include "Arch/XMega/NVM/NVM.h"
 
 /** @brief	Read the result from the CRC module.
  *  @return	CRC Checksum 

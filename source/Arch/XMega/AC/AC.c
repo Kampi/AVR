@@ -32,7 +32,7 @@
  */
 
 #include "Arch/XMega/AC/AC.h"
-#include "Arch/XMega/PowerManagment/PowerManagement.h"
+#include "Arch/XMega/PowerManagement/PowerManagement.h"
 
 #ifndef DOXYGEN
 	struct

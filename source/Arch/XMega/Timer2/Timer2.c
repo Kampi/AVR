@@ -23,4 +23,4 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-#include "XMega/Timer2/Timer2.h"
+#include "Arch/XMega/Timer2/Timer2.h"

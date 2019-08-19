@@ -22,4 +22,4 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-#include "XMega/IRCOM/IRCOM.h"
+#include "Arch/XMega/IRCOM/IRCOM.h"

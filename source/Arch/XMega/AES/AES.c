@@ -31,7 +31,7 @@
  *  @author Daniel Kampert
  */
 
-#include "XMega/AES/AES.h"
+#include "Arch/XMega/AES/AES.h"
 
 #ifndef DOXYGEN
 	static struct

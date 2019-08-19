@@ -31,7 +31,7 @@
  *  @author Daniel Kampert
  */
 
-#include "XMega/Timer1/Timer1.h"
+#include "Arch/XMega/Timer1/Timer1.h"
 
 #ifndef DOXYGEN
 	struct

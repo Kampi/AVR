@@ -155,6 +155,35 @@
 	 return NVM.LOCK_BITS;
  }
 
+ /** @brief			Execute a NVM command.
+  *  @param Command	NVM command
+  */
+ static inline void NVM_ExecuteCommand(const uint8_t Command) __attribute__ ((always_inline));
+ static inline void NVM_ExecuteCommand(const uint8_t Command)
+ {
+	 uint8_t OldCmd = NVM.CMD;
+ 
+	 NVM.CMD = Command;
+
+	 uint8_t Flags = CPU_IRQSave();
+
+	 asm volatile(	"movw r30,  %0"	    "\n\t"
+					"ldi  r16,  %2"	    "\n\t"
+					"out   %3, r16"     "\n\t"
+					"st     Z,  %1"     "\n\t"
+					::
+					"r" (&NVM.CTRLA),
+					"r" (NVM_CMDEX_bm),
+					"M" (CCP_IOREG_gc),
+					"i" (&CCP)
+					: "r16", "r30", "r31"
+	 );
+	 
+	 CPU_IRQRestore(Flags);
+ 
+	 NVM.CMD = OldCmd;
+ }
+
  /*
 	 EEPROM functions 
  */
