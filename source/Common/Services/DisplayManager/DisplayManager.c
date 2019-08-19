@@ -40,7 +40,7 @@
 		.SPIClock = DISPLAY_CLOCK,
 		.DataOrder = SPI_DATAORDER_MSB_FIRST,
 		.Mode = SPI_MODE_0,
-		.Device = DISPLAY_INTERFACE
+		.Device = &CONCAT(DISPLAY_INTERFACE)
 	};
 #endif
 
