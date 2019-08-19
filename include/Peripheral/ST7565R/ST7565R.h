@@ -40,32 +40,28 @@
 	 #include "Config_ST7565R.h"
  #endif
 
- #if(!defined ST7565R_SS_PORT || !defined ST7565R_SS_PIN)
+ #if(!defined ST7565R_SS)
 	#warning "Invalid configuration for the ST7565R chip select. Use default."
 
-	#define ST7565R_SS_PORT							&PORTF
-	#define ST7565R_SS_PIN							3
+	#define ST7565R_SS								PORTF, 3
  #endif
 
- #if(!defined ST7565R_REGISTER_SELECT_PORT || !defined ST7565R_REGISTER_SELECT_PIN)
+ #if(!defined ST7565R_REGISTER_SELECT)
 	 #warning "Invalid configuration for the ST7565R register select. Use default."
 
-	 #define ST7565R_REGISTER_SELECT_PORT			&PORTD
-	 #define ST7565R_REGISTER_SELECT_PIN			0
+	 #define ST7565R_REGISTER_SELECT				PORTD, 0
  #endif
  
- #if(!defined ST7565R_RESET_PORT || !defined ST7565R_RESET_PIN)
+ #if(!defined ST7565R_RESET)
 	 #warning "Invalid configuration for the ST7565R reset. Use default."
 
-	 #define ST7565R_RESET_PORT						&PORTA
-	 #define ST7565R_RESET_PIN						3
+	 #define ST7565R_RESET							PORTA, 3
  #endif
  
- #if(!defined ST7565R_BACKLIGHT_PORT || !defined ST7565R_BACKLIGHT_PIN)
+ #if(!defined ST7565R_BACKLIGHT)
 	 #warning "Invalid configuration for the ST7565R backlight. Use default."
 
-	 #define ST7565R_BACKLIGHT_PORT					&PORTE
-	 #define ST7565R_BACKLIGHT_PIN					4
+	 #define ST7565R_BACKLIGHT						PORTE, 4
  #endif
  
  #include "Arch/SPI.h"
