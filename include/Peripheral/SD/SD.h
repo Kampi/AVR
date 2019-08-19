@@ -44,11 +44,10 @@
  #include "Arch/SPI.h"
  #include "Common/Common.h"
  
- #if(!defined SD_SS_PORT || !defined SD_SS_PIN)
+ #if(!defined SD_SS)
 	 #warning "Invalid configuration for the SD card chip select. Use default."
 
-	 #define SD_SS_PORT							&PORTE
-	 #define SD_SS_PIN							5
+	 #define SD_SS							&PORTE, 5
  #endif
 
  /** @ingroup SD
@@ -249,7 +248,7 @@
  static inline Bool_t SD_CheckForCard(void) __attribute__ ((always_inline));
  static inline Bool_t SD_CheckForCard(void)
  {
-	 return GPIO_Read(SD_SWA_PORT, SD_SWA_PIN);
+	 return GPIO_Read(&FIRST_ARG(SD_SWA), SECOND_ARG(SD_SWA));
  }
 
  /** @brief			Initialize the SD card interface and the SD card.

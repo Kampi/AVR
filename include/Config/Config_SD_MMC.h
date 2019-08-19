@@ -42,15 +42,13 @@
  /*
 	 SD/MMC interface connections
  */
- #define SD_SS_PORT								&PORTE					/**< Chip select port for the SD card */
- #define SD_SS_PIN								5						/**< Chip select pin for the SD card */
+ #define SD_SS									PORTE, 5				/**< Chip select used by the SD card */
  
  #define SD_WITH_SWA													/**< Enable card detection 
 																			 NOTE: Must pulled low when SD card is 
 																			 available.
 																			 NOTE: You have to enable interrupts! */
- #define SD_SWA_PORT							&PORTE					/**< SWA port for the SD card */
- #define SD_SWA_PIN								4						/**< SWA pin for the SD card */
+ #define SD_SWA									PORTE, 4				/**< SWA used by the SD card */
 
  /*
 	SD/MMC settings
