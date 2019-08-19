@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Bootloader example for XMega.
+ *  File info: Example application for the bootloader application.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file main.c
- *  @brief Bootloader example for XMega.
+ *  @brief Example application for the bootloader application.
  *
  *  Software for the XMega bootloader example from
  *  <>
@@ -31,14 +31,20 @@
  *  @author Daniel Kampert
  */
 
-#include "Common/Services/Bootloader/Bootloader.h"
+#include "Arch/XMega/GPIO/GPIO.h"
 
 int main(void)
 {
-	Bootloader_Init();
-	Bootloader_Enter();
+	/*
+		Configure LED0
+			-> PORTR.0 
+			-> Output
+	*/
+	GPIO_SetDirection(&PORTR, 0, GPIO_DIRECTION_OUT);
 	
-    while(1)
+    while (1) 
     {
+		GPIO_Toggle(&PORTR, 0);
+		for(uint16_t i = 0x00; i < 0xFFFF; i++);
     }
 }
