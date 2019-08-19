@@ -44,40 +44,28 @@
 	LEDs
  */
  // Yellow LED0
- #define LED0_PORT									&PORTR
- #define LED0_PIN									0
+ #define LED0										PORTR, 0
 
  // Yellow LED1
- #define LED1_PORT									&PORTR
- #define LED1_PIN									1
+ #define LED1										PORTR, 1
 
  // Red/Green LED
- #define LED2_PORT									&PORTD
- #define LED2_PIN									4
+ #define LED2										PORTD, 4
 
  // Green LED
- #define LED3_PORT									&PORTD
- #define LED3_PIN									5
+ #define LED3										PORTD, 5
  
  /* 
 	Push buttons
  */
- // SW0
- #define SW0_PORT									&PORTF
- #define SW0_PIN									1
- 
- // SW1
- #define SW1_PORT									&PORTF
- #define SW1_PIN									2
+ #define SW0										PORTF, 1
+ #define SW1										PORTF, 2
  
  /*
 	Analog sensors
  */
- // Light sensor
- #define LIGHT_SENSOR_PIN							0
-
- // Temperature sensor
- #define TEMPERATURE_SENSOR_PIN						1
+ #define LIGHT_SENSOR								0
+ #define TEMPERATURE_SENSOR							1
 
  // SPI interface for SPI peripherals
  #define SPI_CLOCK									1000000
