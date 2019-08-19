@@ -140,14 +140,14 @@ static void SD_Select(void)
 	// Create 8 clock pulse before activating the card
 	SPIM_TRANSMIT(SD_INTERFACE, 0xFF);
 
-	SPIM_CHIP_SELECT(&FIRST_ARG(SD_SS), SECOND_ARG(SD_SS));
+	SPIM_CHIP_SELECT(GET_PERIPHERAL(SD_SS), GET_INDEX(SD_SS));
 }
 
 /** @brief	Deselect the SD card
  */
 static void SD_Deselect(void)
 {
-	SPIM_CHIP_DESELECT(&FIRST_ARG(SD_SS), SECOND_ARG(SD_SS));
+	SPIM_CHIP_DESELECT(GET_PERIPHERAL(SD_SS), GET_INDEX(SD_SS));
 
 	// Create 80 clock pulse after releasing the card
 	for(uint8_t i = 0x00; i < 0x0A; i++)
@@ -458,8 +458,8 @@ const SD_Error_t SD_Init(SPIM_Config_t* Config)
 	SD_Error_t ErrorCode = SD_SUCCESSFULL;
 
 	// Set SD card SS pin as output in high state
-	GPIO_SetDirection(&FIRST_ARG(SD_SS), SECOND_ARG(SD_SS), GPIO_DIRECTION_OUT);
-	GPIO_Set(&FIRST_ARG(SD_SS), SECOND_ARG(SD_SS));
+	GPIO_SetDirection(GET_PERIPHERAL(SD_SS), GET_INDEX(SD_SS), GPIO_DIRECTION_OUT);
+	GPIO_Set(GET_PERIPHERAL(SD_SS), GET_INDEX(SD_SS));
 
 	if(Config != NULL)
 	{
@@ -504,8 +504,8 @@ const SD_Error_t SD_Init(SPIM_Config_t* Config)
 	void SD_InstallCallback(SD_Callback_t Callback)
 	{
 		GPIO_InterruptConfig_t Interrupt_SWA = {
-			.Port = &FIRST_ARG(SD_SWA),
-			.Pin = SECOND_ARG(SD_SWA),
+			.Port = GET_PERIPHERAL(SD_SWA),
+			.Pin = GET_INDEX(SD_SWA),
 			.Channel = GPIO_INTERRUPT_0,
 			.InterruptLevel = INT_LVL_LO,
 			.Sense = GPIO_SENSE_BOTH,

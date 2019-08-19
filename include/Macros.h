@@ -31,12 +31,15 @@
 #ifndef MACROS_H_
 #define MACROS_H_
 
-  #define _CONCAT(A, B)								A ## B
-  #define _FIRST(A, B)								A
-  #define _SECOND(A, B)								B
+ #define _CONCAT(A, B)								A ## B
+ #define _FIRST(A, B)								A
+ #define _SECOND(A, B)								B
  
-  #define FIRST_ARG(A)								_FIRST(A)
-  #define SECOND_ARG(A)								_SECOND(A)
-  #define CONCAT(A)									_CONCAT(A)
+ #define FIRST_ARG(A)								_FIRST(A)
+ #define SECOND_ARG(A)								_SECOND(A)
+ #define CONCAT(A)									_CONCAT(A)
+
+ #define GET_PERIPHERAL(Arg)						&_FIRST(Arg)
+ #define GET_INDEX(Arg)								_SECOND(Arg)
 
 #endif /* MACROS_H_ */
