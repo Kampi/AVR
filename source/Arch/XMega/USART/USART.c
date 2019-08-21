@@ -353,7 +353,7 @@ void USART_GetConfig(USART_Config_t* Config, USART_t* Device)
      // ToDo
 }
 
-void USART_Write(USART_t* Device, const char *Data)
+void USART_Write(USART_t* Device, const char* Data)
 {
     while(*Data)
     {
