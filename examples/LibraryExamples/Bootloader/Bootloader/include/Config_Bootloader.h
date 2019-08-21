@@ -31,6 +31,9 @@
 #ifndef CONFIG_BOOTLOADER_H_
 #define CONFIG_BOOTLOADER_H_
  
+ #include "Common/Common.h"
+ 
+ #define BOOTLOADER_INTERFACE_TYPE				INTERFACE_USART	
  #define BOOTLOADER_INTERFACE					C, 0					/**< USART interface used by the bootloader. */
  #define BOOTLOADER_BAUD						19200					/**< USART baud rate used by the bootloader. */
 

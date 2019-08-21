@@ -1,9 +1,9 @@
 /*
- * Bootloader.h
+ * USART_Bootloader_XMega.h
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: AVR bootloader definitions.
+ *  File info: AVR USART bootloader interface for XMega architecture.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,42 +22,21 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Common/Services/Bootloader/Bootloader.h
- *  @brief AVR bootloader definitions.
+/** @file Common/Services/Bootloader/Arch/XMega/USART_Bootloader_XMega.h
+ *  @brief AVR USART bootloader interface for XMega architecture.
+ *
+ *  This contains the prototypes and definitions for the AVR USART bootloader interface for XMega architecture.
  *
  *  @author Daniel Kampert
  */
 
-#ifndef BOOTLOADER_H_
-#define BOOTLOADER_H_
- 
+#ifndef USART_BOOTLOADER_XMEGA_H_
+#define USART_BOOTLOADER_XMEGA_H_
+
  #include "Common/Common.h"
+ #include "USART_Bootloader_Preprocessing.h"
  
- #include "Config_Bootloader.h"
- 
- #if(BOOTLOADER_INTERFACE_TYPE == INTERFACE_USART)
-	 #include "Interface/USART_Bootloader.h"
-	 #include "Interface/NVM_Bootloader.h"
- #else
-	 #error "Bootloader interface not supported!"
- #endif 
- 
- #include "Common/Parser/IntelHexParser.h"
+ #define BOOTLOADER_TX							3						/**< USART Tx pin used by the bootloader. */
+ #define BOOTLOADER_RX							2						/**< USART Rx pin used by the bootloader. */
 
- /*
-	Function prototypes used by the bootloader.
- */
-
- /** @brief	Initialize all necessary peripherals and the bootloader.
-  */
- void Bootloader_Init(void);
- 
- /** @brief	Enter the bootloader mode and process the input.
-  */
- void Bootloader_Enter(void);
- 
- /** @brief	Leave the bootloader and jump to the main application.
-  */
- void Bootloader_Exit(void);
-
-#endif /* BOOTLOADER_H_ */
+#endif /* USART_BOOTLOADER_XMEGA_H_ */

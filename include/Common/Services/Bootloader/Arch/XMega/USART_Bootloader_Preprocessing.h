@@ -1,9 +1,9 @@
 /*
- * Bootloader_Preprocessing.h
+ * USART_Bootloader_Preprocessing.h
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Configuration preprocessing for the AVR XMega bootloader.
+ *  File info: USART configuration preprocessing for the AVR XMega bootloader.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,26 +22,24 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Common/Services/Bootloader/Bootloader_Preprocessing.h
- *  @brief Configuration preprocessing for the AVR XMega bootloader.
+/** @file Common/Services/Bootloader/Arch/XMega/USART_Bootloader_Preprocessing.h
+ *  @brief Configuration preprocessing for the AVR XMega USART bootloader.
  *
- *  This contains the prototypes and definitions for the AVR XMega bootloader.
+ *  This contains the prototypes and definitions for the AVR XMega USART bootloader.
  *
  *  @author Daniel Kampert
  */
 
-#ifndef BOOTLOADER_PREPROCESSING_H_
-#define BOOTLOADER_PREPROCESSING_H_
+#ifndef USART_BOOTLOADER_PREPROCESSING_H_
+#define USART_BOOTLOADER_PREPROCESSING_H_
 
  #define CATENATE(A, B)						A ## B
  #define CATENATE3(A, B, C)					A ## B ## C
- #define FIRST_ARG(A, B)					A
- #define SECOND_ARG(A, B)					B
 
  #define MAKE_USART_NAME(Usart)				CATENATE(USART, Usart)
  #define MAKE_PORT_NAME(Port)				CATENATE(PORT, Port)
  #define USART_NAME(Name)					MAKE_USART_NAME(CATENATE(Name))
- #define PORT_NAME(Name)					MAKE_PORT_NAME(FIRST_ARG(Name))
+ #define PORT_NAME(Name)					MAKE_PORT_NAME(_FIRST(Name))
 
  #define MAKE_ISR_NAME(Usart)				CATENATE3(USART, Usart, _RXC_vect)
  #define ISR_NAME(Name)						MAKE_ISR_NAME(CATENATE(Name))
@@ -65,4 +63,4 @@
 	 #error "Invalid baud rate for bootloader!"
  #endif
 
-#endif /* BOOTLOADER_PREPROCESSING_H_ */
+#endif /* USART_BOOTLOADER_PREPROCESSING_H_ */
