@@ -30,7 +30,6 @@
  *  @author Daniel Kampert
  *  @bug - No IRCOM mode implemented
  *		 - No DMA
- *		 - Only USARTD0 supportet atm
  */
  
 #ifndef USART_H_
@@ -196,8 +195,8 @@
   *  @param Device	Pointer to USART object
   *  @return		Data byte
   */
- static inline char USART_GetChar(USART_t* Device) __attribute__ ((always_inline));
- static inline char USART_GetChar(USART_t* Device)
+ static inline unsigned char USART_GetChar(USART_t* Device) __attribute__ ((always_inline));
+ static inline unsigned char USART_GetChar(USART_t* Device)
  {
 	 return Device->DATA;
  }
@@ -206,8 +205,8 @@
   *  @param Device	Pointer to USART object
   *  @param Data	Data byte
   */
- static inline void USART_SendChar(USART_t* Device, const char Data) __attribute__ ((always_inline));
- static inline void USART_SendChar(USART_t* Device, const char Data)
+ static inline void USART_SendChar(USART_t* Device, const unsigned char Data) __attribute__ ((always_inline));
+ static inline void USART_SendChar(USART_t* Device, const unsigned char Data)
  {
 	 if((Device->CTRLC & 0x07) != USART_CHSIZE_9BIT_gc)
 	 {
