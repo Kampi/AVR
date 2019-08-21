@@ -39,9 +39,11 @@
   *  Interfaces for peripheral devices such as LCDs
   *  @{
   */
-	#define INTERFACE_USART_SPI									0		/**< USART/SPI interface */ 
-	#define INTERFACE_SPI										1		/**< SPI interface */
-	#define INTERFACE_I2C										2		/**< I2C interface */
+	#define INTERFACE_UNKNOWN									0		/**< Unknown interface */
+	#define INTERFACE_USART_SPI									1		/**< USART/SPI interface */ 
+	#define INTERFACE_SPI										2		/**< SPI interface */
+	#define INTERFACE_I2C										3		/**< I2C interface */
+	#define INTERFACE_USART										4		/**< USART interface */
  /** @} */ // end of Interfaces
 
  /** @defgroup Board
@@ -63,10 +65,11 @@
   *  MCU definitions for the AVR library
   *  @{
   */
-	#define MCU_NAME_ATXMEGA256A3BU								1		/**< XMega256A3BU micro controller */
-	#define MCU_NAME_ATXMEGA384C3								2		/**< XMega384C3 micro controller */
-	#define MCU_NAME_AT90USB1287								3		/**< AT90USB1287 micro controller  */ 
-	#define MCU_NAME_ATMEGA32									4		/**< ATmega32 micro controller */ 
+	#define MCU_NAME_UNKNOWN									0		/**< Unknown microcontroller */
+	#define MCU_NAME_ATXMEGA256A3BU								1		/**< XMega256A3BU microcontroller */
+	#define MCU_NAME_ATXMEGA384C3								2		/**< XMega384C3 microcontroller */
+	#define MCU_NAME_AT90USB1287								3		/**< AT90USB1287 microcontroller  */ 
+	#define MCU_NAME_ATMEGA32									4		/**< ATmega32 microcontroller */ 
  /** @} */ // end of MCU
 
  /** @defgroup Architecture
@@ -74,9 +77,10 @@
   *  Architecture definitions for the AVR library
   *  @{
   */
-	#define MCU_ARCH_XMEGA										0		/**< AVR XMega architecture */ 
-	#define MCU_ARCH_AVR8										1		/**< AVR8 architecture */ 
-	#define MCU_ARCH_UC3										2		/**< AVR UC3 architecture */ 
+	#define MCU_ARCH_UNKNOWN									0		/**< Unknown architecture */
+	#define MCU_ARCH_XMEGA										1		/**< AVR XMega architecture */ 
+	#define MCU_ARCH_AVR8										2		/**< AVR8 architecture */ 
+	#define MCU_ARCH_UC3										3		/**< AVR UC3 architecture */ 
  /** @} */ // end of Architecture
 
 #endif /* DEFINITIONS_H_ */

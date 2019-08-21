@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Type definitions for AVR microcontroller
+ *  File info: Type definitions for AVR microcontroller.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */ 
 
 /** @file types.h
- *  @brief Common types for AVR library.
+ *  @brief Type definitions for AVR microcontroller.
  *
  *  @author Daniel Kampert
  */
