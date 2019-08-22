@@ -35,8 +35,9 @@
  
  #define WITH_SSD1306
  
+ #define SSD1306_INTERFACE_TYPE						INTERFACE_USART_SPI
  #define DISPLAY_INTERFACE							USARTD, 0
- #define DISPLAY_CLOCK								1000000
+ #define DISPLAY_CLOCK								1000000UL
 
  // OLED interface definitions
  #define SSD1306_DATA								PORTD, 0
@@ -51,18 +52,15 @@
 /*
  #define WITH_ST7565R
 
+ #define ST7565R_INTERFACE_TYPE						INTERFACE_USART_SPI
  #define DISPLAY_INTERFACE							USARTD, 0
  #define DISPLAY_CLOCK								1000000
 
  // LCD interface definitions
- #define ST7565R_REGISTER_SELECT_PORT				&PORTD
- #define ST7565R_REGISTER_SELECT_PIN				0
- #define ST7565R_RESET_PORT							&PORTA
- #define ST7565R_RESET_PIN							3
- #define ST7565R_BACKLIGHT_PORT						&PORTE
- #define ST7565R_BACKLIGHT_PIN						4
- #define ST7565R_SS_PORT							&PORTF
- #define ST7565R_SS_PIN								3
+ #define ST7565R_REGISTER_SELECT					&PORTD, 0
+ #define ST7565R_RESET								&PORTA, 3
+ #define ST7565R_BACKLIGHT							&PORTE, 4
+ #define ST7565R_SS									&PORTF, 3
 
  // Display definitions
  #define DISPLAY_WIDTH								128
