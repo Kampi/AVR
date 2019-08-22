@@ -34,7 +34,7 @@
 #include "Arch/XMega/CPU/CPU.h"
 #include "Arch/XMega/NVM/NVM.h"
 
-/** @brief	Flush the EEPROm buffer
+/** @brief	Flush the EEPROM buffer
  */
 static void NVM_FlushEEBuffer(void)
 {

@@ -69,6 +69,28 @@
 #define CCP_IOREG_gc							0xD8
 
 ;--
+;	Wait until the NVM controller becomes ready.
+;
+;	Input:
+;		-
+;
+;	Return:
+;		-
+;--
+NVM_WaitBusy:
+
+	push	r20
+
+	NVM_Busy_Loop:
+		lds		r20, NVM_STATUS
+		sbrc	r20, NVM_NVMBUSY_bp
+		rjmp	NVM_Busy_Loop
+
+	pop		r20
+
+	ret
+
+;--
 ;	This function executes the SPM command. It must be placed in the bootloader
 ;	section of the microcontroller.
 ;
@@ -171,7 +193,7 @@ NVM_FlushUserSignature:
 ;		r25:r24				Read address
 ;
 ;	Return:
-;		-
+;		r25:r24				Data word
 ;--
 .section .text
 .global NVM_UserSignatureReadWord
@@ -244,6 +266,141 @@ NVM_UserSignatureReadPage:
 
 	; Clear __zero_reg__ (r1) for AVRGCC
 	clr		r1
+
+	; Restore RAMPZ
+	out		RAMPZ, r18
+
+	ret
+
+;--
+;	Input:
+;		-
+;
+;	Return:
+;		-
+;--
+.section .text
+.global NVM_EraseApplication
+NVM_EraseApplication:
+
+	; Save RAMPZ
+	in		r18, RAMPZ
+
+	; Clear the Z pointer so the Z pointer will point into the application section
+	sts		RAMPZ, r1
+	clr		ZH
+	clr		ZL
+
+	; Load NVM command
+	ldi		r26, NVM_CMD_ERASE_APP_gc
+
+	; Execute SPM command
+	call	NVM_ExecuteSPM
+
+	; Busy - wait
+	call	NVM_WaitBusy
+
+	; Restore RAMPZ
+	out		RAMPZ, r18
+
+	ret
+
+;--
+;	Input:
+;		-
+;
+;	Return:
+;		-
+;--
+.section .text
+.global NVM_ClearFlashBuffer
+NVM_ClearFlashBuffer:
+
+	; Load NVM command
+	ldi		r26, NVM_CMD_ERASE_FLASH_BUFFER_gc
+	sts		NVM_CTRLA, r26
+
+	; Execute command
+	ldi		r26, NVM_CMDEX_bp
+	sts		NVM_CTRLA, r26
+
+	; Busy - wait
+	call	NVM_WaitBusy
+
+	ret
+
+;--
+;	Input:
+;		r24					Word address
+;		r23:r22				Data byte
+;
+;	Return:
+;		-
+;--
+.section .text
+.global NVM_LoadFlashBuffer
+NVM_LoadFlashBuffer:
+
+	; Clear the Z pointer
+	clr		ZH
+	clr		ZL
+
+	; Save the word address
+	mov		ZL, r24
+
+	; Perform the address calculation
+	lsl		ZL
+	rol		ZH
+
+	; Copy data word to r1:r0 (used by SPM)
+	movw	r0, r22
+
+	; Load NVM command
+	ldi		r26, NVM_CMD_LOAD_FLASH_BUFFER_gc
+
+	; Execute SPM command
+	call	NVM_ExecuteSPM
+
+	; Clear __zero_reg__ (r1) for AVRGCC
+	clr		r1
+
+	ret
+
+;--
+;	Input:
+;		r25:r24				Page address
+;
+;	Return:
+;		-
+;--
+.section .text
+.global NVM_FlushFlashBuffer
+NVM_FlushFlashBuffer:
+
+	; Save RAMPZ
+	in		r18, RAMPZ
+
+	; Clear the Z pointer
+	sts		RAMPZ, r1
+	clr		ZH
+
+	; Save the page address
+	mov		r19, r25
+	mov		ZH, r24
+
+	; Perform the address calculation
+	lsl		ZH
+	rol		r19
+
+	; Save the high byte into the RAMPZ register
+	sts		RAMPZ, r19
+
+	; Load NVM command
+	ldi		r26, NVM_CMD_ERASE_WRITE_FLASH_PAGE_gc
+	call	NVM_ExecuteSPM
+
+	; Busy - wait
+	call	NVM_WaitBusy
 
 	; Restore RAMPZ
 	out		RAMPZ, r18

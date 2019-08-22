@@ -83,7 +83,7 @@
  {
 	 uint8_t Flags = CPU_IRQSave();
 	 
-	 asm volatile(	 "movw r30,  %0"	"\n\t"
+	 asm volatile(	"movw r30,  %0"	"\n\t"
 					"ldi  r16,  %2"	"\n\t"
 					"out   %3, r16"	"\n\t"
 					"st     Z,  %1"	"\n\t"
@@ -223,29 +223,47 @@
 	 Flash functions
  */
 
- /** @brief			Read a complete page from the flash memory.
-  *  @param Address	Byte address
-  *  @param Buffer	Pointer to buffer
+ /** @brief	Erase the application section.
   */
- void NVM_FlashReadPage(const uint32_t Address, uint8_t* Buffer);
+ void NVM_EraseApplication(void);
+
+ /** @brief	Clear the flash buffer of the NVM controller.
+  */
+ void NVM_ClearFlashBuffer(void);
+
+ /** @brief			Load a new data word into the flash buffer.
+  *  @param Address	Page offset
+  *  @param Data	Data word
+  */
+ void NVM_LoadFlashBuffer(const uint8_t Address, const uint16_t Data);
+
+ /** @brief			Copy the flash buffer into memory.
+  *  @param Page	Page address
+  */
+ void NVM_FlushFlashBuffer(const uint16_t Page);
 
  /*
 	 User Signature Row functions
  */
 
+ /** @brief	Clear the user signature page.
+  */
+ void NVM_EraseUserSignature(void);
+ 
  /** @brief	Flush the flash buffer and write the data to the user signature flash page.
   */
  void NVM_FlushUserSignature(void);
 
- /** @brief			Read a one byte from the user signature row.
-  *  @param Address	Byte address
+ /** @brief			Read a one word from the user signature row.
+  *  @param Address	Address
   *  @return		Signature byte
   */
- uint8_t NVM_ReadUserSignature(const uint8_t Address);
-
- /** @brief	Clear the user signature page.
+ uint16_t NVM_UserSignatureReadWord(const uint16_t Address);
+ 
+ /** @brief			Read the complete user signature page.
+  *  @param Data	Pointer to data buffer
   */
- void NVM_EraseUserSignature(void);
+ void NVM_UserSignatureReadPage(const uint16_t* Data);
  
  /*
 	 Miscellaneous functions
