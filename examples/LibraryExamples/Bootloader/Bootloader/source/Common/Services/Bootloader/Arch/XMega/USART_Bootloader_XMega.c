@@ -67,12 +67,9 @@ static void Bootloader_PutString(const char* Message)
 {
 	while(*Message)
 	{
-		char i = *Message++;
-		Bootloader_PutChar(i);
+		Bootloader_PutChar(*Message++);
 	}
 }
-
-uint8_t A = 0;
 
 void Bootloader_Init(void)
 {
@@ -97,7 +94,7 @@ void Bootloader_Init(void)
 	((USART_t*)(&USART_NAME(BOOTLOADER_INTERFACE)))->BAUDCTRLA = BOOTLOADER_BRREG_VALUE;
 	((USART_t*)(&USART_NAME(BOOTLOADER_INTERFACE)))->BAUDCTRLB = (BOOTLOADER_SCALE_VALUE << USART_BSCALE_gp) & USART_BSCALE_gm;
 	((USART_t*)(&USART_NAME(BOOTLOADER_INTERFACE)))->CTRLB = USART_RXEN_bm | USART_TXEN_bm;
-	
+
 	// Initialize the hex file parser
 	Parser_Init();
 
@@ -105,58 +102,73 @@ void Bootloader_Init(void)
 	Bootloader_PutChar(XON);
 }
 
-void Bootloader_Enter(void)
+Bool_t Bootloader_Enter(void)
 {
 	Bootloader_PutString("Enter bootloader...\n\r");
 
 	uint16_t Word = 0x00;
-	
+	uint16_t Page = 0x00;
+
 	do
 	{
-		unsigned char c = Bootloader_GetChar();
-		if(Parser_GetLine(c) == PARSER_STATE_SUCCESSFULL)
+		if(Parser_GetLine(Bootloader_GetChar()) == PARSER_STATE_SUCCESSFULL)
 		{
 			Bootloader_PutChar(XOFF);
-			if(IntelParser_ParseLine(&__Line) == PARSER_STATE_SUCCESSFULL)
-			{
-				for(uint8_t i = 0x00; i < (__Line.Length << 0x01); i = i + 2)
-				{
-					uint16_t CodeWord = (__LineBuffer[i + 1] << 0x08) | __LineBuffer[i];
-					NVM_LoadFlashBuffer(__Line.Address + (i >> 0x01), CodeWord);
-				}
-				
-				Word += __Line.Length;
 
-				if(Word == (APP_SECTION_PAGE_SIZE / 2))
+			Parser_State_t State = IntelParser_ParseLine(&__Line);
+			if(State == PARSER_STATE_SUCCESSFULL)
+			{
+				if(__Line.Type == PARSER_TYPE_DATA)
 				{
-					NVM_FlushFlashBuffer(0);
-					A++;
+					for(uint8_t i = 0x00; i < __Line.Bytes; i = i + 0x02)
+					{
+						uint16_t CodeWord = (__LineBuffer[i + 1] << 0x08) | __LineBuffer[i];
+						NVM_LoadFlashBuffer((__Line.Address + i) >> 0x01, CodeWord);
+					}
+
+					Word += __Line.Bytes;
+
+					if(Word == APP_SECTION_PAGE_SIZE)
+					{
+						Word = 0x00;
+						NVM_FlushFlashBuffer(Page++);
+					}
 				}
 			}
-			else
+			else if(State == PARSER_STATE_ERROR)
 			{
-				
+				return FALSE;
 			}
-			
+
 			Bootloader_PutChar(XON);
 		}
-	} while(1);
+	} while(__Line.Type != PARSER_TYPE_EOF);
+	
+	NVM_FlushFlashBuffer(Page);
+	
+	return TRUE;
 }
 
 void Bootloader_Exit(void)
 {
 	void (*Main)(void) = 0x0000;
 	
+	Bootloader_PutString("Leave bootloader...");
+	
 	// Wait until last transmission finish
 	while(!(((USART_t*)(&USART_NAME(BOOTLOADER_INTERFACE)))->STATUS & USART_DREIF_bm));
-	
+
+	// Disable the SPM command
+	NVM_LockSPM();
+
 	// Reset the I/O
 	((PORT_t*)(&PORT_NAME(BOOTLOADER_INTERFACE)))->DIRCLR = (0x01 << BOOTLOADER_TX);
 	((PORT_t*)(&PORT_NAME(BOOTLOADER_INTERFACE)))->DIRCLR = (0x01 << BOOTLOADER_RX);
 	
 	// Disable the USART
 	((USART_t*)(&USART_NAME(BOOTLOADER_INTERFACE)))->CTRLB &= ~(USART_RXEN_bm | USART_TXEN_bm);
-	
-	// Jump to main
+
+	// Jump to application
+	EIND = 0x00;
 	Main();
 }

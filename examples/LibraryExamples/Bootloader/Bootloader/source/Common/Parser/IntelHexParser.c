@@ -106,6 +106,7 @@ Parser_State_t Parser_GetLine(const uint8_t Received)
 		if(Received == PARSER_LINE_END)
 		{
 			__Index = 0x00;
+			__Active = FALSE;
 			__ParserState = PARSER_INIT;
 
 			return PARSER_STATE_SUCCESSFULL;
@@ -139,7 +140,7 @@ Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
 			case PARSER_INIT:
 			{
 				Line->Checksum = 0x00;
-				Line->Length = 0x00;
+				Line->Bytes = 0x00;
 
 				__ParserState = PARSER_GET_SIZE;
 
@@ -148,7 +149,7 @@ Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
 			case PARSER_GET_SIZE:
 			{
 				uint8_t Length = Hex2Num(PARSER_LENGTH_BYTES);
-				Line->Length = Length;
+				Line->Bytes = Length;
 				Line->Checksum += Length;
 
 				__ParserState = PARSER_GET_ADDRESS;
@@ -157,9 +158,9 @@ Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
 			}
 			case PARSER_GET_ADDRESS:
 			{
-				uint8_t Address = Hex2Num(PARSER_ADDRESS_BYTES);
+				uint16_t Address = Hex2Num(PARSER_ADDRESS_BYTES);
 				Line->Address = Address;
-				Line->Checksum += Address;
+				Line->Checksum += (Address >> 0x08) + (Address & 0xFF);
 
 				__ParserState = PARSER_GET_TYPE;
 
@@ -197,7 +198,7 @@ Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
 			}
 			case PARSER_GET_DATA:
 			{
-				for(uint8_t i = 0x00; i < Line->Length; i++)
+				for(uint8_t i = 0x00; i < Line->Bytes; i++)
 				{
 					uint8_t Data = Hex2Num(PARSER_DATA_BYTES);
 					*(Line->pBuffer + i) = Data;

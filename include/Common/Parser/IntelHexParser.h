@@ -68,15 +68,15 @@
 	 PARSER_TYPE_SLA = 0x05,									/**< Start linear address record */
  } Parser_Type_t;
 
- /** @brief 
+ /** @brief Intel-Hex file line object
   */
  typedef struct
  {
-	 uint8_t Length;											/**< Word count */
+	 uint8_t Bytes;												/**< Byte count */
 	 uint16_t Address;											/**< Address */
 	 Parser_Type_t Type;										/**< Record type */
 	 unsigned char* pBuffer;									/**< Pointer to data buffer */
-	 uint8_t Checksum;											/**< Checksum */
+	 uint16_t Checksum;											/**< Checksum */
 	 Bool_t Valid;												/**< Valid flag */
  } Parser_Line_t;
 

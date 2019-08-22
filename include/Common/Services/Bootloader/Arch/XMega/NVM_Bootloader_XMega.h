@@ -35,6 +35,10 @@
 
  #include "Common/Common.h"
 
+ /** @brief Lock the SPM command to prevent it´s usage.
+  */
+ void NVM_LockSPM(void);
+
  /** @brief Clear the application section of the flash memory.
   */
  void NVM_EraseApplication(void);

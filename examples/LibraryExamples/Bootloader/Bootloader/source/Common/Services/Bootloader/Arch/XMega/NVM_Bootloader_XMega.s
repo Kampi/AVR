@@ -37,6 +37,7 @@
 #define NVM_CMD_ERASE_FLASH_BUFFER_gc			0x26
 #define NVM_CMD_ERASE_WRITE_FLASH_PAGE_gc		0x2F
 #define CCP_SPM_gc								0x9D
+#define CCP_IOREG_gc							0xD8
 
 ;--
 ;	Wait until the NVM controller becomes ready.
@@ -95,67 +96,27 @@ NVM_ExecuteSPM:
 	ret
 
 ;--
-;	ToDo: Testen
-;
 ;	Input:
-;		r24					Word address
-;		r23:r22				Page address
-;		r21:r20				Data byte
+;		-
 ;
 ;	Return:
 ;		-
 ;--
 .section .text
-.global NVM_FlashWritePage
-NVM_FlashWritePage:
+.global NVM_LockSPM
+NVM_LockSPM:
 
-	; Save RAMPZ
-	in		r18, RAMPZ
+	; Load the signature register
+	ldi	r18, CCP_IOREG_gc
 
-	; Clear the address to set the start to the beginning of the page
-	sts		RAMPZ, r1
-	clr		ZL
-	clr		ZH
+	; Load the SPM lock bit
+	ldi	r19, NVM_SPMLOCK_bm
 
-	; Load NVM command
-	ldi		r26, NVM_CMD_LOAD_FLASH_BUFFER_gc
-	sts		NVM_CMD, r26
+	; Unlock SPM lock bit
+	sts	CCP, r18
 
-	; Load the data pointer
-	movw	XL, r24
-
-	; Save the size of one page (page size is given in bytes!)
-	ldi		r21, ((APP_SECTION_PAGE_SIZE / 2) & 0xFF)
-
-	; Save the protection signature
-	ldi		r19, CCP_SPM_gc
-
-	NVM_FlashUserSignatureWritePage_Loop:
-
-		; Load the data bytes of the current word
-		ld		r0, X+
-		ld		r1, X+ 
-
-		; Unlock SPM command
-		sts		CCP, r19
-
-		spm
-
-		; Increase the address pointer
-		adiw	ZL, 2 
-
-		; Decrement and repeat until zero
-		dec		r21
-		brne	NVM_FlashUserSignatureWritePage_Loop
-
-	; Clear the NVM command
-	sts		NVM_CMD, r1
-
-	; Clear __zero_reg__ (r1) for AVRGCC
-	clr		r1
-
-	; Restore RAMPZ
-	out		RAMPZ, r18
+	; Set the bit
+	sts	NVM_CTRLB, r19
 
 	ret
 

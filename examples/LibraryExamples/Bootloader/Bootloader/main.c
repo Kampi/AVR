@@ -35,10 +35,22 @@
 
 int main(void)
 {
+	// Initialize the bootloader
 	Bootloader_Init();
-	Bootloader_Enter();
+
+	// Enter the bootloader mode and wait for a programm
+	if(Bootloader_Enter() == TRUE)
+	{
+		Bootloader_Exit();
+	}
+	else
+	{
+		
+	}
 	
     while(1)
     {
     }
+	
+	return 0;
 }
