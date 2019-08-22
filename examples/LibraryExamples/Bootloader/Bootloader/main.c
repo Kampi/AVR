@@ -31,7 +31,7 @@
  *  @author Daniel Kampert
  */
 
-#include "Common/Services/Bootloader/Bootloader.h"
+#include "Common/Bootloader/Bootloader.h"
 
 int main(void)
 {

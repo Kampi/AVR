@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Common/Services/Bootloader/Arch/XMega/USART_Bootloader_XMega.c
+/** @file Common/Bootloader/Arch/XMega/USART_Bootloader_XMega.c
  *  @brief AVR USART bootloader for XMega architecture.
  *
  *  This file contains the implementation for the AVR USART bootloader for XMega architecture.
@@ -30,7 +30,7 @@
  *  @author Daniel Kampert
  */
 
-#include "Common/Services/Bootloader/Bootloader.h"
+#include "Common/Bootloader/Bootloader.h"
 
 /** @brief	Data buffer for the current line.
  */

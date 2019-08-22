@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Common/Services/Bootloader/Arch/XMega/NVM_Bootloader_XMega.c
+/** @file Common/Bootloader/Arch/XMega/NVM_Bootloader_XMega.c
  *  @brief AVR XMega NVM controller for XMega bootloader.
  *
  *  This file contains the implementation for the AVR NVM controller for the XMega bootloader.
