@@ -209,6 +209,9 @@ NVM_LoadFlashBuffer:
 	; Execute SPM command
 	call	NVM_ExecuteSPM
 
+	; Restore zero reg
+	clr		r1
+
 	ret
 
 ;--
