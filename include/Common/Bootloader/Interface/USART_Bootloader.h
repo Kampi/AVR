@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Common/Services/Bootloader/Interface/USART_Bootloader.h
+/** @file Common/Bootloader/Interface/USART_Bootloader.h
  *  @brief USART bootloader interface definitions.
  *
  *  @author Daniel Kampert

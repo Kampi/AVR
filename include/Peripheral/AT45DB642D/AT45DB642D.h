@@ -33,7 +33,6 @@
 #ifndef AT45DB642D_H_
 #define AT45DB642D_H_
 
- #include "Arch/SPI.h"
  #include "Common/Common.h"
 
  /** @ingroup Device-ID */

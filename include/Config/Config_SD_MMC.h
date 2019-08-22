@@ -36,8 +36,7 @@
  /*
 	SD/MMC interface
  */
- #define SD_INTERFACE_TYPE						INTERFACE_USART_SPI		/**< Interface type for the SD card */
- #define SD_INTERFACE							&USARTD0				/**< SPI interface for the SD card */
+ #define SD_INTERFACE							USARTD, 0				/**< SPI interface for the SD card */
 
  /*
 	 SD/MMC interface connections

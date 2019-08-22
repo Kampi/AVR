@@ -1,9 +1,9 @@
 /*
- * NVM_Bootloader.h
+ * Bootloader.h
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: NVM bootloader interface definitions.
+ *  File info: AVR bootloader definitions.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,21 +22,43 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Common/Services/Bootloader/Interface/USART_Bootloader.h
- *  @brief USART bootloader interface definitions.
+/** @file Common/Bootloader/Bootloader.h
+ *  @brief AVR bootloader definitions.
  *
  *  @author Daniel Kampert
  */
 
-#ifndef NVM_BOOTLOADER_H_
-#define NVM_BOOTLOADER_H_
+#ifndef BOOTLOADER_H_
+#define BOOTLOADER_H_
  
  #include "Common/Common.h"
  
- #if(MCU_ARCH == MCU_ARCH_XMEGA)
-	 #include "../Arch/XMega/NVM_Bootloader_XMega.h"
+ #include "Config_Bootloader.h"
+ 
+ #if(BOOTLOADER_INTERFACE_TYPE == INTERFACE_USART)
+	 #include "Interface/USART_Bootloader.h"
+	 #include "Interface/NVM_Bootloader.h"
  #else
-	 #error "MCU architecture not supported by bootloader!"
- #endif
+	 #error "Bootloader interface not supported!"
+ #endif 
+ 
+ #include "Common/Parser/IntelHexParser.h"
 
-#endif /* NVM_BOOTLOADER_H_ */
+ /*
+	Function prototypes used by the bootloader.
+ */
+
+ /** @brief	Initialize all necessary peripherals and the bootloader.
+  */
+ void Bootloader_Init(void);
+ 
+ /** @brief		Enter the bootloader mode and process the input.
+  *  @return	#TRUE when successfully
+  */
+ Bool_t Bootloader_Enter(void);
+ 
+ /** @brief	Leave the bootloader and jump to the main application.
+  */
+ void Bootloader_Exit(void);
+
+#endif /* BOOTLOADER_H_ */

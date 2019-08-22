@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Common/Services/Bootloader/Arch/XMega/USART_Bootloader_Preprocessing.h
+/** @file Common/Bootloader/Arch/XMega/USART_Bootloader_Preprocessing.h
  *  @brief Configuration preprocessing for the AVR XMega USART bootloader.
  *
  *  This contains the prototypes and definitions for the AVR XMega USART bootloader.

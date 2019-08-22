@@ -1,9 +1,9 @@
 /*
- * USART_Bootloader_XMega.h
+ * NVM_Bootloader.h
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: AVR USART bootloader interface for XMega architecture.
+ *  File info: NVM bootloader interface definitions.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,21 +22,21 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Common/Services/Bootloader/Arch/XMega/USART_Bootloader_XMega.h
- *  @brief AVR USART bootloader interface for XMega architecture.
- *
- *  This contains the prototypes and definitions for the AVR USART bootloader interface for XMega architecture.
+/** @file Common/Bootloader/Interface/USART_Bootloader.h
+ *  @brief USART bootloader interface definitions.
  *
  *  @author Daniel Kampert
  */
 
-#ifndef USART_BOOTLOADER_XMEGA_H_
-#define USART_BOOTLOADER_XMEGA_H_
-
- #include "Common/Common.h"
- #include "USART_Bootloader_Preprocessing.h"
+#ifndef NVM_BOOTLOADER_H_
+#define NVM_BOOTLOADER_H_
  
- #define BOOTLOADER_TX							3						/**< USART Tx pin used by the bootloader. */
- #define BOOTLOADER_RX							2						/**< USART Rx pin used by the bootloader. */
+ #include "Common/Common.h"
+ 
+ #if(MCU_ARCH == MCU_ARCH_XMEGA)
+	 #include "../Arch/XMega/NVM_Bootloader_XMega.h"
+ #else
+	 #error "MCU architecture not supported by bootloader!"
+ #endif
 
-#endif /* USART_BOOTLOADER_XMEGA_H_ */
+#endif /* NVM_BOOTLOADER_H_ */

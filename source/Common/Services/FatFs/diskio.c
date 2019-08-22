@@ -37,10 +37,10 @@
 #define DEV_USB					1							/**< Map USB MSD to physical drive 1 */
 
 SPIM_Config_t __InterfaceConfig = {
-	.SPIClock = 1000000,
+	.SPIClock = 1000000UL,
 	.DataOrder = SPI_DATAORDER_MSB_FIRST,
 	.Mode = SPI_MODE_0,
-	.Device = SD_INTERFACE
+	.Device = &CONCAT(SD_INTERFACE)
 };
 
 // Disk status

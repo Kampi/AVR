@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Common/Services/Bootloader/Arch/XMega/NVM_Bootloader_XMega.h
+/** @file Common/Bootloader/Arch/XMega/NVM_Bootloader_XMega.h
  *  @brief AVR NVM bootloader interface for XMega architecture.
  *
  *  This contains the prototypes and definitions for the AVR NVM bootloader interface for XMega architecture.
