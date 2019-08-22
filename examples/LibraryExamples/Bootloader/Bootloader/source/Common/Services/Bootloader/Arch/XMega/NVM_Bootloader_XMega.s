@@ -43,23 +43,17 @@
 ;	Wait until the NVM controller becomes ready.
 ;
 ;	Input:
-;		r24					Word address
-;		r23:r22				Page address
-;		r21:r20				Data byte
+;		-
 ;
 ;	Return:
 ;		-
 ;--
 NVM_WaitBusy:
 
-	push	r20
-
 	NVM_Busy_Loop:
 		lds		r20, NVM_STATUS
 		sbrc	r20, NVM_NVMBUSY_bp
 		rjmp	NVM_Busy_Loop
-
-	pop		r20
 
 	ret
 
@@ -209,7 +203,7 @@ NVM_LoadFlashBuffer:
 	; Execute SPM command
 	call	NVM_ExecuteSPM
 
-	; Restore zero reg
+	; Clear __zero_reg__ (r1) for AVRGCC
 	clr		r1
 
 	ret
