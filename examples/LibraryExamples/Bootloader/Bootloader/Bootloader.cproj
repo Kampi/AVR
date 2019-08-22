@@ -111,7 +111,6 @@
       <Value>DEBUG</Value>
       <Value>MCU_NAME=MCU_NAME_ATXMEGA384C3</Value>
       <Value>MCU_ARCH=MCU_ARCH_XMEGA</Value>
-      <Value>BOOTLOADER_INTERFACE_TYPE=INTERFACE_USART</Value>
     </ListValues>
   </avrgcc.compiler.symbols.DefSymbols>
   <avrgcc.compiler.directories.IncludePaths>
