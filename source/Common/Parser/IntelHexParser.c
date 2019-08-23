@@ -74,7 +74,7 @@ static uint16_t Hex2Num(const uint8_t Length)
 	{
 		uint8_t c = __ParserBuffer[__Index++];
 		
-		if (c >= '0' && c <= '9')
+		if(c >= '0' && c <= '9')
 		{
 			c -= '0';
 		}
@@ -112,7 +112,7 @@ Parser_State_t Parser_GetLine(const uint8_t Received)
 			return PARSER_STATE_SUCCESSFULL;
 		}
 
-		if(__Index < sizeof(__ParserBuffer))
+		if(__Index > sizeof(__ParserBuffer))
 		{
 			__ParserBuffer[__Index++] = Received;
 			

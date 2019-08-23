@@ -111,7 +111,8 @@ Bool_t Bootloader_Enter(void)
 
 	do
 	{
-		if(Parser_GetLine(Bootloader_GetChar()) == PARSER_STATE_SUCCESSFULL)
+		Parser_State_t LineRead = Parser_GetLine(Bootloader_GetChar());
+		if(LineRead == PARSER_STATE_SUCCESSFULL)
 		{
 			Bootloader_PutChar(XOFF);
 
@@ -137,10 +138,18 @@ Bool_t Bootloader_Enter(void)
 			}
 			else if(State == PARSER_STATE_ERROR)
 			{
+				// Error handling
+
 				return FALSE;
 			}
 
 			Bootloader_PutChar(XON);
+		}
+		else
+		{
+			// Error handling
+			
+			return FALSE;
 		}
 	} while(__Line.Type != PARSER_TYPE_EOF);
 	
