@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *  Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega USART interface
+ *  File info: Driver for XMega USART interface.
  
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify

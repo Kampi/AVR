@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega TWI
+ *  File info: Interrupt driver for XMega USART module.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  */
 
 /** @file XMega/USART/USART_Interrupt.c
- *  @brief Driver for XMega USART module.
+ *  @brief Interrupt driver for XMega USART module.
  *
  *  This file contains the implementation of the interrupt functions for the XMega USART driver.
  *
