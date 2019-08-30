@@ -212,7 +212,7 @@ NVM_UserSignatureReadWord:
 
 ;--
 ;	Input:
-;		r25:r24				Read buffer
+;		r25:r24				Pounter to read buffer
 ;
 ;	Return:
 ;		-
@@ -331,26 +331,24 @@ NVM_ClearFlashBuffer:
 
 ;--
 ;	Input:
-;		r24					Word address
-;		r23:r22				Data byte
+;		r25:r24				Page offset
+;		r23:r22				Data word
 ;
 ;	Return:
 ;		-
 ;--
 .section .text
-.global NVM_LoadFlashBuffer
-NVM_LoadFlashBuffer:
+.global NVM_FlashWriteWord
+NVM_FlashWriteWord:
 
-	; Clear the Z pointer
-	clr		ZH
-	clr		ZL
+	; Save RAMPZ
+	in		r18, RAMPZ
 
-	; Save the word address
-	mov		ZL, r24
+	; Clear RAMPZ
+	sts		RAMPZ, r1
 
-	; Perform the address calculation
-	lsl		ZL
-	rol		ZH
+	; Save the address
+	movw	ZL, r24
 
 	; Copy data word to r1:r0 (used by SPM)
 	movw	r0, r22
@@ -361,8 +359,69 @@ NVM_LoadFlashBuffer:
 	; Execute SPM command
 	call	NVM_ExecuteSPM
 
+	; Restore RAMPZ
+	out		RAMPZ, r18
+
+	ret
+
+;--
+;	Input:
+;		r25:r24				Pointer to data buffer
+;
+;	Return:
+;		-
+;--
+.section .boot, "ax"
+.global NVM_FlashWritePage
+NVM_FlashWritePage:
+
+	; Save RAMPZ
+	in		r18, RAMPZ
+
+	; Clear the address to set the start to the beginning of the page
+	sts		RAMPZ, r1
+	clr		ZL
+	clr		ZH
+
+	; Load NVM command
+	ldi		r26, NVM_CMD_LOAD_FLASH_BUFFER_gc
+	sts		NVM_CMD, r26
+
+	; Load the data pointer
+	movw	XL, r24
+
+	; Save the size of one page (page size is given in bytes!)
+	ldi		r21, ((APP_SECTION_PAGE_SIZE / 2) & 0xFF)
+
+	; Save the protection signature
+	ldi		r19, CCP_SPM_gc
+
+	NVM_FlashUserSignatureWritePage_Loop:
+
+		; Load the data bytes of the current word
+		ld		r0, X+
+		ld		r1, X+ 
+
+		; Unlock SPM command
+		sts		CCP, r19
+
+		spm
+
+		; Increase the address pointer
+		adiw	ZL, 2 
+
+		; Decrement and repeat until zero
+		dec		r21
+		brne	NVM_FlashUserSignatureWritePage_Loop
+
 	; Clear __zero_reg__ (r1) for AVRGCC
 	clr		r1
+
+	; Clear the NVM command
+	sts		NVM_CMD, r1
+
+	; Restore RAMPZ
+	out		RAMPZ, r18
 
 	ret
 
@@ -374,8 +433,8 @@ NVM_LoadFlashBuffer:
 ;		-
 ;--
 .section .text
-.global NVM_FlushFlashBuffer
-NVM_FlushFlashBuffer:
+.global NVM_FlushFlash
+NVM_FlushFlash:
 
 	; Save RAMPZ
 	in		r18, RAMPZ
@@ -404,5 +463,30 @@ NVM_FlushFlashBuffer:
 
 	; Restore RAMPZ
 	out		RAMPZ, r18
+
+	ret
+
+;--
+;	Input:
+;		-
+;
+;	Return:
+;		-
+;--
+.section .text
+.global NVM_LockSPM
+NVM_LockSPM:
+
+	; Load the signature register
+	ldi	r18, CCP_IOREG_gc
+
+	; Load the SPM lock bit
+	ldi	r19, NVM_SPMLOCK_bm
+
+	; Unlock SPM lock bit
+	sts	CCP, r18
+
+	; Set the bit
+	sts	NVM_CTRLB, r19
 
 	ret

@@ -231,16 +231,21 @@
   */
  void NVM_ClearFlashBuffer(void);
 
- /** @brief			Load a new data word into the flash buffer.
-  *  @param Address	Page offset
+ /** @brief			Write one word to the flash buffer.
+  *  @param Offset	page offset
   *  @param Data	Data word
   */
- void NVM_LoadFlashBuffer(const uint8_t Address, const uint16_t Data);
+ void NVM_FlashWriteWord(const uint16_t Offset, const uint16_t Data);
 
- /** @brief			Copy the flash buffer into memory.
+ /** @brief			Copy a complete page into the flash buffer.
+  *  @param Data	Pointer to data buffer
+  */
+ void NVM_FlashWritePage(const uint16_t* Data);
+
+ /** @brief			Flush the flash buffer and write the content to the given page in flash memory.
   *  @param Page	Page address
   */
- void NVM_FlushFlashBuffer(const uint16_t Page);
+ void NVM_FlushFlash(const uint16_t Page);
 
  /*
 	 User Signature Row functions
@@ -269,12 +274,6 @@
 	 Miscellaneous functions
  */
 
- /** @brief			Write one word to the flash buffer.
-  *  @param Address	Word address
-  *  @param Data	Data word
-  */
- void NVM_BufferWriteWord(const uint16_t Address, const uint16_t Data);
-
  /** @brief			Configure the NVM-Controller for a CRC over a flash memory segment.
   *  @param Start	Start address
   *  @param Length	Segment length
@@ -286,5 +285,9 @@
   *  @return		Calibration byte
   */
  const uint8_t NVM_ReadCalibrationByte(const uint8_t Index);
+
+ /** @brief	Disable the SPM command.
+  */
+ void NVM_LockSPM(void);
 
 #endif /* NVM_H_ */
