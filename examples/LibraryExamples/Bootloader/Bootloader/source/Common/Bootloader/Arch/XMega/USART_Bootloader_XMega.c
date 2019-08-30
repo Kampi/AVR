@@ -145,12 +145,6 @@ Bool_t Bootloader_Enter(void)
 
 			Bootloader_PutChar(XON);
 		}
-		else
-		{
-			// Error handling
-			
-			return FALSE;
-		}
 	} while(__Line.Type != PARSER_TYPE_EOF);
 	
 	NVM_FlushFlash(Page);
