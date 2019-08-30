@@ -216,8 +216,8 @@ NVM_LoadFlashBuffer:
 ;		-
 ;--
 .section .text
-.global NVM_FlushFlashBuffer
-NVM_FlushFlashBuffer:
+.global NVM_FlushFlash
+NVM_FlushFlash:
 
 	; Save RAMPZ
 	in		r18, RAMPZ

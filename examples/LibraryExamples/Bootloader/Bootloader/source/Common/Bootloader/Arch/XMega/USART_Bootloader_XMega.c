@@ -132,7 +132,7 @@ Bool_t Bootloader_Enter(void)
 					if(Word == APP_SECTION_PAGE_SIZE)
 					{
 						Word = 0x00;
-						NVM_FlushFlashBuffer(Page++);
+						NVM_FlushFlash(Page++);
 					}
 				}
 			}
@@ -153,7 +153,7 @@ Bool_t Bootloader_Enter(void)
 		}
 	} while(__Line.Type != PARSER_TYPE_EOF);
 	
-	NVM_FlushFlashBuffer(Page);
+	NVM_FlushFlash(Page);
 	
 	return TRUE;
 }

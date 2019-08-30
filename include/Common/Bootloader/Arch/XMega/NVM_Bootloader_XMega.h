@@ -56,6 +56,6 @@
  /** @brief			Flush the page buffer and write the content into the flash memory.
   *  @param Page	Page address
   */
- void NVM_FlushFlashBuffer(const uint16_t Page);
+ void NVM_FlushFlash(const uint16_t Page);
 
 #endif /* NVM_BOOTLOADER_XMEGA_H_ */
