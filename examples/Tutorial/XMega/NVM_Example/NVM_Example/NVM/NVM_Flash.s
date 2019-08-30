@@ -41,6 +41,7 @@
 #define NVM_CMD_ERASE_BOOT_PAGE_gc				0x2A
 #define NVM_CMD_WRITE_BOOT_PAGE_gc				0x2C
 #define NVM_CMD_ERASE_WRITE_BOOT_PAGE_gc		0x2D
+#define NVM_CMD_ERASE_WRITE_FLASH_PAGE_gc		0x2F
 #define NVM_CMD_ERASE_EEPROM_gc					0x30
 #define NVM_CMD_ERASE_EEPROM_PAGE_gc			0x32
 #define NVM_CMD_LOAD_EEPROM_BUFFER_gc			0x33
@@ -111,6 +112,24 @@ NVM_ExecuteLPM:
 
 	; Restore SREG
 	out		SREG, r18
+
+	ret
+
+;--
+;	Input:
+;		-
+;
+;	Return:
+;		-
+;--
+.section .text
+.global NVM_WaitBusy
+NVM_WaitBusy:
+
+	NVM_Busy_Loop:
+		lds		r20, NVM_STATUS
+		sbrc	r20, NVM_NVMBUSY_bp
+		rjmp	NVM_Busy_Loop
 
 	ret
 
@@ -199,11 +218,11 @@ NVM_FlashWritePage:
 		dec		r21
 		brne	NVM_FlashUserSignatureWritePage_Loop
 
-	; Clear the NVM command
-	sts		NVM_CMD, r1
-
 	; Clear __zero_reg__ (r1) for AVRGCC
 	clr		r1
+
+	; Clear the NVM command
+	sts		NVM_CMD, r1
 
 	; Restore RAMPZ
 	out		RAMPZ, r18
@@ -271,7 +290,7 @@ NVM_UserSignatureReadWord:
 
 ;--
 ;	Input:
-;		r25:r24				Read buffer
+;		r25:r24				Pointer to read buffer
 ;
 ;	Return:
 ;		-
@@ -325,6 +344,40 @@ NVM_UserSignatureReadPage:
 
 	; Clear __zero_reg__ (r1) for AVRGCC
 	clr		r1
+
+	; Restore RAMPZ
+	out		RAMPZ, r18
+
+	ret
+
+;--
+;	Input:
+;		r25:r24				Page address
+;
+;	Return:
+;		-
+;--
+.section .text
+.global NVM_FlushFlash
+NVM_FlushFlash:
+
+	; Save RAMPZ
+	in		r18, RAMPZ
+
+	; Save the page address
+	mov		r19, r25
+	mov		ZH, r24
+
+	; Perform the address calculation
+	lsl		ZH
+	rol		r19
+
+	; Save the high byte into the RAMPZ register
+	sts		RAMPZ, r19
+
+	; Load NVM command
+	ldi		r26, NVM_CMD_ERASE_WRITE_FLASH_PAGE_gc
+	call	NVM_ExecuteSPM
 
 	; Restore RAMPZ
 	out		RAMPZ, r18

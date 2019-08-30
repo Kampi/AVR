@@ -37,7 +37,7 @@
  *	This file contains several examples:
  *		1) Use the NVM controller to write some data to the internal EEPROM and read them back. Set symbol EXAMPLE = 1.
  *		2) Use the NVM controller to write some data to the user signature row and read them back. Set symbol EXAMPLE = 2.
- *		3) Use the NVM controller to read and write the application flash. Set symbol EXAMPLE = 3.
+ *		3) Use the NVM controller to write the last page of the application section in flash memory. Set symbol EXAMPLE = 3.
  *
  *  @author Daniel Kampert
  */
@@ -117,12 +117,20 @@ int main(void)
 		NVM_UserSignatureReadPage(UserSignature_Read);
 		
 	#elif(EXAMPLE == 3)
+		#define FLASH_PAGE				767
+	
+		// Create a new field for the flash application signature
+		uint16_t AppCode[APP_SECTION_PAGE_SIZE / 2];
+		AppCode[0] = 0x01;
+		AppCode[(APP_SECTION_PAGE_SIZE / 2) - 1] = 0x02;
+		
+		NVM_FlashWritePage(AppCode);
+		NVM_FlushFlash(FLASH_PAGE);
+		NVM_WaitBusy();
 
 	#endif
-	
 
-	
-    while(1) 
+    while(1)
     {
     }
 }

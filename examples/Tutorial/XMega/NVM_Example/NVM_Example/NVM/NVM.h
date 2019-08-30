@@ -76,15 +76,20 @@
  */
 
  /** @brief			Write one word to the flash buffer.
-  *  @param Address	Word address
+  *  @param Offset	page offset
   *  @param Data	Data word
   */
- void NVM_FlashWriteWord(const uint16_t Address, const uint16_t Data);
+ void NVM_FlashWriteWord(const uint16_t Offset, const uint16_t Data);
 
- /** @brief			Write one complete page to the flash buffer.
-  *  @param Data	Pointer to buffer
+ /** @brief			Copy a complete page into the flash buffer.
+  *  @param Data	Pointer to data buffer
   */
  void NVM_FlashWritePage(const uint16_t* Data);
+
+ /** @brief			Flush the flash buffer and write the content to the given page in flash memory.
+  *  @param Page	Page address
+  */
+ void NVM_FlushFlash(const uint16_t Page);
 
  /*
 	 User Signature Row functions
@@ -113,12 +118,8 @@
 	 Miscellaneous functions
  */
 
- /** @brief	Wait for NVM controller to become ready.
+ /** @brief	Wait for NVM controller to becomes ready.
   */
- static inline void NVM_WaitBusy(void) __attribute__ ((always_inline));
- static inline void NVM_WaitBusy(void)
- {
-	 while(NVM.STATUS & NVM_NVMBUSY_bm);
- }
+ void NVM_WaitBusy(void);
 
 #endif /* NVM_H_ */
