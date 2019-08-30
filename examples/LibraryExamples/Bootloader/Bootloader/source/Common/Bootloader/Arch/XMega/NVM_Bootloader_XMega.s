@@ -222,10 +222,6 @@ NVM_FlushFlash:
 	; Save RAMPZ
 	in		r18, RAMPZ
 
-	; Clear the Z pointer
-	sts		RAMPZ, r1
-	clr		ZH
-
 	; Save the page address
 	mov		r19, r25
 	mov		ZH, r24
