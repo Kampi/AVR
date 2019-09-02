@@ -118,7 +118,7 @@ Parser_State_t Parser_GetLine(const uint8_t Received)
 		}
 		else
 		{
-			Index = 0x00;
+			__Index = 0x00;
 
 			return PARSER_STATE_OVERFLOW;
 		}

@@ -112,10 +112,14 @@ Parser_State_t Parser_GetLine(const uint8_t Received)
 			return PARSER_STATE_SUCCESSFULL;
 		}
 
-		if(__Index > sizeof(__ParserBuffer))
+		if(__Index < sizeof(__ParserBuffer))
 		{
 			__ParserBuffer[__Index++] = Received;
-			
+		}
+		else
+		{
+			__Index = 0x00;
+
 			return PARSER_STATE_OVERFLOW;
 		}
 	}
