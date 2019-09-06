@@ -377,7 +377,7 @@ void USART_WriteDecimal(USART_t* Device, const uint32_t Value)
     USART_Write(Device, Buffer);
 }
  
-void USART_WriteLine(USART_t* Device, const char *Data)
+void USART_WriteLine(USART_t* Device, const char* Data)
 {
     while(*Data)
     {
