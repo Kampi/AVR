@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Configuration file for the AD5933 i2c impedance converter.
+ *  File info: Configuration file for the AD5933 I2C impedance converter.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -33,7 +33,7 @@
 
  #include "Common/Common.h"
  
- #define AD5933_INTERFACE						&TWIC					/**< I2C interface for the AD5933. */
+ #define AD5933_INTERFACE						TWIC 					/**< I2C interface for the AD5933. */
  #define AD5933_CLOCK							100000					/**< I2C clock rate for the AD5933. */
 
  #define AD5933_CALIBRATIONIMPEDANCE			1000					/**< Calibration impedance for the AD5933. */

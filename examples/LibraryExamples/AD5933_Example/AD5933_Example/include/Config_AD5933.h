@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Configuration file for the AD5933 i2c impedance converter.
+ *  File info: Configuration file for the AD5933 I2C impedance converter.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
