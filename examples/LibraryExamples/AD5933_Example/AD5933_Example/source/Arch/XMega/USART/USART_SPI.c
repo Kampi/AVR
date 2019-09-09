@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *  Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega USART-SPI interface
+ *  File info: Driver for XMega USART-SPI interface.
  
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  */
 
 /** @file XMega/USART/USART_SPI.c
- *  @brief Driver for XMega USART-SPI module.
+ *  @brief Driver for XMega USART-SPI module..
  *
  *  This contains the implementation of the XMega USART-SPI driver.
  *

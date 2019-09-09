@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega TWI
+ *  File info: Interrupt driver for XMega USART module.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  */
 
 /** @file XMega/USART/USART_Interrupt.c
- *  @brief Driver for XMega USART module.
+ *  @brief Interrupt driver for XMega USART module.
  *
  *  This file contains the implementation of the interrupt functions for the XMega USART driver.
  *
@@ -46,8 +46,6 @@
 	{
 		SPI_Callback_t CompleteInterrupt;
 	} __USART_SPI_Callbacks[USART_DEVICES][USART_CHANNEL];
-
-	RingBuffer_t __USART_RxRingBuffer[USART_DEVICES][USART_CHANNEL];
 
 	Bool_t __USART_Echo[USART_DEVICES][USART_CHANNEL];
 	Bool_t __USART_IsSPI[USART_DEVICES][USART_CHANNEL];
@@ -114,17 +112,12 @@ static void __USART_InterruptHandler(const uint8_t Device, const uint8_t Channel
 			}
 		}
 		else if(Callback == USART_RXC_INTERRUPT)
-		{
-			uint8_t ReceivedByte = __USART_Messages[Device][Channel].Device->DATA;
-		
-			// Echo message if enabled
+		{		
+			// Echo message when enabled
 			if(__USART_Echo[Device][Channel] == TRUE)
 			{
-				__USART_Messages[Device][Channel].Device->DATA = ReceivedByte;
+				__USART_Messages[Device][Channel].Device->DATA = __USART_Messages[Device][Channel].Device->DATA;
 			}
-		
-			// Save the data in the buffer
-			RingBuffer_Save(&__USART_RxRingBuffer[Device][Channel], ReceivedByte);
 		
 			if (__USART_Callbacks[Device][Channel].RxCallback)
 			{

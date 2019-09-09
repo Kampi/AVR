@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *  Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega USART interface
+ *  File info: Driver for XMega USART interface.
  
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -35,24 +35,14 @@
 #include "Arch/XMega/PowerManagement/PowerManagement.h"
 
  /** 
-  * Rx ring buffer for each USART interface
-  */
-extern RingBuffer_t __USART_RxRingBuffer[USART_DEVICES][USART_CHANNEL];
-
- /** 
   * Tx ring buffer for each USART interface
   */
 static RingBuffer_t __USART_TxRingBuffer[USART_DEVICES][USART_CHANNEL];
 
  /** 
-  * Data buffer for Rx ring buffer
-  */
-static uint8_t RxData[USART_DEVICES][USART_CHANNEL][USART_BUFFER_SIZE];
-
- /** 
   * Data buffer for Tx ring buffer
   */
-static uint8_t TxData[USART_DEVICES][USART_CHANNEL][USART_BUFFER_SIZE];
+static uint8_t __TxData[USART_DEVICES][USART_CHANNEL][USART_BUFFER_SIZE];
 
 #ifndef DOXYGEN
 	/*
@@ -89,18 +79,23 @@ void USART_InstallCallback(const USART_InterruptConfig_t* Config)
 		Device = USARTE_ID;
 		Channel = 0x00;
 	}
-	#if(MCU_NAME == MCU_NAME_ATXMEGA256A3BU)
+	#if(defined USARTC1)
 		else if(Config->Device == &USARTC1)
 		{
 			Device = USARTC_ID;
 			Channel = 0x00;
 		}
+	#endif
 
+	#if(defined USARTD1)
 		else if(Config->Device == &USARTD1)
 		{
 			Device = USARTD_ID;
 			Channel = 0x01;
 		}
+	#endif
+	
+	#if(defined USARTF0)
 		else if(Config->Device == &USARTF0)
 		{
 			Device = USARTF_ID;
@@ -152,21 +147,26 @@ void USART_RemoveCallback(USART_t* Device, const USART_CallbackType_t Callback)
 		USART = USARTE_ID;
 		Channel = 0x00;
 	}
-	#if(MCU_NAME == MCU_NAME_ATXMEGA256A3BU)
+	#if(defined USARTC1)
 		else if(Device == &USARTC1)
 		{
-			USART = USARTC_ID;
+			Device = USARTC_ID;
 			Channel = 0x00;
 		}
+	#endif
 
+	#if(defined USARTD1)
 		else if(Device == &USARTD1)
 		{
 			USART = USARTD_ID;
 			Channel = 0x01;
 		}
+	#endif
+	
+	#if(defined USARTF0)
 		else if(Device == &USARTF0)
 		{
-			USART = USARTE_ID;
+			USART = USARTF_ID;
 			Channel = 0x00;
 		}
 	#endif
@@ -216,7 +216,7 @@ void USART_Init(USART_Config_t* Config)
 	uint8_t RxPin = 0x00;
 	uint8_t TxPin = 0x00;
 
-	USART_SwitchEcho(Config->Device, USART_DEFAULT_ECHO);
+	USART_SwitchEcho(Config->Device, Config->EnableEcho);
 	
     USART_PowerEnable(Config->Device);
     USART_SetBaudrate(Config->Device, Config->Baudrate, SysClock_GetClockPer(), Config->BSCALE, Config->EnableDoubleSpeed);
@@ -249,13 +249,16 @@ void USART_Init(USART_Config_t* Config)
 		RxPin = USART_RX0_PIN;
 		TxPin = USART_TX0_PIN;
 	}
-	#if(MCU_NAME == MCU_NAME_ATXMEGA256A3BU)
+	#if(defined USARTC1)
 		else if(Config->Device == &USARTC1)
 		{
 			Port = &PORTC;
 			RxPin = USART_RX1_PIN;
 			TxPin = USART_TX1_PIN;
 		}
+	#endif
+	
+	#if(defined USARTD1)
 		else if(Config->Device == &USARTD1)
 		{
 			Port = &PORTD;
@@ -263,8 +266,16 @@ void USART_Init(USART_Config_t* Config)
 			TxPin = USART_TX1_PIN;
 		}
 	#endif
+	
+	#if(defined USARTF0)
+		else if(Config->Device == &USARTD1)
+		{
+			Port = &PORTF;
+			RxPin = USART_RX0_PIN;
+			TxPin = USART_TX0_PIN;
+		}
+	#endif
 
-         
     if(Config->Direction == USART_DIRECTION_BOTH)
     {
         GPIO_SetDirection(Port, RxPin, GPIO_DIRECTION_IN);
@@ -300,27 +311,31 @@ void USART_EnableInterruptSupport(USART_t* Device, const Interrupt_Level_t Level
 		ID = USARTE_ID;
 		Channel = 0x00;
 	}
-	#if(MCU_NAME == MCU_NAME_ATXMEGA256A3BU)
+	#if(defined USARTC1)
 		else if(Device == &USARTC1)
 		{
 			ID = USARTC_ID;
 			Channel = 0x01;
 		}
+	#endif
 
+	#if(defined USARTD1)
 		else if(Device == &USARTD1)
 		{
 			ID = USARTD_ID;
 			Channel = 0x01;
 		}
+	#endif
+	
+	#if(defined USARTF0)
 		else if(Device == &USARTF0)
 		{
 			ID = USARTF_ID;
 			Channel = 0x00;
 		}
 	#endif
-	
-	RingBuffer_Init(&__USART_RxRingBuffer[ID][Channel], RxData[ID][Channel], USART_BUFFER_SIZE);
-	RingBuffer_Init(&__USART_TxRingBuffer[ID][Channel], TxData[ID][Channel], USART_BUFFER_SIZE);
+
+	RingBuffer_Init(&__USART_TxRingBuffer[ID][Channel], __TxData[ID][Channel], USART_BUFFER_SIZE);
 	
 	__USART_Messages[ID][Channel].Device = Device;
 	__USART_Messages[ID][Channel].Ptr_TxRingBuffer = &__USART_TxRingBuffer[ID][Channel];
@@ -338,7 +353,7 @@ void USART_GetConfig(USART_Config_t* Config, USART_t* Device)
      // ToDo
 }
 
-void USART_Write(USART_t* Device, const char *Data)
+void USART_Write(USART_t* Device, const char* Data)
 {
     while(*Data)
     {
@@ -362,7 +377,7 @@ void USART_WriteDecimal(USART_t* Device, const uint32_t Value)
     USART_Write(Device, Buffer);
 }
  
-void USART_WriteLine(USART_t* Device, const char *Data)
+void USART_WriteLine(USART_t* Device, const char* Data)
 {
     while(*Data)
     {
@@ -393,18 +408,24 @@ void USART_Print(USART_t* Device, const char* Data)
 		ID = USARTE_ID;
 		Channel = 0x00;
 	}
-	#if(MCU_NAME == MCU_NAME_ATXMEGA256A3BU)
+	
+	#if(defined USARTC1)
 		else if(Device == &USARTC1)
 		{
 			ID = USARTC_ID;
 			Channel = 0x01;
 		}
+	#endif
 
+	#if(defined USARTD1)
 		else if(Device == &USARTD1)
 		{
 			ID = USARTD_ID;
 			Channel = 0x01;
 		}
+	#endif
+	
+	#if(defined USARTF0)
 		else if(Device == &USARTF0)
 		{
 			ID = USARTF_ID;
@@ -452,17 +473,24 @@ void USART_SwitchEcho(USART_t* Device, const Bool_t Enable)
 		ID = USARTE_ID;
 		Channel = 0x00;
 	}
-	#if(MCU_NAME == MCU_NAME_ATXMEGA256A3BU)
+
+	#if(defined USARTC1)
 		else if(Device == &USARTC1)
 		{
 			ID = USARTC_ID;
 			Channel = 0x01;
 		}
+	#endif
+
+	#if(defined USARTD1)
 		else if(Device == &USARTD1)
 		{
 			ID = USARTD_ID;
 			Channel = 0x01;
 		}
+	#endif
+
+	#if(defined USARTF0)
 		else if(Device == &USARTF0)
 		{
 			ID = USARTF_ID;
