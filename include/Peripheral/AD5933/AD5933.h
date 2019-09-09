@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for AD5933 impedance converter.
+ *  File info: Driver for AD5933 I2C impedance converter.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,9 +23,9 @@
  */
 
 /** @file Peripheral/AD5933/AD5933.h
- *  @brief Driver for the Analog Devices AD5933 impedance converter.
+ *  @brief Driver for the Analog Devices AD5933 I2C impedance converter.
  *
- *  This file contains the prototypes and definitions for the AD5933 impedance converter driver.
+ *  This file contains the prototypes and definitions for the AD5933 I2C impedance converter driver.
  *
  *  @author Daniel Kampert
  *  @bug -AVR8 support for AD5933_BlockRead and AD5933_BlockWrite function not implemented
@@ -36,7 +36,35 @@
 
  #include "Config_AD5933.h"
  
- #include "Arch/I2C.h"
+ /*
+	Architecture specific definitions
+ */
+ #if(MCU_ARCH == MCU_ARCH_XMEGA)
+	 #include "Arch/XMega/GPIO/GPIO.h"
+	 #include "Arch/XMega/ClockManagement/SysClock.h"
+	 #include "Arch/XMega/I2C/I2C.h"
+
+	 #define AD5933_I2CM_INIT(Config)														I2CM_Init(Config)
+	 #define AD5933_I2CM_WRITEBYTE(Interface, Address, Data, Stop)							I2CM_WriteByte(Interface, Address, Data, Stop)
+	 #define AD5933_I2CM_READBYTE(Interface, Address, Data, Stop)							I2CM_ReadByte(Interface, Address, Data, Stop)
+	 #define AD5933_I2CM_WRITEBYTES(Interface, Address, Bytes, Data, Stop)					I2CM_WriteBytes(Interface, Address, Bytes, Data, Stop)
+	 #define AD5933_I2CM_READBYTES(Interface, Address, Bytes, Data, Stop)					I2CM_ReadBytes(Interface, Address, Bytes, Data, Stop)
+
+ #elif(MCU_ARCH == MCU_ARCH_AVR8)
+	 #include "Arch/AVR8/GPIO/GPIO.h"
+	 #include "Arch/AVR8/I2C/I2C.h"
+	 
+	  #define AD5933_I2CM_INIT(Config)														I2CM_Init(Config)
+	  #define AD5933_I2CM_WRITEBYTE(Interface, Address, Data, Stop)							I2CM_WriteByte(Address, Data, Stop)
+	  #define AD5933_I2CM_READBYTE(Interface, Address, Data, Stop)							I2CM_ReadByte(Address, Data, Stop)
+	  #define AD5933_I2CM_WRITEBYTES(Interface, Address, Bytes, Data, Stop)					I2CM_WriteBytes(Address, Bytes, Data, Stop)
+	  #define AD5933_I2CM_READBYTES(Interface, Address, Bytes, Data, Stop)					I2CM_ReadBytes(Address, Bytes, Data, Stop)
+ #else
+	  #error "Architecture not supported"
+ #endif
+ 
+ #include "Common/Common.h"
+ #include "Common/types.h"
 
  /** 
   * AD5933 clock frequency
@@ -47,8 +75,6 @@
  /*\@{*/
 	 #define AD5933_ADDRESS					0x0D																							/**< AD5933 I2C impedance converter device address */
  /*\@}*/
- 
- #include "Common/types.h"
 
  /** 
   * AD5933 output voltages
