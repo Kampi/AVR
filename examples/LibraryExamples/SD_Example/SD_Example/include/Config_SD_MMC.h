@@ -23,7 +23,7 @@
  */
 
 /** @file Config/Config_SD_MMC.h
- *  @brief Configuration file for the SD/MMC interface.
+ *  @brief Example configuration file for the SD/MMC interface.
  *
  *  @author Daniel Kampert
  */
@@ -33,17 +33,26 @@
 
  #include "Common/Common.h"
  
- #define SD_INTERFACE_TYPE						INTERFACE_USART_SPI		/**< Interface type for the SD card. */
- #define SD_INTERFACE							&USARTD0				/**< SPI interface for the SD card. */
+ /*
+	SD/MMC interface
+ */
+ #define SD_INTERFACE_TYPE						INTERFACE_USART_SPI
+ #define SD_INTERFACE							USARTD, 0				/**< SPI interface for the SD card */
 
  /*
-	 SD/MMC interface definitions
+	 SD/MMC interface connections
  */
- #define SD_SS_PORT								&PORTE					/**< Chip select port for the SD card. */
- #define SD_SS_PIN								5						/**< Chip select pin for the SD card. */
- #define SD_SWA_PORT							&PORTE					/**< SWA port for the SD card. */
- #define SD_SWA_PIN								4						/**< SWA pin for the SD card. */
+ #define SD_SS									PORTE, 5				/**< Chip select used by the SD card */
+ 
+ #define SD_WITH_SWA													/**< Enable card detection 
+																			 NOTE: Must pulled low when SD card is 
+																			 available.
+																			 NOTE: You have to enable interrupts! */
+ #define SD_SWA									PORTE, 4				/**< SWA used by the SD card */
 
- #define SD_BLOCK_SIZE							512
+ /*
+	SD/MMC settings
+ */
+ #define SD_BLOCK_SIZE							512						/**< Block size for the SD card */
 
 #endif /* CONFIG_SD_MMC_H_ */

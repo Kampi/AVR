@@ -138,21 +138,21 @@ static SD_Status_t __CardStatus;
 static void SD_Select(void)
 {
 	// Create 8 clock pulse before activating the card
-	SPIM_TRANSMIT(SD_INTERFACE, 0xFF);
+	SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), 0xFF);
 
-	SPIM_CHIP_SELECT(SD_SS_PORT, SD_SS_PIN);
+	SD_SPIM_CHIP_SELECT(GET_PERIPHERAL(SD_SS), GET_INDEX(SD_SS));
 }
 
 /** @brief	Deselect the SD card
  */
 static void SD_Deselect(void)
 {
-	SPIM_CHIP_DESELECT(SD_SS_PORT, SD_SS_PIN);
+	SD_SPIM_CHIP_DESELECT(GET_PERIPHERAL(SD_SS), GET_INDEX(SD_SS));
 
 	// Create 80 clock pulse after releasing the card
 	for(uint8_t i = 0x00; i < 0x0A; i++)
 	{
-		SPIM_TRANSMIT(SD_INTERFACE,0xFF);
+		SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE),0xFF);
 	}
 }
 
@@ -184,11 +184,11 @@ static const uint8_t SD_SendCommand(const uint8_t Command, const uint32_t Arg)
 		}
 	}
 
-	SPIM_TRANSMIT(SD_INTERFACE, CommandTemp);
-	SPIM_TRANSMIT(SD_INTERFACE, (Arg >> 0x18) & 0xFF);
-	SPIM_TRANSMIT(SD_INTERFACE, (Arg >> 0x10) & 0xFF);
-	SPIM_TRANSMIT(SD_INTERFACE, (Arg >> 0x08) & 0xFF);
-	SPIM_TRANSMIT(SD_INTERFACE, Arg);
+	SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), CommandTemp);
+	SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), (Arg >> 0x18) & 0xFF);
+	SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), (Arg >> 0x10) & 0xFF);
+	SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), (Arg >> 0x08) & 0xFF);
+	SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), Arg);
 
 	if(CommandTemp == SD_ID_TO_CMD(SD_CMD_GO_IDLE))
 	{
@@ -201,24 +201,24 @@ static const uint8_t SD_SendCommand(const uint8_t Command, const uint32_t Arg)
 		Checksum = 0x87;
 	}
 
-	SPIM_TRANSMIT(SD_INTERFACE, Checksum);
+	SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), Checksum);
 
 	if(CommandTemp == SD_ID_TO_CMD(SD_CMD_STOP_TRANSMISSION))
 	{
 		// Skip stuff byte when transmission stop
-		SPIM_TRANSMIT(SD_INTERFACE, 0xFF);
+		SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), 0xFF);
 	}
 
 	// Wait for the response (0 - 8 bytes for SD cards and 1 - 8 bytes for MMC)
 	for(uint8_t i = 0x00; i < 0x08; i++)
 	{
-		uint8_t DataIn = SPIM_TRANSMIT(SD_INTERFACE, 0xFF);
+		uint8_t DataIn = SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), 0xFF);
 		if(DataIn != 0xFF)
 		{
 			// 8 dummy cycles if the command is a write command
 			if(SD_ID_TO_CMD(SD_CMD_WRITE_SINGLE_BLOCK) || SD_ID_TO_CMD(SD_CMD_WRITE_MULTIPLE_BLOCK))
 			{
-				SPIM_TRANSMIT(SD_INTERFACE, 0xFF);
+				SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), 0xFF);
 			}
 
 			return DataIn;
@@ -241,7 +241,7 @@ static const SD_Error_t SD_ReadBlock(const uint32_t Length, uint8_t* Buffer)
 	Wait = 0x00;
 	while((++Wait < 0x2710) && (Response == 0xFF))
 	{
-		Response = SPIM_TRANSMIT(SD_INTERFACE, 0xFF);
+		Response = SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), 0xFF);
 		if(Wait >= 0x2710)
 		{
 			SD_Deselect();
@@ -253,12 +253,12 @@ static const SD_Error_t SD_ReadBlock(const uint32_t Length, uint8_t* Buffer)
 	// Get the data
 	for(uint32_t i = 0x00; i < Length; i++)
 	{
-		*Buffer++ = SPIM_TRANSMIT(SD_INTERFACE, 0xFF);
+		*Buffer++ = SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), 0xFF);
 	}
 
 	// Skip checksum
-	SPIM_TRANSMIT(SD_INTERFACE, 0xFF);
-	SPIM_TRANSMIT(SD_INTERFACE, 0xFF);
+	SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), 0xFF);
+	SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), 0xFF);
 
 	return SD_SUCCESSFULL;
 }
@@ -274,28 +274,28 @@ static const SD_Error_t SD_WriteBlock(const uint8_t* Buffer, const uint32_t Leng
 	uint8_t* Buffer_Temp = (uint8_t*)Buffer;
 
 	// Send the token
-	SPIM_TRANSMIT(SD_INTERFACE, Token);
+	SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), Token);
 	if(Token != SD_TOKEN_STOP)
 	{
 		// Send the data
 		for(uint32_t i = 0x00; i < Length; i++)
 		{
-			SPIM_TRANSMIT(SD_INTERFACE, *Buffer_Temp++);
+			SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), *Buffer_Temp++);
 		}
 
 		// Skip checksum
-		SPIM_TRANSMIT(SD_INTERFACE, 0xFF);
-		SPIM_TRANSMIT(SD_INTERFACE, 0xFF);
+		SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), 0xFF);
+		SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), 0xFF);
 
 		// Get the response
-		if((SPIM_TRANSMIT(SD_INTERFACE, 0xFF) & 0x1F) != 0x05)
+		if((SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), 0xFF) & 0x1F) != 0x05)
 		{
 			return SD_NO_RESPONSE;
 		}
 	}
 
 	// Wait until the card clears busy state
-	while(SPIM_TRANSMIT(SD_INTERFACE, 0xFF) != 0xFF);
+	while(SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), 0xFF) != 0xFF);
 
 	return SD_SUCCESSFULL;
 }
@@ -309,7 +309,7 @@ static const SD_Error_t SD_SoftwareReset(void)
 
 	for(uint8_t i = 0x00; i < 0x0A; i++)
 	{
-		SPIM_TRANSMIT(SD_INTERFACE, 0xFF);
+		SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), 0xFF);
 	}
 
 	while(SD_SendCommand(SD_ID_TO_CMD(SD_CMD_GO_IDLE), 0x00) != SD_STATE_IDLE)
@@ -339,7 +339,7 @@ static const SD_Error_t SD_InitializeCard(void)
 	Response = SD_SendCommand(SD_ID_TO_CMD(SD_CMD_IF_COND), 0x1AA);
 	for(uint8_t i = 0x00; i < 0x04; i++)
 	{
-		Buffer[i] = SPIM_TRANSMIT(SD_INTERFACE, 0xFF);	
+		Buffer[i] = SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), 0xFF);	
 	}
 
 	if(Response == SD_STATE_IDLE)
@@ -369,7 +369,7 @@ static const SD_Error_t SD_InitializeCard(void)
 		Response = SD_SendCommand(SD_ID_TO_CMD(SD_CMD_READ_OCR), 0x00);
 		for(uint8_t i = 0x00; i < 0x04; i++)
 		{
-			Buffer[i] = SPIM_TRANSMIT(SD_INTERFACE, 0xFF);
+			Buffer[i] = SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), 0xFF);
 		}
 
 		if(Response == SD_STATE_SUCCESSFULL)
@@ -458,17 +458,17 @@ const SD_Error_t SD_Init(SPIM_Config_t* Config)
 	SD_Error_t ErrorCode = SD_SUCCESSFULL;
 
 	// Set SD card SS pin as output in high state
-	GPIO_SetDirection(SD_SS_PORT, SD_SS_PIN, GPIO_DIRECTION_OUT);
-	GPIO_Set(SD_SS_PORT, SD_SS_PIN);
+	GPIO_SetDirection(GET_PERIPHERAL(SD_SS), GET_INDEX(SD_SS), GPIO_DIRECTION_OUT);
+	GPIO_Set(GET_PERIPHERAL(SD_SS), GET_INDEX(SD_SS));
 
 	if(Config != NULL)
 	{
-		SPIM_INIT(Config);
+		SD_SPIM_INIT(Config);
 	}
 
 	// Use 100 kHz to initialize the card
-	OldFreq = SPIM_GET_CLOCK(SD_INTERFACE, SysClock_GetClock());
-	SPIM_SET_CLOCK(SD_INTERFACE, 100000, SysClock_GetClock());
+	OldFreq = SD_SPIM_GET_CLOCK(&CONCAT(SD_INTERFACE), SysClock_GetClock());
+	SD_SPIM_SET_CLOCK(&CONCAT(SD_INTERFACE), 100000, SysClock_GetClock());
 
 	// Reset the SD card
 	ErrorCode = SD_SoftwareReset();
@@ -485,7 +485,7 @@ const SD_Error_t SD_Init(SPIM_Config_t* Config)
 	}
 
 	// Change the frequency back to the old value
-	SPIM_SET_CLOCK(SD_INTERFACE, OldFreq, SysClock_GetClock());
+	SD_SPIM_SET_CLOCK(&CONCAT(SD_INTERFACE), OldFreq, SysClock_GetClock());
 
 	// Set the block length to 512 (only necessary if the card is not a SDXC or SDHX card)
 	if((__CardType != SD_VER_2_HI) && (__CardType != SD_VER_2_STD))
@@ -504,17 +504,17 @@ const SD_Error_t SD_Init(SPIM_Config_t* Config)
 	void SD_InstallCallback(SD_Callback_t Callback)
 	{
 		GPIO_InterruptConfig_t Interrupt_SWA = {
-			.Port = SD_SWA_PORT,
-			.Pin = SD_SWA_PIN,
+			.Port = GET_PERIPHERAL(SD_SWA),
+			.Pin = GET_INDEX(SD_SWA),
 			.Channel = GPIO_INTERRUPT_0,
 			.InterruptLevel = INT_LVL_LO,
-			.Type = GPIO_SENSE_BOTH,
+			.Sense = GPIO_SENSE_BOTH,
 			.PullConfig = GPIO_OUTPUTCONFIG_PULLUP,
 			.Callback = SD_CardCallback
 		};
 		
 		// Set the card SWA pin as input
-		GPIO_SetDirection(SD_SWA_PORT, SD_SWA_PIN, GPIO_DIRECTION_IN);
+		GPIO_SetDirection(Interrupt_SWA.Port, Interrupt_SWA.Pin, GPIO_DIRECTION_IN);
 		GPIO_InstallCallback(&Interrupt_SWA);
 		
 		__SD_Callback__ = Callback;
@@ -579,7 +579,7 @@ const SD_Error_t SD_GetOCR(SD_OCR_t* OCR)
 	// Get the data
 	for(uint8_t i = 0x00; i < sizeof(SD_OCR_t); i++)
 	{
-		*Ptr++ = SPIM_TRANSMIT(SD_INTERFACE, 0xFF);
+		*Ptr++ = SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), 0xFF);
 	}
 
 	SD_Deselect();

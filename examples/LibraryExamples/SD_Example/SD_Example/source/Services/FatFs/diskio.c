@@ -34,19 +34,21 @@
 #include "Peripheral/SD/SD.h"
 
 #define DEV_MMC					0							/**< Map MMC/SD card to physical drive 0 */
+#define DEV_USB					1							/**< Map USB MSD to physical drive 1 */
 
 SPIM_Config_t __InterfaceConfig = {
-	.SPIClock = 1000000,
+	.SPIClock = 1000000UL,
 	.DataOrder = SPI_DATAORDER_MSB_FIRST,
 	.Mode = SPI_MODE_0,
-	.Device = SD_INTERFACE
+	.Device = &CONCAT(SD_INTERFACE)
 };
 
 // Disk status
 static volatile DSTATUS __MMCStatus = STA_NOINIT;
+static volatile DSTATUS __USBStatus = STA_NOINIT;
 
 DSTATUS disk_initialize(
-	BYTE pdrv		/* Physical drive number to identify the drive */
+	BYTE pdrv				/* Physical drive number to identify the drive */
 )
 {
 	switch(pdrv)
@@ -60,15 +62,17 @@ DSTATUS disk_initialize(
 				return __MMCStatus;
 			}
 		}
-		default:
+		case DEV_USB:
 		{
-			return STA_NOINIT;
+			return __USBStatus;
 		}
 	}
+
+	return STA_NOINIT;
 }
 
 DSTATUS disk_status(
-	BYTE pdrv		/* Physical drive number to identify the drive */
+	BYTE pdrv				/* Physical drive number to identify the drive */
 )
 {
 	switch(pdrv)
@@ -77,11 +81,19 @@ DSTATUS disk_status(
 		{
 			return __MMCStatus;
 		}
-		default:
+		case DEV_USB:
 		{
-			return STA_NOINIT;
+			return __USBStatus;
 		}
 	}
+	
+	return RES_PARERR;
+}
+
+uint32_t get_fattime(void)
+{
+	// Dummy time
+	return 1555997382;
 }
 
 DRESULT disk_read (
@@ -99,7 +111,7 @@ DRESULT disk_read (
 			{
 				return RES_NOTRDY;
 			}
-
+			
 			// Read a single block
 			if(count == 1)
 			{
@@ -116,10 +128,10 @@ DRESULT disk_read (
 					return RES_OK;
 				}
 			}
-
+			
 			return RES_ERROR;
 		}
-		default:
+		case DEV_USB:
 		{
 			return RES_NOTRDY;
 		}
@@ -143,7 +155,7 @@ DRESULT disk_write(
 			{
 				return RES_NOTRDY;
 			}
-
+			
 			// Write a single block
 			if(count == 1)
 			{
@@ -160,10 +172,10 @@ DRESULT disk_write(
 					return RES_OK;
 				}
 			}
-
+			
 			return RES_ERROR;
 		}
-		default:
+		case DEV_USB:
 		{
 			return RES_NOTRDY;
 		}
@@ -184,7 +196,7 @@ DRESULT disk_ioctl (
 	{
 		case DEV_MMC:
 		{
-			switch(cmd)
+			switch(cmd) 
 			{
 				case GET_BLOCK_SIZE:
 				{
@@ -223,10 +235,12 @@ DRESULT disk_ioctl (
 					return RES_PARERR;
 				}
 			}
-		}	
+		}
 		default:
 		{
 			return RES_PARERR;
 		}
 	}
+	
+	return RES_PARERR;
 }
