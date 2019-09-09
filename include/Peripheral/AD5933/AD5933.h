@@ -180,7 +180,7 @@
 	AD5933_Gain_t Gain;									/**< Input gain */
  } AD5933_Configuration_t;
 
- /** @brief			Initialize the AD5933 impedance controller and the I2C interface.
+ /** @brief			Initialize the AD5933 impedance converter and the I2C interface.
   *  @param Config	Pointer to I2C master configuration object
   *					NOTE: Set it to *NULL if you have initialized the I2C already
   *  @param Device	Pointer to AD5933 configuration object
