@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for AD5933 Impedance converter.
+ *  File info: Driver for AD5933 I2C Impedance converter.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Peripheral/AD5933/AD5933.c
- *  @brief Driver for the Analog Devices AD5933 impedance converter.
+ *  @brief Driver for the Analog Devices AD5933 I2C impedance converter.
  *
  *  This file contains the implementation of the impedance converter driver.
  *
