@@ -51,35 +51,13 @@
 
 	 #if(SD_INTERFACE_TYPE == INTERFACE_USART_SPI)
 		 #include "Arch/XMega/USART/USART.h"
-
-		 #define SD_SPIM_INIT(Config)										USART_SPI_Init(Config)
-		 #define SD_SPIM_TRANSMIT(Interface, Data)							USART_SPI_SendData(Interface, Data)
-		 #define SD_SPIM_SET_CLOCK(Interface, SPIClock, Clock)				USART_SPI_SetClockRate(Interface, SPIClock, Clock, FALSE)
-		 #define SD_SPIM_GET_CLOCK(Interface, Clock)						USART_SPI_GetClockRate(Interface, Clock)
-		 #define SD_SPIM_CHIP_SELECT(Port, Pin)								USART_SPI_SelectDevice(Port, Pin)
-		 #define SD_SPIM_CHIP_DESELECT(Port, Pin)							USART_SPI_DeselectDevice(Port, Pin)
 	 #elif(SD_INTERFACE_TYPE == INTERFACE_SPI)
 		 #include "Arch/XMega/SPI/SPI.h"
-
-		 #define SD_SPIM_INIT(Config)										SPIM_Init(Config)
-		 #define SD_SPIM_TRANSMIT(Interface, Data)							SPIM_SendData(Interface, Data)
-		 #define SD_SPIM_SET_CLOCK(Interface, SPIClock, Clock)				SPIM_SetClock(Interface, SPIClock, Clock)
-		 #define SD_SPIM_GET_CLOCK(Interface, Clock)						SPIM_GetClock(Interface, Clock)
-		 #define SD_SPIM_CHIP_SELECT(Port, Pin)								SPIM_SelectDevice(Port, Pin)
-		 #define SD_SPIM_CHIP_DESELECT(Port, Pin)							SPIM_DeselectDevice(Port, Pin)
 	 #else
 		 #error "Invalid SD card interface!"
 	 #endif
-
  #elif(MCU_ARCH == MCU_ARCH_AVR8)
 	 #include "Arch/AVR8/SPI/SPI.h"
-
-     #define SD_SPIM_INIT(Config)											SPIM_Init(Config)
-     #define SD_SPIM_TRANSMIT(Interface, Data)								SPIM_SendData(Data)
-     #define SD_SPIM_SET_CLOCK(Interface, SPIClock, Clock)					SPIM_SetClock(SPIClock, Clock)
-     #define SD_SPIM_GET_CLOCK(Interface, Clock)							SPIM_GetClock(Clock)
-     #define SD_SPIM_CHIP_SELECT(Port, Pin)									SPIM_SelectDevice(Port, Pin)
-     #define SD_SPIM_CHIP_DESELECT(Port, Pin)								SPIM_DeselectDevice(Port, Pin)
  #else
 	  #error "Architecture not supported for SD card!"
  #endif

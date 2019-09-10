@@ -80,6 +80,35 @@
 	/** @} */ // end of ST7565R-Commands
 /** @} */ // end of ST7565R
 
+#if(MCU_ARCH == MCU_ARCH_XMEGA)
+	#if(ST7565R_INTERFACE_TYPE == INTERFACE_USART_SPI)
+		#define ST7565R_SPIM_INIT(Config)											USART_SPI_Init(Config)
+		#define ST7565R_SPIM_TRANSMIT(Interface, Data)								USART_SPI_SendData(Interface, Data)
+		#define ST7565R_SPIM_SET_CLOCK(Interface, SPIClock, Clock)					USART_SPI_SetClockRate(Interface, SPIClock, Clock, FALSE)
+		#define ST7565R_SPIM_GET_CLOCK(Interface, Clock)							USART_SPI_GetClockRate(Interface, Clock)
+		#define ST7565R_SPIM_CHIP_SELECT(Port, Pin)									USART_SPI_SelectDevice(Port, Pin)
+		#define ST7565R_SPIM_CHIP_DESELECT(Port, Pin)								USART_SPI_DeselectDevice(Port, Pin)
+	#elif(ST7565R_INTERFACE_TYPE == INTERFACE_SPI)
+		#define ST7565R_SPIM_INIT(Config)											SPIM_Init(Config)
+		#define ST7565R_SPIM_TRANSMIT(Interface, Data)								SPIM_SendData(Interface, Data)
+		#define ST7565R_SPIM_SET_CLOCK(Interface, SPIClock, Clock)					SPIM_SetClock(Interface, SPIClock, Clock)
+		#define ST7565R_SPIM_GET_CLOCK(Interface, Clock)							SPIM_GetClock(Interface, Clock)
+		#define ST7565R_SPIM_CHIP_SELECT(Port, Pin)									SPIM_SelectDevice(Port, Pin)
+		#define ST7565R_SPIM_CHIP_DESELECT(Port, Pin)								SPIM_DeselectDevice(Port, Pin)
+	#else
+		#error "Interface not supported for ST7565R display!"
+	#endif
+#elif(MCU_ARCH == MCU_ARCH_AVR8)
+	#define ST7565R_SPIM_INIT(Config)												SPIM_Init(Config)
+    #define ST7565R_SPIM_TRANSMIT(Interface, Data)									SPIM_SendData(Data)
+    #define ST7565R_SPIM_SET_CLOCK(Interface, SPIClock, Clock)						SPIM_SetClock(SPIClock, Clock)
+    #define ST7565R_SPIM_GET_CLOCK(Interface, Clock)								SPIM_GetClock(Clock)
+    #define ST7565R_SPIM_CHIP_SELECT(Port, Pin)										SPIM_SelectDevice(Port, Pin)
+    #define ST7565R_SPIM_CHIP_DESELECT(Port, Pin)									SPIM_DeselectDevice(Port, Pin)
+#else
+	 #error "Architecture not supported for ST7565R display!"
+#endif
+
 /** @brief			Write a command to the display.
  *  @param Command	Display command
  */

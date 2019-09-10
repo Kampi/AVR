@@ -63,6 +63,29 @@
 	/** @} */ // end of SSD1306-Commands
 /** @} */ // end of SSD1306
 
+#if(MCU_ARCH == MCU_ARCH_XMEGA)
+	#if(SSD1306_INTERFACE_TYPE == INTERFACE_USART_SPI)
+		#define SSD1306_SPIM_INIT(Config)											USART_SPI_Init(Config)
+		#define SSD1306_SPIM_TRANSMIT(Interface, Data)								USART_SPI_SendData(Interface, Data)
+		#define SSD1306_SPIM_CHIP_SELECT(Port, Pin)									USART_SPI_SelectDevice(Port, Pin)
+		#define SSD1306_SPIM_CHIP_DESELECT(Port, Pin)								USART_SPI_DeselectDevice(Port, Pin)
+		#elif(SSD1306_INTERFACE_TYPE == INTERFACE_SPI)
+	#define SSD1306_SPIM_INIT(Config)												SPIM_Init(Config)
+		#define SSD1306_SPIM_TRANSMIT(Interface, Data)								SPIM_SendData(Interface, Data)
+		#define SSD1306_SPIM_CHIP_SELECT(Port, Pin)									SPIM_SelectDevice(Port, Pin)
+		#define SSD1306_SPIM_CHIP_DESELECT(Port, Pin)								SPIM_DeselectDevice(Port, Pin)
+	#else
+		#error "Invalid interface for SSD1306 display!"
+	#endif
+#elif(MCU_ARCH == MCU_ARCH_AVR8)
+	#define SSD1306_SPIM_INIT(Config)												SPIM_Init(Config)
+	#define SSD1306_SPIM_TRANSMIT(Interface, Data)									SPIM_SendData(Data)
+	#define SSD1306_SPIM_CHIP_SELECT(Port, Pin)										SPIM_SelectDevice(Port, Pin)
+	#define SSD1306_SPIM_CHIP_DESELECT(Port, Pin)									SPIM_DeselectDevice(Port, Pin)
+#else
+	#error "Architecture not supported for SSD1306 display!"
+#endif
+
 /** 
  * Display initialization commands
  */
