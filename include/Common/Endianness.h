@@ -1,9 +1,9 @@
 /*
- * Common.h
+ * Endianess.h
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Common definitions for AVR library
+ *  File info: Endianess specific macros.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,32 +22,24 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */ 
 
-/** @file Common/Common.h
- *  @brief Common definitions for AVR library.
+/** @file Common/Endianess.h
+ *  @brief Endianess specific macros.
  *
  *  @author Daniel Kampert
  */
 
-#ifndef COMMON_H_
-#define COMMON_H_
+#ifndef ENDIANESS_H_
+#define ENDIANESS_H_
 
  #include "Definitions.h"
- 
- #include "Common/types.h"
- #include "Common/Endianness.h"
- 
- #include <avr/io.h>
- #include <avr/pgmspace.h>
- #include <avr/interrupt.h>
- 
- #include <util/atomic.h>
 
- #if(MCU_NAME == MCU_NAME_AT90USB1287)
-	 #include "Common/Board/MCU/AT90USB1287.h"
- #elif(MCU_NAME == MCU_NAME_ATXMEGA256A3BU)
-	 #include "Common/Board/MCU/XMega256A3BU.h"
- #elif(MCU_NAME == MCU_NAME_ATXMEGA384C3)
-	 #include "Common/Board/MCU/XMega384C3.h"
+ #if!(defined(MCU_BIG_ENDIAN) || defined(MCU_LITTLE_ENDIAN))
+	 #error "MCU_ARCH_BIG_ENDIAN or MCU_ARCH_LITTLE_ENDIAN missing!"
  #endif
 
-#endif /* COMMON_H_ */
+ /** 
+  * Swap the endianess
+  */
+ #define ENDIAN_SWAP_16(x)            (uint16_t)((((x) & 0xFF00) >> 0x08) | (((x) & 0x00FF) << 0x08))
+ 
+#endif /* ENDIANESS_H_ */
