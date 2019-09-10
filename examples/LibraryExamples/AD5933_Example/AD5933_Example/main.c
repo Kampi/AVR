@@ -31,7 +31,6 @@
  *  @author Daniel Kampert
  */
 
-#include "Arch/XMega/PMIC/PMIC.h"
 #include "Arch/XMega/USART/USART.h"
 #include "Peripheral/AD5933/AD5933.h"
 

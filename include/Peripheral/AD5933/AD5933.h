@@ -35,6 +35,7 @@
 #define AD5933_H_
 
  #include "Config_AD5933.h"
+ #include "Common/Common.h"
  
  /*
 	Architecture specific definitions
@@ -43,28 +44,12 @@
 	 #include "Arch/XMega/GPIO/GPIO.h"
 	 #include "Arch/XMega/ClockManagement/SysClock.h"
 	 #include "Arch/XMega/I2C/I2C.h"
-
-	 #define AD5933_I2CM_INIT(Config)														I2CM_Init(Config)
-	 #define AD5933_I2CM_WRITEBYTE(Interface, Address, Data, Stop)							I2CM_WriteByte(Interface, Address, Data, Stop)
-	 #define AD5933_I2CM_READBYTE(Interface, Address, Data, Stop)							I2CM_ReadByte(Interface, Address, Data, Stop)
-	 #define AD5933_I2CM_WRITEBYTES(Interface, Address, Bytes, Data, Stop)					I2CM_WriteBytes(Interface, Address, Bytes, Data, Stop)
-	 #define AD5933_I2CM_READBYTES(Interface, Address, Bytes, Data, Stop)					I2CM_ReadBytes(Interface, Address, Bytes, Data, Stop)
-
  #elif(MCU_ARCH == MCU_ARCH_AVR8)
 	 #include "Arch/AVR8/GPIO/GPIO.h"
 	 #include "Arch/AVR8/I2C/I2C.h"
-	 
-	  #define AD5933_I2CM_INIT(Config)														I2CM_Init(Config)
-	  #define AD5933_I2CM_WRITEBYTE(Interface, Address, Data, Stop)							I2CM_WriteByte(Address, Data, Stop)
-	  #define AD5933_I2CM_READBYTE(Interface, Address, Data, Stop)							I2CM_ReadByte(Address, Data, Stop)
-	  #define AD5933_I2CM_WRITEBYTES(Interface, Address, Bytes, Data, Stop)					I2CM_WriteBytes(Address, Bytes, Data, Stop)
-	  #define AD5933_I2CM_READBYTES(Interface, Address, Bytes, Data, Stop)					I2CM_ReadBytes(Address, Bytes, Data, Stop)
  #else
 	  #error "Architecture not supported"
  #endif
- 
- #include "Common/Common.h"
- #include "Common/types.h"
 
  /** 
   * AD5933 clock frequency
@@ -140,12 +125,12 @@
  } AD5933_CalPoint_t;
 
  /** 
-  * AD5933 data point definition
+  * AD5933 data point
   */
  typedef struct 
  {
-	 float Impedance;									/**< Value for the magnitude */
-	 float Phase;										/**< Value for the phase in radians */
+	 float Impedance;									/**< Magnitude */
+	 float Phase;										/**< Phase in radians */
  } AD5933_DataPoint_t;
 
  /** 
@@ -182,7 +167,7 @@
 
  /** @brief			Initialize the AD5933 impedance converter and the I2C interface.
   *  @param Config	Pointer to I2C master configuration object
-  *					NOTE: Set it to *NULL if you have initialized the I2C already
+  *					NOTE: Set it to #NULL if you have initialized the I2C already
   *  @param Device	Pointer to AD5933 configuration object
   *  @return		I2C error code
   */
