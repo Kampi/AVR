@@ -38,8 +38,8 @@
 
  #include "Common/Common.h"
  
- #include "Arch/AVR8/ATmega/CPU/CPU.h"
- #include "Arch/AVR8/ATmega/GPIO/GPIO.h"
+ #include "Arch/AVR8/CPU/CPU.h"
+ #include "Arch/AVR8/GPIO/GPIO.h"
  
  #include "Base/I2C_Base.h"
 
