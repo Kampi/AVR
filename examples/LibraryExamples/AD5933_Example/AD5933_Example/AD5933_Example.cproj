@@ -112,6 +112,7 @@
       <Value>DEBUG</Value>
       <Value>MCU_NAME=MCU_NAME_ATXMEGA384C3</Value>
       <Value>MCU_ARCH=MCU_ARCH_XMEGA</Value>
+      <Value>MCU_LITTLE_ENDIAN</Value>
     </ListValues>
   </avrgcc.compiler.symbols.DefSymbols>
   <avrgcc.compiler.directories.IncludePaths>

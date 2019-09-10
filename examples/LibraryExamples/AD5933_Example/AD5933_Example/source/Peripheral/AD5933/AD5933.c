@@ -201,6 +201,11 @@ const I2C_Error_t AD5933_GetMode(AD5933_Mode_t* Mode)
 	I2C_Error_t ErrorCode = I2C_NO_ERROR;
 	uint8_t Data[2] = {AD5933_REGISTER_CONTROL, 0x00};
 
+	if(Mode == NULL)
+	{
+		return I2C_INVALID_PARAM;
+	}
+
 	// Read high byte of the control register
 	ErrorCode = AD5933_I2CM_WRITEBYTE(Data[0], FALSE) | AD5933_I2CM_READBYTE(&Data[1], TRUE);
 	if(ErrorCode != I2C_NO_ERROR)
@@ -240,6 +245,11 @@ const I2C_Error_t AD5933_SetClockSource(const AD5933_Clock_t Clock)
 
 const I2C_Error_t AD5933_ReadStatus(uint8_t* Status)
 {
+	if(Status == NULL)
+	{
+		return I2C_INVALID_PARAM;
+	}
+
 	return AD5933_I2CM_WRITEBYTE(AD5933_REGISTER_STATUS, TRUE) | AD5933_I2CM_READBYTE(Status, FALSE);
 }
 
@@ -268,7 +278,12 @@ const I2C_Error_t AD5933_GetVoltage(AD5933_OutputVoltage_t* Voltage)
 {
 	I2C_Error_t ErrorCode = I2C_NO_ERROR;
 	uint8_t Data[2] = {AD5933_REGISTER_CONTROL, 0x00};
-	 
+
+	if(Voltage == NULL)
+	{
+		return I2C_INVALID_PARAM;
+	}
+
 	// Read configuration
 	ErrorCode = AD5933_I2CM_WRITEBYTE(Data[0], FALSE) | AD5933_I2CM_READBYTE(&Data[1], TRUE);
 	if(ErrorCode != I2C_NO_ERROR)
@@ -311,7 +326,12 @@ const I2C_Error_t AD5933_GetGain(AD5933_Gain_t* Gain)
 {
 	I2C_Error_t ErrorCode = I2C_NO_ERROR;
 	uint8_t Data[2] = {AD5933_REGISTER_CONTROL, 0x00};
-	 
+
+	if(Gain == NULL)
+	{
+		return I2C_INVALID_PARAM;
+	}
+
 	// Read config
 	ErrorCode = AD5933_I2CM_WRITEBYTE(Data[0], FALSE) | AD5933_I2CM_READBYTE(&Data[1], TRUE);
 	if(ErrorCode != I2C_NO_ERROR)
@@ -377,7 +397,12 @@ const I2C_Error_t AD5933_GetData(ComplexNumber_t* Data)
 	uint8_t Buffer[4];
 	uint8_t Status = 0x00;
 	I2C_Error_t ErrorCode = I2C_NO_ERROR;
-	
+
+	if(Data == NULL)
+	{
+		return I2C_INVALID_PARAM;
+	}
+
 	while(!(Status & AD5933_STATUS_VALID_DATA))
 	{
 		ErrorCode = AD5933_ReadStatus(&Status);
@@ -407,6 +432,11 @@ const I2C_Error_t AD5933_ReadTemperature(int16_t* Temperature)
 	int16_t Temp = 0x00;
 	uint8_t Status = 0x00;
 	I2C_Error_t ErrorCode = I2C_NO_ERROR;
+
+	if(Temperature == NULL)
+	{
+		return I2C_INVALID_PARAM;
+	}
 
 	// Start a new measurement
 	ErrorCode = AD5933_SetMode(AD5933_MODE_TEMP);
@@ -444,7 +474,12 @@ const I2C_Error_t AD5933_ReadTemperature(int16_t* Temperature)
 const I2C_Error_t AD5933_ConfigDevice(const AD5933_Configuration_t* Config)
 {
 	I2C_Error_t ErrorCode = I2C_NO_ERROR;
-	
+
+	if(Config == NULL)
+	{
+		return I2C_INVALID_PARAM;
+	}
+
 	ErrorCode = AD5933_SetVoltage(Config->OutputVoltage);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
@@ -463,6 +498,11 @@ const I2C_Error_t AD5933_ConfigDevice(const AD5933_Configuration_t* Config)
 const I2C_Error_t AD5933_ConfigSingleFrequency(const AD5933_SingleFrequency_t* Config)
 {
 	I2C_Error_t ErrorCode = I2C_NO_ERROR;
+
+	if(Config == NULL)
+	{
+		return I2C_INVALID_PARAM;
+	}
 
 	// Set the start frequency
 	ErrorCode = AD5933_SetStartFrequency(Config->Frequency);
@@ -485,6 +525,11 @@ const I2C_Error_t AD5933_ConfigSingleFrequency(const AD5933_SingleFrequency_t* C
 const I2C_Error_t AD5933_ConfigSweep(const AD5933_SweepSetup_t* SweepSetup)
 {
 	I2C_Error_t ErrorCode = I2C_NO_ERROR;
+
+	if(SweepSetup == NULL)
+	{
+		return I2C_INVALID_PARAM;
+	}
 
 	// Set the start frequency
 	ErrorCode = AD5933_SetStartFrequency(SweepSetup->StartFrequency);
@@ -534,6 +579,11 @@ const I2C_Error_t AD5933_SingleCalibration(AD5933_CalPoint_t* CalibrationPoint, 
 	ComplexNumber_t Data;
 	I2C_Error_t ErrorCode = I2C_NO_ERROR;
 
+	if(CalibrationPoint == NULL)
+	{
+		return I2C_INVALID_PARAM;
+	}
+
 	// Enable the output frequency
 	ErrorCode = AD5933_EnableFrequency();
 	if(ErrorCode != I2C_NO_ERROR)
@@ -561,6 +611,11 @@ const I2C_Error_t AD5933_SingleMeasurement(const AD5933_CalPoint_t* CalibrationP
 	ComplexNumber_t Data;
 	I2C_Error_t ErrorCode = I2C_NO_ERROR;
 
+	if((CalibrationPoint == NULL) || (Impedance == NULL))
+	{
+		return I2C_INVALID_PARAM;
+	}
+
 	ErrorCode = AD5933_SetMode(AD5933_MODE_REPEAT_FREQ);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
@@ -586,6 +641,11 @@ const I2C_Error_t AD5933_SweepCalibration(AD5933_CalPoint_t* CalibrationPoint, c
 	ComplexNumber_t Data;
 	uint8_t Status = 0x00;
 	I2C_Error_t ErrorCode = I2C_NO_ERROR;
+
+	if(CalibrationPoint == NULL)
+	{
+		return I2C_INVALID_PARAM;
+	}
 
 	ErrorCode = AD5933_EnableFrequency();
 	if(ErrorCode != I2C_NO_ERROR)
@@ -634,6 +694,11 @@ const I2C_Error_t AD5933_SweepMeasurment(const AD5933_CalPoint_t* CalibrationPoi
 	ComplexNumber_t Data;
 	uint8_t Status = 0x00;
 	I2C_Error_t ErrorCode = I2C_NO_ERROR;
+
+	if((CalibrationPoint == NULL) || (Impedance == NULL))
+	{
+		return I2C_INVALID_PARAM;
+	}
 
 	ErrorCode = AD5933_EnableFrequency();
 	if(ErrorCode != I2C_NO_ERROR)
