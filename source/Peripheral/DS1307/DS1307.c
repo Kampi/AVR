@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for Dallas DS1307 RTC
+ *  File info: Driver for DS1307 RTC.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file DS1307.c
- *  @brief Driver for DS1307 real time clock.
+ *  @brief Driver for Dallas DS1307 real time clock.
  *
  *  This file contains the implementation of the RTC driver.
  *

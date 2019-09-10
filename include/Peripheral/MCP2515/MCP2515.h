@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for MCP2515 CAN controller
+ *  File info: Driver for MCP2515 CAN controller.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,11 +23,12 @@
  */
 
 /** @file MCP2515.h
- *  @brief	Driver for MCP2515 CAN controller.
+ *  @brief	Driver for Microchip MCP2515 CAN controller.
  *			NOTE: This driver needs interrupt support!
  *
  *  This file contains the prototypes and definitions for the CAN controller driver.
  *
+ *  @bug	Under construction
  *  @author Daniel Kampert
  */
 

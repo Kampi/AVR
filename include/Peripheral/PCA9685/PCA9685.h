@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for the NXP PCA9685 PWM controller.
+ *  File info: Driver for the PCA9685 PWM controller.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -35,8 +35,21 @@
 #define PCA9685_H_
  
  #include "Config_PCA9685.h"
+ #include "Common/Common.h"
  
- #include "Arch/I2C.h"
+ /*
+	Architecture specific definitions
+ */
+ #if(MCU_ARCH == MCU_ARCH_XMEGA)
+	 #include "Arch/XMega/GPIO/GPIO.h"
+	 #include "Arch/XMega/ClockManagement/SysClock.h"
+	 #include "Arch/XMega/I2C/I2C.h"
+ #elif(MCU_ARCH == MCU_ARCH_AVR8)
+	 #include "Arch/AVR8/GPIO/GPIO.h"
+	 #include "Arch/AVR8/I2C/I2C.h"
+ #else
+	 #error "Architecture not supported"
+ #endif
  
  /** @ingroup I2C-Addresses */
  /*\@{*/
