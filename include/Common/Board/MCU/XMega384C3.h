@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file XMega384C3.h
+/** @file Common/Board/MCU/XMega384C3.h
  *  @brief MCU specific definitions and constants for the Atmel XMega384C3.
  *
  *  @author Daniel Kampert
@@ -89,11 +89,11 @@
  #define USART_CHANNEL									2							/**< Channels per USART device */
  #define USART_BUFFER_SIZE								32							/**< Size of USART buffer in bytes */
  #define USART_XCK0_PIN									1							/**< Pin number of USART XCK0 pin */
- #define USART_RX0_PIN									2							/**< Pin number of USART RXD0 pin */
- #define USART_TX0_PIN									3							/**< Pin number of USART TXD0 pin */
+ #define USART_RX0_PIN									2							/**< Pin number of USART RxD0 pin */
+ #define USART_TX0_PIN									3							/**< Pin number of USART TxD0 pin */
  #define USART_XCK1_PIN									3							/**< Pin number of USART XCK1 pin */
- #define USART_RX1_PIN									6							/**< Pin number of USART RXD1 pin */
- #define USART_TX1_PIN									7							/**< Pin number of USART TXD1 pin */
+ #define USART_RX1_PIN									6							/**< Pin number of USART RxD1 pin */
+ #define USART_TX1_PIN									7							/**< Pin number of USART TxD1 pin */
  
  /*
 	Timer 0

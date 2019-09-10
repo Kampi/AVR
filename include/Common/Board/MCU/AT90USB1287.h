@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: MCU definitions for Atmel AT90USB1287
+ *  File info: MCU definitions for Atmel AT90USB1287.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */ 
 
-/** @file AT90USB1287.h
+/** @file Common/Board/MCU/AT90USB1287.h
  *  @brief MCU specific definitions for the AT90USB1287.
  *
  *  @author Daniel Kampert
