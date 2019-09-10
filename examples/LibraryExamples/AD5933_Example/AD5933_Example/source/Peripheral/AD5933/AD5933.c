@@ -148,8 +148,8 @@ const I2C_Error_t AD5933_Reset(void)
 	uint8_t Data[2] = {AD5933_REGISTER_CONTROL + 1, 0x00};
 
 	// Read low byte of the control register
-	ErrorCode = AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, Data[0], FALSE);
-	ErrorCode |= AD5933_I2CM_READBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, &Data[1], TRUE);
+	ErrorCode = AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, Data[0], FALSE);
+	ErrorCode |= AD5933_I2CM_READBYTE(&AD5933_INTERFACE, &Data[1], TRUE);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -158,7 +158,7 @@ const I2C_Error_t AD5933_Reset(void)
 	// Set reset bit
 	Data[1] |= (0x01 << AD5933_RESET); 
 
-	return AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, AD5933_ADDRESS, 2, Data, TRUE);
+	return AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, 2, Data, TRUE);
 }
 
 const I2C_Error_t AD5933_SetMode(const AD5933_Mode_t Mode)
@@ -166,8 +166,8 @@ const I2C_Error_t AD5933_SetMode(const AD5933_Mode_t Mode)
 	I2C_Error_t ErrorCode = I2C_NO_ERROR;
 	uint8_t Data[2] = {AD5933_REGISTER_CONTROL, 0x00};
 
-	ErrorCode = AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, Data[0], FALSE);
-	ErrorCode |= AD5933_I2CM_READBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, &Data[1], TRUE);
+	ErrorCode = AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, Data[0], FALSE);
+	ErrorCode |= AD5933_I2CM_READBYTE(&AD5933_INTERFACE, &Data[1], TRUE);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -179,7 +179,7 @@ const I2C_Error_t AD5933_SetMode(const AD5933_Mode_t Mode)
 	// Set new mode bits
 	Data[1] |= (Mode << 0x04);
 
-	return AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, AD5933_ADDRESS, 2, Data, TRUE);
+	return AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, 2, Data, TRUE);
 }
 
 const I2C_Error_t AD5933_GetMode(AD5933_Mode_t* Mode)
@@ -188,8 +188,8 @@ const I2C_Error_t AD5933_GetMode(AD5933_Mode_t* Mode)
 	uint8_t Data[2] = {AD5933_REGISTER_CONTROL, 0x00};
 
 	// Read high byte of the control register
-	ErrorCode = AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, Data[0], FALSE);
-	ErrorCode |= AD5933_I2CM_READBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, &Data[1], TRUE);
+	ErrorCode = AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, Data[0], FALSE);
+	ErrorCode |= AD5933_I2CM_READBYTE(&AD5933_INTERFACE, &Data[1], TRUE);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -206,8 +206,8 @@ const I2C_Error_t AD5933_SetClockSource(const AD5933_Clock_t Clock)
 	uint8_t Data[2] = {AD5933_REGISTER_CONTROL + 1, 0x00};
 
 	// Read low byte of the control register
-	ErrorCode = AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, Data[0], FALSE);
-	ErrorCode |= AD5933_I2CM_READBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, &Data[1], TRUE);
+	ErrorCode = AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, Data[0], FALSE);
+	ErrorCode |= AD5933_I2CM_READBYTE(&AD5933_INTERFACE, &Data[1], TRUE);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -223,12 +223,12 @@ const I2C_Error_t AD5933_SetClockSource(const AD5933_Clock_t Clock)
 		Data[1] |= (0x01 << 0x00);
 	}
 
-	return AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, AD5933_ADDRESS, 2, Data, TRUE);
+	return AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, 2, Data, TRUE);
 }
 
 const I2C_Error_t AD5933_ReadStatus(uint8_t* Status)
 {
-	return AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, AD5933_REGISTER_STATUS, TRUE) | AD5933_I2CM_READBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, Status, FALSE);
+	return AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_REGISTER_STATUS, TRUE) | AD5933_I2CM_READBYTE(&AD5933_INTERFACE, Status, FALSE);
 }
 
 const I2C_Error_t AD5933_SetVoltage(const AD5933_OutputVoltage_t Voltage)
@@ -237,8 +237,8 @@ const I2C_Error_t AD5933_SetVoltage(const AD5933_OutputVoltage_t Voltage)
 	uint8_t Data[2] = {AD5933_REGISTER_CONTROL, 0x00};
 	 
 	// Read old configuration
-	ErrorCode = AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, Data[0], FALSE);
-	ErrorCode |= AD5933_I2CM_READBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, &Data[1], TRUE);
+	ErrorCode = AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, Data[0], FALSE);
+	ErrorCode |= AD5933_I2CM_READBYTE(&AD5933_INTERFACE, &Data[1], TRUE);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -250,7 +250,7 @@ const I2C_Error_t AD5933_SetVoltage(const AD5933_OutputVoltage_t Voltage)
 	// Set the new voltage bits
 	Data[1] |= (Voltage << 0x01);
 
-	return AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, AD5933_ADDRESS, 2, Data, TRUE);
+	return AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, 2, Data, TRUE);
 }
  
 const I2C_Error_t AD5933_GetVoltage(AD5933_OutputVoltage_t* Voltage)
@@ -259,8 +259,8 @@ const I2C_Error_t AD5933_GetVoltage(AD5933_OutputVoltage_t* Voltage)
 	uint8_t Data[2] = {AD5933_REGISTER_CONTROL, 0x00};
 	 
 	// Read configuration
-	ErrorCode = AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, Data[0], FALSE);
-	ErrorCode |= AD5933_I2CM_READBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, &Data[1], TRUE);
+	ErrorCode = AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, Data[0], FALSE);
+	ErrorCode |= AD5933_I2CM_READBYTE(&AD5933_INTERFACE, &Data[1], TRUE);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -278,8 +278,8 @@ const I2C_Error_t AD5933_SetGain(const AD5933_Gain_t Gain)
 	uint8_t Data[2] = {AD5933_REGISTER_CONTROL, 0x00};
 	 
 	// Read old config
-	ErrorCode = AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, Data[0], FALSE);
-	ErrorCode |= AD5933_I2CM_READBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, &Data[1], TRUE);
+	ErrorCode = AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, Data[0], FALSE);
+	ErrorCode |= AD5933_I2CM_READBYTE(&AD5933_INTERFACE, &Data[1], TRUE);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -295,7 +295,7 @@ const I2C_Error_t AD5933_SetGain(const AD5933_Gain_t Gain)
 		Data[1] |= (0x01 << 0x00);
 	}
  
-	return AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, AD5933_ADDRESS, 2, Data, TRUE);
+	return AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, 2, Data, TRUE);
 }
  
 const I2C_Error_t AD5933_GetGain(AD5933_Gain_t* Gain)
@@ -304,8 +304,8 @@ const I2C_Error_t AD5933_GetGain(AD5933_Gain_t* Gain)
 	uint8_t Data[2] = {AD5933_REGISTER_CONTROL, 0x00};
 	 
 	// Read config
-	ErrorCode = AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, Data[0], FALSE);
-	ErrorCode |= AD5933_I2CM_READBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, &Data[1], TRUE);
+	ErrorCode = AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, Data[0], FALSE);
+	ErrorCode |= AD5933_I2CM_READBYTE(&AD5933_INTERFACE, &Data[1], TRUE);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -321,7 +321,7 @@ const I2C_Error_t AD5933_ConfigSettling(const uint16_t Cylcles, const AD5933_Set
 {
 	uint8_t Data[] = {AD5933_CMD_BLOCK_WRITE, 2, (Mult << 0x01) | ((0x100 & Cylcles) >> 0x08), Cylcles & 0xFF};
 
-	return (AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, AD5933_REGISTER_CYCLES, TRUE) | AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, AD5933_ADDRESS, sizeof(Data), Data, TRUE));
+	return (AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_REGISTER_CYCLES, TRUE) | AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, sizeof(Data), Data, TRUE));
 }
 
 const I2C_Error_t AD5933_SetStartFrequency(const uint32_t Frequency)
@@ -336,7 +336,7 @@ const I2C_Error_t AD5933_SetStartFrequency(const uint32_t Frequency)
 	Data[3] = (FrequencyCode >> 0x08) & 0xFF;
 	Data[2] = (FrequencyCode >> 0x10) & 0xFF;
 
-	return (AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, AD5933_REGISTER_START_FREQ, TRUE) | AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, AD5933_ADDRESS, sizeof(Data), Data, TRUE));
+	return (AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_REGISTER_START_FREQ, TRUE) | AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, sizeof(Data), Data, TRUE));
 }
 
 const I2C_Error_t AD5933_SetFrequencyIncrement(const uint32_t Increment)
@@ -351,7 +351,7 @@ const I2C_Error_t AD5933_SetFrequencyIncrement(const uint32_t Increment)
 	Data[1] = (FrequencyIncrementCode >> 0x08) & 0xFF;
 	Data[0] = (FrequencyIncrementCode >> 0x10) & 0xFF;
 
-	return (AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, AD5933_REGISTER_FREQ_INCR, TRUE) | AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, AD5933_ADDRESS, sizeof(Data), Data, TRUE));
+	return (AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_REGISTER_FREQ_INCR, TRUE) | AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, sizeof(Data), Data, TRUE));
 }
 
 const I2C_Error_t AD5933_SetIncrements(const uint16_t Increments)
@@ -361,7 +361,7 @@ const I2C_Error_t AD5933_SetIncrements(const uint16_t Increments)
 	Data[1] = Increments & 0xFF;
 	Data[0] = (Increments >> 0x08) & 0xFF;
 
-	return (AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, AD5933_REGISTER_INCREMENTS, TRUE) | AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, AD5933_ADDRESS, sizeof(Data), Data, TRUE));
+	return (AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_REGISTER_INCREMENTS, TRUE) | AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, sizeof(Data), Data, TRUE));
 }
 
 const I2C_Error_t AD5933_GetData(ComplexNumber_t* Data)
@@ -381,9 +381,9 @@ const I2C_Error_t AD5933_GetData(ComplexNumber_t* Data)
 	
 	Buffer[0] = AD5933_CMD_BLOCK_READ;
 	Buffer[1] = 4;
-	ErrorCode = AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, AD5933_REGISTER_REAL, TRUE);
-	ErrorCode |= AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, AD5933_ADDRESS, 2, Buffer, FALSE);
-	ErrorCode |= AD5933_I2CM_READBYTES(&AD5933_INTERFACE, AD5933_ADDRESS, sizeof(Buffer), Buffer, TRUE);
+	ErrorCode = AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_REGISTER_REAL, TRUE);
+	ErrorCode |= AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, 2, Buffer, FALSE);
+	ErrorCode |= AD5933_I2CM_READBYTES(&AD5933_INTERFACE, sizeof(Buffer), Buffer, TRUE);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -418,9 +418,9 @@ const I2C_Error_t AD5933_ReadTemperature(int16_t* Temperature)
 
 	Buffer[0] = AD5933_CMD_BLOCK_READ;
 	Buffer[1] = 4;
-	ErrorCode = AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_ADDRESS, AD5933_REGISTER_TEMPERATURE, TRUE);
-	ErrorCode |= AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, AD5933_ADDRESS, 2, Buffer, FALSE);
-	ErrorCode |= AD5933_I2CM_READBYTES(&AD5933_INTERFACE, AD5933_ADDRESS, sizeof(Buffer), Buffer, TRUE);
+	ErrorCode = AD5933_I2CM_WRITEBYTE(&AD5933_INTERFACE, AD5933_REGISTER_TEMPERATURE, TRUE);
+	ErrorCode |= AD5933_I2CM_WRITEBYTES(&AD5933_INTERFACE, 2, Buffer, FALSE);
+	ErrorCode |= AD5933_I2CM_READBYTES(&AD5933_INTERFACE, sizeof(Buffer), Buffer, TRUE);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;

@@ -110,6 +110,7 @@
 		 I2C_READ_ADDR_ERROR = 0x02,			/**< Wrong read address */
 		 I2C_WRITE_ADDR_ERROR = 0x04,			/**< Wrong write address */
 		 I2C_BUS_ERROR = 0x08,					/**< I2C bus error */
+		 I2C_NO_DEVICE = 0x10,					/**< I2C device not found */
 	 } I2C_Error_t;
 	/** @} */ // end of I2C-Errors
  /** @} */ // end of I2C
