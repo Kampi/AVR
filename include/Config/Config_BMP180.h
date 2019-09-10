@@ -1,9 +1,9 @@
 /*
- * main.c
+ * Config_BMP180.h
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: BMP180 example for XMega.
+ *  File info: Configuration file for the Bosch BMP180 I2C pressure sensor.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,36 +22,18 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file main.c
- *  @brief BMP180 example for XMega.
- *
- *  Software for the XMega BMP180 example from
- *  <>
+/** @file Config/Config_BMP180.h
+ *  @brief Configuration file for the Bosch BMP180 i2c pressure sensor.
  *
  *  @author Daniel Kampert
  */
 
-#include "Peripheral/BMP180/BMP180.h"
+#ifndef CONFIG_BMP180_H_
+#define CONFIG_BMP180_H_
 
-/*
-	I2C configuration
-*/
-I2CM_Config_t Config_I2CM = {
-	.Device = &BMP180_INTERFACE,
-	.BitRate = BMP180_CLOCK,
-	.Timeout = I2C_TIMEOUT_DISABLE,
-};
+ #include "Common/Common.h"
+ 
+ #define BMP180_INTERFACE						TWIC 					/**< I2C interface for the BMP180. */
+ #define BMP180_CLOCK							100000					/**< I2C clock rate for the BMP180. */
 
-int main(void)
-{
-	BMP180_CalibCoef_t Coefficients;
-	BMP180_DataPoint_t DataPoint;
-	
-	BMP180_Init(&Config_I2CM);
-	BMP180_ReadCalibration(&Coefficients);
-	BMP180_SingleMeasurement(BMP180_OSS_1x, &Coefficients, &DataPoint);
-	
-    while(1) 
-    {
-    }
-}
+#endif /* CONFIG_BMP180_H_ */

@@ -34,6 +34,7 @@
 #define BMP180_H_
 
  #include "Config_BMP180.h"
+ #include "Common/Common.h"
 
  /*
 	Architecture specific definitions
@@ -42,39 +43,99 @@
 	 #include "Arch/XMega/GPIO/GPIO.h"
 	 #include "Arch/XMega/ClockManagement/SysClock.h"
 	 #include "Arch/XMega/I2C/I2C.h"
-
-	 #define BMP180_I2CM_INIT(Config)														I2CM_Init(Config)
-	 #define BMP180_I2CM_WRITEBYTE(Interface, Address, Data, Stop)							I2CM_WriteByte(Interface, Address, Data, Stop)
-	 #define BMP180_I2CM_READBYTE(Interface, Address, Data, Stop)							I2CM_ReadByte(Interface, Address, Data, Stop)
-	 #define BMP180_I2CM_WRITEBYTES(Interface, Address, Bytes, Data, Stop)					I2CM_WriteBytes(Interface, Address, Bytes, Data, Stop)
-	 #define BMP180_I2CM_READBYTES(Interface, Address, Bytes, Data, Stop)					I2CM_ReadBytes(Interface, Address, Bytes, Data, Stop)
-
  #elif(MCU_ARCH == MCU_ARCH_AVR8)
 	 #include "Arch/AVR8/GPIO/GPIO.h"
 	 #include "Arch/AVR8/I2C/I2C.h"
-	 
-	  #define BMP180_I2CM_INIT(Config)														I2CM_Init(Config)
-	  #define BMP180_I2CM_WRITEBYTE(Interface, Address, Data, Stop)							I2CM_WriteByte(Address, Data, Stop)
-	  #define BMP180_I2CM_READBYTE(Interface, Address, Data, Stop)							I2CM_ReadByte(Address, Data, Stop)
-	  #define BMP180_I2CM_WRITEBYTES(Interface, Address, Bytes, Data, Stop)					I2CM_WriteBytes(Address, Bytes, Data, Stop)
-	  #define BMP180_I2CM_READBYTES(Interface, Address, Bytes, Data, Stop)					I2CM_ReadBytes(Address, Bytes, Data, Stop)
  #else
-	  #error "Architecture not supported"
+	 #error "Architecture not supported"
  #endif
- 
- #include "Common/Common.h"
- #include "Common/types.h"
+
+ /** 
+  * BMP180 chip ID
+  */
+ #define BMP180_ID							0x55
 
  /** @ingroup I2C-Addresses */
  /*\@{*/
 	 #define BMP180_ADDRESS					0x77																							/**< BMP180 I2C pressure sensor device address */
  /*\@}*/
 
+ /**
+  * BMP180 oversampling settings
+  */
+ typedef enum
+ {
+	BMP180_OSS_1x = 0x00,								/**< Average of a single measurement */
+	BMP180_OSS_2x = 0x01,								/**< Average of two measurements */
+	BMP180_OSS_4x = 0x02,								/**< Average of four measurements */
+	BMP180_OSS_8x = 0x03,								/**< Average of eight measurements */
+ } BMP180_OSS_t;
+
+ /**
+  * BMP180 calibration coefficients
+  */
+ typedef struct
+ {
+	 int16_t AC1;										/**< AC1 parameter */
+	 int16_t AC2;										/**< AC2 parameter */
+	 int16_t AC3;										/**< AC3 parameter */
+	 uint16_t AC4;										/**< AC4 parameter */
+	 uint16_t AC5;										/**< AC5 parameter */
+	 uint16_t AC6;										/**< AC6 parameter */
+	 int16_t B1;										/**< B1 parameter */
+	 int16_t B2;										/**< B2 parameter */
+	 int16_t MB;										/**< MB parameter */
+	 int16_t MC;										/**< MC parameter */
+	 int16_t MD;										/**< MD parameter */
+ } __attribute__((packed)) BMP180_CalibCoef_t;
+
+ /**
+  * BMP180 data point
+  */
+ typedef struct 
+ {
+	 float Temperature;									/**< Temperature in Degree Celsius */
+	 uint32_t Pressure;									/**< Pressure in Pa */
+ } BMP180_DataPoint_t;
+
  /** @brief			Initialize the BMP180 pressure sensor and the I2C interface.
   *  @param Config	Pointer to I2C master configuration object
   *					NOTE: Set it to *NULL if you have initialized the I2C already
   *  @return		I2C error code
   */
- const I2C_Error_t BMP180_Init(I2CM_Config_t* Config);
+ const I2C_Error_t BMP180_Init(I2CM_Config_t* Config); 
+ 
+ /** @brief		Reset the device.
+  *  @return	I2C error code
+  */
+ const I2C_Error_t BMP180_Reset(void);
+ 
+ /** @brief				Read the calibration coefficients from the sensor.
+  *  @param CalibCoef	Pointer to #BMP180_CalibCoef_t structure
+  *  @return			I2C error code
+  */
+ const I2C_Error_t BMP180_ReadCalibration(BMP180_CalibCoef_t* CalibCoef);
+
+ /** @brief				Run an uncalibrated temperature measurement.
+  *  @param DataPoint	Pointer to #BMP180_DataPoint_t structure
+  *  @return			I2C error code
+  */
+ const I2C_Error_t BMP180_MeasureTemperature(BMP180_DataPoint_t* DataPoint);
+
+ /** @brief				Run an uncalibrated pressure measurement.
+ *  @param OSS			Oversampling factor
+  *  @param DataPoint	Pointer to #BMP180_DataPoint_t structure
+  *  @return			I2C error code
+  */
+ const I2C_Error_t BMP180_MeasurePressure(const BMP180_OSS_t OSS, BMP180_DataPoint_t* DataPoint);
+
+ /** @brief				Run a single measurement.
+						NOTE: You have run a calibration first!
+  *  @param OSS			Oversampling factor
+  *  @param CalibCoef	Calibration coefficients
+  *  @param DataPoint	Pointer do #BMP180_DataPoint_t structure
+  *  @return			I2C error code
+  */
+ const I2C_Error_t BMP180_SingleMeasurement(const BMP180_OSS_t OSS, const BMP180_CalibCoef_t* CalibCoef, BMP180_DataPoint_t* DataPoint);
 
 #endif /* BMP180_H_ */
