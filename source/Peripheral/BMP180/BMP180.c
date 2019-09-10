@@ -245,12 +245,12 @@ const I2C_Error_t BMP180_SingleMeasurement(const BMP180_OSS_t OSS, const BMP180_
 	int32_t X1, X2, X3, B3, B5, B6, p;
 
 	I2C_Error_t ErrorCode = I2C_NO_ERROR;
-	
+
 	if((CalibCoef == NULL) || (DataPoint == NULL))
 	{
 		return I2C_INVALID_PARAM;
 	}
-	
+
 	ErrorCode = BMP180_MeasureTemperature(DataPoint) | BMP180_MeasurePressure(OSS, DataPoint);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
@@ -273,9 +273,8 @@ const I2C_Error_t BMP180_SingleMeasurement(const BMP180_OSS_t OSS, const BMP180_
 	X2 = CalibCoef->B1 * ((B6 * B6) >> 12) >> 16;
 	X3 = (X1 + X2 + 2) >> 2;
 	B4 = (CalibCoef->AC4 * (uint32_t)(X3 + 32768)) >> 15;
-	B7 = ((uint32_t)DataPoint->Pressure - B3) * (50000 >> OSS);
-	
-	p = 0x00;
+	B7 = (DataPoint->Pressure - B3) * (50000 >> OSS);
+
 	if(B7 < 0x80000000)
 	{
 		p = (B7 << 1) / B4;	
@@ -285,7 +284,7 @@ const I2C_Error_t BMP180_SingleMeasurement(const BMP180_OSS_t OSS, const BMP180_
 		p = (B7 / B4) << 1;
 	}
 
-	X1 = (p >> 8);
+	X1 = p >> 8;
 	X1 *= X1;
 	X1 = (X1 * 3038) >> 16;
 	X2 = (-7357 * p) >> 16;

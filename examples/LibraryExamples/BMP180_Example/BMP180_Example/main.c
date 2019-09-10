@@ -46,11 +46,11 @@ int main(void)
 {
 	BMP180_CalibCoef_t Coefficients;
 	BMP180_DataPoint_t DataPoint;
-	
+
 	BMP180_Init(&Config_I2CM);
 	BMP180_ReadCalibration(&Coefficients);
-	BMP180_SingleMeasurement(BMP180_OSS_1x, &Coefficients, &DataPoint);
-	
+	BMP180_SingleMeasurement(BMP180_OSS_8, &Coefficients, &DataPoint);
+
     while(1) 
     {
     }

@@ -65,10 +65,10 @@
   */
  typedef enum
  {
-	BMP180_OSS_1x = 0x00,								/**< Average of a single measurement */
-	BMP180_OSS_2x = 0x01,								/**< Average of two measurements */
-	BMP180_OSS_4x = 0x02,								/**< Average of four measurements */
-	BMP180_OSS_8x = 0x03,								/**< Average of eight measurements */
+	BMP180_OSS_1 = 0x00,								/**< Average of a single measurement */
+	BMP180_OSS_2 = 0x01,								/**< Average of two measurements */
+	BMP180_OSS_4 = 0x02,								/**< Average of four measurements */
+	BMP180_OSS_8 = 0x03,								/**< Average of eight measurements */
  } BMP180_OSS_t;
 
  /**
