@@ -34,7 +34,7 @@
  #include "Definitions.h"
 
  #if!(defined(MCU_BIG_ENDIAN) || defined(MCU_LITTLE_ENDIAN))
-	 #error "MCU_ARCH_BIG_ENDIAN or MCU_ARCH_LITTLE_ENDIAN missing!"
+	 #error "MCU_BIG_ENDIAN or MCU_LITTLE_ENDIAN missing!"
  #endif
 
  /** 
