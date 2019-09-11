@@ -323,7 +323,7 @@ void ST7565R_ClearLine(const uint8_t Line)
 void ST7565R_Clear(void)
 {
 	uint8_t Page, Column;
-	for(Page = 0; Page < (DISPLAY_HEIGHT / DISPLAY_BYTES_PER_PIXEL); Page++)
+	for(Page = 0; Page < (DISPLAY_HEIGHT / DISPLAY_PIXEL_PER_BYTE); Page++)
 	{
 		for(Column = 0; Column < DISPLAY_WIDTH; Column++)
 		{

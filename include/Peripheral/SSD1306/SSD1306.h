@@ -59,6 +59,24 @@
 	  #error "Architecture not supported for SSD1306 display!"
  #endif
 
+ #if(!defined SSD1306_DATA)
+	 #warning "Invalid configuration for the SSD1306 chip select. Use default."
+
+	 #define SSD1306_DATA							PORTD, 0
+ #endif
+
+ #if(!defined SSD1306_RESET)
+	 #warning "Invalid configuration for the SSD1306 register select. Use default."
+
+	 #define SSD1306_RESET							PORTA, 3
+ #endif
+ 
+ #if(!defined SSD1306_SS)
+	 #warning "Invalid configuration for the SSD1306 reset. Use default."
+
+	 #define SSD1306_SS								PORTF, 3
+ #endif
+
  /*
 	Public API
  */

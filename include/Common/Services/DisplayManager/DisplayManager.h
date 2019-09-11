@@ -50,13 +50,13 @@
  #include "Font/Font.h"
  #include "Framebuffer/Framebuffer.h"
 
- #if((!defined DISPLAY_WIDTH) | (!defined DISPLAY_HEIGHT) | (!DISPLAY_BYTES_PER_PIXEL))
+ #if((!defined DISPLAY_WIDTH) | (!defined DISPLAY_HEIGHT) | (!DISPLAY_PIXEL_PER_BYTE))
 	#error "Invalid display configuration. Please check your configuration file!"
  #endif
 
  #define DISPLAYMANAGER_LCD_WIDTH					DISPLAY_WIDTH																					/**< Width of the display in pixel*/
  #define DISPLAYMANAGER_LCD_HEIGHT					DISPLAY_HEIGHT																					/**< Height of the display in pixel */
- #define DISPLAYMANAGER_LCD_PIXEL_PER_BYTE			DISPLAY_BYTES_PER_PIXEL																			/**< Bytes per pixel */
+ #define DISPLAYMANAGER_LCD_PIXEL_PER_BYTE			DISPLAY_PIXEL_PER_BYTE																		/**< Bytes per pixel */
  #define DISPLAYMANAGER_LCD_PAGES					(DISPLAYMANAGER_LCD_HEIGHT / DISPLAYMANAGER_LCD_PIXEL_PER_BYTE)									/**< Page count of the display, based on the display height and the bytes per pixel */
  #define DISPLAYMANAGER_LCD_FRAMEBUFFER_SIZE		((DISPLAYMANAGER_LCD_WIDTH * DISPLAYMANAGER_LCD_HEIGHT) / DISPLAYMANAGER_LCD_PIXEL_PER_BYTE)	/**< Size of the display frame buffer */
 
