@@ -125,7 +125,7 @@
  
  /** @brief			Initialize the PCA9685 PWM controller and the I2C interface.
   *  @param Config	Pointer to I2C master configuration object
-  *					NOTE: Set it to *NULL if you have initialized the I2C already
+  *					NOTE: Set it to #NULL if you have initialized the I2C already
   *  @param Source	Clock source
   *  @return		I2C error code
   */
@@ -221,7 +221,7 @@
   */
  const I2C_Error_t PCA9685_SetChannel(const PCA9685_Channel_t Channel, const uint16_t On, const uint16_t Off);
 
- #if(defined PCA9685_OE_PORT & defined PCA9685_OE_PIN)
+ #if(defined PCA9685_OE)
 	 /** @brief			Enable/Disable the outputs of the PWM controller.
 	  *  @param	Enable	Enable/Disable
 	  */
