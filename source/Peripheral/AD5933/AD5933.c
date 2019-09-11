@@ -109,7 +109,13 @@
 
 static Bool_t UseDegree = FALSE;
 
-static float AD5933_CalcPhase(const float Real, const float Imag)
+/** @brief			Calculate the phase between the real and the imaginary part of a value.
+ *  @param Real		Real part
+ *  @param Imag		Imag part
+ *  @param Degree	Set this to #TRUE to convert the result in degree
+ *  @return			Angle in degree or radians
+ */
+static float AD5933_CalcPhase(const float Real, const float Imag, const Bool_t Degree)
 {
 	double Angle = 0.0;
 
@@ -122,7 +128,7 @@ static float AD5933_CalcPhase(const float Real, const float Imag)
 		Angle = 2 * M_PI + atan2(Imag, Real);
 	}
 
-	if(UseDegree == TRUE)
+	if(Degree == TRUE)
 	{
 		Angle = (180.0 / M_PI) * Angle;
 	}
@@ -600,7 +606,7 @@ const I2C_Error_t AD5933_SingleCalibration(AD5933_CalPoint_t* CalibrationPoint, 
 
 	Mag = sqrtf((Data.Real * Data.Real) + (Data.Imag * Data.Imag));
 	CalibrationPoint->GainFactor = 1.0 / (Mag * Reference);
-	CalibrationPoint->Phase = AD5933_CalcPhase(Data.Real, Data.Imag);
+	CalibrationPoint->Phase = AD5933_CalcPhase(Data.Real, Data.Imag, UseDegree);
 
 	return ErrorCode;
 }
@@ -630,7 +636,7 @@ const I2C_Error_t AD5933_SingleMeasurement(const AD5933_CalPoint_t* CalibrationP
 
 	Mag = sqrtf((Data.Real * Data.Real) + (Data.Imag * Data.Imag));
 	Impedance->Impedance = 1.0 / (Mag * CalibrationPoint->GainFactor);
-	Impedance->Phase = AD5933_CalcPhase(Data.Real, Data.Imag) - CalibrationPoint->Phase;
+	Impedance->Phase = AD5933_CalcPhase(Data.Real, Data.Imag, UseDegree) - CalibrationPoint->Phase;
 
 	return AD5933_SetMode(AD5933_MODE_POWER_DOWN);
 }
@@ -666,7 +672,7 @@ const I2C_Error_t AD5933_SweepCalibration(AD5933_CalPoint_t* CalibrationPoint, c
 
 			Mag = sqrtf((Data.Real * Data.Real) + (Data.Imag * Data.Imag));
 			CalibrationPoint->GainFactor = 1.0 / (Mag * Reference);
-			CalibrationPoint->Phase = AD5933_CalcPhase(Data.Real, Data.Imag);
+			CalibrationPoint->Phase = AD5933_CalcPhase(Data.Real, Data.Imag, UseDegree);
 			CalibrationPoint++;
 
 			// Increase the frequency
@@ -719,7 +725,7 @@ const I2C_Error_t AD5933_SweepMeasurment(const AD5933_CalPoint_t* CalibrationPoi
 
 			Mag = sqrtf((Data.Real * Data.Real) + (Data.Imag * Data.Imag));
 			Impedance->Impedance = 1.0 / (Mag * CalibrationPoint->GainFactor);
-			Impedance->Phase = AD5933_CalcPhase(Data.Real, Data.Imag) - CalibrationPoint->Phase;
+			Impedance->Phase = AD5933_CalcPhase(Data.Real, Data.Imag, UseDegree) - CalibrationPoint->Phase;
 			CalibrationPoint++;
 			Impedance++;
 
