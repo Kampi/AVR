@@ -37,22 +37,22 @@
 	SD/MMC interface
  */
  #define SD_INTERFACE_TYPE						INTERFACE_USART_SPI
- #define SD_INTERFACE							USARTD, 0				/**< SPI interface for the SD card */
+ #define SD_INTERFACE							USARTD, 0				/**< SPI interface for the SD card. */
 
  /*
 	 SD/MMC interface connections
  */
- #define SD_SS									PORTE, 5				/**< Chip select used by the SD card */
+ #define SD_SS									PORTE, 5				/**< Chip select used by the SD card. */
  
- #define SD_WITH_SWA													/**< Enable card detection 
+ #define SD_WITH_SWA													/**< Enable card detection. 
 																			 NOTE: Must pulled low when SD card is 
 																			 available.
 																			 NOTE: You have to enable interrupts! */
- #define SD_SWA									PORTE, 4				/**< SWA used by the SD card */
+ #define SD_SWA									PORTE, 4				/**< SWA used by the SD card. */
 
  /*
 	SD/MMC settings
  */
- #define SD_BLOCK_SIZE							512						/**< Block size for the SD card */
+ #define SD_BLOCK_SIZE							512						/**< Block size for the SD card. */
 
 #endif /* CONFIG_SD_MMC_H_ */

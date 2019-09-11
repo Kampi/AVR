@@ -33,21 +33,21 @@
 
  #include "Common/Common.h"
  
- #define WITH_SSD1306
+ #define WITH_SSD1306															/**< Use the SSD1306 display */
  
- #define SSD1306_INTERFACE_TYPE						INTERFACE_USART_SPI
- #define DISPLAY_INTERFACE							USARTD, 0
- #define DISPLAY_CLOCK								1000000UL
+ #define SSD1306_INTERFACE_TYPE						INTERFACE_USART_SPI			/**< SPI interface type for the display. */
+ #define DISPLAY_INTERFACE							USARTD, 0					/**< SPI interface for the display. */
+ #define DISPLAY_CLOCK								1000000UL					/**< Display interface speed. */
 
  // OLED interface definitions
- #define SSD1306_DATA								PORTD, 0
- #define SSD1306_RESET								PORTA, 3
- #define SSD1306_SS									PORTF, 3
+ #define SSD1306_DATA								PORTD, 0					/**< Display DATA pin (used by display driver). */
+ #define SSD1306_RESET								PORTA, 3					/**< Display RESET pin (used by display driver). */
+ #define SSD1306_SS									PORTF, 3					/**< Display SS pin (used by display driver). */
 
  // Display definitions
- #define DISPLAY_WIDTH								128
- #define DISPLAY_HEIGHT								32
- #define DISPLAY_BYTES_PER_PIXEL					8
+ #define DISPLAY_WIDTH								128							/**< Width of the display in pixel. */
+ #define DISPLAY_HEIGHT								32							/**< Height of the display in pixel. */
+ #define DISPLAY_PIXEL_PER_BYTE						8							/**< Number of pixel which can fit into one byte. */
 
 /*
  #define WITH_ST7565R
@@ -65,7 +65,7 @@
  // Display definitions
  #define DISPLAY_WIDTH								128
  #define DISPLAY_HEIGHT								32
- #define DISPLAY_BYTES_PER_PIXEL					8
+ #define DISPLAY_PIXEL_PER_BYTE						8
  #define DISPLAY_CONTRAST_MAX						40
  #define DISPLAY_CONTRAST_MIN						30
 */ 

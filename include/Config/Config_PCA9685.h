@@ -33,7 +33,7 @@
 
  #include "Common/Common.h"
  
- #define PCA9685_INTERFACE						&TWIC					/**< I2C interface for the PCA9685. */
+ #define PCA9685_INTERFACE						TWIC					/**< I2C interface for the PCA9685. */
  #define PCA9685_CLOCK							100000					/**< I2C clock for the PCA9685. */
  #define PCA9685_A0								0						/**< Voltage level of the address pin A0. */
  #define PCA9685_A1								0						/**< Voltage level of the address pin A1. */
@@ -42,7 +42,6 @@
  #define PCA9685_A4								0						/**< Voltage level of the address pin A4. */
  #define PCA9685_A5								0						/**< Voltage level of the address pin A5. */
 
- #define PCA9685_OE_PORT						&PORTE					/**< Port for PCA9685 OE. */
- #define PCA9685_OE_PIN 						0						/**< Pin for PCA9685 OE. */
+ #define PCA9685_OE								PORTE, 0				/**< Pin for PCA9685 OE. */
 
 #endif /* CONFIG_PCA9685_H_ */
