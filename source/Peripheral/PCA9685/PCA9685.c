@@ -152,7 +152,7 @@
 	#define PCA9685_I2CM_READBYTES(Bytes, Data, Stop)										I2CM_ReadBytes(PCA9685_ADDRESS, Bytes, Data, Stop)
 	#define PCA9685_RESET()																	I2CM_WriteByte(0x03, 0x00, FALSE)
 #else
-	#error "Architecture not supported"
+	#error "Architecture not supported for PCA9685!"
 #endif
 
 /** @brief			Switch a single bit in a register.

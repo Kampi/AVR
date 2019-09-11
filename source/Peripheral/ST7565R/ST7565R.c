@@ -83,16 +83,16 @@
 #if(MCU_ARCH == MCU_ARCH_XMEGA)
 	#if(ST7565R_INTERFACE_TYPE == INTERFACE_USART_SPI)
 		#define ST7565R_SPIM_INIT(Config)											USART_SPI_Init(Config)
-		#define ST7565R_SPIM_TRANSMIT(Interface, Data)								USART_SPI_SendData(Interface, Data)
-		#define ST7565R_SPIM_SET_CLOCK(Interface, SPIClock, Clock)					USART_SPI_SetClockRate(Interface, SPIClock, Clock, FALSE)
-		#define ST7565R_SPIM_GET_CLOCK(Interface, Clock)							USART_SPI_GetClockRate(Interface, Clock)
+		#define ST7565R_SPIM_TRANSMIT(Data)											USART_SPI_SendData(&CONCAT(DISPLAY_INTERFACE), Data)
+		#define ST7565R_SPIM_SET_CLOCK(SPIClock, Clock)								USART_SPI_SetClockRate(&CONCAT(DISPLAY_INTERFACE), SPIClock, Clock, FALSE)
+		#define ST7565R_SPIM_GET_CLOCK(Clock)										USART_SPI_GetClockRate(&CONCAT(DISPLAY_INTERFACE), Clock)
 		#define ST7565R_SPIM_CHIP_SELECT(Port, Pin)									USART_SPI_SelectDevice(Port, Pin)
 		#define ST7565R_SPIM_CHIP_DESELECT(Port, Pin)								USART_SPI_DeselectDevice(Port, Pin)
 	#elif(ST7565R_INTERFACE_TYPE == INTERFACE_SPI)
 		#define ST7565R_SPIM_INIT(Config)											SPIM_Init(Config)
-		#define ST7565R_SPIM_TRANSMIT(Interface, Data)								SPIM_SendData(Interface, Data)
-		#define ST7565R_SPIM_SET_CLOCK(Interface, SPIClock, Clock)					SPIM_SetClock(Interface, SPIClock, Clock)
-		#define ST7565R_SPIM_GET_CLOCK(Interface, Clock)							SPIM_GetClock(Interface, Clock)
+		#define ST7565R_SPIM_TRANSMIT(Data)											SPIM_SendData(&CONCAT(DISPLAY_INTERFACE), Data)
+		#define ST7565R_SPIM_SET_CLOCK(SPIClock, Clock)								SPIM_SetClock(&CONCAT(DISPLAY_INTERFACE), SPIClock, Clock)
+		#define ST7565R_SPIM_GET_CLOCK(Clock)										SPIM_GetClock(&CONCAT(DISPLAY_INTERFACE), Clock)
 		#define ST7565R_SPIM_CHIP_SELECT(Port, Pin)									SPIM_SelectDevice(Port, Pin)
 		#define ST7565R_SPIM_CHIP_DESELECT(Port, Pin)								SPIM_DeselectDevice(Port, Pin)
 	#else
@@ -100,9 +100,9 @@
 	#endif
 #elif(MCU_ARCH == MCU_ARCH_AVR8)
 	#define ST7565R_SPIM_INIT(Config)												SPIM_Init(Config)
-    #define ST7565R_SPIM_TRANSMIT(Interface, Data)									SPIM_SendData(Data)
-    #define ST7565R_SPIM_SET_CLOCK(Interface, SPIClock, Clock)						SPIM_SetClock(SPIClock, Clock)
-    #define ST7565R_SPIM_GET_CLOCK(Interface, Clock)								SPIM_GetClock(Clock)
+    #define ST7565R_SPIM_TRANSMIT(Data)												SPIM_SendData(Data)
+    #define ST7565R_SPIM_SET_CLOCK(SPIClock, Clock)									SPIM_SetClock(SPIClock, Clock)
+    #define ST7565R_SPIM_GET_CLOCK(Clock)											SPIM_GetClock(Clock)
     #define ST7565R_SPIM_CHIP_SELECT(Port, Pin)										SPIM_SelectDevice(Port, Pin)
     #define ST7565R_SPIM_CHIP_DESELECT(Port, Pin)									SPIM_DeselectDevice(Port, Pin)
 #else
@@ -116,7 +116,7 @@ static void ST7565R_WriteCommand(const uint8_t Command)
 {
 	ST7565R_SPIM_CHIP_SELECT(GET_PERIPHERAL(ST7565R_SS), GET_INDEX(ST7565R_SS));
 	GPIO_Clear(GET_PERIPHERAL(ST7565R_REGISTER_SELECT), GET_INDEX(ST7565R_REGISTER_SELECT));
-	ST7565R_SPIM_TRANSMIT(&CONCAT(DISPLAY_INTERFACE), Command);
+	ST7565R_SPIM_TRANSMIT(Command);
 	GPIO_Set(GET_PERIPHERAL(ST7565R_REGISTER_SELECT), GET_INDEX(ST7565R_REGISTER_SELECT));
 	ST7565R_SPIM_CHIP_DESELECT(GET_PERIPHERAL(ST7565R_SS), GET_INDEX(ST7565R_SS));
 }
@@ -132,7 +132,7 @@ static void ST7565R_WriteCommandBytes(const uint8_t* Data, const uint8_t Length)
 	
 	for(uint8_t i = 0x00; i < Length; i++)
 	{
-		ST7565R_SPIM_TRANSMIT(&CONCAT(DISPLAY_INTERFACE), *Data++);
+		ST7565R_SPIM_TRANSMIT(*Data++);
 	}
 	
 	GPIO_Set(GET_PERIPHERAL(ST7565R_REGISTER_SELECT), GET_INDEX(ST7565R_REGISTER_SELECT));
@@ -211,7 +211,7 @@ void Display_WriteData(const uint8_t Data)
 {
 	ST7565R_SPIM_CHIP_SELECT(GET_PERIPHERAL(ST7565R_SS), GET_INDEX(ST7565R_SS));
 	GPIO_Set(GET_PERIPHERAL(ST7565R_REGISTER_SELECT), GET_INDEX(ST7565R_REGISTER_SELECT));
-	ST7565R_SPIM_TRANSMIT(&CONCAT(DISPLAY_INTERFACE), Data);
+	ST7565R_SPIM_TRANSMIT(Data);
 	GPIO_Clear(GET_PERIPHERAL(ST7565R_REGISTER_SELECT), GET_INDEX(ST7565R_REGISTER_SELECT));
 	ST7565R_SPIM_CHIP_DESELECT(GET_PERIPHERAL(ST7565R_SS), GET_INDEX(ST7565R_SS));
 }

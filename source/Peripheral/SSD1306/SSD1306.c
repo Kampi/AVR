@@ -66,12 +66,12 @@
 #if(MCU_ARCH == MCU_ARCH_XMEGA)
 	#if(SSD1306_INTERFACE_TYPE == INTERFACE_USART_SPI)
 		#define SSD1306_SPIM_INIT(Config)											USART_SPI_Init(Config)
-		#define SSD1306_SPIM_TRANSMIT(Interface, Data)								USART_SPI_SendData(Interface, Data)
+		#define SSD1306_SPIM_TRANSMIT(Data)											USART_SPI_SendData(&CONCAT(DISPLAY_INTERFACE), Data)
 		#define SSD1306_SPIM_CHIP_SELECT(Port, Pin)									USART_SPI_SelectDevice(Port, Pin)
 		#define SSD1306_SPIM_CHIP_DESELECT(Port, Pin)								USART_SPI_DeselectDevice(Port, Pin)
 		#elif(SSD1306_INTERFACE_TYPE == INTERFACE_SPI)
 	#define SSD1306_SPIM_INIT(Config)												SPIM_Init(Config)
-		#define SSD1306_SPIM_TRANSMIT(Interface, Data)								SPIM_SendData(Interface, Data)
+		#define SSD1306_SPIM_TRANSMIT(Data)											SPIM_SendData(&CONCAT(DISPLAY_INTERFACE), Data)
 		#define SSD1306_SPIM_CHIP_SELECT(Port, Pin)									SPIM_SelectDevice(Port, Pin)
 		#define SSD1306_SPIM_CHIP_DESELECT(Port, Pin)								SPIM_DeselectDevice(Port, Pin)
 	#else
@@ -79,7 +79,7 @@
 	#endif
 #elif(MCU_ARCH == MCU_ARCH_AVR8)
 	#define SSD1306_SPIM_INIT(Config)												SPIM_Init(Config)
-	#define SSD1306_SPIM_TRANSMIT(Interface, Data)									SPIM_SendData(Data)
+	#define SSD1306_SPIM_TRANSMIT(Data)												SPIM_SendData(Data)
 	#define SSD1306_SPIM_CHIP_SELECT(Port, Pin)										SPIM_SelectDevice(Port, Pin)
 	#define SSD1306_SPIM_CHIP_DESELECT(Port, Pin)									SPIM_DeselectDevice(Port, Pin)
 #else
@@ -122,7 +122,7 @@ static void SSD1306_WriteCommand(const uint8_t Data)
 {
 	SSD1306_SPIM_CHIP_SELECT(GET_PERIPHERAL(SSD1306_SS), GET_INDEX(SSD1306_SS));
 	GPIO_Clear(GET_PERIPHERAL(SSD1306_DATA), GET_INDEX(SSD1306_DATA));
-	SSD1306_SPIM_TRANSMIT(&CONCAT(DISPLAY_INTERFACE), Data);
+	SSD1306_SPIM_TRANSMIT(Data);
 	SSD1306_SPIM_CHIP_DESELECT(GET_PERIPHERAL(SSD1306_SS), GET_INDEX(SSD1306_SS));
 }
 
@@ -137,7 +137,7 @@ static void SSD1306_WriteCommandBytes(const uint8_t* Data, const uint8_t Length)
 	
 	for(uint8_t i = 0x00; i < Length; i++)
 	{
-		SSD1306_SPIM_TRANSMIT(&CONCAT(DISPLAY_INTERFACE), *Data++);
+		SSD1306_SPIM_TRANSMIT(*Data++);
 	}
 	
 	SSD1306_SPIM_CHIP_DESELECT(GET_PERIPHERAL(SSD1306_SS), GET_INDEX(SSD1306_SS));
@@ -172,7 +172,7 @@ void Display_WriteData(const uint8_t Data)
 {
 	SSD1306_SPIM_CHIP_SELECT(GET_PERIPHERAL(SSD1306_SS), GET_INDEX(SSD1306_SS));
 	GPIO_Set(GET_PERIPHERAL(SSD1306_DATA), GET_INDEX(SSD1306_DATA));
-	SSD1306_SPIM_TRANSMIT(&CONCAT(DISPLAY_INTERFACE), Data);
+	SSD1306_SPIM_TRANSMIT(Data);
 	GPIO_Clear(GET_PERIPHERAL(SSD1306_DATA), GET_INDEX(SSD1306_DATA));
 	SSD1306_SPIM_CHIP_DESELECT(GET_PERIPHERAL(SSD1306_SS), GET_INDEX(SSD1306_SS));
 }
