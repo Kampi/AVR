@@ -23,7 +23,7 @@
  */
 
 /** @file Config/Config_AD5933.h
- *  @brief Configuration file for the AD5933 i2c impedance converter.
+ *  @brief Configuration file for the Analog Devices AD5933 I2C impedance converter.
  *
  *  @author Daniel Kampert
  */

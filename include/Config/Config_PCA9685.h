@@ -23,7 +23,7 @@
  */
 
 /** @file Config/Config_PCA9685.h
- *  @brief Configuration file for the PCA9685 PWM controller.
+ *  @brief Configuration file for the NXP PCA9685 I2C PWM controller.
  *
  *  @author Daniel Kampert
  */

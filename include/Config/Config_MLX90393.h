@@ -23,7 +23,7 @@
  */
 
 /** @file Config/Config_MLX90399.h
- *  @brief Configuration file for the MLX90399 magnetic sensor.
+ *  @brief Configuration file for the Melexis MLX90399 I2C magnetic sensor.
  *
  *  @author Daniel Kampert
  */
