@@ -252,10 +252,10 @@
  const I2C_Error_t AD5933_SetIncrements(const uint16_t Increments);
 
  /** @brief			Get the conversion data.
-  *  @param Data	Pointer to complex number
+  *  @param Output	Pointer to output data
   *  @return		I2C error code
   */
- const I2C_Error_t AD5933_GetData(ComplexNumber_t* Data);
+ const I2C_Error_t AD5933_GetData(ComplexNumber_t* Output);
 
  /** @brief			Run a temperature measurement.
   *  @param Temp	Temperature

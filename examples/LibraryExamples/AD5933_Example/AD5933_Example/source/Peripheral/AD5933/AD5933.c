@@ -347,7 +347,7 @@ const I2C_Error_t AD5933_GetGain(AD5933_Gain_t* Gain)
 
 const I2C_Error_t AD5933_ConfigSettling(const uint16_t Cylcles, const AD5933_SettlingMultiplier_t Mult)
 {
-	uint8_t Data[] = {AD5933_CMD_BLOCK_WRITE, 2, (Mult << 0x01) | ((0x100 & Cylcles) >> 0x08), Cylcles & 0xFF};
+	uint8_t Data[4] = {AD5933_CMD_BLOCK_WRITE, 2, (Mult << 0x01) | ((0x100 & Cylcles) >> 0x08), Cylcles & 0xFF};
 
 	return (AD5933_I2CM_WRITEBYTE(AD5933_REGISTER_CYCLES, TRUE) | AD5933_I2CM_WRITEBYTES(sizeof(Data), Data, TRUE));
 }
@@ -355,7 +355,7 @@ const I2C_Error_t AD5933_ConfigSettling(const uint16_t Cylcles, const AD5933_Set
 const I2C_Error_t AD5933_SetStartFrequency(const uint32_t Frequency)
 {
 	uint32_t FrequencyCode = 0x00;
-	uint8_t Data[] = {AD5933_CMD_BLOCK_WRITE, AD5933_SIZE_START_FREQ, 0x00, 0x00, 0x00};
+	uint8_t Data[5] = {AD5933_CMD_BLOCK_WRITE, AD5933_SIZE_START_FREQ, 0x00, 0x00, 0x00};
 
 	// Calculate frequency start code
 	FrequencyCode = (uint32_t)((Frequency / ((AD5933_MCLK * 1000000) / 4.0)) * (float)134217728);
@@ -370,7 +370,7 @@ const I2C_Error_t AD5933_SetStartFrequency(const uint32_t Frequency)
 const I2C_Error_t AD5933_SetFrequencyIncrement(const uint32_t Increment)
 {
 	uint32_t FrequencyIncrementCode = 0x00;
-	uint8_t Data[] = {AD5933_CMD_BLOCK_WRITE, AD5933_SIZE_FREQ_INCR, 0x00, 0x00, 0x00};
+	uint8_t Data[5] = {AD5933_CMD_BLOCK_WRITE, AD5933_SIZE_FREQ_INCR, 0x00, 0x00, 0x00};
 
 	// Calculate frequency increment code
 	FrequencyIncrementCode = (uint32_t)((Increment / ((AD5933_MCLK * 1000000) / 4.0)) * (float)134217728);
@@ -384,7 +384,7 @@ const I2C_Error_t AD5933_SetFrequencyIncrement(const uint32_t Increment)
 
 const I2C_Error_t AD5933_SetIncrements(const uint16_t Increments)
 {
-	uint8_t Data[] = {AD5933_CMD_BLOCK_WRITE, AD5933_SIZE_INCREMENTS, 0x00, 0x00};
+	uint8_t Data[4] = {AD5933_CMD_BLOCK_WRITE, AD5933_SIZE_INCREMENTS, 0x00, 0x00};
 
 	Data[1] = Increments & 0xFF;
 	Data[0] = (Increments >> 0x08) & 0xFF;
@@ -392,9 +392,9 @@ const I2C_Error_t AD5933_SetIncrements(const uint16_t Increments)
 	return (AD5933_I2CM_WRITEBYTE(AD5933_REGISTER_INCREMENTS, TRUE) | AD5933_I2CM_WRITEBYTES(sizeof(Data), Data, TRUE));
 }
 
-const I2C_Error_t AD5933_GetData(ComplexNumber_t* Data)
+const I2C_Error_t AD5933_GetData(ComplexNumber_t* Output)
 {
-	uint8_t Buffer[4];
+	uint8_t Data[4];
 	uint8_t Status = 0x00;
 	I2C_Error_t ErrorCode = I2C_NO_ERROR;
 
@@ -412,23 +412,23 @@ const I2C_Error_t AD5933_GetData(ComplexNumber_t* Data)
 		}
 	}
 	
-	Buffer[0] = AD5933_CMD_BLOCK_READ;
-	Buffer[1] = 4;
-	ErrorCode = AD5933_I2CM_WRITEBYTE(AD5933_REGISTER_REAL, TRUE) | AD5933_I2CM_WRITEBYTES(2, Buffer, FALSE) | AD5933_I2CM_READBYTES(sizeof(Buffer), Buffer, TRUE);
+	Data[0] = AD5933_CMD_BLOCK_READ;
+	Data[1] = 4;
+	ErrorCode = AD5933_I2CM_WRITEBYTE(AD5933_REGISTER_REAL, TRUE) | AD5933_I2CM_WRITEBYTES(2, Data, FALSE) | AD5933_I2CM_READBYTES(sizeof(Data), Data, TRUE);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
 	}
 	
-	Data->Real = (Buffer[0] << 0x08) + Buffer[1];
-	Data->Imag = (Buffer[2] << 0x08) + Buffer[3];
+	Output->Real = (Data[0] << 0x08) + Data[1];
+	Output->Imag = (Data[2] << 0x08) + Data[3];
 	
 	return ErrorCode;
 }
 
 const I2C_Error_t AD5933_ReadTemperature(int16_t* Temperature)
 {
-	uint8_t Buffer[2];
+	uint8_t Data[2];
 	int16_t Temp = 0x00;
 	uint8_t Status = 0x00;
 	I2C_Error_t ErrorCode = I2C_NO_ERROR;
@@ -452,15 +452,15 @@ const I2C_Error_t AD5933_ReadTemperature(int16_t* Temperature)
 		ErrorCode = AD5933_ReadStatus(&Status);
 	}
 
-	Buffer[0] = AD5933_CMD_BLOCK_READ;
-	Buffer[1] = 4;
-	ErrorCode = AD5933_I2CM_WRITEBYTE(AD5933_REGISTER_TEMPERATURE, TRUE) | AD5933_I2CM_WRITEBYTES(2, Buffer, FALSE) | AD5933_I2CM_READBYTES(sizeof(Buffer), Buffer, TRUE);
+	Data[0] = AD5933_CMD_BLOCK_READ;
+	Data[1] = 4;
+	ErrorCode = AD5933_I2CM_WRITEBYTE(AD5933_REGISTER_TEMPERATURE, TRUE) | AD5933_I2CM_WRITEBYTES(2, Data, FALSE) | AD5933_I2CM_READBYTES(sizeof(Data), Data, TRUE);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
 	}
 
-	Temp = (Buffer[0] << 0x08) | Buffer[1];
+	Temp = (Data[0] << 0x08) | Data[1];
 	if(Temp > 0x2000)
 	{
 		Temp -= 0x4000;
