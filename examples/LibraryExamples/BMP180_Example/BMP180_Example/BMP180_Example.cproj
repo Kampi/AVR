@@ -158,12 +158,6 @@
     <Compile Include="source\Arch\XMega\I2C\I2C_Interrupt.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="source\Arch\XMega\USART\USART_Interrupt.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\Arch\XMega\USART\USART_SPI.c">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="source\Peripheral\BMP180\BMP180.c">
       <SubType>compile</SubType>
     </Compile>
@@ -174,7 +168,6 @@
     <Folder Include="source\Arch" />
     <Folder Include="source\Arch\XMega" />
     <Folder Include="source\Arch\XMega\I2C" />
-    <Folder Include="source\Arch\XMega\USART" />
     <Folder Include="source\Peripheral" />
     <Folder Include="source\Peripheral\BMP180" />
   </ItemGroup>
