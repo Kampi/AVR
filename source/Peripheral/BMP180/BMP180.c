@@ -88,7 +88,7 @@
 	 #define BMP180_I2CM_WRITEBYTES(Bytes, Data, Stop)										I2CM_WriteBytes(BMP180_ADDRESS, Bytes, Data, Stop)
 	 #define BMP180_I2CM_READBYTES(Bytes, Data, Stop)										I2CM_ReadBytes(BMP180_ADDRESS, Bytes, Data, Stop)
 #else
-	 #error "Architecture not supported"
+	 #error "Architecture not supported for BMP180!"
 #endif
 
 const I2C_Error_t BMP180_Init(I2CM_Config_t* Config)

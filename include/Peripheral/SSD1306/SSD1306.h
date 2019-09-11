@@ -45,7 +45,6 @@
  */
  #if(MCU_ARCH == MCU_ARCH_XMEGA)
 	 #include "Arch/XMega/ClockManagement/SysClock.h"
-
 	 #if(SSD1306_INTERFACE_TYPE == INTERFACE_USART_SPI)
 		 #include "Arch/XMega/USART/USART.h"
 	 #elif(SSD1306_INTERFACE_TYPE == INTERFACE_SPI)

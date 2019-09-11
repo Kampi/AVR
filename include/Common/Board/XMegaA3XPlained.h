@@ -118,7 +118,7 @@
  */
  #include "Peripheral/AnalogSensors.h"
  #include "Peripheral/ST7565R/ST7565R.h"
- #include "Peripheral/AT45DB642D/AT45DB642D.h"
+ //#include "Peripheral/AT45DB642D/AT45DB642D.h"
  
  /*
 	Services

@@ -104,7 +104,7 @@
 	 #define AD5933_I2CM_WRITEBYTES(Bytes, Data, Stop)										I2CM_WriteBytes(AD5933_ADDRESS, Bytes, Data, Stop)
 	 #define AD5933_I2CM_READBYTES(Bytes, Data, Stop)										I2CM_ReadBytes(AD5933_ADDRESS, Bytes, Data, Stop)
 #else
-	 #error "Architecture not supported"
+	 #error "Architecture not supported fpr AD5933!"
 #endif
 
 static Bool_t UseDegree = FALSE;
