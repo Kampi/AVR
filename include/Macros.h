@@ -30,6 +30,8 @@
 
 #ifndef MACROS_H_
 #define MACROS_H_
+ 
+ #include "Definitions.h"
 
  #define _CONCAT(A, B)								A ## B
  #define _FIRST(A, B)								A
@@ -39,7 +41,13 @@
  #define SECOND_ARG(A)								_SECOND(A)
  #define CONCAT(A)									_CONCAT(A)
 
- #define GET_PERIPHERAL(Arg)						&_FIRST(Arg)
- #define GET_INDEX(Arg)								_SECOND(Arg)
+ #if(MCU_ARCH == MCU_ARCH_XMEGA)
+	 #define GET_PERIPHERAL(Arg)					&_FIRST(Arg)
+	 #define GET_INDEX(Arg)							_SECOND(Arg)
+ #elif(MCU_ARCH == MCU_ARCH_AVR8)
+	 #warning "Must be implemented!"
+ #else
+	 #error "Architecture not supported!"
+ #endif
 
 #endif /* MACROS_H_ */

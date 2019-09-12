@@ -31,9 +31,6 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
- #include "Doxygen.h"
- #include "Macros.h"
-
  /** @defgroup Interfaces
   *  @ingroup Configuration
   *  Interfaces for peripheral devices such as LCDs
@@ -82,5 +79,8 @@
 	#define MCU_ARCH_AVR8										2		/**< AVR8 architecture */ 
 	#define MCU_ARCH_UC3										3		/**< AVR UC3 architecture */ 
  /** @} */ // end of Architecture
+
+ #include "Doxygen.h"
+ #include "Macros.h"
 
 #endif /* DEFINITIONS_H_ */
