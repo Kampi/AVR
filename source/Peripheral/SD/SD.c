@@ -98,16 +98,17 @@
 	/** @} */ // end of Errors
 /** @} */ // end of SD
 
-#if(MCU_ARCH == MCU_ARCH_XMEGA)
-#include "Arch/XMega/ClockManagement/SysClock.h"
-	#if(SD_INTERFACE_TYPE == INTERFACE_USART_SPI)
+ #if(MCU_ARCH == MCU_ARCH_XMEGA)
+ #include "Arch/XMega/ClockManagement/SysClock.h"
+
+#if(SD_INTERFACE_TYPE == INTERFACE_USART_SPI)
 		#define SD_SPIM_INIT(Config)										USART_SPI_Init(Config)
 		#define SD_SPIM_TRANSMIT(Interface, Data)							USART_SPI_SendData(Interface, Data)
 		#define SD_SPIM_SET_CLOCK(Interface, SPIClock, Clock)				USART_SPI_SetClockRate(Interface, SPIClock, Clock, FALSE)
 		#define SD_SPIM_GET_CLOCK(Interface, Clock)							USART_SPI_GetClockRate(Interface, Clock)
 		#define SD_SPIM_CHIP_SELECT(Port, Pin)								USART_SPI_SelectDevice(Port, Pin)
 		#define SD_SPIM_CHIP_DESELECT(Port, Pin)							USART_SPI_DeselectDevice(Port, Pin)
-	#elif(SD_INTERFACE_TYPE == INTERFACE_SPI)
+#elif(SD_INTERFACE_TYPE == INTERFACE_SPI)
 		#define SD_SPIM_INIT(Config)										SPIM_Init(Config)
 		#define SD_SPIM_TRANSMIT(Interface, Data)							SPIM_SendData(Interface, Data)
 		#define SD_SPIM_SET_CLOCK(Interface, SPIClock, Clock)				SPIM_SetClock(Interface, SPIClock, Clock)
@@ -497,8 +498,8 @@ const SD_Error_t SD_Init(SPIM_Config_t* Config)
 	}
 
 	// Use 100 kHz to initialize the card
-	OldFreq = SD_SPIM_GET_CLOCK(&CONCAT(SD_INTERFACE), SysClock_GetClock());
-	SD_SPIM_SET_CLOCK(&CONCAT(SD_INTERFACE), 100000, SysClock_GetClock());
+	OldFreq = SD_SPIM_GET_CLOCK(&CONCAT(SD_INTERFACE), SysClock_GetClockPer());
+	SD_SPIM_SET_CLOCK(&CONCAT(SD_INTERFACE), 100000, SysClock_GetClockPer());
 
 	// Reset the SD card
 	ErrorCode = SD_SoftwareReset();
@@ -515,7 +516,7 @@ const SD_Error_t SD_Init(SPIM_Config_t* Config)
 	}
 
 	// Change the frequency back to the old value
-	SD_SPIM_SET_CLOCK(&CONCAT(SD_INTERFACE), OldFreq, SysClock_GetClock());
+	SD_SPIM_SET_CLOCK(&CONCAT(SD_INTERFACE), OldFreq, SysClock_GetClockPer());
 
 	// Set the block length to 512 (only necessary if the card is not a SDXC or SDHX card)
 	if((__CardType != SD_VER_2_HI) && (__CardType != SD_VER_2_STD))
