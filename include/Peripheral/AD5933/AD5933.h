@@ -28,7 +28,6 @@
  *  This file contains the prototypes and definitions for the AD5933 I2C impedance converter driver.
  *
  *  @author Daniel Kampert
- *  @bug -AVR8 support for AD5933_BlockRead and AD5933_BlockWrite function not implemented
  */
 
 #ifndef AD5933_H_
