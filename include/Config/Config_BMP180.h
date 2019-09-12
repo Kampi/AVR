@@ -23,7 +23,7 @@
  */
 
 /** @file Config/Config_BMP180.h
- *  @brief Configuration file for the Bosch BMP180 i2c pressure sensor.
+ *  @brief Configuration file for the Bosch BMP180 I2C pressure sensor.
  *
  *  @author Daniel Kampert
  */
