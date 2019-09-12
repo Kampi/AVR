@@ -124,13 +124,14 @@
 	 #if(MCU_ARCH == MCU_ARCH_XMEGA)
 		 void* Device;											/**< Pointer to USART-SPI or SPI device object */
 		 uint32_t SPIClock;										/**< SPI clock frequency \n
-																	 NOTE: Only needed when USART-SPI interface is used */
+																	 NOTE: You only need this when you use the USART-SPI interface. */
 	 #endif
 
 	 SPI_Mode_t Mode;											/**< SPI mode */
 	 SPI_DataOrder_t DataOrder;									/**< Data order */
 	 Bool_t EnableDoubleSpeed;									/**< Set #TRUE to enable double speed */
-	 SPI_ClockPrescaler_t Prescaler;							/**< Clock prescaler for SPI module */
+	 SPI_ClockPrescaler_t Prescaler;							/**< Clock prescaler for SPI module 
+																	 NOTE: You only need this when you use the SPI interface. */
  } SPIM_Config_t;
 
  /** @brief SPI slave configuration object.
