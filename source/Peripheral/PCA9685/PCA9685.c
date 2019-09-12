@@ -180,7 +180,7 @@ static const I2C_Error_t PCA9685_SwitchBit(const uint8_t Register, const uint8_t
 	{
 		Data[1] &= ~Mask;
 	}
-	
+
 	return PCA9685_I2CM_WRITEBYTES(sizeof(Data), Data, TRUE);
 }
 
@@ -199,7 +199,7 @@ const I2C_Error_t PCA9685_Init(I2CM_Config_t* Config, const PCA9685_ClockSource_
 	{
 		PCA9685_I2CM_INIT(Config);
 	}
-	
+
 	return PCA9685_SwitchSleep(FALSE) | PCA9685_SetClockSource(Source) | PCA9685_SwitchAutoIncrement(TRUE);
 }
 
@@ -211,7 +211,7 @@ const I2C_Error_t PCA9685_SetOutputChange(const PCA9685_OutputChange_t Mode)
 	{
 		Flag = TRUE;
 	}
-	
+
 	return PCA9685_SwitchBit(PCA9685_REGISTER_MODE2, (0x01 << PCA9685_OCH), Flag); 
 }
 
@@ -252,7 +252,7 @@ const I2C_Error_t PCA9685_SetOutputEnable(const PCA9685_OutputEnable_t Mode)
 		Data[1] &= ~((0x01 << PCA9685_OUTNE1) | (0x01 << PCA9685_OUTNE0));
 		Data[1] |= (0x01 << PCA9685_OUTNE1) | (0x01 << PCA9685_OUTNE0);
 	}
-	
+
 	return PCA9685_I2CM_WRITEBYTES(sizeof(Data), Data, TRUE);
 }
 
@@ -269,7 +269,7 @@ const I2C_Error_t PCA9685_SetClockSource(const PCA9685_ClockSource_t Source)
 	{
 		Flag = FALSE;
 	}
-	
+
 	return PCA9685_SwitchBit(PCA9685_REGISTER_MODE1, (0x01 << PCA9685_EXTCLOCK), Flag);
 }
 
@@ -280,10 +280,10 @@ const I2C_Error_t PCA9685_Restart(void)
 	{
 		return ErrorCode;
 	}
-	
+
 	// Wait a bit
 	for(uint16_t i; i < 0xFFFF; i++);
-	
+
 	return PCA9685_SwitchBit(PCA9685_REGISTER_MODE1, (0x01 << PCA9685_RESTART), TRUE);
 }
 
@@ -329,10 +329,15 @@ const I2C_Error_t PCA9685_GetPrescaler(uint8_t* Prescaler)
 
 const I2C_Error_t PCA9685_SetChannel(const PCA9685_Channel_t Channel, const uint16_t On, const uint16_t Off)
 {
-	uint8_t Data[2];
-
-	// Get the On/Off time value
-	Data[1] = (((uint32_t)Off) << 0x10) | On;
+	/*
+		Message packet
+			0 = Start address (LEDn_ON_L)
+			1 = ON_L value
+			2 = ON_H value
+			3 = OFF_L value
+			4 = OFF_H value
+	*/
+	uint8_t Data[5];
 
 	// Get the PWM channel
 	if(Channel == PCA9685_CHANNEL_ALL)
@@ -343,8 +348,29 @@ const I2C_Error_t PCA9685_SetChannel(const PCA9685_Channel_t Channel, const uint
 	{
 		Data[0] = PCA9685_REGISTER_LED0_ON_L + (Channel << 0x02);
 	}
+
+	// Save the On/Off time
+	Data[1] = On & 0xFF;
+	Data[2] = On >> 0x08;
+	Data[3] = Off & 0xFF;
+	Data[4] = Off >> 0x08;
 	
 	return PCA9685_I2CM_WRITEBYTES(sizeof(Data), Data, TRUE);
+}
+
+const I2C_Error_t PCA9685_SetDuty(const PCA9685_Channel_t Channel, const float Duty)
+{
+	 uint16_t On = 0x00;
+	 uint16_t Off = 0x00;
+
+	if(Duty > 100.0)
+	{
+		return I2C_INVALID_PARAM;
+	}
+
+	Off = (PCA9685_TIME_RANGE / 100.0) * Duty;
+
+	return PCA9685_SetChannel(Channel, On, Off);
 }
 
 #if(defined PCA9685_OE)

@@ -62,6 +62,11 @@
  /*\@}*/
 
  /** 
+  * Max time value for PCA9685
+  */
+ #define PCA9685_TIME_RANGE							4096							
+
+ /** 
   * PCA9685 clock sources
   */
  typedef enum
@@ -220,6 +225,13 @@
   *  @return		I2C error code
   */
  const I2C_Error_t PCA9685_SetChannel(const PCA9685_Channel_t Channel, const uint16_t On, const uint16_t Off);
+
+ /** @brief			Set the duty cycle for a given channel.
+  *  @param	Channel	PWM channel
+  *  @param Duty	Duty cycle (between 0% and 100%)
+  *  @return		I2C error code
+  */
+ const I2C_Error_t PCA9685_SetDuty(const PCA9685_Channel_t Channel, const float Duty);
 
  #if(defined PCA9685_OE)
 	 /** @brief			Enable/Disable the outputs of the PWM controller.

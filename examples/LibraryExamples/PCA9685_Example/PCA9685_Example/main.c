@@ -44,6 +44,14 @@ I2CM_Config_t Config_I2CM = {
 
 int main(void)
 {
+	PCA9685_Init(&Config_I2CM, PCA9685_CLOCK_INT);
+
+	// Create a PWM with a duty cycle of 20% on channel 0
+	PCA9685_SetChannel(0, 409, 1228);
+
+	// Create a PWM with a duty cycle of 33% on channel 1
+	PCA9685_SetDuty(1, 33);
+
     while(1) 
     {
     }
