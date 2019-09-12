@@ -123,7 +123,8 @@
  {
 	 #if(MCU_ARCH == MCU_ARCH_XMEGA)
 		 void* Device;											/**< Pointer to USART-SPI or SPI device object */
-		 uint32_t SPIClock;										/**< SPI clock frequency */
+		 uint32_t SPIClock;										/**< SPI clock frequency \n
+																	 NOTE: Only needed when USART-SPI interface is used */
 	 #endif
 
 	 SPI_Mode_t Mode;											/**< SPI mode */
