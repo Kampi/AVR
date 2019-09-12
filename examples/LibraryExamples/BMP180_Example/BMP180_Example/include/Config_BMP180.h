@@ -33,7 +33,7 @@
 
  #include "Common/Common.h"
  
- #define BMP180_INTERFACE						TWIC 					/**< I2C interface for the BMP180. */
- #define BMP180_CLOCK							100000					/**< I2C clock rate for the BMP180. */
+ #define BMP180_INTERFACE						TWIC 					/**< I2C interface used by the BMP180. */
+ #define BMP180_CLOCK							100000					/**< Clock rate used by the interface. */
 
 #endif /* CONFIG_BMP180_H_ */

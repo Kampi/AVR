@@ -35,8 +35,8 @@
  
  #define WITH_SSD1306															/**< Use the SSD1306 display */
  
- #define SSD1306_INTERFACE_TYPE						INTERFACE_USART_SPI			/**< SPI interface type for the display. */
- #define DISPLAY_INTERFACE							USARTD, 0					/**< SPI interface for the display. */
+ #define SSD1306_INTERFACE_TYPE						INTERFACE_USART_SPI			/**< Interface type used by the display manager. */
+ #define DISPLAY_INTERFACE							USARTD, 0					/**< SPI interface used by display. */
  #define DISPLAY_CLOCK								1000000UL					/**< Display interface speed. */
 
  // OLED interface definitions

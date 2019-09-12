@@ -33,8 +33,8 @@
 
  #include "Common/Common.h"
  
- #define AD5933_INTERFACE						TWIC 					/**< I2C interface for the AD5933. */
- #define AD5933_CLOCK							100000					/**< I2C clock rate for the AD5933. */
+ #define AD5933_INTERFACE						TWIC 					/**< I2C interface used by the AD5933. */
+ #define AD5933_CLOCK							100000					/**< Clock rate used by the interface. */
 
  #define AD5933_CALIBRATIONIMPEDANCE			1000					/**< Calibration impedance for the AD5933. */
  #define AD5933_SWEEP_LENGTH					100						/**< Length of frequency sweep. */

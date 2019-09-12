@@ -34,7 +34,7 @@
  #include "Common/Common.h"
  
  #define MCP2515_INTERFACE_TYPE					INTERFACE_USART_SPI		/**< Interface type for the MCP2515. */
- #define MCP2515_INTERFACE						&SPIC					/**< SPI interface for the MCP2515. */
+ #define MCP2515_INTERFACE						SPIC					/**< SPI interface for the MCP2515. */
  
  #define MCP2515_SS_PORT						&PORTB					/**< MCP2515 SS port. */
  #define MCP2515_SS_PIN							0						/**< MCP2515 SS pin. */
