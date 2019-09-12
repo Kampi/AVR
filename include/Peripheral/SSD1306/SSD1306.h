@@ -50,12 +50,12 @@
 	 #elif(SSD1306_INTERFACE_TYPE == INTERFACE_SPI)
 		 #include "Arch/XMega/SPI/SPI.h"
 	 #else
-		 #error "Invalid interface for SSD1306 display!"
+		 #error "Invalid interface for SSD1306!"
 	 #endif
  #elif(MCU_ARCH == MCU_ARCH_AVR8)
 	 #include "Arch/AVR8/SPI/SPI.h"
  #else
-	  #error "Architecture not supported for SSD1306 display!"
+	  #error "Architecture not supported for SSD1306!"
  #endif
 
  #if(!defined SSD1306_DATA)

@@ -50,12 +50,12 @@
 	 #elif(ST7565R_INTERFACE_TYPE == INTERFACE_SPI)
 		 #include "Arch/XMega/SPI/SPI.h"
 	 #else
-		 #error "Interface not supported for ST7565R display!"
+		 #error "Interface not supported for ST7565R!"
 	 #endif
  #elif(MCU_ARCH == MCU_ARCH_AVR8)
 	 #include "Arch/AVR8/SPI/SPI.h"
  #else
-	  #error "Architecture not supported for ST7565R display!"
+	  #error "Architecture not supported for ST7565R!"
  #endif
 
  #if(!defined ST7565R_SS)

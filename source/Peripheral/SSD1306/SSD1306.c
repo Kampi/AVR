@@ -75,7 +75,7 @@
 		#define SSD1306_SPIM_CHIP_SELECT(Port, Pin)									SPIM_SelectDevice(Port, Pin)
 		#define SSD1306_SPIM_CHIP_DESELECT(Port, Pin)								SPIM_DeselectDevice(Port, Pin)
 	#else
-		#error "Invalid interface for SSD1306 display!"
+		#error "Invalid interface for SSD1306!"
 	#endif
 #elif(MCU_ARCH == MCU_ARCH_AVR8)
 	#define SSD1306_SPIM_INIT(Config)												SPIM_Init(Config)
@@ -83,7 +83,7 @@
 	#define SSD1306_SPIM_CHIP_SELECT(Port, Pin)										SPIM_SelectDevice(Port, Pin)
 	#define SSD1306_SPIM_CHIP_DESELECT(Port, Pin)									SPIM_DeselectDevice(Port, Pin)
 #else
-	#error "Architecture not supported for SSD1306 display!"
+	#error "Architecture not supported for SSD1306!"
 #endif
 
 /** 

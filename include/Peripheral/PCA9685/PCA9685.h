@@ -48,7 +48,7 @@
 	 #include "Arch/AVR8/GPIO/GPIO.h"
 	 #include "Arch/AVR8/I2C/I2C.h"
  #else
-	 #error "Architecture not supported"
+	 #error "Architecture not supported for PCA9685!"
  #endif
  
  /** @ingroup I2C-Addresses */

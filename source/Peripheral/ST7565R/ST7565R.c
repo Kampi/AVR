@@ -96,7 +96,7 @@
 		#define ST7565R_SPIM_CHIP_SELECT(Port, Pin)									SPIM_SelectDevice(Port, Pin)
 		#define ST7565R_SPIM_CHIP_DESELECT(Port, Pin)								SPIM_DeselectDevice(Port, Pin)
 	#else
-		#error "Interface not supported for ST7565R display!"
+		#error "Interface not supported for ST7565R!"
 	#endif
 #elif(MCU_ARCH == MCU_ARCH_AVR8)
 	#define ST7565R_SPIM_INIT(Config)												SPIM_Init(Config)
@@ -106,7 +106,7 @@
     #define ST7565R_SPIM_CHIP_SELECT(Port, Pin)										SPIM_SelectDevice(Port, Pin)
     #define ST7565R_SPIM_CHIP_DESELECT(Port, Pin)									SPIM_DeselectDevice(Port, Pin)
 #else
-	 #error "Architecture not supported for ST7565R display!"
+	 #error "Architecture not supported for ST7565R!"
 #endif
 
 /** @brief			Write a command to the display.
