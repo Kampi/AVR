@@ -50,8 +50,6 @@
  */
 static inline void I2C_InterruptHandler(const uint8_t Device)
 {
-	DisableGlobalInterrupts();
-
 	// Clear interrupt flag
 	TWCR |= 0x01 << TWINT;
 
@@ -59,8 +57,6 @@ static inline void I2C_InterruptHandler(const uint8_t Device)
 	{
 		__I2C_Callbacks[Device].TransferCompleteCallback();
 	}
-
-	EnableGlobalInterrupts();
 }
 
 /*

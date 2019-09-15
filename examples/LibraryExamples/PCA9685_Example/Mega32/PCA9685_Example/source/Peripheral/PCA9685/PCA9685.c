@@ -200,6 +200,10 @@ const I2C_Error_t PCA9685_Init(I2CM_Config_t* Config, const PCA9685_ClockSource_
 		PCA9685_I2CM_INIT(Config);
 	}
 
+	uint8_t Data[2] = {PCA9685_REGISTER_MODE1, 0x00};
+
+	PCA9685_I2CM_WRITEBYTE(Data[0], FALSE) | PCA9685_I2CM_READBYTE(&Data[1], TRUE);
+
 	return PCA9685_SwitchSleep(FALSE) | PCA9685_SetClockSource(Source) | PCA9685_SwitchAutoIncrement(TRUE);
 }
 
