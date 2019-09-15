@@ -41,14 +41,14 @@
  */
  #include "Common/Board/MCU/ATmega32.h"
  
- #include "Arch/AVR8/ATmega/ADC/ADC.h"
- #include "Arch/AVR8/ATmega/CPU/CPU.h"
- #include "Arch/AVR8/ATmega/I2C/I2C.h"
- #include "Arch/AVR8/ATmega/SPI/SPI.h"
- #include "Arch/AVR8/ATmega/GPIO/GPIO.h"
- #include "Arch/AVR8/ATmega/USART/USART.h"
- #include "Arch/AVR8/ATmega/Timer0/Timer0.h"
- #include "Arch/AVR8/ATmega/Timer1/Timer1.h"
- #include "Peripheral/MCP2515/MCP2515.h"
+ #include "Arch/AVR8/ADC/ADC.h"
+ #include "Arch/AVR8/CPU/CPU.h"
+ #include "Arch/AVR8/I2C/I2C.h"
+ #include "Arch/AVR8/SPI/SPI.h"
+ #include "Arch/AVR8/GPIO/GPIO.h"
+ #include "Arch/AVR8/USART/USART.h"
+ #include "Arch/AVR8/Timer0/Timer0.h"
+ #include "Arch/AVR8/Timer1/Timer1.h"
+ //#include "Peripheral/MCP2515/MCP2515.h"
 
 #endif /* CAN_NODE_H_ */

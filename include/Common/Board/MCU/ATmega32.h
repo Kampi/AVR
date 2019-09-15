@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: MCU definitions for Atmel Mega32.
+ *  File info: MCU specific definitions for the ATmega32.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -59,12 +59,12 @@
  #define ADC_PORT										&PORTA
  
  /*
-	I2C
+	TWI
  */
- #define I2C_DEVICES									1
- #define I2C_SCL										0
- #define I2C_SDA										1
- #define I2C_PORT										&PORTC
+ #define TWI_DEVICES									1
+ #define TWI_SCL										0
+ #define TWI_SDA										1
+ #define TWI_PORT										&PORTC
  
  /*
 	SPI

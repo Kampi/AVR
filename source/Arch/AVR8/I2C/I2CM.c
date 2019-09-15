@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for AVR8 I2C Interface
+ *  File info: Driver for AVR8 I2C module in master mode.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,15 +22,15 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file AVR8/I2C/I2C.c
- *  @brief Driver for AVR8 I2C module.
+/** @file Arch/AVR8/I2C/I2C.c
+ *  @brief Driver for AVR8 I2C module in master mode.
  *
  *  This contains the implementation of the AVR8 I2C driver.
  *
  *  @author Daniel Kampert
  */
 
-#include "AVR8/ATmega/I2C/I2C.h"
+#include "Arch/AVR8/I2C/I2C.h"
 
 #ifndef DOXYGEN
 	struct
@@ -47,16 +47,72 @@
 static inline void I2C_InterruptHandler(const uint8_t Device)
 {
 	DisableGlobalInterrupts();
-	
+
 	// Clear interrupt flag
 	TWCR |= 0x01 << TWINT;
-	
+
 	if(I2C_Callbacks[Device].TransferCompleteCallback != NULL)
 	{
 		I2C_Callbacks[Device].TransferCompleteCallback();
 	}
-	
+
 	EnableGlobalInterrupts();
+}
+
+/** @brief	Send a start condition.
+ *  @return	I2C error code
+ */
+I2C_Status_t I2C_SendStart(void)
+{
+	TWCR = (0x01 << TWINT) | (0x01 << TWEN) | (0x01 << TWSTA);
+
+	while(!(TWCR & (0x01 << TWINT)));
+
+	return I2C_ReadStatus();
+}
+
+/** @brief		Send a single byte.
+ *  @param Data	Data byte
+ *  @return		I2C error code
+ */
+I2C_Status_t I2C_SendByte(const uint8_t Data)
+{
+	TWDR = Data;
+	TWCR = (0x01 << TWINT) | (0x01 << TWEN);
+
+	while(!(TWCR & (0x01 << TWINT)));
+
+	return I2C_ReadStatus();
+}
+
+/** @brief		Read a single byte.
+ *  @param NACK	#TRUE if a NACK should be send instead of an ACK
+ *  @return		Data byte
+ */
+uint8_t I2C_ReadByte(const Bool_t NACK)
+{
+	if(NACK == TRUE)
+	{
+		TWCR = (0x01 << TWINT) | (0x01 << TWEN);
+	}
+	else
+	{
+		TWCR = (0x01 << TWINT) | (0x01 << TWEN) | (0x01 << TWEA);
+	}
+
+	while(!(TWCR & (0x01 << TWINT)));
+
+	return TWDR;
+}
+
+/** @brief	Send a stop condition.
+ */
+static void I2C_SendStop(void)
+{
+	TWCR = (0x01 << TWINT) | (0x01 << TWEN) | (0x01 << TWSTO);
+
+	// Wait a bit to reduce errors when a Start-Condition follows a Stop-Condition
+	for(uint8_t Delay = 0x00; Delay < 0xFF; Delay++);
 }
 
 void I2CM_Init(I2CM_Config_t* Config)
@@ -127,49 +183,6 @@ void I2C_RemoveCallback(const I2C_CallbackType_t Callback)
 	TWCR &= ~(0x01 << TWIE);
 }
 
-void I2C_SendStop(void)
-{
-	TWCR = (0x01 << TWINT) | (0x01 << TWEN) | (0x01 << TWSTO);
-
-	// Wait a bit to reduce errors when a Start-Condition follows a Stop-Condition
-	for(uint8_t Delay = 0x00; Delay < 0xFF; Delay++);
-}
-
-I2C_Status_t I2C_SendStart(void)
-{
-	TWCR = (0x01 << TWINT) | (0x01 << TWEN) | (0x01 << TWSTA);
-
-	while(!(TWCR & (0x01 << TWINT)));
-
-	return I2C_ReadStatus();
-}
-
-I2C_Status_t I2C_SendByte(const uint8_t Data)
-{
-	TWDR = Data;
-	TWCR = (0x01 << TWINT) | (0x01 << TWEN);
-
-	while(!(TWCR & (0x01 << TWINT)));
-
-	return I2C_ReadStatus();
-}
-
-uint8_t I2C_ReadByte(Bool_t NACK)
-{
-	if(NACK == TRUE)
-	{
-		TWCR = (0x01 << TWINT) | (0x01 << TWEN);
-	}
-	else
-	{
-		TWCR = (0x01 << TWINT) | (0x01 << TWEN) | (0x01 << TWEA);
-	}
-	
-	while(!(TWCR & (0x01 << TWINT)));
-
-	return TWDR;
-}
-
 void I2CM_EnableInterruptSupport(void)
 {
 	// ToDo
@@ -190,52 +203,34 @@ void I2CS_DisableInterruptSupport(void)
 	// ToDo
 }
 
-
-I2C_Error_t I2CM_WriteRegister(const uint8_t Address, const uint8_t Register, const uint8_t Data)
+I2C_Error_t I2CM_WriteByte(const uint8_t Address, const uint8_t Data, const Bool_t Stop)
 {
 	if(I2C_SendStart() != I2C_START_SEND)
 	{
 		return I2C_START_ERROR;
 	}
-	
+
 	if(I2C_SendByte(I2C_WRITE(Address)) != I2C_ADDR_ACK_W_RECEIVED)
 	{
 		return I2C_WRITE_ADDR_ERROR;
-	}
-	
-	if(I2C_SendByte(Register) != I2C_DATA_ACK_W_RECEIVED)
-	{
-		return I2C_DATA_ERROR;
 	}
 
 	if(I2C_SendByte(Data) != I2C_DATA_ACK_W_RECEIVED)
 	{
-		return I2C_DATA_ERROR;
+		return I2C_BUS_ERROR;
 	}
-	
-	I2C_SendStop();
-	
+
+	if(Stop == TRUE)
+	{
+		I2C_SendStop();
+	}
+
 	return I2C_NO_ERROR;
 }
 
-I2C_Error_t I2CM_ReadRegister(const uint8_t Address, const uint8_t Register, uint8_t *Data)
+I2C_Error_t I2CM_ReadByte(const uint8_t Address, uint8_t* Data, const Bool_t Stop)
 {
 	if(I2C_SendStart() != I2C_START_SEND)
-	{
-		return I2C_START_ERROR;
-	}
-
-	if(I2C_SendByte(I2C_WRITE(Address)) != I2C_ADDR_ACK_W_RECEIVED)
-	{
-		return I2C_WRITE_ADDR_ERROR;
-	}
-
-	if(I2C_SendByte(Register) != I2C_DATA_ACK_W_RECEIVED)
-	{
-		return I2C_DATA_ERROR;
-	}
-
-	if(I2C_SendStart() != I2C_REP_START_SEND)
 	{
 		return I2C_START_ERROR;
 	}
@@ -247,77 +242,86 @@ I2C_Error_t I2CM_ReadRegister(const uint8_t Address, const uint8_t Register, uin
 
 	*Data = I2C_ReadByte(TRUE);
 
-	I2C_SendStop();
+	if(Stop == TRUE)
+	{
+		I2C_SendStop();
+	}
 
 	return I2C_NO_ERROR;
 }
 
-I2C_Error_t I2CM_WriteBytes(const uint8_t Address, const uint8_t Register, const uint8_t Length, const uint8_t* Data)
+I2C_Error_t I2CM_WriteBytes(const uint8_t Address, const uint8_t Register, const uint8_t Length, const uint8_t* Data, const Bool_t Stop)
 {
 	if(I2C_SendStart() != I2C_START_SEND)
 	{
 		return I2C_START_ERROR;
 	}
-	
+
 	if(I2C_SendByte(I2C_WRITE(Address)) != I2C_ADDR_ACK_W_RECEIVED)
 	{
 		return I2C_WRITE_ADDR_ERROR;
 	}
-	
+
 	if(I2C_SendByte(Register) != I2C_DATA_ACK_W_RECEIVED)
 	{
-		return I2C_DATA_ERROR;
+		return I2C_BUS_ERROR;
 	}
 
 	for(uint8_t i = 0x00; i < Length; i++)
 	{
 		if(I2C_SendByte(*Data++) != I2C_DATA_ACK_W_RECEIVED)
 		{
-			return I2C_DATA_ERROR;
+			return I2C_BUS_ERROR;
 		}
 	}
-	
-	I2C_SendStop();
-	
+
+	if(Stop == TRUE)
+	{
+		I2C_SendStop();
+	}
+
 	return I2C_NO_ERROR;
 }
 
-I2C_Error_t I2CM_ReadBytes(const uint8_t Address, const uint8_t Register, const uint8_t Length, uint8_t* Data)
+I2C_Error_t I2CM_ReadBytes(const uint8_t Address, const uint8_t Register, const uint8_t Length, uint8_t* Data, const Bool_t Stop)
 {
 	if(I2C_SendStart() != I2C_START_SEND)
 	{
 		return I2C_START_ERROR;
 	}
-	
+
 	if(I2C_SendByte(I2C_WRITE(Address)) != I2C_ADDR_ACK_W_RECEIVED)
 	{
 		return I2C_WRITE_ADDR_ERROR;
 	}
-	
+
 	if(I2C_SendByte(Register) != I2C_DATA_ACK_W_RECEIVED)
 	{
-		return I2C_DATA_ERROR;
+		return I2C_BUS_ERROR;
 	}
-	
+
 	if(I2C_SendStart() != I2C_REP_START_SEND)
 	{
 		return I2C_START_ERROR;
 	}
-	
+
 	if(I2C_SendByte(I2C_READ(Address)) != I2C_ADDR_ACK_R_RECEIVED)
 	{
 		return I2C_READ_ADDR_ERROR;
 	}
-	
-	for(uint8_t i = 0x00; i < (Length - 1); i++)
+
+	for(uint8_t i = 0x00; i < (Length - 0x01); i++)
 	{
 		*Data++ = I2C_ReadByte(FALSE);
 	}
 
 	*Data = I2C_ReadByte(TRUE);
-	
-	I2C_SendStop();
-	
+
+	if(Stop == TRUE)
+	{
+		I2C_SendStop();
+	}
+
 	return I2C_NO_ERROR;
 }
 

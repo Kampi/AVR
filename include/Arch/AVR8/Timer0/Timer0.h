@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for AVR 8-Bit Timer0
+ *  File info: Driver for AVR8 Timer0 module.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file include/Arch/AVR8/ATmega/Timer0/Timer0.h
+/** @file Arch/AVR8/Timer0/Timer0.h
  *  @brief Driver for AVR8 Timer0 module.
  *
  *  This contains the prototypes and definitions for the AVR8 Timer0 driver.
@@ -40,7 +40,7 @@
 	#error "No valid mcu"
  #endif
  
- #include "Arch/AVR8/ATmega/CPU/CPU.h"
+ #include "Arch/AVR8/CPU/CPU.h"
  
  #include "Base/Timer_Base.h"
  
@@ -54,7 +54,7 @@
 	 uint8_t Period;										/**< Timer period 
 																 NOTE: You have to set it once. The timer get reloaded during each interrupt. */ 
 	 uint8_t Compare;										/**< Compare value
-																 NOTE: ONly needed if you use the *CompareOutput. */ 
+																 NOTE: ONly needed if you use the #CompareOutput. */ 
  } Timer0_Config_t;
 
  /** 
@@ -65,9 +65,9 @@
 	 Timer_Prescaler_t Prescaler;							/**< CTimer clock prescaler */ 
 	 Timer_CompareOutput_t CompareOutput;					/**< Compare output settings */
 	 Timer_Mode_t Mode;										/**< Timer mode for waveform generation */
-	 uint8_t Period;										/**< Timer period  */
+	 uint8_t Period;										/**< Timer period */
 	 uint8_t Compare;										/**< Compare value
-																 NOTE: ONly needed if you use the *CompareOutput. */ 
+																 NOTE: ONly needed if you use the #CompareOutput. */ 
  } Timer0_WaveConfig_t;
 
  /** 
@@ -182,7 +182,7 @@
   */
  void Timer0_WaveInit(Timer0_WaveConfig_t* Config);
 
- /** @brief			Install a new callback for the Timer 0.
+ /** @brief			Install a new callback for the Timer0.
   *  @param Config	Pointer to configuration structure
   */
  void Timer0_InstallCallback(Timer0_InterruptConfig_t* Config);

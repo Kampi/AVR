@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Common Definitions for I2C Interface of all AVR8 MCUs
+ *  File info: Common definitions for AVR TWI.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file I2C_Base.h
+/** @file Base/I2C_Base.h
  *  @brief Common definitions for AVR TWI.
  *
  *  @author Daniel Kampert

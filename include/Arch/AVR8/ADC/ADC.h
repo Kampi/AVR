@@ -31,7 +31,7 @@
 	 #error "No valid mcu"
  #endif
 
- #include "Arch/AVR8/ATmega/CPU/CPU.h"
+ #include "Arch/AVR8/CPU/CPU.h"
 
  #include "Base/ADC_Base.h"
 

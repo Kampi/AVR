@@ -49,6 +49,16 @@
  #include "Base/GPIO_Base.h"
 
  /** 
+  * I/O Ports
+  */
+ typedef struct
+ {
+	 uint8_t IN;										/* I/O port Input */
+	 uint8_t DIR;										/* I/O Port Data Direction */
+	 uint8_t OUT;										/* I/O Port Output */
+ } PORT_t;
+
+ /** 
   * GPIO interrupt channels
   */
  typedef enum
@@ -68,7 +78,19 @@
 	GPIO_SENSE_FALLING = 0x02,							/**< Sense falling edge only */
 	GPIO_SENSE_RISING = 0x03,							/**< Sense rising edge only */ 
  } GPIO_InputSense_t;
- 
+
+ #undef PORTA
+ #define PORTA                 (*(PORT_t *) 0x39)
+
+ #undef PORTB
+ #define PORTB                 (*(PORT_t *) 0x36)
+
+ #undef PORTC
+ #define PORTC                 (*(PORT_t *) 0x33)
+
+ #undef PORTD
+ #define PORTD                 (*(PORT_t *) 0x30)
+
  /** 
   * GPIO interrupt configuration object
   */
@@ -84,35 +106,27 @@
   *  @param Pin			Pin number
   *  @param Direction	I/O Direction
   */
- static inline void GPIO_SetDirection(volatile uint8_t* Port, uint8_t Pin, GPIO_Direction_t Direction) __attribute__ ((always_inline));
- static inline void GPIO_SetDirection(volatile uint8_t* Port, uint8_t Pin, GPIO_Direction_t Direction)
+ static inline void GPIO_SetDirection(PORT_t* Port, const uint8_t Pin, const GPIO_Direction_t Direction) __attribute__ ((always_inline));
+ static inline void GPIO_SetDirection(PORT_t* Port, const uint8_t Pin, const GPIO_Direction_t Direction)
  {
 	 if(Direction == GPIO_DIRECTION_IN)
 	 {
-		 *(Port - 0x01) &= ~(0x01 << Pin);
+		 Port->DIR &= ~(0x01 << Pin);
 	 }
 	 else if(Direction == GPIO_DIRECTION_OUT)
 	 {
-		 *(Port - 0x01) |= 0x01 << Pin;
+		 Port->DIR |= 0x01 << Pin;
 	 }
  }
 
- /** @brief				Toggle the direction of an I/O.
-  *  @param Port		Pointer to port object
-  *  @param Pin			Pin number
-  *  @param Direction	I/O Direction
+ /** @brief			Toggle the direction of an I/O.
+  *  @param Port	Pointer to port object
+  *  @param Pin		Pin number
   */
- static inline void GPIO_ToggleDirection(volatile uint8_t* Port, uint8_t Pin, GPIO_Direction_t Direction) __attribute__ ((always_inline));
- static inline void GPIO_ToggleDirection(volatile uint8_t* Port, uint8_t Pin, GPIO_Direction_t Direction)
+ static inline void GPIO_ToggleDirection(PORT_t* Port, const uint8_t Pin) __attribute__ ((always_inline));
+ static inline void GPIO_ToggleDirection(PORT_t* Port, const uint8_t Pin)
  {
-	 if(*(Port - 0x01) & (0x01 << Pin))
-	 {
-		 *(Port - 0x01) |= 0x01 << Pin;
-	 }
-	 else
-	 {
-		 *(Port - 0x01) &= ~(0x01 << Pin);
-	 }
+	 Port->DIR ^= 0x01 << Pin;
  }
 
  /** @brief			Read the value of an I/O.
@@ -120,53 +134,46 @@
   *  @param Pin		Pin number
   *  @return		I/O state
   */
- static inline Bool_t GPIO_Read(volatile uint8_t* Port, uint8_t Pin) __attribute__ ((always_inline));
- static inline Bool_t GPIO_Read(volatile uint8_t* Port, uint8_t Pin)
+ static inline Bool_t GPIO_Read(PORT_t* Port, const uint8_t Pin) __attribute__ ((always_inline));
+ static inline Bool_t GPIO_Read(PORT_t* Port, const uint8_t Pin)
  {
-	 return (*(Port - 0x02) & (0x01 << Pin)) >> Pin;
+	 return (Port->IN & (0x01 << Pin)) >> Pin;
  }
 
  /** @brief			Set an I/O to high state or enable pull up if the I/O is configured as input.
   *  @param Port	Pointer to port object
   *  @param Pin		Pin number
   */
- static inline void GPIO_Set(volatile uint8_t* Port, uint8_t Pin) __attribute__ ((always_inline));
- static inline void GPIO_Set(volatile uint8_t* Port, uint8_t Pin)
+ static inline void GPIO_Set(PORT_t* Port, const uint8_t Pin) __attribute__ ((always_inline));
+ static inline void GPIO_Set(PORT_t* Port, const uint8_t Pin)
  {
-	 *Port |= 0x01 << Pin;
+	 Port->OUT |= 0x01 << Pin;
  }
 
  /** @brief			Clear an I/O.
   *  @param Port	Pointer to port object
   *  @param Pin		Pin number
   */
- static inline void GPIO_Clear(volatile uint8_t* Port, uint8_t Pin) __attribute__ ((always_inline));
- static inline void GPIO_Clear(volatile uint8_t* Port, uint8_t Pin)
+ static inline void GPIO_Clear(PORT_t* Port, const uint8_t Pin) __attribute__ ((always_inline));
+ static inline void GPIO_Clear(PORT_t* Port, const uint8_t Pin)
  {
-	 *Port &= ~(0x01 << Pin);
+	 Port->OUT &= ~(0x01 << Pin);
  }
 
  /** @brief			Toggle an I/O.
   *  @param Port	Pointer to port object
   *  @param Pin		Pin number
   */
- static inline void GPIO_Toggle(volatile uint8_t* Port, uint8_t Pin) __attribute__ ((always_inline));
- static inline void GPIO_Toggle(volatile uint8_t* Port, uint8_t Pin)
+ static inline void GPIO_Toggle(PORT_t* Port, const uint8_t Pin) __attribute__ ((always_inline));
+ static inline void GPIO_Toggle(PORT_t* Port, const uint8_t Pin)
  {
-	 if(*Port | (0x01 << Pin))
-	 {
-		 GPIO_Clear(Port, Pin);
-	 }
-	 else
-	 {
-		 GPIO_Set(Port, Pin);
-	 }
+	 Port->OUT ^= (0x01 << Pin);
  }
 
  /** @brief			Install a new GPIO interrupt callback.
   *  @param Config	Pointer to configuration structure.
   */
- void GPIO_InstallCallback(GPIO_InterruptConfig_t* Config);
+ void GPIO_InstallCallback(const GPIO_InterruptConfig_t* Config);
  
  /** @brief				Remove an installed callback.
   *  @param Channel		Interrupt channel

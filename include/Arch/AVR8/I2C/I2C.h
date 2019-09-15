@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file include/Arch/AVR8/I2C/I2C.h
+/** @file Arch/AVR8/I2C/I2C.h
  *  @brief Driver for AVR8 I2C module.
  *
  *  This contains the prototypes and definitions for the AVR8 I2C driver.
@@ -49,9 +49,18 @@
  typedef struct
  {
 	 I2C_ClockPrescaler_t Prescaler;			/**< Clock prescaler */ 
-	 uint32_t BitRate;							/**< I2C bus frequency */
-	 Bool_t EnableInterruptSupport;				/**< Set to *TRUE to enable interrupt support in master mode */
+	 uint32_t Bitrate;							/**< I2C bus frequency */
+	 Bool_t EnableInterruptSupport;				/**< Set to #TRUE to enable interrupt support */
  } I2CM_Config_t;
+
+ /** 
+  * I2C slave configuration object
+  */
+ typedef struct
+ {
+	 uint8_t Address;							/**< Device address */
+	 Bool_t EnableInterruptSupport;				/**< Set to #TRUE to enable interrupt support in slave mode */
+ } I2CS_Config_t;
 
  typedef enum
  {
@@ -68,6 +77,9 @@
 	I2C_DATA_NACK_R_RECEIVED = 0x58,
  } I2C_Status_t;
 
+ /*
+	Common functions
+ */
 
  /** @brief	Enable the device.
   */
@@ -143,26 +155,25 @@
   */
  void I2C_SwitchPullUp(const Bool_t Enable);
 
- /** @brief	Send a stop condition.
-  */
- void I2CM_SendStop(void);
-	
- /** @brief	Send a start condition.
-  *  @return	I2C error code
-  */
- I2C_Status_t I2CM_SendStart(void);
+ /*
+	Master functions
+ */
 
- /** @brief			Send a single byte.
-  *  @param Data	Data byte
-  *  @return		I2C error code
+ /** @brief				Write a single byte with the TWI.
+  *  @param Address		Slave address
+  *  @param Data		Pointer to data
+  *  @param Stop		Set to #FALSE to send a repeated start instead of stop
+  *  @return			I2C error
   */
- I2C_Status_t I2CM_SendByte(const uint8_t Data);
+ I2C_Error_t I2CM_WriteByte(const uint8_t Address, const uint8_t Data, const Bool_t Stop);
 
- /** @brief			Read a single byte.
-  *  @param NACK	*TRUE if a NACK should be sended instead of an ACK
-  *  @return		Data byte
+ /** @brief				Read a single byte from the TWI.
+  *  @param Address		Slave address
+  *  @param Data		Pointer to data
+  *  @param Stop		Set to #FALSE to send a repeated start instead of stop
+  *  @return			I2C error
   */
- uint8_t I2CM_ReadByte(const Bool_t NACK);
+ I2C_Error_t I2CM_ReadByte(const uint8_t Address, uint8_t* Data, const Bool_t Stop);
 
  /** @brief			Enable interrupt support for master mode.
   *  @param Device	Pointer to TWI object
@@ -178,23 +189,49 @@
  /** @brief				Write n bytes with the TWI.
   *  @param Device		Pointer to TWI object
   *  @param Address		Slave address
-  *  @param Register	Register address
   *  @param Length		Byte count
   *  @param Data		Pointer to data
-  *  @param Repeat		Set to #TRUE to send a repeated start instead of stop
+  *  @param Stop		Set to #TRUE to send a repeated start instead of stop
   *  @return			I2C error
   */
- I2C_Error_t I2CM_WriteBytes(const uint8_t Address, const uint8_t Register, const uint8_t Length, const uint8_t* Data, const Bool_t Repeat);
+ I2C_Error_t I2CM_WriteBytes(const uint8_t Address, const uint8_t Length, const uint8_t* Data, const Bool_t Stop);
 
  /** @brief				Read n bytes from the TWI.
   *  @param Device		Pointer to TWI object
   *  @param Address		Slave address
-  *  @param Register	Register address
   *  @param Length		Byte count
   *  @param Data		Pointer to data
-  *  @param Repeat		Set to #TRUE to send a repeated start instead of stop
+  *  @param Stop		Set to #TRUE to send a repeated start instead of stop
   *  @return			I2C error
   */
- I2C_Error_t I2CM_ReadBytes(const uint8_t Address, const uint8_t Register, const uint8_t Length, uint8_t* Data, const Bool_t Repeat);
+ I2C_Error_t I2CM_ReadBytes(const uint8_t Address, const uint8_t Length, uint8_t* Data, const Bool_t Stop);
+
+ /*
+	Slave functions
+ */
+
+ /** @brief			Initialize a TWI slave interface.
+  *					NOTE: The slave interface needs interrupts to work properly!
+  *  @param Config	Pointer to TWI configuration object
+  */
+ void I2CS_Init(I2CS_Config_t* Config);
+
+ /** @brief			Set the address (including R/W bit) of the TWI slave mode.
+  *  @param Address	Slave address
+  */
+ static inline void I2CS_SetAddress(const uint8_t Address) __attribute__((always_inline));
+ static inline void I2CS_SetAddress(const uint8_t Address)
+ {
+	 TWAR = ((Address & 0x7F) << 0x01);
+ }
+
+ /** @brief			Enable/Disable general call recognition.
+  *  @param Enable	Enable/Disable
+  */
+ static inline void I2CS_SwitchGeneralCall(const Bool_t Enable) __attribute__((always_inline));
+ static inline void I2CS_SwitchGeneralCall(const Bool_t Enable)
+ {
+	 TWAR |= (TWAR & (~0x01)) | Enable;
+ }
 
 #endif /* I2C_H_ */

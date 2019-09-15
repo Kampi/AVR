@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Base definitions for Atmel AVR ADC
+ *  File info: Base definitions for Atmel AVR ADC.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,8 +22,8 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file ADC_Base.h
- *  @brief Common definitions for AVR ADC.
+/** @file Base/ADC_Base.h
+ *  @brief Base definitions for Atmel AVR ADC.
  *
  *  @author Daniel Kampert
  */

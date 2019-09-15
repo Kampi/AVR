@@ -41,7 +41,7 @@
 	#elif(BOARD == BOARD_XMEGA384C3_XPLAINED)
 		#include "Common/Board/XMegaC3XPlained.h"
 	#elif(BOARD == BOARD_CAN_NODE)
-		#include "Common/Board/can_node.h"
+		#include "Common/Board/CANNode.h"
 	#elif(BOARD == BOARD_RN_CONTROL)
 		#include "Common/Board/RNControl.h"
 	#elif(BOARD == BOARD_AT90USBKEY)

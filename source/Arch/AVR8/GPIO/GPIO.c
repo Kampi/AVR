@@ -30,7 +30,7 @@
  *  @author Daniel Kampert
  */
 
-#include "AVR8/ATmega/GPIO/GPIO.h"
+#include "Arch/AVR8/GPIO/GPIO.h"
 
 #ifndef DOXYGEN
 	static struct
@@ -69,20 +69,20 @@ static void GPIO_InterruptHandler(const GPIO_InterruptChannel_t Channel)
 	}
 }
 
-void GPIO_InstallCallback(GPIO_InterruptConfig_t* Config)
+void GPIO_InstallCallback(const GPIO_InterruptConfig_t* Config)
 {		
 	if(Config->Channel == GPIO_INTERRUPT_0)
 	{
 		GPIO_Callbacks.Int0 = Config->Callback;
 
-		MCUCR |= Config->Type;
+		MCUCR |= Config->Sense;
 		GICR |= (0x01 << INT0);
 	}
 	else if(Config->Channel == GPIO_INTERRUPT_1)
 	{
 		GPIO_Callbacks.Int1 = Config->Callback;
 		
-		MCUCR |= (Config->Type << 0x02);
+		MCUCR |= (Config->Sense << 0x02);
 		GICR |= (0x01 << INT1);
 	}
 	else if(Config->Channel == GPIO_INTERRUPT_2)

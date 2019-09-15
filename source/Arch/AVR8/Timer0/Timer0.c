@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for AVR8 8-Bit Timer0
+ *  File info: Driver for AVR8 Timer0 module.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -30,7 +30,7 @@
  *  @author Daniel Kampert
  */
 
-#include "AVR8/ATmega/Timer0/Timer0.h"
+#include "Arch/AVR8/Timer0/Timer0.h"
 
 #ifndef DOXYGEN
 	struct
