@@ -62,6 +62,9 @@
 	 Bool_t EnableInterruptSupport;				/**< Set to #TRUE to enable interrupt support in slave mode */
  } I2CS_Config_t;
 
+ /** 
+  * I2C status codes
+  */
  typedef enum
  {
 	I2C_START_SEND = 0x08,
@@ -143,13 +146,13 @@
   */
  void I2CM_Init(I2CM_Config_t* Config);
 
-/** @brief				Set the bit rate for the TWI.
+ /** @brief				Set the bit rate for the TWI.
   *  @param BitRate		Bit rate
   *  @param Prescaler	Prescaler
   *  @param Clock		TWI module clock
   */
  void I2CM_SetBaudrate(const uint32_t BitRate, const uint8_t Prescaler, const uint32_t Clock);
- 
+
  /** @brief			Enable/Disable internal pull ups for the TWI.
   *  @param Enable	Enable/Disable
   */
@@ -159,19 +162,19 @@
 	Master functions
  */
 
- /** @brief				Write a single byte with the TWI.
-  *  @param Address		Slave address
-  *  @param Data		Pointer to data
-  *  @param Stop		Set to #FALSE to send a repeated start instead of stop
-  *  @return			I2C error
+ /** @brief			Write a single byte with the TWI.
+  *  @param Address	Slave address
+  *  @param Data	Pointer to data
+  *  @param Stop	Set to #FALSE to send a repeated start instead of stop
+  *  @return		I2C error
   */
  I2C_Error_t I2CM_WriteByte(const uint8_t Address, const uint8_t Data, const Bool_t Stop);
 
- /** @brief				Read a single byte from the TWI.
-  *  @param Address		Slave address
-  *  @param Data		Pointer to data
-  *  @param Stop		Set to #FALSE to send a repeated start instead of stop
-  *  @return			I2C error
+ /** @brief			Read a single byte from the TWI.
+  *  @param Address	Slave address
+  *  @param Data	Pointer to data
+  *  @param Stop	Set to #FALSE to send a repeated start instead of stop
+  *  @return		I2C error
   */
  I2C_Error_t I2CM_ReadByte(const uint8_t Address, uint8_t* Data, const Bool_t Stop);
 
@@ -186,23 +189,23 @@
   */
  void I2CM_DisableInterruptSupport(void);
 
- /** @brief				Write n bytes with the TWI.
-  *  @param Device		Pointer to TWI object
-  *  @param Address		Slave address
-  *  @param Length		Byte count
-  *  @param Data		Pointer to data
-  *  @param Stop		Set to #TRUE to send a repeated start instead of stop
-  *  @return			I2C error
+ /** @brief			Write n bytes with the TWI.
+  *  @param Device	Pointer to TWI object
+  *  @param Address	Slave address
+  *  @param Length	Byte count
+  *  @param Data	Pointer to data
+  *  @param Stop	Set to #TRUE to send a repeated start instead of stop
+  *  @return		I2C error
   */
  I2C_Error_t I2CM_WriteBytes(const uint8_t Address, const uint8_t Length, const uint8_t* Data, const Bool_t Stop);
 
- /** @brief				Read n bytes from the TWI.
-  *  @param Device		Pointer to TWI object
-  *  @param Address		Slave address
-  *  @param Length		Byte count
-  *  @param Data		Pointer to data
-  *  @param Stop		Set to #TRUE to send a repeated start instead of stop
-  *  @return			I2C error
+ /** @brief			Read n bytes from the TWI.
+  *  @param Device	Pointer to TWI object
+  *  @param Address	Slave address
+  *  @param Length	Byte count
+  *  @param Data	Pointer to data
+  *  @param Stop	Set to #TRUE to send a repeated start instead of stop
+  *  @return		I2C error
   */
  I2C_Error_t I2CM_ReadBytes(const uint8_t Address, const uint8_t Length, uint8_t* Data, const Bool_t Stop);
 
