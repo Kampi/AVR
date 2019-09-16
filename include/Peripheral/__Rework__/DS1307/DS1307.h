@@ -34,24 +34,25 @@
 
 #ifndef DS1307_H_
 #define DS1307_H_
- 
- #include "Board.h"
 
+ #include "Config_DS1307.h"
+ #include "Common/Common.h"
+ 
  /** @ingroup I2C-Addresses */
  /*\@{*/
 	#define DS1307_ADDRESS						0x68						/**< DS1307 I2C RTC device address */
  /*\@}*/
  
- #ifndef DS1307_USE_IRQ
-	 #define DS1307_USE_IRQ						DISABLE
- #endif
-
  /** @brief	Default settings for the RTC if the interrupt configuration is invalid
   */
- #if(DS1307_USE_IRQ == ENABLE)
-	#if(!defined DS1307_INT_PORT || !defined DS1307_INT_PIN || !defined DS1307_INT_CHANNEL || !defined DS1307_INT_PULLUP || !defined DS1307_INT_FREQUENCY || (!defined DS1307_INT_PRIORITY && MCU_ARCH == MCU_ARCH_XMEGA))
-		#error "No valid RTC interrupt configuration!"
-	#endif
+ #if(defined DS1307_USE_IRQ)
+	 #if(MCU_ARCH == MCU_ARCH_XMEGA)
+		 // ToDo: Add check
+	 #elif(MCU_ARCH == MCU_ARCH_AVR8)
+		 // ToDo: Add check
+	 #else
+		 #error "Architecture not supported for DS1307 interrupt configuration!"
+	 #endif
  #endif
  
  /*
@@ -59,35 +60,10 @@
  */
  #if(MCU_ARCH == MCU_ARCH_AVR8)
 	 #include "Arch/AVR8/ATmega/I2C/I2C.h"
-	 
-	 #define DS1307_I2C_INIT(Config)							I2CM_Init(Config)															/**< Generic I2C initialization macro for the RTC */
-	 #define DS1307_I2C_WRITE(Register, Length, Data)			I2CM_WriteBytes(DS1307_ADDRESS, Register, Length, Data)						/**< Generic I2C write macro for the RTC */
-	 #define DS1307_I2C_READ(Register, Length, Data)			I2CM_ReadBytes(DS1307_ADDRESS, Register, Length, Data)						/**< Generic I2C read macro for the RTC */
-	 #define DS1307_I2C_WRITEREG(Register, Data)				I2CM_WriteBytes(DS1307_ADDRESS, Register, 1, Data)							/**< Generic I2C write register macro for the RTC */
-	 #define DS1307_I2C_READREG(Register, Data)					I2CM_ReadBytes(DS1307_ADDRESS, Register, 1, Data)							/**< Generic I2C read register macro for the RTC */
-	 
-	 #if(DS1307_USE_IRQ == ENABLE)
-		#error "Not supported"
-	 #endif
  #elif(MCU_ARCH == MCU_ARCH_XMEGA)
-	/** @brief	TWI interface for device when using XMega architecture.
-	 */
-	#ifndef DS1307_INTERFACE
-		#define DS1307_INTERFACE				&TWIC
-		#warning "No I2C interface specified. Use default!"
-	#endif
- 
 	 #include "Arch/XMega/I2C/I2C.h"
-	 
-	 #define DS1307_I2C_INIT(Config)							I2CM_Init(Config)															/**< Generic I2C initialization macro for the RTC */
-	 #define DS1307_I2C_WRITE(Register, Length, Data)			I2CM_WriteBytes(DS1307_INTERFACE, DS1307_ADDRESS, Register, Length, Data)	/**< Generic I2C write macro for the RTC */
-	 #define DS1307_I2C_READ(Register, Length, Data)			I2CM_ReadBytes(DS1307_INTERFACE, DS1307_ADDRESS, Register, Length, Data)	/**< Generic I2C read macro for the RTC */
-	 
-	 #define DS1307_I2C_WRITEREG(Register, Data)				I2CM_WriteBytes(DS1307_INTERFACE, DS1307_ADDRESS, Register, 1, Data)		/**< Generic I2C write register macro for the RTC */
-	 #define DS1307_I2C_READREG(Register, Data)					I2CM_ReadBytes(DS1307_INTERFACE, DS1307_ADDRESS, Register, 1, Data)			/**< Generic I2C read register macro for the RTC */
-	 #define DS1307_I2C_STATUS()								I2CM_Status(DS1307_INTERFACE)												/**< Generic I2C read message status macro for the RTC */
  #else
-	 #error "No valid mcu"
+	 #error "Architecture not supported for DS1307!"
  #endif
 
  #include "Common/time_avr.h"
@@ -110,9 +86,9 @@
  
  /** @brief			Initialize the DS1307 RTC and the I2C interface.
   *  @param Config	Pointer to I2C master configuration struct
-  *					NOTE: Set it to *NULL if you have initialized the I2C already
+  *					NOTE: Set it to #NULL if you have initialized the I2C already
   *  @param	Time	Initial time for the RTC.
-  *					NOTE: Set it to *NULL if you have don´t want to set a time
+  *					NOTE: Set it to #NULL if you have don´t want to set a time
   *  @return		I2C error code
   */
  const I2C_Error_t DS1307_Init(I2CM_Config_t* Config, const Time_t* Time);

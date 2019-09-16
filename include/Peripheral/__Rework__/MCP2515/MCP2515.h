@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file MCP2515.h
+/** @file Peripheral/MCP2515/MCP2515.h
  *  @brief	Driver for Microchip MCP2515 CAN controller.
  *			NOTE: This driver needs interrupt support!
  *
@@ -35,12 +35,13 @@
 #ifndef MCP2515_H_
 #define MCP2515_H_
 
- #include "Config/Config_MCP2515.h"
+ #include "Config_MCP2515.h"
  #include "Common/Common.h"
 
- #if(!defined MCP2515_INT_PORT || !defined MCP2515_INT_PIN)
-	 #define MCP2515_INT_PORT			&PORTD																					/**< MCP2515 interrupt port */
-	 #define MCP2515_INT_PIN			2																						/**< MCP2515 interrupt pin */
+ #if(!defined MCP2515_INT)
+	 #warning "Invalid configuration for the MCP2515 interrupt. Use default."
+
+	 #define MCP2515_INT			PORTD, 2
  #endif
 
  #if(!defined MCP2515_INTERFACE_TYPE && (MCU_ARCH == MCU_ARCH_XMEGA))
@@ -48,47 +49,20 @@
  #endif
 
  #if(MCU_ARCH == MCU_ARCH_AVR8)
-	#include "Arch/AVR8/ATmega/GPIO/GPIO.h"
-	#include "Arch/AVR8/ATmega/SPI/SPI.h"
-	
-	#define MCP2515_SPI_INIT(Config)							SPIM_Init(Config)												/**< Generic SPI initialization macro for the flash interface */
-	#define MCP2515_SPI_TRANSMIT(Command)						SPIM_SendData(Command)											/**< Generic SPI transmission macro for the flash interface  */
-	#define MCP2515_SPI_CHIP_SELECT()							SPIM_SelectDevice(MCP2515_SS_PORT, MCP2515_SS_PIN)				/**< Generic chip select macro for the flash interface */
-	#define MCP2515_SPI_CHIP_DESELECT()							SPIM_DeselectDevice(MCP2515_SS_PORT, MCP2515_SS_PIN)			/**< Generic chip deselect macro for the display interface */
+	#include "Arch/AVR8/GPIO/GPIO.h"
+	#include "Arch/AVR8/SPI/SPI.h"
  #elif(MCU_ARCH == MCU_ARCH_XMEGA)
 	 #include "Arch/XMega/GPIO/GPIO.h"
 	 #if(MCP2515_INTERFACE_TYPE == INTERFACE_USART_SPI)
-		 /** @brief	USART-SPI interface for device when using XMega architecture.
-		  */
-		 #ifndef MCP2515_INTERFACE
-			 #define MCP2515_INTERFACE				&USARTC0
-		 #endif 
-
-		#define MCP2515_SPI_INIT(Config)						USART_SPI_Init(Config)											/**< Generic SPI initialization macro for the flash interface */
-		#define MCP2515_SPI_TRANSMIT(Command)					USART_SPI_SendData(MCP2515_INTERFACE, Command)					/**< Generic SPI transmission macro for the flash interface  */
-		#define MCP2515_SPI_CHIP_SELECT()						USART_SPI_SelectDevice(MCP2515_SS_PORT, MCP2515_SS_PIN)			/**< Generic chip select macro for the flash interface */
-		#define MCP2515_SPI_CHIP_DESELECT()						USART_SPI_DeselectDevice(MCP2515_SS_PORT, MCP2515_SS_PIN)		/**< Generic chip deselect macro for the display interface */
-
+		 #include "Arch/XMega/USART/USART.h"
 	 #elif(MCP2515_INTERFACE_TYPE == INTERFACE_SPI)
 		 #include "Arch/XMega/SPI/SPI.h"
-
-		 /** @brief	SPI interface for device when using XMega architecture.
-		  */
-		 #ifndef MCP2515_INTERFACE
-			 #define MCP2515_INTERFACE				&SPIC
-		 #endif 
-		 
-		#define MCP2515_SPI_INIT(Config)						SPIM_Init(Config)												/**< Generic SPI initialization macro for the flash interface */
-		#define MCP2515_SPI_TRANSMIT(Command)					SPIM_SendData(MCP2515_INTERFACE, Command)						/**< Generic SPI transmission macro for the flash interface  */
-		#define MCP2515_SPI_CHIP_SELECT()						SPIM_SelectDevice(MCP2515_SS_PORT, MCP2515_SS_PIN)				/**< Generic chip select macro for the flash interface */
-		#define MCP2515_SPI_CHIP_DESELECT()						SPIM_DeselectDevice(MCP2515_SS_PORT, MCP2515_SS_PIN)			/**< Generic chip deselect macro for the display interface */
 	 #else
-		 #error "Interface for MCP2515 not supported!"
+		 #error "Interface not supported for MCP2515!"
 	 #endif
  #else
-	#error "No valid mcu"
+	 #error "Architecture not supported for MCP2515!"
  #endif
-
 
  #define MCP2515_MAX_DATABYTES		8				/**< Max. data bytes per message */
 
@@ -198,7 +172,7 @@
 	MCP2515_ReceiveFilter_t Filter;					/**< Target filter */ 
 	uint16_t FilterMask;							/**< Filter mask */ 
 	uint16_t FilterID;								/**< Filter ID */ 
-	Bool_t Extended;								/**< Set this to *TRUE if you want to use extended frames */ 
+	Bool_t Extended;								/**< Set this to #TRUE if you want to use extended frames */ 
  } MCP2515_FilterConfig_t;
 
  /** 
@@ -241,16 +215,16 @@
 		Interrupt_Level_t InterruptLevel;				/**< Interrupt level */
 	 #endif
 
-	 Bool_t InternalPullUp;								/**< Set to *TRUE to enable internal pull up for interrupt I/O */
+	 Bool_t InternalPullUp;								/**< Set to #TRUE to enable internal pull up for interrupt I/O */
 	 MCP2515_ErrorCallback_t ErrorCallback;				/**< Function pointer to MCP2515 message callback \n
-															 NOTE: Set it to *NULL if you do not want to use it. */
+															 NOTE: Set it to #NULL if you do not want to use it. */
 	 MCP2515_MessageCallback_t MessageCallback;			/**< Function pointer to MCP2515 message callback \n
-															 NOTE: Set it to *NULL if you do not want to use it. */
+															 NOTE: Set it to #NULL if you do not want to use it. */
  } MCP2515_InterruptConfig_t;
 
  /** @brief					Initialize the MCP2515 controller.
-  *  @param Config			Pointer to SPI configuration struct.
-  *							NOTE: Set it to *NULL if you have initialized the SPI already
+  *  @param Config			Pointer to SPI configuration struct
+  *							NOTE: Set it to #NULL if you have initialized the SPI already
   *  @param ConfigInterrupt	Pointer to MCP2515 interrupt configuration object
   */
  void MCP2515_Init(SPIM_Config_t* Config, const MCP2515_InterruptConfig_t* ConfigInterrupt);
