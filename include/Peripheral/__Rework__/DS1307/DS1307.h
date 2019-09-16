@@ -29,7 +29,7 @@
  *
  *  @author Daniel Kampert
  *  @bug - Under construction 
- *		 - Implement complete IRQ support. Use IRQ driven transmission to send and receive multiple bytes.Bug in "EnableInterrupt"-Function.
+ *
  */
 
 #ifndef DS1307_H_
@@ -59,9 +59,17 @@
 	Architecture specific definitions
  */
  #if(MCU_ARCH == MCU_ARCH_AVR8)
-	 #include "Arch/AVR8/ATmega/I2C/I2C.h"
+	 #include "Arch/AVR8/I2C/I2C.h"
+	 
+	 #if(defined DS1307_USE_IRQ)
+		#include "Arch/AVR8/GPIO/GPIO.h"
+	 #endif
  #elif(MCU_ARCH == MCU_ARCH_XMEGA)
 	 #include "Arch/XMega/I2C/I2C.h"
+	 
+	 #if(defined DS1307_USE_IRQ)
+		#include "Arch/XMega/GPIO/GPIO.h"
+	 #endif
  #else
 	 #error "Architecture not supported for DS1307!"
  #endif
@@ -74,7 +82,7 @@
  typedef void (*DS1307_Callback_t)(Time_t Time);
 
  /** 
-  * DS1307 SQW frequencies
+  * DS1307 SQW frequency
   */
  typedef enum
  {
@@ -83,26 +91,40 @@
 	 DS1307_SQW_8KHZ = 0x02,					/**< Frequency 8 kHz */
 	 DS1307_SQW_32KHZ = 0x03,					/**< Frequency 32 kHz */
  } DS1307_SQWFreq_t;
- 
- /** @brief			Initialize the DS1307 RTC and the I2C interface.
-  *  @param Config	Pointer to I2C master configuration struct
-  *					NOTE: Set it to #NULL if you have initialized the I2C already
-  *  @param	Time	Initial time for the RTC.
-  *					NOTE: Set it to #NULL if you have don´t want to set a time
-  *  @return		I2C error code
+
+ /**
+  * DS1307 configuration object
   */
- const I2C_Error_t DS1307_Init(I2CM_Config_t* Config, const Time_t* Time);
+ typedef struct 
+ {
+	 Time_t* Time;								/**< Time preset \n
+													  NOTE: Set to #NULL if you don´t want to preset the time */
+	 HourMode_t Mode;							/**< Hour mode */
+	 #if(defined DS1307_USE_IRQ)
+		DS1307_SQWFreq_t Freq;					/**< DS1307 SQW frequency \n
+													 NOTE: Only needed when #DS1307_USE_IRQ is set in configuration */
+	#endif
+
+ } DS1307_Config_t;
+ 
+ /** @brief				Initialize the DS1307 RTC and the I2C interface.
+  *  @param Config		Pointer to I2C master configuration struct
+  *						NOTE: Set it to #NULL if you have initialized the I2C already
+  *  @param	RTCConfig	RTC configuration settings
+  *  @return			I2C error code
+  */
+ const I2C_Error_t DS1307_Init(I2CM_Config_t* Config, const DS1307_Config_t* RTCConfig);
  
  /** @brief		Set the clock hold bit of the RTC.
-  *  @return	I2C communication error
+  *  @return	I2C error code
   */
  const I2C_Error_t DS1307_HoldClock(void);
  
  /** @brief			Change the hour mode of the RTC.
   *  @param Mode	Hour mode
-  *  @return		I2C communication error
+  *  @return		I2C error code
   */
- const I2C_Error_t DS1307_ChangeHourMode(const HourMode_t Mode);
+ const I2C_Error_t DS1307_SetHourMode(const HourMode_t Mode);
  
  /** @brief				Install a new callback for DS1307 interrupts.
   *						NOTE: You have to use interrupt support to use the callbacks.

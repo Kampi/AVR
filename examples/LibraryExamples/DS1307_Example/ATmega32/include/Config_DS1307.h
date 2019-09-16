@@ -1,9 +1,9 @@
 /*
- * main.c
+ * Config_DS1307.h
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: BMP180 example for XMega.
+ *  File info: Configuration file for the DS1307 I2C RTC.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,36 +22,25 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file main.c
- *  @brief BMP180 example for XMega.
- *
- *  Software for the XMega BMP180 example from
- *  <>
+/** @file Config/Config_DS1307.h
+ *  @brief Configuration file for the Dallas DS1307 I2C RTC.
  *
  *  @author Daniel Kampert
  */
 
-#include "Peripheral/BMP180/BMP180.h"
+#ifndef CONFIG_DS1307_H_
+#define CONFIG_DS1307_H_
 
-/*
-	I2C configuration
-*/
-I2CM_Config_t Config_I2CM = {
-	.Device = &BMP180_INTERFACE,
-	.Bitrate = BMP180_CLOCK,
-	.Timeout = I2C_TIMEOUT_DISABLE,
-};
+ #include "Common/Common.h"
+ 
+ #define DS1307_CLOCK							100000					/**< Clock rate used by the interface. */
+ 
+ #define DS1307_USE_IRQ													/**< Use interrupt support. */
+ 
+ #define DS1307_INT								PORTD, 0				/**< DS1307 interrupt pin. */
+ #define DS1307_INT_CHANNEL						GPIO_INTERRUPT_0		/**< Interrupt channel used for the DS1307. */
+ #define DS1307_INT_SENSE						GPIO_SENSE_FALLING		/**< Interrupt sensing. */
+ #define DS1307_INT_PRIO												/**< Interrupt priority. \n
+																			 NOTE: Only used by XMega architecture. */
 
-int main(void)
-{
-	BMP180_CalibCoef_t Coefficients;
-	BMP180_DataPoint_t DataPoint;
-
-	BMP180_Init(&Config_I2CM);
-	BMP180_ReadCalibration(&Coefficients);
-	BMP180_SingleMeasurement(BMP180_OSS_8, &Coefficients, &DataPoint);
-
-    while(1) 
-    {
-    }
-}
+#endif /* CONFIG_DS1307_H_ */

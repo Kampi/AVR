@@ -1,9 +1,10 @@
 /*
- * main.c
- * 
- *  Copyright (C) Daniel Kampert, 2018
+ * I2CS.c
+ *
+ * Created: 11.05.2017 21:28:03
+ *  Author: Daniel Kampert
  *	Website: www.kampis-elektroecke.de
- *  File info: BMP180 example for XMega.
+ *  File info: Driver for AVR8 I2C slave mode.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,36 +23,16 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file main.c
- *  @brief BMP180 example for XMega.
+/** @file Arch/AVR8/I2C/I2CS.c
+ *  @brief Driver for AVR8 I2C slave mode.
  *
- *  Software for the XMega BMP180 example from
- *  <>
+ *  This file contains the implementation of the AVR8 I2C slave mode driver.
  *
  *  @author Daniel Kampert
  */
 
-#include "Peripheral/BMP180/BMP180.h"
+#include "Arch/AVR8/I2C/I2C.h"
 
-/*
-	I2C configuration
-*/
-I2CM_Config_t Config_I2CM = {
-	.Device = &BMP180_INTERFACE,
-	.Bitrate = BMP180_CLOCK,
-	.Timeout = I2C_TIMEOUT_DISABLE,
-};
-
-int main(void)
+void I2CS_Init(I2CS_Config_t* Config)
 {
-	BMP180_CalibCoef_t Coefficients;
-	BMP180_DataPoint_t DataPoint;
-
-	BMP180_Init(&Config_I2CM);
-	BMP180_ReadCalibration(&Coefficients);
-	BMP180_SingleMeasurement(BMP180_OSS_8, &Coefficients, &DataPoint);
-
-    while(1) 
-    {
-    }
 }
