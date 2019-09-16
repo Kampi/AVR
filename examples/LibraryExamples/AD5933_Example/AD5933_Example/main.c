@@ -39,7 +39,7 @@
 */
 I2CM_Config_t Config_I2CM = {
 	.Device = &AD5933_INTERFACE,
-	.BitRate = AD5933_CLOCK,
+	.Bitrate = AD5933_CLOCK,
 	.Timeout = I2C_TIMEOUT_DISABLE,
 };
 

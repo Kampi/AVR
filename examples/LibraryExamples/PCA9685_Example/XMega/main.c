@@ -38,7 +38,7 @@
 */
 I2CM_Config_t Config_I2CM = {
 	.Device = &PCA9685_INTERFACE,
-	.BitRate = PCA9685_CLOCK,
+	.Bitrate = PCA9685_CLOCK,
 	.Timeout = I2C_TIMEOUT_DISABLE,
 };
 
