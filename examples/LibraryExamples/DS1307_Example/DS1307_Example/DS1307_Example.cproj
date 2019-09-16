@@ -12,9 +12,9 @@
     <OutputFileName>$(MSBuildProjectName)</OutputFileName>
     <OutputFileExtension>.elf</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
-    <AssemblyName>MCP2515_Example</AssemblyName>
-    <Name>MCP2515_Example</Name>
-    <RootNamespace>MCP2515_Example</RootNamespace>
+    <AssemblyName>DS1307_Example</AssemblyName>
+    <Name>DS1307_Example</Name>
+    <RootNamespace>DS1307_Example</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
@@ -30,53 +30,53 @@
     <EraseKey />
     <AsfFrameworkConfig>
       <framework-data xmlns="">
-        <options />
-        <configurations />
-        <files />
-        <documentation help="" />
-        <offline-documentation help="" />
-        <dependencies>
-          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.45.0" />
-        </dependencies>
-      </framework-data>
+  <options />
+  <configurations />
+  <files />
+  <documentation help="" />
+  <offline-documentation help="" />
+  <dependencies>
+    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.45.0" />
+  </dependencies>
+</framework-data>
     </AsfFrameworkConfig>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
       <AvrGcc>
-        <avrgcc.common.Device>-mmcu=atxmega384c3 -B "%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\gcc\dev\atxmega384c3"</avrgcc.common.Device>
-        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
-        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
-        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
-        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
-        <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
-        <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
-        <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
-        <avrgcc.compiler.symbols.DefSymbols>
-          <ListValues>
-            <Value>NDEBUG</Value>
-          </ListValues>
-        </avrgcc.compiler.symbols.DefSymbols>
-        <avrgcc.compiler.directories.IncludePaths>
-          <ListValues>
-            <Value>%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\include</Value>
-          </ListValues>
-        </avrgcc.compiler.directories.IncludePaths>
-        <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
-        <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
-        <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
-        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
-        <avrgcc.linker.libraries.Libraries>
-          <ListValues>
-            <Value>libm</Value>
-          </ListValues>
-        </avrgcc.linker.libraries.Libraries>
-        <avrgcc.assembler.general.IncludePaths>
-          <ListValues>
-            <Value>%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\include</Value>
-          </ListValues>
-        </avrgcc.assembler.general.IncludePaths>
-      </AvrGcc>
+  <avrgcc.common.Device>-mmcu=atxmega384c3 -B "%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\gcc\dev\atxmega384c3"</avrgcc.common.Device>
+  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+  <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+  <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcc.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>NDEBUG</Value>
+    </ListValues>
+  </avrgcc.compiler.symbols.DefSymbols>
+  <avrgcc.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\include</Value>
+    </ListValues>
+  </avrgcc.compiler.directories.IncludePaths>
+  <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
+  <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+  <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcc.linker.libraries.Libraries>
+    <ListValues>
+      <Value>libm</Value>
+    </ListValues>
+  </avrgcc.linker.libraries.Libraries>
+  <avrgcc.assembler.general.IncludePaths>
+    <ListValues>
+      <Value>%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\include</Value>
+    </ListValues>
+  </avrgcc.assembler.general.IncludePaths>
+</AvrGcc>
     </ToolchainSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -124,28 +124,13 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="include\Config_MCP2515.h">
+    <Compile Include="include\Config_DS1307.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="source\Arch\XMega\GPIO\GPIO.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\Arch\XMega\SPI\SPI.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\Arch\XMega\SPI\SPIM.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\Arch\XMega\SPI\SPIS.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\Arch\XMega\SPI\SPI_Interrupt.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\Peripheral\MCP2515\MCP2515.c">
+    <Compile Include="source\Peripheral\DS1307\DS1307.c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
@@ -154,10 +139,9 @@
     <Folder Include="source" />
     <Folder Include="source\Arch" />
     <Folder Include="source\Arch\XMega" />
-    <Folder Include="source\Arch\XMega\GPIO" />
-    <Folder Include="source\Arch\XMega\SPI" />
+    <Folder Include="source\Arch\XMega\I2C" />
     <Folder Include="source\Peripheral" />
-    <Folder Include="source\Peripheral\MCP2515" />
+    <Folder Include="source\Peripheral\DS1307" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

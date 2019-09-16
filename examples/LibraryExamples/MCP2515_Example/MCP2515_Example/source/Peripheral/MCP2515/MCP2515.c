@@ -30,7 +30,7 @@
  *  @author Daniel Kampert
  */
 
-#include "Peripheral/MCP2515/MCP2515.h"
+#include "Peripheral/__Rework__/MCP2515/MCP2515.h"
 
 /** @defgroup MCP2515
  *  @{
@@ -242,28 +242,28 @@
 /** @} */ // end of MCP2515
 
 #if(MCU_ARCH == MCU_ARCH_AVR8)
-	#define MCP2515_SPI_INIT(Config)							SPIM_Init(Config)												/**< Generic SPI initialization macro for the flash interface */
-	#define MCP2515_SPI_TRANSMIT(Command)						SPIM_SendData(Command)											/**< Generic SPI transmission macro for the flash interface  */
-	#define MCP2515_SPI_CHIP_SELECT()							SPIM_SelectDevice(MCP2515_SS_PORT, MCP2515_SS_PIN)				/**< Generic chip select macro for the flash interface */
-	#define MCP2515_SPI_CHIP_DESELECT()							SPIM_DeselectDevice(MCP2515_SS_PORT, MCP2515_SS_PIN)			/**< Generic chip deselect macro for the display interface */
+	#define MCP2515_SPI_INIT(Config)							SPIM_Init(Config)
+	#define MCP2515_SPI_TRANSMIT(Command)						SPIM_SendData(Command)
+	#define MCP2515_SPI_CHIP_SELECT()							SPIM_SelectDevice(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS))
+	#define MCP2515_SPI_CHIP_DESELECT()							SPIM_DeselectDevice(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS))
 #elif(MCU_ARCH == MCU_ARCH_XMEGA)
 	#if(MCP2515_INTERFACE_TYPE == INTERFACE_USART_SPI)
-		#define MCP2515_SPI_INIT(Config)						USART_SPI_Init(Config)											/**< Generic SPI initialization macro for the flash interface */
-		#define MCP2515_SPI_TRANSMIT(Command)					USART_SPI_SendData(MCP2515_INTERFACE, Command)					/**< Generic SPI transmission macro for the flash interface  */
-		#define MCP2515_SPI_CHIP_SELECT()						USART_SPI_SelectDevice(MCP2515_SS_PORT, MCP2515_SS_PIN)			/**< Generic chip select macro for the flash interface */
-		#define MCP2515_SPI_CHIP_DESELECT()						USART_SPI_DeselectDevice(MCP2515_SS_PORT, MCP2515_SS_PIN)		/**< Generic chip deselect macro for the display interface */
+		#define MCP2515_SPI_INIT(Config)						USART_SPI_Init(Config)
+		#define MCP2515_SPI_TRANSMIT(Command)					USART_SPI_SendData(&MCP2515_INTERFACE, Command)
+		#define MCP2515_SPI_CHIP_SELECT()						USART_SPI_SelectDevice(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS))
+		#define MCP2515_SPI_CHIP_DESELECT()						USART_SPI_DeselectDevice(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS))
 
 	 #elif(MCP2515_INTERFACE_TYPE == INTERFACE_SPI) 
-		#define MCP2515_SPI_INIT(Config)						SPIM_Init(Config)												/**< Generic SPI initialization macro for the flash interface */
-		#define MCP2515_SPI_TRANSMIT(Command)					SPIM_SendData(MCP2515_INTERFACE, Command)						/**< Generic SPI transmission macro for the flash interface  */
-		#define MCP2515_SPI_CHIP_SELECT()						SPIM_SelectDevice(MCP2515_SS_PORT, MCP2515_SS_PIN)				/**< Generic chip select macro for the flash interface */
-		#define MCP2515_SPI_CHIP_DESELECT()						SPIM_DeselectDevice(MCP2515_SS_PORT, MCP2515_SS_PIN)			/**< Generic chip deselect macro for the display interface */
+		#define MCP2515_SPI_INIT(Config)						SPIM_Init(Config)
+		#define MCP2515_SPI_TRANSMIT(Command)					SPIM_SendData(&MCP2515_INTERFACE, Command)
+		#define MCP2515_SPI_CHIP_SELECT()						SPIM_SelectDevice(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS))
+		#define MCP2515_SPI_CHIP_DESELECT()						SPIM_DeselectDevice(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS))
 	 #else
-		 #error "Invalid interface for MCP2515!!"
+		 #error "Interface not supported for MCP2515!"
 	 #endif
  #else
-	#error "Architecture not supported!"
- #endif
+	#error "Architecture not supported for MCP2515!"
+#endif
 
 #ifndef DOXYGEN
 	static struct
@@ -328,11 +328,11 @@ static inline void MCP2515_Interrupthandler(void)
 
 void MCP2515_Init(SPIM_Config_t* Config, const MCP2515_InterruptConfig_t* ConfigInterrupt)
 {
-	// Initialize CS Pin
-	GPIO_SetDirection(MCP2515_SS_PORT, MCP2515_SS_PIN, GPIO_DIRECTION_OUT);
-	GPIO_Set(MCP2515_SS_PORT, MCP2515_SS_PIN);
+	// Initialize the CS Pin
+	GPIO_SetDirection(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS), GPIO_DIRECTION_OUT);
+	GPIO_Set(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS));
 
-	// Initialize SPI-Interface
+	// Initialize the SPI-Interface
 	if(Config != NULL)
 	{
 		MCP2515_SPI_INIT(Config);
@@ -386,7 +386,7 @@ void MCP2515_EnableInterrupts(const MCP2515_InterruptConfig_t* Config)
 	
 	GPIO_InterruptConfig_t ConfigGPIO = {
 		.Channel = Config->IOChannel,
-		.Type = GPIO_SENSE_FALLING,
+		.Sense = GPIO_SENSE_FALLING,
 		#if(MCU_ARCH == MCU_ARCH_XMEGA)
 			.Pin = Config->Pin,
 			.Port = Config->Port,

@@ -1,9 +1,9 @@
 /*
- * Config_MCP2515.h
+ * Config_DS1307.h
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Configuration file for the MCP2515 CAN controller.
+ *  File info: Configuration file for the DS1307 I2C RTC.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,21 +22,23 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Config/Config_MCP2515.h
- *  @brief Configuration file for the Microchip MCP2515 CAN controller.
+/** @file Config/Config_DS1307.h
+ *  @brief Configuration file for the Dallas DS1307 I2C RTC.
  *
  *  @author Daniel Kampert
  */
 
-#ifndef CONFIG_MCP2515_H_
-#define CONFIG_MCP2515_H_
+#ifndef CONFIG_DS1307_H_
+#define CONFIG_DS1307_H_
 
  #include "Common/Common.h"
  
- #define MCP2515_INTERFACE_TYPE					INTERFACE_SPI			/**< Interface type for the MCP2515. */
- #define MCP2515_INTERFACE						SPIC					/**< SPI interface used by the MCP2515. */
+ #define DS1307_INTERFACE						TWIC 					/**< I2C interface used by the DS1307. */
+ #define DS1307_CLOCK							100000					/**< Clock rate used by the interface. */
  
- #define MCP2515_SS								PORTB, 0				/**< MCP2515 SS pin. */
- #define MCP2515_INT							PORTB, 1				/**< MCP2515 interrupt pin. */
+ #undef DS1307_USE_IRQ													/**< Use interrupt support. */
+ 
+ #define DS1307_INT								PORTR, 0				/**< DS1307 interrupt pin. */
+ #define DS1307_INT_CHANNEL												/**< Interrupt channel used for the DS1307. */
 
-#endif /* CONFIG_MCP2515_H_ */
+#endif /* CONFIG_DS1307_H_ */
