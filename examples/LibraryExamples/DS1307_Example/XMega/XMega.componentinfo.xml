@@ -26,13 +26,13 @@
 					<SourcePath></SourcePath>
 				</d4p1:anyType>
 				<d4p1:anyType i:type="FileInfo">
-					<AbsolutePath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\XMEGAC_DFP\1.1.50\include\avr\iox256c3.h</AbsolutePath>
+					<AbsolutePath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\XMEGAC_DFP\1.1.50\include\avr\iox384c3.h</AbsolutePath>
 					<Attribute></Attribute>
 					<Category>header</Category>
 					<Condition>C</Condition>
-					<FileContentHash>+iQQrG2l0VnYwXNeWvZVjw==</FileContentHash>
+					<FileContentHash>tzhxgzaAqSOuiKVDQWn2cA==</FileContentHash>
 					<FileVersion></FileVersion>
-					<Name>include/avr/iox256c3.h</Name>
+					<Name>include/avr/iox384c3.h</Name>
 					<SelectString></SelectString>
 					<SourcePath></SourcePath>
 				</d4p1:anyType>
@@ -59,13 +59,13 @@
 					<SourcePath></SourcePath>
 				</d4p1:anyType>
 				<d4p1:anyType i:type="FileInfo">
-					<AbsolutePath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\XMEGAC_DFP\1.1.50\gcc\dev\atxmega256c3</AbsolutePath>
+					<AbsolutePath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\XMEGAC_DFP\1.1.50\gcc\dev\atxmega384c3</AbsolutePath>
 					<Attribute></Attribute>
 					<Category>libraryPrefix</Category>
 					<Condition>GCC</Condition>
 					<FileContentHash i:nil="true" />
 					<FileVersion></FileVersion>
-					<Name>gcc/dev/atxmega256c3</Name>
+					<Name>gcc/dev/atxmega384c3</Name>
 					<SelectString></SelectString>
 					<SourcePath></SourcePath>
 				</d4p1:anyType>
@@ -74,7 +74,7 @@
 			<PackPath>C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAC_DFP/1.1.50/Atmel.XMEGAC_DFP.pdsc</PackPath>
 			<PackVersion>1.1.50</PackVersion>
 			<PresentInProject>true</PresentInProject>
-			<ReferenceConditionId>ATxmega256C3</ReferenceConditionId>
+			<ReferenceConditionId>ATxmega384C3</ReferenceConditionId>
 			<RteComponents xmlns:d4p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
 				<d4p1:string></d4p1:string>
 			</RteComponents>

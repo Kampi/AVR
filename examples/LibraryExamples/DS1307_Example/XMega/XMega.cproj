@@ -5,7 +5,7 @@
     <ProjectVersion>7.0</ProjectVersion>
     <ToolchainName>com.Atmel.AVRGCC8.C</ToolchainName>
     <ProjectGuid>{16bb83a4-1057-4092-8477-ab4997bfc72d}</ProjectGuid>
-    <avrdevice>ATxmega256C3</avrdevice>
+    <avrdevice>ATxmega384C3</avrdevice>
     <avrdeviceseries>none</avrdeviceseries>
     <OutputType>Executable</OutputType>
     <Language>C</Language>
@@ -45,7 +45,7 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
       <AvrGcc>
-  <avrgcc.common.Device>-mmcu=atxmega256c3 -B "%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\gcc\dev\atxmega256c3"</avrgcc.common.Device>
+  <avrgcc.common.Device>-mmcu=atxmega384c3 -B "%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\gcc\dev\atxmega384c3"</avrgcc.common.Device>
   <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
   <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
   <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
@@ -67,7 +67,7 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <ToolchainSettings>
       <AvrGcc>
-  <avrgcc.common.Device>-mmcu=atxmega256c3 -B "%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\gcc\dev\atxmega256c3"</avrgcc.common.Device>
+  <avrgcc.common.Device>-mmcu=atxmega384c3 -B "%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\gcc\dev\atxmega384c3"</avrgcc.common.Device>
   <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
   <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
   <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
