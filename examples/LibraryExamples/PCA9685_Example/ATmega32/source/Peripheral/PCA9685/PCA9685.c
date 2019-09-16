@@ -141,16 +141,16 @@
 	#define PCA9685_I2CM_INIT(Config)														I2CM_Init(Config)
 	#define PCA9685_I2CM_WRITEBYTE(Data, Stop)												I2CM_WriteByte(&PCA9685_INTERFACE, PCA9685_ADDRESS, Data, Stop)
 	#define PCA9685_I2CM_READBYTE(Data, Stop)												I2CM_ReadByte(&PCA9685_INTERFACE, PCA9685_ADDRESS, Data, Stop)
-	#define PCA9685_I2CM_WRITEBYTES(Bytes, Data, Stop)										I2CM_WriteBytes(&PCA9685_INTERFACE, PCA9685_ADDRESS, Bytes, Data, Stop)
-	#define PCA9685_I2CM_READBYTES(Bytes, Data, Stop)										I2CM_ReadBytes(&PCA9685_INTERFACE, PCA9685_ADDRESS, Bytes, Data, Stop)
-	#define PCA9685_RESET()																	I2CM_WriteByte(&PCA9685_INTERFACE, 0x03, 0x00, FALSE)
+	#define PCA9685_I2CM_WRITEBYTES(Length, Data, Stop)										I2CM_WriteBytes(&PCA9685_INTERFACE, PCA9685_ADDRESS, Length, Data, Stop)
+	#define PCA9685_I2CM_READBYTES(Length, Data, Stop)										I2CM_ReadBytes(&PCA9685_INTERFACE, PCA9685_ADDRESS, Length, Data, Stop)
+	#define PCA9685_RESET()																	I2CM_WriteByte(&PCA9685_INTERFACE, 0x00, 0x03, TRUE)
 #elif(MCU_ARCH == MCU_ARCH_AVR8)
 	#define PCA9685_I2CM_INIT(Config)														I2CM_Init(Config)
 	#define PCA9685_I2CM_WRITEBYTE(Data, Stop)												I2CM_WriteByte(PCA9685_ADDRESS, Data, Stop)
 	#define PCA9685_I2CM_READBYTE(Data, Stop)												I2CM_ReadByte(PCA9685_ADDRESS, Data, Stop)
-	#define PCA9685_I2CM_WRITEBYTES(Bytes, Data, Stop)										I2CM_WriteBytes(PCA9685_ADDRESS, Bytes, Data, Stop)
-	#define PCA9685_I2CM_READBYTES(Bytes, Data, Stop)										I2CM_ReadBytes(PCA9685_ADDRESS, Bytes, Data, Stop)
-	#define PCA9685_RESET()																	I2CM_WriteByte(0x03, 0x00, FALSE)
+	#define PCA9685_I2CM_WRITEBYTES(Length, Data, Stop)										I2CM_WriteBytes(PCA9685_ADDRESS, Length, Data, Stop)
+	#define PCA9685_I2CM_READBYTES(Length, Data, Stop)										I2CM_ReadBytes(PCA9685_ADDRESS, Length, Data, Stop)
+	#define PCA9685_RESET()																	I2CM_WriteByte(0x00, 0x06, TRUE)
 #else
 	#error "Architecture not supported for PCA9685!"
 #endif
@@ -194,13 +194,21 @@ static const I2C_Error_t PCA9685_SwitchAutoIncrement(const Bool_t Enable)
 }
 
 const I2C_Error_t PCA9685_Init(I2CM_Config_t* Config, const PCA9685_ClockSource_t Source)
-{	
+{
+	I2C_Error_t ErrorCode = I2C_NO_ERROR;
+
 	if(Config != NULL)
 	{
 		PCA9685_I2CM_INIT(Config);
 	}
 
-	return PCA9685_SwitchSleep(FALSE) | PCA9685_SetClockSource(Source) | PCA9685_SwitchAutoIncrement(TRUE);
+	ErrorCode = PCA9685_RESET();
+	if(ErrorCode != I2C_NO_ERROR)
+	{
+		return ErrorCode;
+	}
+
+	return PCA9685_SwitchAutoIncrement(TRUE) | PCA9685_SetClockSource(Source) | PCA9685_SwitchSleep(FALSE);
 }
 
 const I2C_Error_t PCA9685_SetOutputChange(const PCA9685_OutputChange_t Mode)
@@ -265,6 +273,13 @@ const I2C_Error_t PCA9685_SetClockSource(const PCA9685_ClockSource_t Source)
 {
 	Bool_t Flag = TRUE;
 
+	// Set the sleep bit
+	I2C_Error_t ErrorCode = PCA9685_SwitchSleep(TRUE);
+	if(ErrorCode != I2C_NO_ERROR)
+	{
+		return ErrorCode;
+	}
+	
 	if(Source == PCA9685_CLOCK_INT)
 	{
 		Flag = FALSE;
