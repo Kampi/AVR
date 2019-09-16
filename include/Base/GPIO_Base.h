@@ -1,9 +1,9 @@
 /*
- * ADC_Base.h
+ * GPIO_Base.h
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Base definitions for Atmel AVR ADC
+ *  File info: Base definitions for Atmel AVR GPIO.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */ 
 
-/** @file GPIO_Base.h
+/** @file Base/GPIO_Base.h
  *  @brief Common definitions for AVR GPIO interface.
  *
  *  @author Daniel Kampert

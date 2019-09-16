@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for AVR8 SPI Interface.
+ *  File info: Driver for AVR8 SPI interface in master mode.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,8 +22,8 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file AVR8/SPI/SPI.c
- *  @brief Driver for AVR8 SPI module.
+/** @file Arch/AVR8/SPI/SPI.c
+ *  @brief Driver for AVR8 SPI interface in master mode.
  *
  *  This contains the implementation of the AVR8 SPI driver.
  *
@@ -63,9 +63,6 @@ void SPIM_Init(SPIM_Config_t* Config)
 	// Enable MISO as input
 	GPIO_SetDirection(SPI_PORT, SPI_MISO_PIN, GPIO_DIRECTION_IN);
 
-	// NOTE: The SS-Pin must held high in master mode, otherwise the MSTR-bit will be cleared
-	GPIO_Set(SPI_PORT, SPI_SS_PIN);
-
 	SPI_SetDataOrder(Config->DataOrder);
 	SPIM_SetPrescaler(Config->Prescaler);
 	SPIM_SetMode(Config->Mode);
@@ -73,7 +70,7 @@ void SPIM_Init(SPIM_Config_t* Config)
 	SPI_Enable();
 }
 
-uint8_t SPIM_SendData(uint8_t Data)
+uint8_t SPIM_SendData(const uint8_t Data)
 {
     SPDR = Data;
 

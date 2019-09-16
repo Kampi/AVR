@@ -1,9 +1,10 @@
 /*
- * Board.h
- * 
- *  Copyright (C) Daniel Kampert, 2018
+ * I2CS.c
+ *
+ * Created: 11.05.2017 21:28:03
+ *  Author: Daniel Kampert
  *	Website: www.kampis-elektroecke.de
- *  File info: Board selection file. 
+ *  File info: Driver for AVR8 I2C slave mode.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,31 +23,16 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Board.h
- *  @brief Board selection for several AVR boards.
+/** @file Arch/AVR8/I2C/I2CS.c
+ *  @brief Driver for AVR8 I2C slave mode.
  *
- *  Use this file to choose the correct includes for a given board.
+ *  This file contains the implementation of the AVR8 I2C slave mode driver.
  *
  *  @author Daniel Kampert
  */
 
-#ifndef BOARD_H_
-#define BOARD_H_
- 
- #include "Common/Common.h"
- 
- #ifdef BOARD
-	#if(BOARD == BOARD_XMEGA256A3_XPLAINED)
-		#include "Common/Board/XMegaA3XPlained.h"
-	#elif(BOARD == BOARD_XMEGA384C3_XPLAINED)
-		#include "Common/Board/XMegaC3XPlained.h"
-	#elif(BOARD == BOARD_CAN_NODE)
-		#include "Common/Board/CANNode.h"
-	#elif(BOARD == BOARD_RN_CONTROL)
-		#include "Common/Board/RNControl.h"
-	#elif(BOARD == BOARD_AT90USBKEY)
-		#include "Common/Board/AT90USBKey.h"
-	#endif
- #endif
+#include "Arch/AVR8/I2C/I2C.h"
 
-#endif /* BOARD_H_ */
+void I2CS_Init(I2CS_Config_t* Config)
+{
+}

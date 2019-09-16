@@ -1,9 +1,9 @@
 /*
- * Board.h
+ * main.c
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Board selection file. 
+ *  File info: PCA9685 example for ATmega32.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,31 +22,37 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Board.h
- *  @brief Board selection for several AVR boards.
+/** @file main.c
+ *  @brief PCA9685 example for ATmega32.
  *
- *  Use this file to choose the correct includes for a given board.
+ *  Software for the XMega PXA9685 example from
+ *  <>
  *
  *  @author Daniel Kampert
  */
 
-#ifndef BOARD_H_
-#define BOARD_H_
- 
- #include "Common/Common.h"
- 
- #ifdef BOARD
-	#if(BOARD == BOARD_XMEGA256A3_XPLAINED)
-		#include "Common/Board/XMegaA3XPlained.h"
-	#elif(BOARD == BOARD_XMEGA384C3_XPLAINED)
-		#include "Common/Board/XMegaC3XPlained.h"
-	#elif(BOARD == BOARD_CAN_NODE)
-		#include "Common/Board/CANNode.h"
-	#elif(BOARD == BOARD_RN_CONTROL)
-		#include "Common/Board/RNControl.h"
-	#elif(BOARD == BOARD_AT90USBKEY)
-		#include "Common/Board/AT90USBKey.h"
-	#endif
- #endif
+#include "Peripheral/PCA9685/PCA9685.h"
 
-#endif /* BOARD_H_ */
+/*
+	I2C configuration
+*/
+I2CM_Config_t Config_I2CM = {
+	.Prescaler = I2C_PRESCALER_1,
+	.Bitrate = 100000,
+	.EnableInterruptSupport = FALSE,
+};
+
+int main(void)
+{
+	PCA9685_Init(&Config_I2CM, PCA9685_CLOCK_INT);
+
+	// Create a PWM with a duty cycle of 20% on channel 0
+	PCA9685_SetChannel(0, 409, 1228);
+
+	// Create a PWM with a duty cycle of 33% on channel 1
+	PCA9685_SetDuty(1, 33);
+
+    while(1) 
+    {
+    }
+}

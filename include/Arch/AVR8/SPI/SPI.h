@@ -49,7 +49,7 @@
  
  #include "Base/SPI_Base.h"
 
- /** @brief			Enable the SPI interface.
+ /** @brief	Enable the SPI.
   */
  static inline void SPI_Enable(void) __attribute__ ((always_inline));
  static inline void SPI_Enable(void)
@@ -57,7 +57,7 @@
  	 SPCR |= (0x01 << SPE);
  }
  
- /** @brief			Disable the SPI interface.
+ /** @brief	Disable the SPI.
   */
  static inline void SPI_Disable(void) __attribute__ ((always_inline));
  static inline void SPI_Disable(void)
@@ -65,7 +65,7 @@
 	 SPCR &= ~(0x01 << SPE);
  }
 
- /** @brief			Set the data order of the SPI interface.
+ /** @brief			Set the data order of the SPI.
   *  @param Mode	SPI device data order
   */
  static inline void SPI_SetDataOrder(const SPI_DataOrder_t DataOrder) __attribute__ ((always_inline));
@@ -74,7 +74,7 @@
 	 SPCR = (SPCR & (~(0x01 << DORD))) | (DataOrder << DORD);
  }
  
- /** @brief			Set the device mode of the SPI interface.
+ /** @brief			Set the device mode of the SPI.
   *  @param Mode	SPI device mode
   */
  static inline void SPI_SetDeviceMode(const SPI_DeviceMode_t Mode) __attribute__ ((always_inline));
@@ -102,8 +102,8 @@
   *  @param Port	Pointer to I/O port for the CS
   *  @param Pin		Pin for the CS signal
   */
- static inline void SPIM_SelectDevice(volatile uint8_t* Port, uint8_t Pin) __attribute__ ((always_inline));
- static inline void SPIM_SelectDevice(volatile uint8_t* Port, uint8_t Pin)
+ static inline void SPIM_SelectDevice(PORT_t* Port, const uint8_t Pin) __attribute__ ((always_inline));
+ static inline void SPIM_SelectDevice(PORT_t* Port, const uint8_t Pin)
  {
 	 GPIO_Clear(Port, Pin);
  }
@@ -112,8 +112,8 @@
   *  @param Port	Pointer to I/O port for the CS
   *  @param Pin		Pin for the CS signal
   */
- static inline void SPIM_DeselectDevice(volatile uint8_t* Port, uint8_t Pin) __attribute__ ((always_inline));
- static inline void SPIM_DeselectDevice(volatile uint8_t* Port, uint8_t Pin)
+ static inline void SPIM_DeselectDevice(PORT_t* Port, const uint8_t Pin) __attribute__ ((always_inline));
+ static inline void SPIM_DeselectDevice(PORT_t* Port, const uint8_t Pin)
  {
 	 GPIO_Set(Port, Pin);
  }
@@ -128,7 +128,7 @@
 	 SPCR |= (Prescaler & 0x03);
  }
  
- /** @brief			Set the mode of the SPI interface.
+ /** @brief			Set the mode of the SPI.
   *  @param Mode	SPI device mode
   */
  static inline void SPIM_SetMode(const SPI_Mode_t Mode) __attribute__ ((always_inline));

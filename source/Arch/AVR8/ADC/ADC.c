@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-#include "Arch/AVR8/ATmega/ADC/ADC.h"
+#include "Arch/AVR8/ADC/ADC.h"
 
 #ifndef DOXYGEN
 	ADC_Callback_t ConversionComplete;

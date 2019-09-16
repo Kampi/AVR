@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Base definitions for Atmel AVR Timer
+ *  File info: Common definitions for AVR Timer devices.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Timer_Base.h
+/** @file Base/Timer_Base.h
  *  @brief Common definitions for AVR Timer devices.
  *
  *  @author Daniel Kampert

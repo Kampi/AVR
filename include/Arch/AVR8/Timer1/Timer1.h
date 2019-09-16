@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for AVR8 16-Bit Timer1
+ *  File info: Driver for AVR8 Timer1 module.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file include/Arch/AVR8/ATmega/Timer1/Timer1.h
+/** @file Arch/AVR8/Timer1/Timer1.h
  *  @brief Driver for AVR8 Timer1 module.
  *
  *  This contains the prototypes and definitions for the AVR8 Timer1 driver.
@@ -34,15 +34,13 @@
 #ifndef TIMER1_H_
 #define TIMER1_H_
 
- #include <avr/io.h>
-
  #if(MCU_NAME == MCU_NAME_ATMEGA32)
 	#include "Common/Board/MCU/ATmega32.h"
  #else
 	#error "No valid mcu"
  #endif
  
- #include "Arch/AVR8/ATmega/CPU/CPU.h"
+ #include "Arch/AVR8/CPU/CPU.h"
  
  #include "Base/Timer_Base.h"
 

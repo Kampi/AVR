@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file include/Arch/AVR8/ATmega/USART/USART.h
+/** @file Arch/AVR8/USART/USART.h
  *  @brief Driver for AVR8 USART module.
  *
  *  This contains the prototypes and definitions for the AVR8 USART driver.
@@ -40,7 +40,7 @@
 	#error "No valid mcu"
  #endif
  
- #include "Arch/AVR8/ATmega/CPU/CPU.h"
+ #include "Arch/AVR8/CPU/CPU.h"
  
  #include "Base/USART_Base.h"
 
@@ -65,8 +65,10 @@
 	USART_Stop_t Stop;							/**< Stop bit settings */ 
 	USART_Size_t Size;							/**< Data bit settings */ 	
 	int8_t BSCALE;								/**< BSCALE value for baud rate */
-	Bool_t DoubleSpeed;							/**< Set *TRUE for double speed */ 	
-	USART_Polarity_t ClockPolarity;				/**< Clock polarity. Only needed in synchronous mode */ 	
+	USART_Polarity_t ClockPolarity;				/**< Clock polarity. Only needed in synchronous mode */
+	Bool_t EnableDoubleSpeed;					/**< Set #TRUE to enable double speed */
+	Bool_t EnableInterruptSupport;				/**< Set to #TRUE to enable interrupt support */
+	Bool_t EnableEcho;							/**< Set to #TRUE to enable the USART echo */
  } USART_Config_t;
 
  /** @brief				Set the direction of the USART interface.
@@ -128,7 +130,7 @@
 	 }
  }
 
- /** @brief			Flush the USART transmit buffer.
+ /** @brief	Flush the USART transmit buffer.
   */
  void USART_Flush(void);
  

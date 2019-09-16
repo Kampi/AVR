@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for AVR8 USART Interface
+ *  File info: Driver for AVR8 USART module.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -30,7 +30,7 @@
  *  @author Daniel Kampert
  */
 
-#include "AVR8/ATmega/USART/USART.h"
+#include "Arch/AVR8/USART/USART.h"
 
  /** 
   * Rx ring buffer for each USART interface
@@ -57,9 +57,9 @@ static RingBuffer_t USART_TxBuffer[USART_DEVICES];
 	static uint8_t TxData[USART_BUFFER_SIZE];
 #endif
 
-/** @brief				USART interrupt handler.
- *  @param Device		Device ID
- *  @param Callback		Type of interrupt
+/** @brief			USART interrupt handler.
+ *  @param Device	Device ID
+ *  @param Callback	Type of interrupt
  */
 static inline void USART_InterruptHandler(const uint8_t Device, const USART_CallbackType_t Callback)
 {	
@@ -106,25 +106,25 @@ static inline void USART_InterruptHandler(const uint8_t Device, const USART_Call
 			USART_Callbacks[Device].RxCallback();
 		}
 	}
-	
+
 	EnableGlobalInterrupts();
 }
 
 void USART_Init(USART_Config_t* Config)
 {	
-	USART_SwitchEcho(USART_DEFAULT_ECHO);
-	
+	USART_SwitchEcho(Config->EnableEcho);
+
 	RingBuffer_Init(&USART_RxBuffer[0], RxData, USART_BUFFER_SIZE);
 	RingBuffer_Init(&USART_TxBuffer[0], TxData, USART_BUFFER_SIZE);
-	
-	USART_SetBaudrate(Config->Baudrate, SysClock_GetCPUClock(), Config->DoubleSpeed);
+
+	USART_SetBaudrate(Config->Baudrate, SysClock_GetCPUClock(), Config->EnableDoubleSpeed);
 	USART_SetDirection(Config->Direction);
 
 	if(Config->Size == USART_SIZE_9)
 	{
 		UCSRB |= (0x01 << UCSZ2);
 	}
-	
+
 	// Config the USART interface
 	UCSRC = (0x01 << URSEL) | (Config->Mode << UMSEL) | (Config->Stop << USBS) | (Config->Parity << UPM0) | ((Config->Size & 0x03) << UCSZ0) | Config->ClockPolarity;
 }
@@ -140,24 +140,24 @@ void USART_InstallCallback(USART_InterruptConfig_t* Config)
 		
 		UCSRB |= (0x01 << UDRIE); 
 	}
-	
+
 	if(Config->Source & USART_TXC_INTERRUPT)
 	{
 		if(Config->Callback != NULL)
 		{
 			USART_Callbacks[0].TxCallback = Config->Callback;
 		}
-		
+
 		UCSRB |= (0x01 << TXCIE); 
 	}
-	
+
 	if(Config->Source & USART_RXC_INTERRUPT)
 	{
 		if(Config->Callback != NULL)
 		{
 			USART_Callbacks[0].RxCallback = Config->Callback;
 		}
-		
+
 		UCSRB |= (0x01 << RXCIE);
 	}
 }
@@ -167,21 +167,21 @@ void USART_RemoveCallback(const USART_CallbackType_t Callback)
 	if(Callback & USART_DRE_INTERRUPT)
 	{
 		USART_Callbacks[0].EmptyCallback = NULL;
-		
+
 		UCSRB &= ~(0x01 << UDRIE);
 	}
-	
+
 	if(Callback & USART_TXC_INTERRUPT)
 	{
 		USART_Callbacks[0].TxCallback = NULL;
-		
+
 		UCSRB &= ~(0x01 << TXCIE);
 	}
-	
+
 	if(Callback & USART_RXC_INTERRUPT)
 	{
 		USART_Callbacks[0].RxCallback = NULL;
-		
+
 		UCSRB &= ~(0x01 << RXCIE);
 	}
 }
@@ -197,7 +197,7 @@ void USART_Print(char* Data)
 	while(*Data)
 	{
 		RingBuffer_Save(&USART_TxBuffer[0], *Data++);
-		
+
 		if(RingBuffer_IsFull(&USART_TxBuffer[0]))
 		{
 			// Clear the buffer if it is full
@@ -222,24 +222,24 @@ void USART_WriteLine(char* Data)
 	{
 		USART_SendChar(*Data++);
 	}
-	
+
 	USART_SendChar(LF);
 	USART_SendChar(CR);
 }
 
-void USART_WriteDecimal(const unsigned int Number)
+void USART_WriteDecimal(const uint32_t Number)
 {
 	uint8_t Temp = Number / 10;
 	char Buffer[2];
-	
+
 	if(Temp)
 	{
 		USART_WriteDecimal(Temp);
 	}
-	
+
 	Buffer[0] = 0x30 + (Number % 10);
 	Buffer[1] = '\0';
-	
+
 	USART_Write(Buffer);
 }
 
