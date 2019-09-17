@@ -82,7 +82,9 @@
  /** @brief			DS1307 interrupt handler
   *  @param Time	RTC time
   */
- typedef void (*DS1307_Callback_t)(Time_t Time);
+ #if(defined DS1307_USE_IRQ)
+	 typedef void (*DS1307_Callback_t)(Time_t Time);
+ #endif
 
  /** 
   * DS1307 SQW frequency
@@ -96,41 +98,39 @@
  } DS1307_SQWFreq_t;
 
  /**
-  * DS1307 configuration object
+  * DS1307 interrupt configuration object
   */
- typedef struct 
- {
-	 Time_t* Time;								/**< Time preset \n
-													  NOTE: Set to #NULL if you don´t want to preset the time */
-	 #if(defined DS1307_USE_IRQ)
-		DS1307_SQWFreq_t Freq;					/**< DS1307 SQW frequency \n
-													 NOTE: Only needed when #DS1307_USE_IRQ is set in configuration */
-		PORT_t* Port;							/**< MCU port for SQW output \n
-													 NOTE: Only needed when #DS1307_USE_IRQ is set in configuration */
-		uint8_t Pin;							/**< MCU pin for SQW output \n
-													 NOTE: Only needed when #DS1307_USE_IRQ is set in configuration */
-		GPIO_InterruptChannel_t Channel;		/**< MCU interrupt channel for SQW output \n
-													 NOTE: Only needed when #DS1307_USE_IRQ is set in configuration */
-		GPIO_InputSense_t Sense;				/**< MCU interrupt sense for SQW output \n
-													 NOTE: Only needed when #DS1307_USE_IRQ is set in configuration */
+ #if(defined DS1307_USE_IRQ)
+	 typedef struct 
+	 {
+		DS1307_SQWFreq_t Freq;					/**< DS1307 SQW frequency */
+		PORT_t* Port;							/**< MCU port for SQW output */
+		uint8_t Pin;							/**< MCU pin for SQW output */
+		GPIO_InterruptChannel_t Channel;		/**< MCU interrupt channel for SQW output */
+		GPIO_InputSense_t Sense;				/**< MCU interrupt sense for SQW output */
 		#if(MCU_ARCH == MCU_ARCH_XMEGA)
 			Interrupt_Level_t Level;			/**< MCU interrupt level for SQW output \n
-													 NOTE: Only needed when #DS1307_USE_IRQ is set in configuration and only for XMega architecture */
+													 NOTE: Only for XMega architecture */
 		#endif
-		
-		DS1307_Callback_t Callback;				/**< Callback for SQW interrupt \n
-													 NOTE: Only needed when #DS1307_USE_IRQ is set in configuration */
-	#endif
 
- } DS1307_Config_t;
- 
+		DS1307_Callback_t Callback;				/**< Callback for SQW interrupt */
+	 } DS1307_InterruptConfig_t;
+ #endif
+
  /** @brief				Initialize the DS1307 RTC and the I2C interface.
-  *  @param Config		Pointer to I2C master configuration struct
+  *  @param Config		Pointer to I2C master configuration struct \n
   *						NOTE: Set it to #NULL if you have initialized the I2C already
-  *  @param	RTCConfig	RTC configuration settings
+  *  @param	Time		Initial time for the RTC \n
+  *						NOTE: Set to #NULL if you don´t want to set the time
+  *  @param IntConfig	DS1307 interrupt configuration \n
+  *						NOTE: Only available when #DS1307_USE_IRQ is set
   *  @return			I2C error code
   */
- const I2C_Error_t DS1307_Init(I2CM_Config_t* Config, const DS1307_Config_t* RTCConfig);
+ #if(defined DS1307_USE_IRQ)
+	 const I2C_Error_t DS1307_Init(I2CM_Config_t* Config, const Time_t* Time, DS1307_InterruptConfig_t* IntConfig);
+ #else
+	 const I2C_Error_t DS1307_Init(I2CM_Config_t* Config, const Time_t* Time);
+ #endif
  
  /** @brief		Set the clock hold bit of the RTC.
   *  @return	I2C error code
@@ -148,23 +148,27 @@
   *							  The callback is triggered during each DS1307 interrupt.
   *  @param Callback	Function pointer to DS1307 callback function
   */
- void DS1307_InstallCallback(DS1307_Callback_t Callback);
+ #if(defined DS1307_USE_IRQ)
+	 void DS1307_InstallCallback(DS1307_Callback_t Callback);
  
- /** @brief		Remove an installed callback.
-  */
- void DS1307_RemoveCallback(void);
+	/** @brief	Remove an installed callback.
+	 */
+	 void DS1307_RemoveCallback(void);
 
- /** @brief				Enable interrupt support for the DS1307.
-  *						NOTE: This function is called automatically during the initialization of the RTC.
-  *  @param RTCConfig	Pointer to RTC configuration object
-  *  @return			I2C error code
-  */
- const I2C_Error_t DS1307_EnableInterrupts(const DS1307_Config_t* RTCConfig);
+	/** @brief			Enable interrupt support for the DS1307.
+	 *					NOTE: This function is called automatically during the initialization of the RTC.
+	 *  @param Config	Pointer to RTC interrupt configuration object
+	 *  @return			I2C error code
+	 */
+	 const I2C_Error_t DS1307_EnableInterrupts(const DS1307_InterruptConfig_t* Config);
 
- /** @brief		Disable the interrupt support for the DS1307.
-  *  @return	I2C error code
-  */
- const I2C_Error_t DS1307_DisableInterrupts(const DS1307_Config_t* RTCConfig);
+	/** @brief			Disable the interrupt support for the DS1307.
+	 *
+	 *  @param Config	Pointer to RTC interrupt configuration object
+	 *  @return			I2C error code
+	 */
+	 const I2C_Error_t DS1307_DisableInterrupts(const DS1307_InterruptConfig_t* Config);
+ #endif
  
  /** @brief			Set the time of the RTC.
   *  @param Time	Pointer to time object

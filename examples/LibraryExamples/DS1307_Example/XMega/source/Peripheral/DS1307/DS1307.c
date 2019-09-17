@@ -81,34 +81,38 @@
 #endif
 
 #ifndef DOXYGEN
-	struct
-	{
-		DS1307_Callback_t DS1307_SQW_Callback;
-	} __RTCCallbacks;
+	#if(defined DS1307_USE_IRQ)
+		struct
+		{
+			DS1307_Callback_t DS1307_SQW_Callback;
+		} __RTCCallbacks;
+	#endif
 #endif
 
 /** @brief	DS1307 interrupt handler.
  */
-static inline void DS1307_Interrupthandler(void)
-{
-	Time_t CurrentTime;
+#if(defined DS1307_USE_IRQ)
+	static inline void DS1307_Interrupthandler(void)
+	{
+		Time_t CurrentTime;
 	
-	// Get the current time from the RTC
-	I2C_Error_t ErrorCode = DS1307_GetTime(&CurrentTime);
-	if(ErrorCode != I2C_NO_ERROR)
-	{
-		// Return zero if error occurs
-		CurrentTime = (Time_t){0, 0, 0, 0, 0, 0, 0, 0, 0};
-	}
+		// Get the current time from the RTC
+		I2C_Error_t ErrorCode = DS1307_GetTime(&CurrentTime);
+		if(ErrorCode != I2C_NO_ERROR)
+		{
+			// Return zero if error occurs
+			CurrentTime = (Time_t){0, 0, 0, 0, 0, 0, 0, 0, 0};
+		}
 
-	if(__RTCCallbacks.DS1307_SQW_Callback != NULL)
-	{
-		__RTCCallbacks.DS1307_SQW_Callback(CurrentTime);
+		if(__RTCCallbacks.DS1307_SQW_Callback != NULL)
+		{
+			__RTCCallbacks.DS1307_SQW_Callback(CurrentTime);
+		}
 	}
-}
+#endif
 
 #if(defined DS1307_USE_IRQ)
-	const I2C_Error_t DS1307_EnableInterrupts(const DS1307_Config_t* RTCConfig)
+	const I2C_Error_t DS1307_EnableInterrupts(const DS1307_InterruptConfig_t* Config)
 	{
 		uint8_t Data[2] = {DS1307_REGISTER_CONTROL, 0x00};
 		I2C_Error_t ErrorCode = I2C_NO_ERROR;
@@ -116,17 +120,17 @@ static inline void DS1307_Interrupthandler(void)
 		// Define the interrupt configuration, depending on the architecture
 		#if(MCU_ARCH == MCU_ARCH_XMEGA)
 			GPIO_InterruptConfig_t ConfigGPIO = {
-				.Port = RTCConfig->Port,
-				.Pin = RTCConfig->Pin,
-				.Channel = RTCConfig->Channel,
-				.InterruptLevel = RTCConfig->Level,
-				.Sense = RTCConfig->Sense,
+				.Port = Config->Port,
+				.Pin = Config->Pin,
+				.Channel = Config->Channel,
+				.InterruptLevel = Config->Level,
+				.Sense = Config->Sense,
 				.Callback = DS1307_Interrupthandler
 			};
 		#else
 			GPIO_InterruptConfig_t ConfigGPIO = {
-				.Channel = RTCConfig->Channel,
-				.Sense = RTCConfig->Sense,
+				.Channel = Config->Channel,
+				.Sense = Config->Sense,
 				.Callback = DS1307_Interrupthandler
 			};
 		#endif
@@ -144,13 +148,13 @@ static inline void DS1307_Interrupthandler(void)
 
 		GPIO_InstallCallback(&ConfigGPIO);
 		
-		if(RTCConfig->Callback == NULL)
+		if(Config->Callback == NULL)
 		{
 			return I2C_INVALID_PARAM;
 		}
 		else
 		{
-			__RTCCallbacks.DS1307_SQW_Callback = RTCConfig->Callback;
+			__RTCCallbacks.DS1307_SQW_Callback = Config->Callback;
 		}
 	
 		ErrorCode = DS1307_I2CM_WRITEBYTE(Data[0], FALSE) | DS1307_I2CM_READBYTE(&Data[1], TRUE);
@@ -164,21 +168,21 @@ static inline void DS1307_Interrupthandler(void)
 	
 		// Set new output frequency
 		Data[1] &= ~0x03;
-		Data[1] |= RTCConfig->Freq & 0x03;
+		Data[1] |= Config->Freq & 0x03;
 
 		return DS1307_I2CM_WRITEBYTES(sizeof(Data), Data, TRUE);
 	}
 
-	const I2C_Error_t DS1307_DisableInterrupts(const DS1307_Config_t* RTCConfig)
+	const I2C_Error_t DS1307_DisableInterrupts(const DS1307_InterruptConfig_t* Config)
 	{
 		uint8_t Data[2] = {DS1307_REGISTER_CONTROL, 0x00};
 		I2C_Error_t ErrorCode = I2C_NO_ERROR;
 		
 		// Disable GPIO interrupt
 		#if(MCU_ARCH == MCU_ARCH_XMEGA)
-			GPIO_RemoveCallback(RTCConfig->Port, RTCConfig->Channel);
+			GPIO_RemoveCallback(Config->Port, Config->Channel);
 		#else
-			GPIO_RemoveCallback(RTCConfig->Channel);
+			GPIO_RemoveCallback(Config->Channel);
 		#endif
 
 		ErrorCode = DS1307_I2CM_WRITEBYTE(Data[0], FALSE) | DS1307_I2CM_READBYTE(&Data[1], TRUE);
@@ -194,7 +198,11 @@ static inline void DS1307_Interrupthandler(void)
 	}
 #endif
 
-const I2C_Error_t DS1307_Init(I2CM_Config_t* Config, const DS1307_Config_t* RTCConfig)
+#if(defined DS1307_USE_IRQ)
+	const I2C_Error_t DS1307_Init(I2CM_Config_t* Config, const Time_t* Time, DS1307_InterruptConfig_t* IntConfig)
+#else
+	const I2C_Error_t DS1307_Init(I2CM_Config_t* Config, const Time_t* Time)
+#endif
 {
 	I2C_Error_t ErrorCode = I2C_NO_ERROR;
 
@@ -205,7 +213,7 @@ const I2C_Error_t DS1307_Init(I2CM_Config_t* Config, const DS1307_Config_t* RTCC
 
 	#if(defined DS1307_USE_IRQ)
 	{
-		ErrorCode = DS1307_EnableInterrupts(RTCConfig);
+		ErrorCode = DS1307_EnableInterrupts(IntConfig);
 		if(ErrorCode != I2C_NO_ERROR)
 		{
 			return ErrorCode;
@@ -213,9 +221,9 @@ const I2C_Error_t DS1307_Init(I2CM_Config_t* Config, const DS1307_Config_t* RTCC
 	}
 	#endif
 
-	if(RTCConfig->Time != NULL)
+	if(Time != NULL)
 	{
-		ErrorCode = DS1307_SetTime(RTCConfig->Time);
+		ErrorCode = DS1307_SetTime(Time);
 		if(ErrorCode != I2C_NO_ERROR)
 		{
 			return ErrorCode;
@@ -290,15 +298,17 @@ const I2C_Error_t DS1307_SetHourMode(const HourMode_t Mode)
 	return DS1307_I2CM_WRITEBYTE(DS1307_REGISTER_HOURS, TRUE) | DS1307_I2CM_WRITEBYTE(Data, TRUE);
 }
 
-void DS1307_InstallCallback(DS1307_Callback_t Callback)
-{
-	__RTCCallbacks.DS1307_SQW_Callback = Callback;
-}
+#if(defined DS1307_USE_IRQ)
+	void DS1307_InstallCallback(DS1307_Callback_t Callback)
+	{
+		__RTCCallbacks.DS1307_SQW_Callback = Callback;
+	}
 
-void DS1307_RemoveCallback(void)
-{
-	__RTCCallbacks.DS1307_SQW_Callback = NULL;
-}
+	void DS1307_RemoveCallback(void)
+	{
+		__RTCCallbacks.DS1307_SQW_Callback = NULL;
+	}
+#endif
 
 const I2C_Error_t DS1307_SetTime(const Time_t* Time)
 {

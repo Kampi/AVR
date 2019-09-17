@@ -27,8 +27,7 @@ Time_t CurrentTime = {
 /*
 	RTC configuration
 */
-DS1307_Config_t Config_RTC = {
-	.Time = &CurrentTime,
+DS1307_InterruptConfig_t Config_RTC_Interrupts = {
 	.Freq = DS1307_SQW_1HZ,
 	.Port = GET_PERIPHERAL(DS1307_INT),
 	.Pin = GET_INDEX(DS1307_INT),
@@ -40,7 +39,7 @@ DS1307_Config_t Config_RTC = {
 
 int main(void)
 {
-	DS1307_Init(&Config_I2CM, &Config_RTC);
+	DS1307_Init(&Config_I2CM, &CurrentTime, &Config_RTC_Interrupts);
 
 	EnableGlobalInterrupts();
 	
