@@ -32,7 +32,7 @@
 
 #include <stddef.h>
 
-#include "Peripheral/__Rework__/DS1307/DS1307.h"
+#include "Peripheral/DS1307/DS1307.h"
 
 /** @defgroup DS1307
  *  @{
@@ -56,6 +56,8 @@
 	 *  @{
 	 */ 
 		#define DS1307_OUT						0x07
+		#define DS1307_12_24					0x06
+		#define DS1307_MERIDIEM					0x05
 		#define DS1307_SQWE						0x04
 		#define DS1307_RS1						0x01
 		#define DS1307_RS0						0x00
@@ -82,7 +84,7 @@
 	struct
 	{
 		DS1307_Callback_t DS1307_SQW_Callback;
-	} DS1307_Callbacks;
+	} __RTCCallbacks;
 #endif
 
 /** @brief	DS1307 interrupt handler.
@@ -99,32 +101,32 @@ static inline void DS1307_Interrupthandler(void)
 		CurrentTime = (Time_t){0, 0, 0, 0, 0, 0, 0, 0, 0};
 	}
 
-	if(DS1307_Callbacks.DS1307_SQW_Callback != NULL)
+	if(__RTCCallbacks.DS1307_SQW_Callback != NULL)
 	{
-		DS1307_Callbacks.DS1307_SQW_Callback(CurrentTime);
+		__RTCCallbacks.DS1307_SQW_Callback(CurrentTime);
 	}
 }
 
 #if(defined DS1307_USE_IRQ)
-	const I2C_Error_t DS1307_EnableInterrupts(DS1307_SQWFreq_t Frequency)
+	const I2C_Error_t DS1307_EnableInterrupts(const DS1307_Config_t* RTCConfig)
 	{
-		uint8_t Data = 0x00;
+		uint8_t Data[2] = {DS1307_REGISTER_CONTROL, 0x00};
 		I2C_Error_t ErrorCode = I2C_NO_ERROR;
 
 		// Define the interrupt configuration, depending on the architecture
 		#if(MCU_ARCH == MCU_ARCH_XMEGA)
 			GPIO_InterruptConfig_t ConfigGPIO = {
-				.Port = GET_PERIPHERAL(DS1307_INT),
-				.Pin = GET_INDEX(DS1307_INT),
-				.Channel = DS1307_INT_CHANNEL,
-				.InterruptLevel = DS1307_INT_PRIO,
-				.Type = DS1307_INT_SENSE,
+				.Port = RTCConfig->Port,
+				.Pin = RTCConfig->Pin,
+				.Channel = RTCConfig->Channel,
+				.InterruptLevel = RTCConfig->Level,
+				.Sense = RTCConfig->Sense,
 				.Callback = DS1307_Interrupthandler
 			};
 		#else
 			GPIO_InterruptConfig_t ConfigGPIO = {
-				.Channel = DS1307_INT_CHANNEL,
-				.Sense = DS1307_INT_SENSE,
+				.Channel = RTCConfig->Channel,
+				.Sense = RTCConfig->Sense,
 				.Callback = DS1307_Interrupthandler
 			};
 		#endif
@@ -132,7 +134,7 @@ static inline void DS1307_Interrupthandler(void)
 		GPIO_SetDirection(GET_PERIPHERAL(DS1307_INT), GET_INDEX(DS1307_INT), GPIO_DIRECTION_IN);
 	
 		// Enable pull up, depending on architecture
-		#if(DS1307_INT_PULLUP)
+		#if(defined DS1307_INT_PULLUP)
 			#if(MCU_ARCH == MCU_ARCH_XMEGA)
 				GPIO_SetPullConfig(GET_PERIPHERAL(DS1307_INT), GET_INDEX(DS1307_INT), GPIO_OUTPUTCONFIG_PULLUP);
 			#else
@@ -141,45 +143,54 @@ static inline void DS1307_Interrupthandler(void)
 		#endif
 
 		GPIO_InstallCallback(&ConfigGPIO);
+		
+		if(RTCConfig->Callback == NULL)
+		{
+			return I2C_INVALID_PARAM;
+		}
+		else
+		{
+			__RTCCallbacks.DS1307_SQW_Callback = RTCConfig->Callback;
+		}
 	
-		ErrorCode = DS1307_I2CM_WRITEBYTE(DS1307_REGISTER_CONTROL, FALSE) | DS1307_I2CM_READBYTE(&Data, TRUE);
+		ErrorCode = DS1307_I2CM_WRITEBYTE(Data[0], FALSE) | DS1307_I2CM_READBYTE(&Data[1], TRUE);
 		if(ErrorCode != I2C_NO_ERROR)
 		{
 			return ErrorCode;
 		}
 	
 		// Set interrupt enable bit
-		Data |= (0x01 << 0x04);
+		Data[1] |= (0x01 << DS1307_SQWE);
 	
 		// Set new output frequency
-		Data &= ~0x03;
-		Data |= Frequency;
+		Data[1] &= ~0x03;
+		Data[1] |= RTCConfig->Freq & 0x03;
 
-		return DS1307_I2CM_WRITEBYTE(DS1307_REGISTER_CONTROL, TRUE) | DS1307_I2CM_WRITEBYTE(Data, TRUE);
+		return DS1307_I2CM_WRITEBYTES(sizeof(Data), Data, TRUE);
 	}
 
-	const I2C_Error_t DS1307_DisableInterrupts(void)
+	const I2C_Error_t DS1307_DisableInterrupts(const DS1307_Config_t* RTCConfig)
 	{
-		uint8_t Data = 0x00;
+		uint8_t Data[2] = {DS1307_REGISTER_CONTROL, 0x00};
 		I2C_Error_t ErrorCode = I2C_NO_ERROR;
-	
+		
 		// Disable GPIO interrupt
 		#if(MCU_ARCH == MCU_ARCH_XMEGA)
-			GPIO_RemoveCallback(DS1307_INT, DS1307_INT_CHANNEL);
+			GPIO_RemoveCallback(RTCConfig->Port, RTCConfig->Channel);
 		#else
-			GPIO_RemoveCallback(DS1307_INT_CHANNEL);
+			GPIO_RemoveCallback(RTCConfig->Channel);
 		#endif
 
-		ErrorCode = DS1307_I2CM_WRITEBYTE(DS1307_REGISTER_CONTROL, FALSE) | DS1307_I2CM_READBYTE(&Data, TRUE);
+		ErrorCode = DS1307_I2CM_WRITEBYTE(Data[0], FALSE) | DS1307_I2CM_READBYTE(&Data[1], TRUE);
 		if(ErrorCode != I2C_NO_ERROR)
 		{
 			return ErrorCode;
 		}
 
 		// Clear SQW enable bit
-		Data &= ~(0x01 << 0x04);
+		Data[1] &= ~(0x01 << DS1307_SQWE);
 
-		return DS1307_I2CM_WRITEBYTE(DS1307_REGISTER_CONTROL, TRUE) | DS1307_I2CM_WRITEBYTE(Data, TRUE);
+		return DS1307_I2CM_WRITEBYTES(sizeof(Data), Data, TRUE);
 	}
 #endif
 
@@ -194,7 +205,7 @@ const I2C_Error_t DS1307_Init(I2CM_Config_t* Config, const DS1307_Config_t* RTCC
 
 	#if(defined DS1307_USE_IRQ)
 	{
-		ErrorCode = DS1307_EnableInterrupts(RTCConfig->Freq);
+		ErrorCode = DS1307_EnableInterrupts(RTCConfig);
 		if(ErrorCode != I2C_NO_ERROR)
 		{
 			return ErrorCode;
@@ -211,7 +222,7 @@ const I2C_Error_t DS1307_Init(I2CM_Config_t* Config, const DS1307_Config_t* RTCC
 		}
 	}
 
-	return DS1307_SetHourMode(RTCConfig->Mode);
+	return ErrorCode;
 }
 
 const I2C_Error_t DS1307_HoldClock(void)
@@ -251,27 +262,27 @@ const I2C_Error_t DS1307_SetHourMode(const HourMode_t Mode)
 		if(Data > 12)
 		{
 			Data -= 12;
-			Data |= (0x01 << 0x05);
+			Data |= (0x01 << DS1307_MERIDIEM);
 		}
 		else
 		{
-			Data &= ~(0x01 << 0x05);
+			Data &= ~(0x01 << DS1307_MERIDIEM);
 		}
 		
 		Data = Dec2BCD(Data);
 
 		// Set 12-Hour mode
-		Data |= (0x01 << 0x06);
+		Data |= (0x01 << DS1307_12_24);
 	}
 	// Change from 12-Hour mode to 24-Hour mode
 	else if(Mode == MODE_24_HOUR)
 	{
 		// Set 24-Hour mode
-		Data &= ~(0x01 << 0x06);
+		Data &= ~(0x01 << DS1307_12_24);
 
-		if(Data & (0x01 << 0x05))
+		if(Data & (0x01 << DS1307_MERIDIEM))
 		{
-			Data &= ~(0x01 << 0x05);
+			Data &= ~(0x01 << DS1307_MERIDIEM);
 			Data += 0x12;
 		}
 	}
@@ -281,12 +292,12 @@ const I2C_Error_t DS1307_SetHourMode(const HourMode_t Mode)
 
 void DS1307_InstallCallback(DS1307_Callback_t Callback)
 {
-	DS1307_Callbacks.DS1307_SQW_Callback = Callback;
+	__RTCCallbacks.DS1307_SQW_Callback = Callback;
 }
 
 void DS1307_RemoveCallback(void)
 {
-	DS1307_Callbacks.DS1307_SQW_Callback = NULL;
+	__RTCCallbacks.DS1307_SQW_Callback = NULL;
 }
 
 const I2C_Error_t DS1307_SetTime(const Time_t* Time)
@@ -305,13 +316,18 @@ const I2C_Error_t DS1307_SetTime(const Time_t* Time)
 	// Set hour mode
 	if(Time->HourMode == MODE_12_HOUR)
 	{
-		// Check if time is valid and correct it, if necessary
+		// Check if time is valid and correct it, if necessary. Also set the AM/PM bit
 		if(Time->Hour > 12)
 		{
-			Data[(int)offsetof(Time_t, Hour)] = Time->Hour - 12;
+			Data[3] = (Time->Hour - 12) | (0x01 << DS1307_MERIDIEM);
 		}
-
-		Data[(int)offsetof(Time_t, Hour)] |= (0x01 << 0x06) | (Time->MeridiemMode << 0x05);
+		else
+		{
+			Data[3] &= ~(0x01 << DS1307_MERIDIEM);
+		}
+		
+		// Set the hour mode bit
+		Data[3] |= (0x01 << DS1307_12_24);
 	}
 
 	return DS1307_I2CM_WRITEBYTES(sizeof(Data), Data, TRUE);
@@ -328,18 +344,18 @@ const I2C_Error_t DS1307_GetTime(Time_t* Time)
 		return ErrorCode;
 	}
 
-	Time->Second = BCD2Dec(Buffer[(int)offsetof(Time_t, Second)]);
-	Time->Minute = BCD2Dec(Buffer[(int)offsetof(Time_t, Minute)]);
+	Time->Second = BCD2Dec(Buffer[0]);
+	Time->Minute = BCD2Dec(Buffer[1]);
 
 	// Check if 12 hour mode is enabled
-	if(Buffer[(int)offsetof(Time_t, Hour)] & (0x01 << 0x06))
+	if(Buffer[2] & (0x01 << DS1307_12_24))
 	{
 		Time->HourMode = MODE_12_HOUR;
-		Time->MeridiemMode = (Time->Hour & (0x01 << 0x05)) >> 0x05;
+		Time->MeridiemMode = (Time->Hour >> DS1307_MERIDIEM) & 0x01;
 
-		Buffer[(int)offsetof(Time_t, Hour)] &= ~((0x01 << 0x05) | (0x01 << 0x06));
+		Buffer[2] &= ~((0x01 << 0x05) | (0x01 << 0x06));
 		
-		Time->Hour = BCD2Dec(Buffer[(int)offsetof(Time_t, Hour)]);
+		Time->Hour = BCD2Dec(Buffer[2]);
 
 		if(Time->Hour > 12)
 		{
@@ -349,13 +365,13 @@ const I2C_Error_t DS1307_GetTime(Time_t* Time)
 	else
 	{
 		Time->HourMode = MODE_24_HOUR;
-		Time->Hour = BCD2Dec(Buffer[(int)offsetof(Time_t, Hour)]);
+		Time->Hour = BCD2Dec(Buffer[2]);
 	}
 
-	Time->DayOfWeek = BCD2Dec(Buffer[(int)offsetof(Time_t, DayOfWeek)]);
-	Time->Day = BCD2Dec(Buffer[(int)offsetof(Time_t, Day)]);
-	Time->Month = BCD2Dec(Buffer[(int)offsetof(Time_t, Month)]);
-	Time->Year = BCD2Dec(Buffer[(int)offsetof(Time_t, Year)]);
+	Time->DayOfWeek = BCD2Dec(Buffer[3]);
+	Time->Day = BCD2Dec(Buffer[4]);
+	Time->Month = BCD2Dec(Buffer[5]);
+	Time->Year = BCD2Dec(Buffer[6]);
 
 	return ErrorCode;	
 }
