@@ -39,8 +39,13 @@ DS1307_InterruptConfig_t Config_RTC_Interrupts = {
 
 int main(void)
 {
+	// Initialize the DS1307 RTC
 	DS1307_Init(&Config_I2CM, &CurrentTime, &Config_RTC_Interrupts);
 
+	// Enable low level interrupts
+	PMIC_EnableInterruptLevel(DS1307_INT_LEVEL);
+
+	// Enable global interrupts
 	EnableGlobalInterrupts();
 	
     while(1) 
