@@ -57,15 +57,18 @@ static inline void SPI_InterruptHandler(const uint8_t Device, const SPI_Callback
 void SPIM_Init(SPIM_Config_t* Config)
 {
 	// Enable MOSI and SCK as output
-	GPIO_SetDirection(SPI_PORT, SPI_MOSI_PIN, GPIO_DIRECTION_OUT);
-	GPIO_SetDirection(SPI_PORT, SPI_SCK_PIN, GPIO_DIRECTION_OUT);
+	GPIO_SetDirection(SPI_PORT, SPI_MOSI, GPIO_DIRECTION_OUT);
+	GPIO_SetDirection(SPI_PORT, SPI_SCK, GPIO_DIRECTION_OUT);
 
 	// Enable MISO as input
-	GPIO_SetDirection(SPI_PORT, SPI_MISO_PIN, GPIO_DIRECTION_IN);
+	GPIO_SetDirection(SPI_PORT, SPI_MISO, GPIO_DIRECTION_IN);
+	
+	// Configure SS as output
+	GPIO_SetDirection(SPI_PORT, SPI_SS, GPIO_DIRECTION_OUT);
 
 	SPI_SetDataOrder(Config->DataOrder);
 	SPIM_SetPrescaler(Config->Prescaler);
-	SPIM_SetMode(Config->Mode);
+	SPIM_SetMode(Config->Mode);	
 	SPI_SetDeviceMode(SPI_MASTER);
 	SPI_Enable();
 }
