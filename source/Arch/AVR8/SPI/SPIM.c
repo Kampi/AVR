@@ -80,7 +80,7 @@ uint8_t SPIM_SendData(const uint8_t Data)
 	// Wait until transfer is complete
     while(!(SPSR & (0x01 << SPIF)));
 
-    return(SPDR);
+    return SPDR;
 }
 
 /*
