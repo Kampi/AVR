@@ -243,7 +243,10 @@
 	 *  MCP2515 control bits.
 	 *  @{
 	 */
+		#define MCP2515_BTLMODE					0x07
 		#define MCP2515_MSG_RX_1				0x07
+		#define MCP2515_SAM						0x06
+		#define MCP2515_WAKFIL					0x06
 		#define MCP2515_MSG_RX_0				0x06
 		#define MCP2515_ABTF					0x06
 		#define MCP2515_RTR						0x06
@@ -252,8 +255,12 @@
 		#define MCP2515_MLOA					0x05
 		#define MCP2515_ABAT					0x04
 		#define MCP2515_TXERR					0x04
+		#define MCP2515_MSG_TYPE1				0x04
+		#define MCP2515_MSG_TYPE0				0x03
+		#define MCP2515_EXIDE					0x03
 		#define MCP2515_OSM						0x03
 		#define MCP2515_TXREQ					0x03
+		#define MCP2515_CLKEN					0x02
 		#define MCP2515_BUKT					0x02
 		#define MCP2515_B2RTSM					0x02
 		#define MCP2515_B1RTSM					0x01
@@ -294,12 +301,9 @@
 	{
 		MCP2515_Callback_t RxCallback;
 		MCP2515_Callback_t TxCallback;
-		MCP2515_ErrorCallback_t ErrorCallback;
 		MCP2515_Callback_t WakeCallback;
 	} __MCP2515_Callbacks;
 #endif
-
-static uint8_t __TxBufferFull = 0x00;
 
 /** @brief			Send a bit modify to the CAN controller.
  *  @param Address	Register address
@@ -402,21 +406,12 @@ static inline void MCP2515_Interrupthandler(void)
 		// Read the error flags
 		// ToDo: How to clear error flags in callback?
 		uint8_t ErrorFlags = MCP2515_ReadRegister(MCP2515_REGISTER_EFLG);
-		
-		// Error callback
-		if(__MCP2515_Callbacks.ErrorCallback != NULL)
-		{
-			__MCP2515_Callbacks.ErrorCallback(ErrorFlags);
-		}
 	}
 
 	// Transmit buffer n full interrupt
 	if((Status & (0x01 << MCP2515_IF_TX2)) || (Status & (0x01 << MCP2515_IF_TX1)) || (Status & (0x01 << MCP2515_IF_TX0)))
 	{
 		MCP2515_CLEAR_IF((0x01 << MCP2515_IF_TX2) | (0x01 << MCP2515_IF_TX1) | (0x01 << MCP2515_IF_TX0));
-
-		// Clear the transmit buffer full bits
-		__TxBufferFull &= ~((Status >> 0x02) & 0x07);
 	}
 
 	// Receive buffer n full interrupt
@@ -428,6 +423,12 @@ static inline void MCP2515_Interrupthandler(void)
 			__MCP2515_Callbacks.RxCallback();
 		}
 	}
+}
+
+void A(uint8_t Error)
+{
+	volatile uint8_t y;
+	y++;
 }
 
 /** @brief			Enable interrupt support for the MCU.
@@ -451,7 +452,7 @@ static void MCP2515_EnableInterrupts(const MCP2515_Config_t* Config)
 	
 	GPIO_InstallCallback(&ConfigGPIO);
 
-	// Save the callbacks
+	// Save the callbacks	
 	if(Config->WakeCallback != NULL)
 	{
 		__MCP2515_Callbacks.WakeCallback = Config->WakeCallback;
@@ -471,10 +472,8 @@ static void MCP2515_EnableInterrupts(const MCP2515_Config_t* Config)
 	MCP2515_WriteRegister(MCP2515_REGISTER_CANINTE, (0x01 << MCP2515_IF_MER) | (0x01 << MCP2515_IF_WAK) | (0x01 << MCP2515_IF_ERR) | (0x01 << MCP2515_IF_TX2) | (0x01 << MCP2515_IF_TX1) | (0x01 << MCP2515_IF_TX0) | (0x01 << MCP2515_IF_RX1) | (0x01 << MCP2515_IF_RX0));
 }
 
-void MCP2515_Init(SPIM_Config_t* Config, const MCP2515_Config_t* DeviceConfig)
+void MCP2515_Init(SPIM_Config_t* Config, MCP2515_Config_t* DeviceConfig)
 {
-	__TxBufferFull = 0x00;
-
 	// Initialize the CS Pin
 	GPIO_SetDirection(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS), GPIO_DIRECTION_OUT);
 	GPIO_Set(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS));
@@ -522,6 +521,9 @@ void MCP2515_Init(SPIM_Config_t* Config, const MCP2515_Config_t* DeviceConfig)
 	// Set the rollover bit
 	MCP2515_BitModify(MCP2515_REGISTER_RXB0CTRL, (0x01 << MCP2515_BUKT), (DeviceConfig->EnableRollover << MCP2515_BUKT));
 
+	// Set the Wake-up filter
+	MCP2515_BitModify(MCP2515_REGISTER_CNF3, (0x01 << MCP2515_WAKFIL), (DeviceConfig->EnableWakeUpFilter << MCP2515_WAKFIL));
+
 	// Use default timing
 	if(DeviceConfig->pTiming == NULL)
 	{
@@ -553,7 +555,9 @@ void MCP2515_Init(SPIM_Config_t* Config, const MCP2515_Config_t* DeviceConfig)
 
 void MCP2515_ConfigureTiming(const MCP2515_TimingConfig_t* Config)
 {
-	// TBD
+	MCP2515_BitModify(MCP2515_REGISTER_CNF1, 0xFF, (Config->SJW << 0x06) | (Config->Prescaler & 0x3F));
+	MCP2515_BitModify(MCP2515_REGISTER_CNF2, 0xFF, (Config->PS2UseCNF3 << MCP2515_BTLMODE) | (Config->EnableTrippeSample << MCP2515_SAM) | ((Config->PHSEG1 & 0x07) << 0x03) | (Config->PRSEG & 0x07));
+	MCP2515_BitModify(MCP2515_REGISTER_CNF3, 0x07, (Config->PHSEG2 & 0x07));
 }
 
 void MCP2515_Reset(void)
@@ -570,6 +574,16 @@ void MCP2515_Reset(void)
 
 	// Wait until the reset has finished
 	for(uint8_t i = 0x00; i < 0xFF; i++);
+}
+
+void MPC2515_EnableClockOut(const MCP2515_ClockOutPrescaler_t Prescaler)
+{
+	MCP2515_BitModify(MCP2515_REGISTER_CANCTRL, (0x01 << MCP2515_CLKEN) | 0x03, Prescaler & 0x03);
+}
+
+void MPC2515_DisableClockOut(void)
+{
+	MCP2515_BitModify(MCP2515_REGISTER_CANCTRL, (0x01 << MCP2515_CLKEN), 0x00);
 }
 
 void MCP2515_InstallCallback(const MCP2515_Config_t* Config)
@@ -597,14 +611,6 @@ void MCP2515_InstallCallback(const MCP2515_Config_t* Config)
 			__MCP2515_Callbacks.WakeCallback = Config->WakeCallback;
 		}
 	}
-	
-	if(Config->Source & MCP2515_ERROR_INTERRUPT)
-	{
-		if(Config->ErrorCallback != NULL)
-		{
-			__MCP2515_Callbacks.ErrorCallback = Config->ErrorCallback;
-		}
-	}
 }
 
 void MCP2515_RemoveCallback(const MCP2515_CallbackType_t Callback)
@@ -622,11 +628,6 @@ void MCP2515_RemoveCallback(const MCP2515_CallbackType_t Callback)
 	if(Callback & MCP2515_WAKE_INTERRUPT)
 	{
 		__MCP2515_Callbacks.WakeCallback = NULL;
-	}
-
-	if(Callback & MCP2515_ERROR_INTERRUPT)
-	{
-		__MCP2515_Callbacks.ErrorCallback = NULL;
 	}
 }
 
@@ -755,8 +756,6 @@ void MCP2515_RequestTransmission(const MCP2515_TransmitBuffer_t Buffer)
 		MCP2515_SPI_TRANSMIT(MCP2515_CMD_RTS(Buffer_Int));
 		MCP2515_SPI_CHIP_DESELECT();
 	#endif
-
-	__TxBufferFull &= ~Buffer_Int;
 }
 
 void MPC2515_AbortTransmission(const MCP2515_TransmitBuffer_t Buffer)
@@ -775,10 +774,8 @@ void MPC2515_AbortAllTransmission(void)
 
 void MCP2515_ReadMessage(CAN_Message_t* Message)
 {
-	uint8_t ID_High = 0x00;
-	uint8_t ID_Low = 0x00;
 	uint8_t Length = 0x00;
-	uint8_t ReceiveBuffer = 0x00;
+	uint8_t ReceiveCommand = 0x00;
 
 	// Get the receive status
 	uint8_t RxStatus = MCP2515_ReadRxStatus();
@@ -790,34 +787,42 @@ void MCP2515_ReadMessage(CAN_Message_t* Message)
 	}
 	else if(RxStatus & (0x01 << MCP2515_MSG_RX_1))
 	{
-		ReceiveBuffer = MCP2515_CMD_READ_RX(MCP2515_RX1);
+		ReceiveCommand = MCP2515_CMD_READ_RX(MCP2515_RX1);
 	}
 	else
 	{
-		ReceiveBuffer = MCP2515_CMD_READ_RX(MCP2515_RX0);
+		ReceiveCommand = MCP2515_CMD_READ_RX(MCP2515_RX0);
 	}
 
+	// Get the message type
+	MCP2515_MessageType_t MessageType = (RxStatus & ((0x01 << MCP2515_MSG_TYPE1) | (0x01 << MCP2515_MSG_TYPE0))) >> MCP2515_MSG_TYPE0;
+
 	MCP2515_SPI_CHIP_SELECT();
-	MCP2515_SPI_TRANSMIT(ReceiveBuffer);
+	MCP2515_SPI_TRANSMIT(ReceiveCommand);
 	
 	// Get the message ID
-	ID_High = (MCP2515_SPI_TRANSMIT(0xFF)) << 0x03;
-	ID_Low = (MCP2515_SPI_TRANSMIT(0xFF)) >> 0x05;
-	Message->ID = ID_High | ID_Low;
+	if((MessageType == MCP2515_STANDARD_REMOTE) || (MessageType == MCP2515_STANDARD_DATA))
+	{
+		Message->ID = (MCP2515_SPI_TRANSMIT(0xFF)) << 0x03 | (MCP2515_SPI_TRANSMIT(0xFF)) >> 0x05;
 
-	// Read two empty bytes
-	MCP2515_SPI_TRANSMIT(0xFF);
-	MCP2515_SPI_TRANSMIT(0xFF);
+		// Skip the extended identifier
+		MCP2515_SPI_TRANSMIT(0xFF);
+		MCP2515_SPI_TRANSMIT(0xFF);
+	}
+	else
+	{
+		// Skip the first byte of the standard identifier
+		MCP2515_SPI_TRANSMIT(0xFF);
+		Message->ID = ((((uint32_t)MCP2515_SPI_TRANSMIT(0xFF)) & 0x03) << 0x18) | (MCP2515_SPI_TRANSMIT(0xFF) << 0x08) | MCP2515_SPI_TRANSMIT(0xFF);
+	}
 
 	// Get the message length
 	Length = MCP2515_SPI_TRANSMIT(0xFF);
 
-	// Check message type
-	uint8_t MessageType = (RxStatus & 0x18) >> 0x03;
-	
 	switch(MessageType)
 	{
-		case(MCP2515_STANDARD_DATA):
+		case MCP2515_STANDARD_DATA:
+		case MCP2515_EXTENDED_DATA:
 		{
 			Message->Length = Length;
 			Message->Type = MessageType;
@@ -826,14 +831,13 @@ void MCP2515_ReadMessage(CAN_Message_t* Message)
 			{
 				*(Message->pData++) = MCP2515_SPI_TRANSMIT(0xFF);
 			}
-
+				
 			break;
 		}
-		case(MCP2515_STANDARD_REMOTE):
+		case MCP2515_STANDARD_REMOTE:
+		case MCP2515_EXTENDED_REMOTE:
 		{
-			// Remove the remote bit
-			Message->Length = Length - 0x40;
-
+			Message->Length = Length & (~(0x01 << MCP2515_RTR));
 			Message->Type = MessageType;
 
 			break;
@@ -843,85 +847,86 @@ void MCP2515_ReadMessage(CAN_Message_t* Message)
 	MCP2515_SPI_CHIP_DESELECT();
 }
 
-MCP2515_ErrorCode_t MCP2515_PrepareMessage(CAN_Message_t* Message, const MCP2515_MessagePriority_t Priority)
+MCP2515_ErrorCode_t MCP2515_PrepareMessage(CAN_Message_t* Message, const MCP2515_MessagePriority_t Priority, const MCP2515_TransmitBuffer_t Buffer)
 {
-	if(Message->ID > 0x7FF)
+	if(Message->ID > 0x3FFFF)
 	{
 		return MCP2515_INVALID_IDENTIFIER;
 	}
 	
 	// Check for an empty transmit buffer. First check the internal bitmap and then check 
 	// the TXREQ bit in the second step
-	uint8_t Buffer = 0x00;
-	if(!(__TxBufferFull & MCP2515_TX0))
+	uint8_t BufferBase = 0x00;
+	uint8_t Status = 0x00;
+	if(Buffer == MCP2515_TX0)
 	{
-		if(!(MCP2515_ReadRegister(MCP2515_REGISTER_TXB0CTRL) & MCP2515_TXREQ))
+		Status = MCP2515_ReadRegister(MCP2515_REGISTER_TXB0CTRL);
+		if(!(Status & (0x01 << MCP2515_TXREQ)))
 		{
-			Buffer = MCP2515_REGISTER_TXB0CTRL;
+			BufferBase = MCP2515_REGISTER_TXB0CTRL;
 		}
-
-		__TxBufferFull |= MCP2515_TX0;
 	}
-	else if(!(__TxBufferFull & MCP2515_TX1))
+	else if(Buffer == MCP2515_TX1)
 	{
-		if(!(MCP2515_ReadRegister(MCP2515_REGISTER_TXB1CTRL) & MCP2515_TXREQ))
+		Status = MCP2515_ReadRegister(MCP2515_REGISTER_TXB1CTRL);
+		if(!(Status & (0x01 << MCP2515_TXREQ)))
 		{
-			Buffer = MCP2515_REGISTER_TXB1CTRL;
+			BufferBase = MCP2515_REGISTER_TXB1CTRL;
 		}
-
-		__TxBufferFull |= MCP2515_TX1;
 	}
-	else if(!(__TxBufferFull & MCP2515_TX2))
+	else if(Buffer == MCP2515_TX2)
 	{
-		if(!(MCP2515_ReadRegister(MCP2515_REGISTER_TXB2CTRL) & MCP2515_TXREQ))
+		Status = MCP2515_ReadRegister(MCP2515_REGISTER_TXB2CTRL);
+		if(!(Status & (0x01 << MCP2515_TXREQ)))
 		{
-			Buffer = MCP2515_REGISTER_TXB2CTRL;
+			BufferBase = MCP2515_REGISTER_TXB2CTRL;
 		}
-
-		__TxBufferFull |= MCP2515_TX2;
 	}
 
 	// All Tx buffers are full - cancel transmission
-	if(Buffer == 0x00)
+	if(BufferBase == 0x00)
 	{
 		return MCP2515_TX_BUFFER_FULL;
 	}
 
 	// Delete TXREQ Bit
-	MCP2515_BitModify(Buffer, (0x01 << MCP2515_TXREQ), 0x00);
+	MCP2515_BitModify(BufferBase, (0x01 << MCP2515_TXREQ), 0x00);
 
-	// Set the message id
-	MCP2515_WriteRegister(Buffer + 0x02, (Message->ID & 0x07) << 0x05);
-	MCP2515_WriteRegister(Buffer + 0x01, Message->ID >> 0x03);
+	// Set the message ID
+	if((Message->Type == MCP2515_STANDARD_DATA) || (Message->Type == MCP2515_STANDARD_REMOTE))
+	{
+		MCP2515_WriteRegister(BufferBase + 0x02, (Message->ID & 0x07) << 0x05);
+		MCP2515_WriteRegister(BufferBase + 0x01, Message->ID >> 0x03);
+	}
+	else
+	{
+		MCP2515_WriteRegister(BufferBase + 0x02, (0x01 << MCP2515_EXIDE) | ((Message->ID >> 0x10) & 0x03));
+		MCP2515_WriteRegister(BufferBase + 0x03, (Message->ID >> 0x08) & 0xFF);
+		MCP2515_WriteRegister(BufferBase + 0x04, Message->ID & 0xFF);
+	}
 
 	// Set the message priority
-	MCP2515_BitModify(Buffer, 0x03, Priority & 0x03);
+	MCP2515_BitModify(BufferBase, 0x03, Priority & 0x03);
 
 	switch(Message->Type)
 	{
+		case MCP2515_EXTENDED_DATA:
 		case MCP2515_STANDARD_DATA:
 		{
-			MCP2515_WriteRegister(Buffer + 0x05, (Message->Length & 0x0F));
+			MCP2515_WriteRegister(BufferBase + 0x05, (Message->Length & 0x0F));
 
 			for(uint8_t DataByte = 0x00; DataByte < MCP2515_MAX_DATABYTES; DataByte++)
 			{
-				MCP2515_WriteRegister(Buffer + 0x06 + DataByte, *(Message->pData++));
+				MCP2515_WriteRegister(BufferBase + 0x06 + DataByte, *(Message->pData++));
 			}
 
 			break;
 		}
 		case MCP2515_STANDARD_REMOTE:
-		{
-			MCP2515_WriteRegister(Buffer + 0x05, (Message->Length & 0x0F) + (0x01 << MCP2515_RTR));
-
-			break;
-		}
-		case MCP2515_EXTENDED_DATA:
-		{
-			break;
-		}
 		case MCP2515_EXTENDED_REMOTE:
 		{
+			MCP2515_WriteRegister(BufferBase + 0x05, (Message->Length & 0x0F) + (0x01 << MCP2515_RTR));
+
 			break;
 		}
 	}

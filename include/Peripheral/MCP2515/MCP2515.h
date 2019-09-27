@@ -28,7 +28,7 @@
  *
  *  This file contains the prototypes and definitions for the CAN controller driver.
  *
- *	@bug	- Extended identifier support not complete
+ *  @bug	Error handling is missing
  *  @author Daniel Kampert
  */
 
@@ -75,6 +75,17 @@
 	MCP2515_INVALID_IDENTIFIER = -1,					/**< Invalid identifier */
 	MCP2515_TX_BUFFER_FULL = -2,						/**< Transmit buffer full */
  } MCP2515_ErrorCode_t;
+
+ /** 
+  * MCP2515 clock out prescaler
+  */
+ typedef enum
+ {
+	 MCP2515_CLOCKOUT_1 = 0x00,							/**< Prescaler 1 */
+	 MCP2515_CLOCKOUT_2 = 0x01,							/**< Prescaler 2 */
+	 MCP2515_CLOCKOUT_4 = 0x02,							/**< Prescaler 4 */
+	 MCP2515_CLOCKOUT_8 = 0x03,							/**< Prescaler 8 */
+ } MCP2515_ClockOutPrescaler_t;
 
  /** 
   * MCP2515 synchronization jump width length
@@ -181,9 +192,9 @@
  typedef struct
  {
 	 MCP2515_MessageType_t Type;						/**< Message type */
-	 uint16_t ID;										/**< Message ID */
+	 uint32_t ID;										/**< Message ID */
 	 uint8_t Length;									/**< Message length \n
-															 NOTE: The #Length is only needed when the message
+															 NOTE: #Length is only needed when the message
 															 is configured as #MCP2515_STANDARD_DATA or
 															 #MCP2515_EXTENDED_DATA message! */
 	 uint8_t* pData;									/**< Pointer to message data */
@@ -193,10 +204,10 @@
  */
  typedef void (*MCP2515_Callback_t)(void);
  
- /** @brief			MCP2515 error interrupt handler
+ /** @brief			MCP2515 error handler
   *  @param Error	Error bits
  */
- typedef void (*MCP2515_ErrorCallback_t)(uint8_t Error);
+ typedef void (*MCP2515_ErrorCallback_t)(void);
 
  /** 
   * MCP2515 timing configuration object
@@ -205,6 +216,11 @@
  {
 	 MCP2515_SJW_t SJW;									/**< Synchronization jump width length */
 	 uint8_t Prescaler;									/**< Baud rate prescaler */
+	 Bool_t EnableTrippeSample;							/**< Set to #TRUE to sample the bus line three times at the same point */
+	 Bool_t PS2UseCNF3;									/**< Set to #TRUE to use #PHSEG2 for the length of PS2. Otherwise use PS1 and IPT */
+	 uint8_t PHSEG1;									/**< PS1 Length */
+	 uint8_t PHSEG2;									/**< PS2 Length */
+	 uint8_t PRSEG;										/**< Propagation Segment Length */
  } MCP2515_TimingConfig_t;
 
  /** 
@@ -238,7 +254,8 @@
 	 Bool_t EnableOneShot;								/**< Set to #TRUE to enable one shot mode */
 	 Bool_t EnableLoopBack;								/**< Set to #TRUE to enable loop back mode */
 	 Bool_t EnableRollover;								/**< Set to #TRUE to enable rollover mode for receive buffer 0 */
-	 MCP2515_ErrorCallback_t ErrorCallback;				/**< Function pointer to MCP2515 error callback \n
+	 Bool_t EnableWakeUpFilter;							/**< Set to #TRUE to enable the Wake-up filter */
+	 MCP2515_Callback_t ErrorCallback;					/**< Function pointer to MCP2515 error callback \n
 															 NOTE: Set it to #NULL if you do not want to use it. */
 	 MCP2515_Callback_t RxCallback;						/**< Function pointer to MCP2515 message received callback \n
 															 NOTE: Set it to #NULL if you do not want to use it. */
@@ -253,7 +270,7 @@
   *							NOTE: Set it to #NULL if you have initialized the SPI already
   *  @param DeviceConfig	Pointer to MCP2515 configuration object
   */
- void MCP2515_Init(SPIM_Config_t* Config, const MCP2515_Config_t* DeviceConfig);
+ void MCP2515_Init(SPIM_Config_t* Config, MCP2515_Config_t* DeviceConfig);
 
  /** @brief					Configure the bit timing.
   *  @param Config			Pointer to bit timing configuration object
@@ -263,6 +280,15 @@
  /** @brief	Reset the MCP2515 controller.
   */
  void MCP2515_Reset(void);
+
+ /** @brief				Enable the clock output pin.
+  *  @param Prescaler	Clock prescaler
+  */
+ void MPC2515_EnableClockOut(const MCP2515_ClockOutPrescaler_t Prescaler);
+
+ /** @brief	Disable the clock output pin.
+  */
+ void MPC2515_DisableClockOut(void);
 
  /** @brief			Install a new MCP2515 callback.
   *  @param Config	Pointer to configuration object
@@ -325,8 +351,9 @@
  /** @brief				Send a CAN message.
   *  @param Message		Pointer to CAN message object
   *  @param Priority	Message priority
+  *  @param Buffer		Transmit buffer
   *  @return			Error code
   */
- MCP2515_ErrorCode_t MCP2515_PrepareMessage(CAN_Message_t* Message, const MCP2515_MessagePriority_t Priority);
+ MCP2515_ErrorCode_t MCP2515_PrepareMessage(CAN_Message_t* Message, const MCP2515_MessagePriority_t Priority, const MCP2515_TransmitBuffer_t Buffer);
  
 #endif /* MCP2515_H_ */
