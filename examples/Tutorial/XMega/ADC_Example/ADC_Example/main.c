@@ -26,7 +26,7 @@
  *  @brief ADC example for XMega.
  *
  *	This file contains several examples:
- *		a) Polled ADC example. Set symbol EXAMPLE = 1.
+ *		a) Polled ADC example with calibration. Set symbol EXAMPLE = 1.
  *		   This example start a conversion on pin A0 with channel 0, wait for the result and send the result with the USART.
  *		b) Interrupt example. Set symbol EXAMPLE = 2.
  *		   Same as example 1, but with interrupts.
@@ -62,7 +62,7 @@ int main(void)
 		USARTC0.CTRLB = USART_TXEN_bm;
 		USARTC0.CTRLC = USART_CHSIZE_8BIT_gc;
 		USARTC0.CTRLC &= ~(USART_PMODE0_bm | USART_PMODE1_bm | USART_SBMODE_bm);
-	
+
 		/*
 			Initialize the ADC
 				-> 1 V reference
@@ -147,6 +147,18 @@ int main(void)
 		ADCA.REFCTRL = ADC_REFSEL_INT1V_gc;
 		ADCA.PRESCALER = ADC_PRESCALER_DIV32_gc;
 		ADCA.CTRLA = ADC_ENABLE_bm;
+
+		/*
+			Calibrate the ADC
+		*/
+		uint8_t CalibrationByteL;
+		uint8_t CalibrationByteH;
+		NVM_CMD = NVM_CMD_READ_CALIB_ROW_gc;
+		CalibrationByteL = pgm_read_byte(offsetof(NVM_PROD_SIGNATURES_t, ADCACAL0));
+		CalibrationByteH = pgm_read_byte(offsetof(NVM_PROD_SIGNATURES_t, ADCACAL1));
+		NVM_CMD = NVM_CMD_NO_OPERATION_gc;
+		ADCA.CALL = CalibrationByteL;
+		ADCA.CALH = CalibrationByteH;
 
 		/*
 			Initialize the ADC channel
