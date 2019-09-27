@@ -52,15 +52,13 @@ int main(void)
 		/*
 			Initialize the USART
 				-> 19200 Baud @ 2 MHz with CLK2X = 0, BSCALE = -5
-				-> Rx Interrupt
 				-> Use Tx only
 				-> 8N1
 		*/
+		PORTC.DIRSET = (0x01 << 0x03);
 		USARTC0.BAUDCTRLA = 0xB0 & 0xFF;
 		USARTC0.BAUDCTRLB = ((0xB0 & 0xF00) >> 0x08);
 		USARTC0.BAUDCTRLB |= ((-5 & 0x0F) << 0x04);
-		USARTC0.CTRLA = USART_RXCINTLVL_LO_gc;
-		USARTC0.STATUS |= USART_RXCIF_bm;
 		USARTC0.CTRLB = USART_TXEN_bm;
 		USARTC0.CTRLC = USART_CHSIZE_8BIT_gc;
 		USARTC0.CTRLC &= ~(USART_PMODE0_bm | USART_PMODE1_bm | USART_SBMODE_bm);
@@ -106,7 +104,7 @@ int main(void)
 		// Read the result
 		ADCA.CH0.INTFLAGS = ADC_CH_CHIF_bm;
 		uint16_t RawData = ADCA.CH0.RES;
-	
+
 		// Send the result
 		itoa(RawData, Result, 10);
 		for(uint8_t i = 0x00; i < 0x0A; i++)
@@ -115,7 +113,27 @@ int main(void)
 			USARTC0.DATA = Result[i];
 		}
 
+		// Send CR + LF
+		while(!(USARTC0.STATUS & USART_DREIF_bm));
+		USARTC0.DATA = 0x0A;
+			
+		while(!(USARTC0.STATUS & USART_DREIF_bm));
+		USARTC0.DATA = 0x0D;	
+
 	#elif(EXAMPLE == 2)
+		/*
+			Initialize the USART
+				-> 19200 Baud @ 2 MHz with CLK2X = 0, BSCALE = -5
+				-> Use Tx only
+				-> 8N1
+		*/
+		PORTC.DIRSET = (0x01 << 0x03);
+		USARTC0.BAUDCTRLA = 0xB0 & 0xFF;
+		USARTC0.BAUDCTRLB = ((0xB0 & 0xF00) >> 0x08);
+		USARTC0.BAUDCTRLB |= ((-5 & 0x0F) << 0x04);
+		USARTC0.CTRLB = USART_TXEN_bm;
+		USARTC0.CTRLC = USART_CHSIZE_8BIT_gc;
+		USARTC0.CTRLC &= ~(USART_PMODE0_bm | USART_PMODE1_bm | USART_SBMODE_bm);
 
 		/*
 			Initialize the ADC
@@ -164,6 +182,13 @@ ISR(ADCA_CH0_vect)
 	{
 		while(!(USARTC0.STATUS & USART_DREIF_bm));
 		USARTC0.DATA = Result[i];
+
+		// Send CR + LF
+		while(!(USARTC0.STATUS & USART_DREIF_bm));
+		USARTC0.DATA = 0x0A;
+		
+		while(!(USARTC0.STATUS & USART_DREIF_bm));
+		USARTC0.DATA = 0x0D;
 	}
 }
 
