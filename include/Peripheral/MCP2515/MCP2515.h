@@ -207,7 +207,7 @@
  /** @brief			MCP2515 error handler
   *  @param Error	Error bits
  */
- typedef void (*MCP2515_ErrorCallback_t)(void);
+ typedef void (*MCP2515_ErrorCallback_t)(uint8_t Error);
 
  /** 
   * MCP2515 timing configuration object
@@ -270,7 +270,7 @@
   *							NOTE: Set it to #NULL if you have initialized the SPI already
   *  @param DeviceConfig	Pointer to MCP2515 configuration object
   */
- void MCP2515_Init(SPIM_Config_t* Config, MCP2515_Config_t* DeviceConfig);
+ void MCP2515_Init(SPIM_Config_t* Config, MCP2515_Config_t* DeviceConfig, MCP2515_ErrorCallback_t Bla);
 
  /** @brief					Configure the bit timing.
   *  @param Config			Pointer to bit timing configuration object

@@ -3,7 +3,7 @@
 #define MESSAGE_SIZE			4
 
 void MCP2515_RxCallback(void);
-void MCP2515_ErrorCallback();
+void MCP2515_ErrorCallback(uint8_t Error);
 
 /*
 	SPI configuration
@@ -18,7 +18,7 @@ SPIM_Config_t Config_SPI = {
 */
 MCP2515_Config_t Config = {
 	.EnableOneShot = FALSE,
-	.EnableLoopBack = TRUE,
+	.EnableLoopBack = FALSE,
 	.EnableRollover = FALSE,
 	.Channel = MCP2515_INT_CHANNEL,
 	.Port = GET_PERIPHERAL(MCP2515_INT),
@@ -70,7 +70,7 @@ CAN_Message_t RxMessage = {
 int main(void)
 {
 	// Initialize the MCP2515 CAN controller
-	MCP2515_Init(&Config_SPI, &Config);
+	MCP2515_Init(&Config_SPI, &Config, MCP2515_ErrorCallback);
 	
 	// Enable global interrupts
 	EnableGlobalInterrupts();
@@ -108,7 +108,7 @@ void MCP2515_RxCallback(void)
 	Z++;
 }
 
-void MCP2515_ErrorCallback()
+void MCP2515_ErrorCallback(uint8_t Error)
 {
 	volatile uint8_t y;
 	y++;

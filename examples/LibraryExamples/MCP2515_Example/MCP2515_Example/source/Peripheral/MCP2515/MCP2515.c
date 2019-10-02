@@ -302,6 +302,7 @@
 		MCP2515_Callback_t RxCallback;
 		MCP2515_Callback_t TxCallback;
 		MCP2515_Callback_t WakeCallback;
+		MCP2515_ErrorCallback_t ErrorCallback;
 	} __MCP2515_Callbacks;
 #endif
 
@@ -406,6 +407,11 @@ static inline void MCP2515_Interrupthandler(void)
 		// Read the error flags
 		// ToDo: How to clear error flags in callback?
 		uint8_t ErrorFlags = MCP2515_ReadRegister(MCP2515_REGISTER_EFLG);
+		
+		if(__MCP2515_Callbacks.ErrorCallback != NULL)
+		{
+			__MCP2515_Callbacks.ErrorCallback(ErrorFlags);
+		}
 	}
 
 	// Transmit buffer n full interrupt
@@ -467,12 +473,17 @@ static void MCP2515_EnableInterrupts(const MCP2515_Config_t* Config)
 	{
 		__MCP2515_Callbacks.RxCallback = Config->RxCallback;
 	}
+	
+	if(Config->ErrorCallback != NULL)
+	{
+		__MCP2515_Callbacks.ErrorCallback = Config->ErrorCallback;
+	}
 
 	// Enable device interrupts
 	MCP2515_WriteRegister(MCP2515_REGISTER_CANINTE, (0x01 << MCP2515_IF_MER) | (0x01 << MCP2515_IF_WAK) | (0x01 << MCP2515_IF_ERR) | (0x01 << MCP2515_IF_TX2) | (0x01 << MCP2515_IF_TX1) | (0x01 << MCP2515_IF_TX0) | (0x01 << MCP2515_IF_RX1) | (0x01 << MCP2515_IF_RX0));
 }
 
-void MCP2515_Init(SPIM_Config_t* Config, MCP2515_Config_t* DeviceConfig)
+void MCP2515_Init(SPIM_Config_t* Config, MCP2515_Config_t* DeviceConfig, MCP2515_ErrorCallback_t Bla)
 {
 	// Initialize the CS Pin
 	GPIO_SetDirection(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS), GPIO_DIRECTION_OUT);
