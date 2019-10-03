@@ -38,7 +38,7 @@
 */
 I2CM_Config_t Config_I2CM = {
 	.Device = &BMP180_INTERFACE,
-	.BitRate = BMP180_CLOCK,
+	.Bitrate = BMP180_CLOCK,
 	.Timeout = I2C_TIMEOUT_DISABLE,
 };
 

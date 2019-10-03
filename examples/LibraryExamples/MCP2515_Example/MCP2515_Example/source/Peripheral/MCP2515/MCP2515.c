@@ -39,16 +39,14 @@
 	 *  MCP2515 commands.
 	 *  @{
 	 */
-		#define MCP2515_CMD_RESET		0xC0
-		#define MCP2515_CMD_READ		0x03
-		#define MCP2515_CMD_READRX0		0x90
-		#define MCP2515_CMD_READRX1		0x96
-		#define MCP2515_CMD_WRITE		0x02
-		#define MCP2515_CMD_RXSTATUS	0xB0
-		#define MCP2515_CMD_BITMODIFY	0x05
-		#define MCP2515_CMD_RTS0		0x81
-		#define MCP2515_CMD_RTS1		0x82
-		#define MCP2515_CMD_RTS2		0x84
+		#define MCP2515_CMD_WRITE				0x02
+		#define MCP2515_CMD_READ				0x03
+		#define MCP2515_CMD_BITMODIFY			0x05
+		#define MCP2515_CMD_RTS(Buffer)			(0x80 | Buffer)
+		#define MCP2515_CMD_READ_RX(Buffer)		(0x90 | (Buffer << 0x02))
+		#define MCP2515_CMD_READ_STATUS			0xA0
+		#define MCP2515_CMD_READ_RX_STATUS		0xB0
+		#define MCP2515_CMD_RESET				0xC0
 	/** @} */ // end of MCP2515-Commands
 	 
 	/** @defgroup MCP2515-Errors
@@ -69,6 +67,7 @@
 		 *  @{
 		 */
 			#define MCP2515_REGISTER_CANSTAT	0x0E
+			#define MCP2515_REGISTER_TXRTSCTRL	0x0D
 			#define MCP2515_REGISTER_CANCTRL	0x0F
 			#define MCP2515_REGISTER_CNF3		0x28
 			#define MCP2515_REGISTER_CNF2		0x29
@@ -239,256 +238,80 @@
 			#define MCP2515_RX1OVR				0x07
 		/** @} */ // end of MCP2515-Error-Interrupt
 	/** @} */ // end of MCP2515-Flags
+	
+ 	/** @defgroup MCP2515-Control-Bits
+	 *  MCP2515 control bits.
+	 *  @{
+	 */
+		#define MCP2515_BTLMODE					0x07
+		#define MCP2515_MSG_RX_1				0x07
+		#define MCP2515_SAM						0x06
+		#define MCP2515_WAKFIL					0x06
+		#define MCP2515_MSG_RX_0				0x06
+		#define MCP2515_ABTF					0x06
+		#define MCP2515_RTR						0x06
+		#define MCP2515_RXM1					0x06
+		#define MCP2515_RXM0					0x05
+		#define MCP2515_MLOA					0x05
+		#define MCP2515_ABAT					0x04
+		#define MCP2515_TXERR					0x04
+		#define MCP2515_MSG_TYPE1				0x04
+		#define MCP2515_MSG_TYPE0				0x03
+		#define MCP2515_EXIDE					0x03
+		#define MCP2515_OSM						0x03
+		#define MCP2515_TXREQ					0x03
+		#define MCP2515_CLKEN					0x02
+		#define MCP2515_BUKT					0x02
+		#define MCP2515_B2RTSM					0x02
+		#define MCP2515_B1RTSM					0x01
+		#define MCP2515_TXP1					0x01
+		#define MCP2515_TXP0					0x00
+		#define MCP2515_B0RTSM					0x00
+	/** @} */ // end of MCP2515-Control-Flags
 /** @} */ // end of MCP2515
 
 #if(MCU_ARCH == MCU_ARCH_AVR8)
-	#define MCP2515_SPI_INIT(Config)							SPIM_Init(Config)												/**< Generic SPI initialization macro for the flash interface */
-	#define MCP2515_SPI_TRANSMIT(Command)						SPIM_SendData(Command)											/**< Generic SPI transmission macro for the flash interface  */
-	#define MCP2515_SPI_CHIP_SELECT()							SPIM_SelectDevice(MCP2515_SS_PORT, MCP2515_SS_PIN)				/**< Generic chip select macro for the flash interface */
-	#define MCP2515_SPI_CHIP_DESELECT()							SPIM_DeselectDevice(MCP2515_SS_PORT, MCP2515_SS_PIN)			/**< Generic chip deselect macro for the display interface */
+	#define MCP2515_SPI_INIT(Config)							SPIM_Init(Config)
+	#define MCP2515_SPI_TRANSMIT(Command)						SPIM_SendData(Command)
+	#define MCP2515_SPI_CHIP_SELECT()							SPIM_SelectDevice(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS))
+	#define MCP2515_SPI_CHIP_DESELECT()							SPIM_DeselectDevice(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS))
 #elif(MCU_ARCH == MCU_ARCH_XMEGA)
 	#if(MCP2515_INTERFACE_TYPE == INTERFACE_USART_SPI)
-		#define MCP2515_SPI_INIT(Config)						USART_SPI_Init(Config)											/**< Generic SPI initialization macro for the flash interface */
-		#define MCP2515_SPI_TRANSMIT(Command)					USART_SPI_SendData(MCP2515_INTERFACE, Command)					/**< Generic SPI transmission macro for the flash interface  */
-		#define MCP2515_SPI_CHIP_SELECT()						USART_SPI_SelectDevice(MCP2515_SS_PORT, MCP2515_SS_PIN)			/**< Generic chip select macro for the flash interface */
-		#define MCP2515_SPI_CHIP_DESELECT()						USART_SPI_DeselectDevice(MCP2515_SS_PORT, MCP2515_SS_PIN)		/**< Generic chip deselect macro for the display interface */
+		#define MCP2515_SPI_INIT(Config)						USART_SPI_Init(Config)
+		#define MCP2515_SPI_TRANSMIT(Command)					USART_SPI_SendData(&MCP2515_INTERFACE, Command)
+		#define MCP2515_SPI_CHIP_SELECT()						USART_SPI_SelectDevice(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS))
+		#define MCP2515_SPI_CHIP_DESELECT()						USART_SPI_DeselectDevice(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS))
 
 	 #elif(MCP2515_INTERFACE_TYPE == INTERFACE_SPI) 
-		#define MCP2515_SPI_INIT(Config)						SPIM_Init(Config)												/**< Generic SPI initialization macro for the flash interface */
-		#define MCP2515_SPI_TRANSMIT(Command)					SPIM_SendData(MCP2515_INTERFACE, Command)						/**< Generic SPI transmission macro for the flash interface  */
-		#define MCP2515_SPI_CHIP_SELECT()						SPIM_SelectDevice(MCP2515_SS_PORT, MCP2515_SS_PIN)				/**< Generic chip select macro for the flash interface */
-		#define MCP2515_SPI_CHIP_DESELECT()						SPIM_DeselectDevice(MCP2515_SS_PORT, MCP2515_SS_PIN)			/**< Generic chip deselect macro for the display interface */
+		#define MCP2515_SPI_INIT(Config)						SPIM_Init(Config)
+		#define MCP2515_SPI_TRANSMIT(Command)					SPIM_SendData(&MCP2515_INTERFACE, Command)
+		#define MCP2515_SPI_CHIP_SELECT()						SPIM_SelectDevice(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS))
+		#define MCP2515_SPI_CHIP_DESELECT()						SPIM_DeselectDevice(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS))
 	 #else
-		 #error "Invalid interface for MCP2515!!"
+		 #error "Interface not supported for MCP2515!"
 	 #endif
  #else
-	#error "Architecture not supported!"
- #endif
+	#error "Architecture not supported for MCP2515!"
+#endif
+
+#define MCP2515_CLEAR_IF(Flag)									MCP2515_BitModify(MCP2515_REGISTER_CANINTF, Flag, 0x00);
 
 #ifndef DOXYGEN
 	static struct
 	{
-		MCP2515_MessageCallback_t MessageCallback;
-		MCP2515_MessageCallback_t StandardDataCallback;
-		MCP2515_MessageCallback_t ExtendetDataCallback;
-		MCP2515_MessageCallback_t StandardRemoteCallback;
-		MCP2515_MessageCallback_t ExtendedRemoteCallback;
-	} MCP2515_Callbacks;
+		MCP2515_Callback_t RxCallback;
+		MCP2515_Callback_t TxCallback;
+		MCP2515_Callback_t WakeCallback;
+		MCP2515_ErrorCallback_t ErrorCallback;
+	} __MCP2515_Callbacks;
 #endif
 
-/** @brief	MCP2515 interrupt handler.
+/** @brief			Send a bit modify to the CAN controller.
+ *  @param Address	Register address
+ *  @param Mask		Register mask
+ *  @param Value	Register value
  */
-static inline void MCP2515_Interrupthandler(void)
-{
-	static CAN_Message_t Message;
-
-	uint8_t Status = MCP2515_ReadRegister(MCP2515_REGISTER_CANINTF);
-
-	if((Status & (0x01 << MCP2515_IF_RX0)) || (Status & (0x01 << MCP2515_IF_RX1)))
-	{
-		MCP2515_ReadMessage(&Message);
-
-		// General message callback for all messages
-		if(MCP2515_Callbacks.MessageCallback != NULL)
-		{
-			MCP2515_Callbacks.MessageCallback(Message);
-		}
-
-		// Message specific callbacks
-		if(Message.MessageType == MCP2515_STANDARD_DATA)
-		{
-			if(MCP2515_Callbacks.StandardDataCallback != NULL)
-			{
-				MCP2515_Callbacks.StandardDataCallback(Message);
-			}
-		}
-		else if(Message.MessageType == MCP2515_EXTENDED_DATA)
-		{
-			if(MCP2515_Callbacks.ExtendetDataCallback != NULL)
-			{
-				MCP2515_Callbacks.ExtendetDataCallback(Message);
-			}
-		}
-		else if(Message.MessageType == MCP2515_STANDARD_REMOTE)
-		{
-			if(MCP2515_Callbacks.StandardRemoteCallback != NULL)
-			{
-				MCP2515_Callbacks.StandardRemoteCallback(Message);
-			}
-		}
-		else if(Message.MessageType == MCP2515_EXTENDED_REMOTE)
-		{
-			if(MCP2515_Callbacks.ExtendedRemoteCallback != NULL)
-			{
-				MCP2515_Callbacks.ExtendedRemoteCallback(Message);
-			}			
-		}
-	}
-}
-
-void MCP2515_Init(SPIM_Config_t* Config, const MCP2515_InterruptConfig_t* ConfigInterrupt)
-{
-	// Initialize CS Pin
-	GPIO_SetDirection(MCP2515_SS_PORT, MCP2515_SS_PIN, GPIO_DIRECTION_OUT);
-	GPIO_Set(MCP2515_SS_PORT, MCP2515_SS_PIN);
-
-	// Initialize SPI-Interface
-	if(Config != NULL)
-	{
-		MCP2515_SPI_INIT(Config);
-	}
-
-	// Setup Interrupts
-	MCP2515_EnableInterrupts(ConfigInterrupt);
-
-	// Initialize MCP2515
-	MCP2515_Reset();
-	MCP2515_SetDeviceMode(MCP2515_CONFIG_MODE);
-	MCP2515_WriteRegister(MCP2515_REGISTER_CANCTRL, 0x08);
-	
-	MCP2515_SetTxPriority(MCP2515_TX0, MCP2515_PRIO_HIGHEST);
-
-	MCP2515_WriteRegister(MCP2515_REGISTER_CNF1, 0x03);
-	MCP2515_WriteRegister(MCP2515_REGISTER_CNF2, 0xA0);
-	MCP2515_WriteRegister(MCP2515_REGISTER_CNF3, 0x02);
-
-	// Disable receive filter
-	MCP2515_WriteRegister(MCP2515_REGISTER_RXB0CTRL, 0x60);
-	MCP2515_WriteRegister(MCP2515_REGISTER_RXB1CTRL, 0x60);
-	
-	// Clear all interrupts
-	MCP2515_WriteRegister(MCP2515_REGISTER_CANINTF, 0x00);
-
-	// Switch the device back into normal mode
-	MCP2515_SetDeviceMode(MCP2515_NORMAL_MODE);
-}
-
-void MCP2515_Reset(void)
-{
-	MCP2515_SPI_CHIP_SELECT();
-
-	MCP2515_SPI_TRANSMIT(MCP2515_CMD_RESET);
-
-	// Wait until the reset has finished
-	for(uint8_t i = 0x00; i < 0xFF; i++);
-
-	MCP2515_SPI_CHIP_DESELECT();
-}
-
-void MCP2515_EnableInterrupts(const MCP2515_InterruptConfig_t* Config)
-{
-	// Initialize interrupt pin
-	GPIO_SetDirection(Config->Port, Config->Pin, GPIO_DIRECTION_IN);
-	if(Config->InternalPullUp == TRUE)
-	{
-		GPIO_Set(Config->Port, Config->Pin);
-	}
-	
-	GPIO_InterruptConfig_t ConfigGPIO = {
-		.Channel = Config->IOChannel,
-		.Type = GPIO_SENSE_FALLING,
-		#if(MCU_ARCH == MCU_ARCH_XMEGA)
-			.Pin = Config->Pin,
-			.Port = Config->Port,
-			.InterruptLevel = Config->InterruptLevel,
-		#endif
-		.Callback = MCP2515_Interrupthandler
-	};
-    
-    GPIO_InstallCallback(&ConfigGPIO);
-	
-	// Enable device interrupts
-	MCP2515_WriteRegister(MCP2515_REGISTER_CANINTE, 0x41);
-}
-
-void MCP2515_DisableInterrupts(const MCP2515_InterruptConfig_t* Config)
-{
-	#if(MCU_ARCH == MCU_ARCH_AVR8)
-		GPIO_RemoveCallback(Config->IOChannel);
-	#elif(MCU_ARCH == MCU_ARCH_XMEGA)
-		GPIO_RemoveCallback(Config->Port, Config->IOChannel);
-	#endif
-}
-
-void MCP2515_InstallCallback(const MCP2515_InterruptConfig_t* Config)
-{
-	if(Config->Source & MCP2515_MESSAGE_INTERRUPT)
-	{		
-		if(Config->MessageCallback != NULL)
-		{
-			MCP2515_Callbacks.MessageCallback = Config->MessageCallback;
-		}
-	}
-	
-	if(Config->Source & MCP2515_STANDARD_DATA_INTERRUPT)
-	{
-		if(Config->MessageCallback != NULL)
-		{
-			MCP2515_Callbacks.StandardDataCallback = Config->MessageCallback;
-		}		
-	}
-	
-	if(Config->Source & MCP2515_EXTENDED_DATA_INTERRUPT)
-	{
-		if(Config->MessageCallback != NULL)
-		{
-			MCP2515_Callbacks.ExtendetDataCallback = Config->MessageCallback;
-		}
-	}
-	
-	if(Config->Source & MCP2515_STANDARD_REMOTE_INTERRUPT)
-	{
-		if(Config->MessageCallback != NULL)
-		{
-			MCP2515_Callbacks.StandardRemoteCallback = Config->MessageCallback;
-		}
-	}
-	
-	if(Config->Source & MCP2515_EXTENDED_REMOTE_INTERRUPT)
-	{
-		if(Config->MessageCallback != NULL)
-		{
-			MCP2515_Callbacks.ExtendedRemoteCallback = Config->MessageCallback;
-		}
-	}
-}
-
-void MCP2515_RemoveCallback(const MCP2515_CallbackType_t Callback)
-{
-	if(Callback & MCP2515_MESSAGE_INTERRUPT)
-	{
-		MCP2515_Callbacks.MessageCallback = NULL;
-	}
-	
-	if(Callback & MCP2515_STANDARD_DATA_INTERRUPT)
-	{
-		MCP2515_Callbacks.StandardDataCallback = NULL;
-	}
-	
-	if(Callback & MCP2515_EXTENDED_DATA_INTERRUPT)
-	{
-		MCP2515_Callbacks.ExtendetDataCallback = NULL;
-	}
-	
-	if(Callback & MCP2515_STANDARD_REMOTE_INTERRUPT)
-	{
-		MCP2515_Callbacks.StandardRemoteCallback = NULL;
-	}
-	
-	if(Callback & MCP2515_EXTENDED_REMOTE_INTERRUPT)
-	{
-		MCP2515_Callbacks.ExtendedRemoteCallback = NULL;
-	}
-}
-
-#if(MCU_ARCH == MCU_ARCH_XMEGA)
-	void MCP2515_ChangeInterruptLevel(const MCP2515_InterruptConfig_t* Config)
-	{
-		GPIO_ChangeInterruptLevel(Config->Port, Config->Pin, Config->IOChannel, Config->InterruptLevel);
-	}
-#endif
-
-void MCP2515_BitModify(const uint8_t Address, const uint8_t Mask, const uint8_t Value)
+static void MCP2515_BitModify(const uint8_t Address, const uint8_t Mask, const uint8_t Value)
 {
 	MCP2515_SPI_CHIP_SELECT();
 
@@ -500,7 +323,11 @@ void MCP2515_BitModify(const uint8_t Address, const uint8_t Mask, const uint8_t 
 	MCP2515_SPI_CHIP_DESELECT();
 }
 
-void MCP2515_WriteRegister(const uint8_t Address, const uint8_t Data)
+/** @brief			Write into a register of the CAN controller.
+ *  @param Address	Register Address
+ *  @param Value	Register data
+ */
+static void MCP2515_WriteRegister(const uint8_t Address, const uint8_t Data)
 {
 	MCP2515_SPI_CHIP_SELECT();
 
@@ -511,7 +338,11 @@ void MCP2515_WriteRegister(const uint8_t Address, const uint8_t Data)
 	MCP2515_SPI_CHIP_DESELECT();
 }
 
-uint8_t MCP2515_ReadRegister(const uint8_t Address)
+/** @brief			Read a register of the CAN controller.
+ *  @param Address	Register Address
+ *  @return			Register data
+ */
+static uint8_t MCP2515_ReadRegister(const uint8_t Address)
 {
 	uint8_t Data = 0x00;
 
@@ -526,6 +357,298 @@ uint8_t MCP2515_ReadRegister(const uint8_t Address)
 	return Data;
 }
 
+/** @brief	Read the Rx status.
+ *  @return	Rx status
+ */
+static uint8_t MCP2515_ReadRxStatus(void)
+{
+	uint8_t Data = 0x00;
+
+	MCP2515_SPI_CHIP_SELECT();
+	
+	MCP2515_SPI_TRANSMIT(MCP2515_CMD_READ_RX_STATUS);
+	Data = MCP2515_SPI_TRANSMIT(0xFF);
+	MCP2515_SPI_TRANSMIT(0xFF);
+
+	MCP2515_SPI_CHIP_DESELECT();
+
+	return Data;
+}
+
+/** @brief	MCP2515 interrupt handler.
+ */
+static inline void MCP2515_Interrupthandler(void)
+{
+	// Get all active interrupt flags
+	uint8_t Status = MCP2515_ReadRegister(MCP2515_REGISTER_CANINTF);
+
+	// Message error interrupt
+	if(Status & (0x01 << MCP2515_IF_MER))
+	{
+		MCP2515_CLEAR_IF(0x01 << MCP2515_IF_MER);
+	}
+
+	// Wakeup interrupt
+	if(Status & (0x01 << MCP2515_IF_WAK))
+	{
+		MCP2515_CLEAR_IF(0x01 << MCP2515_IF_WAK);
+
+		if(__MCP2515_Callbacks.WakeCallback != NULL)
+		{
+			__MCP2515_Callbacks.WakeCallback();
+		}
+	}
+
+	// Error interrupt
+	if(Status & (0x01 << MCP2515_IF_ERR))
+	{
+		MCP2515_CLEAR_IF(0x01 << MCP2515_IF_ERR);
+
+		// Read the error flags
+		// ToDo: How to clear error flags in callback?
+		uint8_t ErrorFlags = MCP2515_ReadRegister(MCP2515_REGISTER_EFLG);
+		
+		if(__MCP2515_Callbacks.ErrorCallback != NULL)
+		{
+			__MCP2515_Callbacks.ErrorCallback(ErrorFlags);
+		}
+	}
+
+	// Transmit buffer n full interrupt
+	if((Status & (0x01 << MCP2515_IF_TX2)) || (Status & (0x01 << MCP2515_IF_TX1)) || (Status & (0x01 << MCP2515_IF_TX0)))
+	{
+		MCP2515_CLEAR_IF((0x01 << MCP2515_IF_TX2) | (0x01 << MCP2515_IF_TX1) | (0x01 << MCP2515_IF_TX0));
+	}
+
+	// Receive buffer n full interrupt
+	if((Status & (0x01 << MCP2515_IF_RX1)) || (Status & (0x01 << MCP2515_IF_RX0)))
+	{
+		// General message callback for all messages
+		if(__MCP2515_Callbacks.RxCallback != NULL)
+		{
+			__MCP2515_Callbacks.RxCallback();
+		}
+	}
+}
+
+void A(uint8_t Error)
+{
+	volatile uint8_t y;
+	y++;
+}
+
+/** @brief			Enable interrupt support for the MCU.
+ *  @param Config	Pointer to MCP2515 configuration object
+ */
+static void MCP2515_EnableInterrupts(const MCP2515_Config_t* Config)
+{
+	// Initialize interrupt pin
+	GPIO_SetDirection(Config->Port, Config->Pin, GPIO_DIRECTION_IN);
+	
+	GPIO_InterruptConfig_t ConfigGPIO = {
+		.Channel = Config->Channel,
+		.Sense = GPIO_SENSE_LOWLEVEL,
+		#if(MCU_ARCH == MCU_ARCH_XMEGA)
+			.Pin = Config->Pin,
+			.Port = Config->Port,
+			.InterruptLevel = Config->InterruptLevel,
+		#endif
+		.Callback = MCP2515_Interrupthandler
+	};
+	
+	GPIO_InstallCallback(&ConfigGPIO);
+
+	// Save the callbacks	
+	if(Config->WakeCallback != NULL)
+	{
+		__MCP2515_Callbacks.WakeCallback = Config->WakeCallback;
+	}
+
+	if(Config->TxCallback != NULL)
+	{
+		__MCP2515_Callbacks.TxCallback = Config->TxCallback;
+	}
+
+	if(Config->RxCallback != NULL)
+	{
+		__MCP2515_Callbacks.RxCallback = Config->RxCallback;
+	}
+	
+	if(Config->ErrorCallback != NULL)
+	{
+		__MCP2515_Callbacks.ErrorCallback = Config->ErrorCallback;
+	}
+
+	// Enable device interrupts
+	MCP2515_WriteRegister(MCP2515_REGISTER_CANINTE, (0x01 << MCP2515_IF_MER) | (0x01 << MCP2515_IF_WAK) | (0x01 << MCP2515_IF_ERR) | (0x01 << MCP2515_IF_TX2) | (0x01 << MCP2515_IF_TX1) | (0x01 << MCP2515_IF_TX0) | (0x01 << MCP2515_IF_RX1) | (0x01 << MCP2515_IF_RX0));
+}
+
+void MCP2515_Init(SPIM_Config_t* Config, MCP2515_Config_t* DeviceConfig, MCP2515_ErrorCallback_t Bla)
+{
+	// Initialize the CS Pin
+	GPIO_SetDirection(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS), GPIO_DIRECTION_OUT);
+	GPIO_Set(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS));
+
+	// Initialize the external reset I/O
+	#if(defined MCP2515_USE_EXT_RESET)
+		GPIO_SetDirection(GET_PERIPHERAL(MCP2515_EXT_RESET), GET_INDEX(MCP2515_EXT_RESET), GPIO_DIRECTION_OUT);
+		GPIO_Set(GET_PERIPHERAL(MCP2515_EXT_RESET), GET_INDEX(MCP2515_EXT_RESET));
+		
+		// Wait a bit
+		for(uint8_t i = 0x00; i < 0xFF; i++);
+	#endif
+
+	// Initialize the external request to send I/O
+	#if(defined MCP2515_USE_EXT_TX)
+		GPIO_SetDirection(GET_PERIPHERAL(MCP2515_EXT_TX0), GET_INDEX(MCP2515_EXT_TX0), GPIO_DIRECTION_OUT);
+		GPIO_Set(GET_PERIPHERAL(MCP2515_EXT_TX0), GET_INDEX(MCP2515_EXT_TX0));
+		GPIO_SetDirection(GET_PERIPHERAL(MCP2515_EXT_TX1), GET_INDEX(MCP2515_EXT_TX1), GPIO_DIRECTION_OUT);
+		GPIO_Set(GET_PERIPHERAL(MCP2515_EXT_TX1), GET_INDEX(MCP2515_EXT_TX1));
+		GPIO_SetDirection(GET_PERIPHERAL(MCP2515_EXT_TX2), GET_INDEX(MCP2515_EXT_TX2), GPIO_DIRECTION_OUT);
+		GPIO_Set(GET_PERIPHERAL(MCP2515_EXT_TX2), GET_INDEX(MCP2515_EXT_TX2));
+		
+		// Enable TxnRTS pins in the device
+		MCP2515_WriteRegister(MCP2515_REGISTER_TXRTSCTRL, (0x01 << MCP2515_B2RTSM) | (0x01 << MCP2515_B1RTSM) | (0x01 << MCP2515_B0RTSM));
+	#endif
+
+	// Initialize the SPI-Interface
+	if(Config != NULL)
+	{
+		MCP2515_SPI_INIT(Config);
+	}
+
+	// Initialize MCP2515
+	MCP2515_Reset();
+
+	// Setup Interrupts
+	MCP2515_EnableInterrupts(DeviceConfig);
+
+	// Switch the device into configuration mode
+	MCP2515_SetDeviceMode(MCP2515_CONFIG_MODE);
+
+	// Set the double shot bit
+	MCP2515_BitModify(MCP2515_REGISTER_CANCTRL, (0x01 << MCP2515_OSM), (DeviceConfig->EnableOneShot << MCP2515_OSM));
+
+	// Set the rollover bit
+	MCP2515_BitModify(MCP2515_REGISTER_RXB0CTRL, (0x01 << MCP2515_BUKT), (DeviceConfig->EnableRollover << MCP2515_BUKT));
+
+	// Set the Wake-up filter
+	MCP2515_BitModify(MCP2515_REGISTER_CNF3, (0x01 << MCP2515_WAKFIL), (DeviceConfig->EnableWakeUpFilter << MCP2515_WAKFIL));
+
+	// Use default timing
+	if(DeviceConfig->pTiming == NULL)
+	{
+		MCP2515_WriteRegister(MCP2515_REGISTER_CNF1, 0x03);
+		MCP2515_WriteRegister(MCP2515_REGISTER_CNF2, 0xA0);
+		MCP2515_WriteRegister(MCP2515_REGISTER_CNF3, 0x02);
+	}
+	else
+	{
+		MCP2515_ConfigureTiming(DeviceConfig->pTiming);
+	}
+
+	// Disable all mask and filter
+	MCP2515_BitModify(MCP2515_REGISTER_RXB0CTRL, (0x01 << MCP2515_RXM1) | (0x01 << MCP2515_RXM0), (0x01 << MCP2515_RXM1) | (0x01 << MCP2515_RXM0));
+	MCP2515_BitModify(MCP2515_REGISTER_RXB1CTRL, (0x01 << MCP2515_RXM1) | (0x01 << MCP2515_RXM0), (0x01 << MCP2515_RXM1) | (0x01 << MCP2515_RXM0));
+
+	// Clear all interrupt flags
+	MCP2515_WriteRegister(MCP2515_REGISTER_CANINTF, 0x00);
+
+	// Switch the device mode back to normal mode
+	MCP2515_SetDeviceMode(MCP2515_NORMAL_MODE);
+	
+	// Switch the device into loop back mode
+	if(DeviceConfig->EnableLoopBack)
+	{
+		MCP2515_SetDeviceMode(MCP2515_LOOPBACK_MODE);
+	}
+}
+
+void MCP2515_ConfigureTiming(const MCP2515_TimingConfig_t* Config)
+{
+	MCP2515_BitModify(MCP2515_REGISTER_CNF1, 0xFF, (Config->SJW << 0x06) | (Config->Prescaler & 0x3F));
+	MCP2515_BitModify(MCP2515_REGISTER_CNF2, 0xFF, (Config->PS2UseCNF3 << MCP2515_BTLMODE) | (Config->EnableTrippeSample << MCP2515_SAM) | ((Config->PHSEG1 & 0x07) << 0x03) | (Config->PRSEG & 0x07));
+	MCP2515_BitModify(MCP2515_REGISTER_CNF3, 0x07, (Config->PHSEG2 & 0x07));
+}
+
+void MCP2515_Reset(void)
+{
+	#if(defined MCP2515_USE_EXT_RESET)
+		GPIO_Clear(GET_PERIPHERAL(MCP2515_EXT_RESET), GET_INDEX(MCP2515_EXT_RESET));
+		for(uint8_t i = 0x00; i < 0xFF; i++);
+		GPIO_Set(GET_PERIPHERAL(MCP2515_EXT_RESET), GET_INDEX(MCP2515_EXT_RESET));
+	#else
+		MCP2515_SPI_CHIP_SELECT();
+		MCP2515_SPI_TRANSMIT(MCP2515_CMD_RESET);
+		MCP2515_SPI_CHIP_DESELECT();
+	#endif
+
+	// Wait until the reset has finished
+	for(uint8_t i = 0x00; i < 0xFF; i++);
+}
+
+void MPC2515_EnableClockOut(const MCP2515_ClockOutPrescaler_t Prescaler)
+{
+	MCP2515_BitModify(MCP2515_REGISTER_CANCTRL, (0x01 << MCP2515_CLKEN) | 0x03, Prescaler & 0x03);
+}
+
+void MPC2515_DisableClockOut(void)
+{
+	MCP2515_BitModify(MCP2515_REGISTER_CANCTRL, (0x01 << MCP2515_CLKEN), 0x00);
+}
+
+void MCP2515_InstallCallback(const MCP2515_Config_t* Config)
+{
+	if(Config->Source & MCP2515_RX_INTERRUPT)
+	{		
+		if(Config->RxCallback != NULL)
+		{
+			__MCP2515_Callbacks.RxCallback = Config->RxCallback;
+		}
+	}
+
+	if(Config->Source & MCP2515_TX_INTERRUPT)
+	{
+		if(Config->TxCallback != NULL)
+		{
+			__MCP2515_Callbacks.RxCallback = Config->TxCallback;
+		}
+	}
+
+	if(Config->Source & MCP2515_WAKE_INTERRUPT)
+	{
+		if(Config->WakeCallback != NULL)
+		{
+			__MCP2515_Callbacks.WakeCallback = Config->WakeCallback;
+		}
+	}
+}
+
+void MCP2515_RemoveCallback(const MCP2515_CallbackType_t Callback)
+{
+	if(Callback & MCP2515_RX_INTERRUPT)
+	{
+		__MCP2515_Callbacks.RxCallback = NULL;
+	}
+
+	if(Callback & MCP2515_TX_INTERRUPT)
+	{
+		__MCP2515_Callbacks.TxCallback = NULL;
+	}
+
+	if(Callback & MCP2515_WAKE_INTERRUPT)
+	{
+		__MCP2515_Callbacks.WakeCallback = NULL;
+	}
+}
+
+#if(MCU_ARCH == MCU_ARCH_XMEGA)
+	void MCP2515_ChangeInterruptLevel(const MCP2515_Config_t* Config)
+	{
+		GPIO_ChangeInterruptLevel(Config->Port, Config->Pin, Config->Channel, Config->InterruptLevel);
+	}
+#endif
+
 void MCP2515_SetDeviceMode(const MCP2515_DeviceMode_t Mode)
 {
 	MCP2515_BitModify(MCP2515_REGISTER_CANCTRL, 0xE0, (Mode << 0x05));
@@ -536,149 +659,197 @@ MCP2515_DeviceMode_t MCP2515_GetDeviceMode(void)
 	return ((MCP2515_ReadRegister(MCP2515_REGISTER_CANSTAT) & 0xE0) >> 0x05);
 }
 
-void MCP2515_SetTxPriority(const MCP2515_TransmitBuffer_t Buffer, const MCP2515_MessagePriority_t Priority)
+void MCP2515_SwitchFilter(const MCP2515_ReceiveBuffer_t Buffer, const MCP2515_FilterRule_t Filter)
 {
-	if(Buffer == MCP2515_TX0)
-	{
-		MCP2515_BitModify(MCP2515_REGISTER_TXB0CTRL, 0x03, Priority);
-	}
-	else if(Buffer == MCP2515_TX1)
-	{
-		MCP2515_BitModify(MCP2515_REGISTER_TXB1CTRL, 0x03, Priority);
-	}
-	else if(Buffer == MCP2515_TX2)
-	{
-		MCP2515_BitModify(MCP2515_REGISTER_TXB2CTRL, 0x03, Priority);
-	}
-}
-
-void MCP2515_SetRxFilter(const MCP2515_ReceiveBuffer_t Buffer, const MCP2515_Filter_t Filter)
-{
-	if(Buffer == MCP2515_RX0)
-	{
-		MCP2515_BitModify(MCP2515_REGISTER_RXB0CTRL, 0x60, Filter << 0x05);
-	}
-	else if(Buffer == MCP2515_RX1)
-	{
-		MCP2515_BitModify(MCP2515_REGISTER_RXB1CTRL, 0x60, Filter << 0x05);
-	}
+	MCP2515_BitModify(MCP2515_REGISTER_RXB0CTRL + ((Buffer & 0x01) << 0x04), (0x01 << MCP2515_RXM1) | (0x01 << MCP2515_RXM0), Filter << MCP2515_RXM0);
 }
 
 void MCP2515_ConfigFilter(const MCP2515_FilterConfig_t* Config)
 {
+	uint8_t IdentifierBaseAddress = 0x00;
+
 	// Get the current device mode
 	MCP2515_DeviceMode_t Mode = MCP2515_GetDeviceMode();
 
 	// Change mode to configuration mode to change the filter setup
 	MCP2515_SetDeviceMode(MCP2515_CONFIG_MODE);
 
-	uint8_t Identifier_Low = (Config->FilterID & 0x07) << 0x05;
-	uint8_t Identifier_High = Config->FilterID >> 0x03;
+	uint8_t Mask_Low = (Config->Mask & 0x07) << 0x05;
+	uint8_t Mask_High = Config->Mask >> 0x03;
 
-	uint8_t Mask_Low = (Config->FilterMask & 0x07) << 0x05;
-	uint8_t Mask_High = Config->FilterMask >> 0x03;
-
-	MCP2515_WriteRegister(Config->Filter, Identifier_High);
-	MCP2515_WriteRegister(Config->Filter + 0x01, Identifier_Low);
-
-	if((Config->Filter == MCP2515_RXF_0) | (Config->Filter == MCP2515_RXF_1))
+	switch(Config->Filter)
 	{
-		MCP2515_WriteRegister(MCP2515_REGISTER_RXM0SIDH, Mask_High);
-		MCP2515_WriteRegister(MCP2515_REGISTER_RXM0SIDL, Mask_Low);
-	}
-	else if((Config->Filter == MCP2515_RXF_2) | (Config->Filter == MCP2515_RXF_3) | (Config->Filter == MCP2515_RXF_4) | (Config->Filter == MCP2515_RXF_5))
-	{
-		MCP2515_WriteRegister(MCP2515_REGISTER_RXM1SIDH, Mask_High);
-		MCP2515_WriteRegister(MCP2515_REGISTER_RXM1SIDL, Mask_Low);
+		case MCP2515_RXF0:
+		{
+			IdentifierBaseAddress = MCP2515_REGISTER_RXF0SIDH;
+			break;
+		}
+		case MCP2515_RXF1:
+		{
+			IdentifierBaseAddress = MCP2515_REGISTER_RXF1SIDH;
+			break;
+		}
+		case MCP2515_RXF2:
+		{
+			IdentifierBaseAddress = MCP2515_REGISTER_RXF2SIDH;
+			break;
+		}
+		case MCP2515_RXF3:
+		{
+			IdentifierBaseAddress = MCP2515_REGISTER_RXF3SIDH;
+			break;
+		}
+		case MCP2515_RXF4:
+		{
+			IdentifierBaseAddress = MCP2515_REGISTER_RXF4SIDH;
+			break;
+		}
+		case MCP2515_RXF5:
+		{
+			IdentifierBaseAddress = MCP2515_REGISTER_RXF5SIDH;
+			break;
+		}
 	}
 
+	// Set the identifier
+	if(Config->ID > 0x00)
+	{
+		uint8_t Identifier_Low = (Config->ID & 0x07) << 0x05;
+		uint8_t Identifier_High = Config->ID >> 0x03;
+		
+		MCP2515_WriteRegister(IdentifierBaseAddress, Identifier_High);
+		MCP2515_WriteRegister(IdentifierBaseAddress + 0x01, Identifier_Low);
+	}
+
+	if((Config->Filter == MCP2515_RXF0) || (Config->Filter == MCP2515_RXF1))
+	{
+		if(!Config->UseExtended)
+		{
+			MCP2515_WriteRegister(MCP2515_REGISTER_RXM0SIDH, Mask_High);
+			MCP2515_WriteRegister(MCP2515_REGISTER_RXM0SIDL, Mask_Low);
+		}
+	}
+	else if((Config->Filter == MCP2515_RXF2) | (Config->Filter == MCP2515_RXF3) | (Config->Filter == MCP2515_RXF4) | (Config->Filter == MCP2515_RXF5))
+	{
+		if(!Config->UseExtended)
+		{
+			MCP2515_WriteRegister(MCP2515_REGISTER_RXM1SIDH, Mask_High);
+			MCP2515_WriteRegister(MCP2515_REGISTER_RXM1SIDL, Mask_Low);
+		}
+	}
+	
 	// Restore device mode
 	MCP2515_SetDeviceMode(Mode);
 }
 
-void MCP2515_StartTransmission(const MCP2515_TransmitBuffer_t Buffer)
+void MCP2515_RequestTransmission(const MCP2515_TransmitBuffer_t Buffer)
 {
-	MCP2515_SPI_CHIP_SELECT();
+	uint8_t Buffer_Int = Buffer & 0x07;
 
-	uint8_t Command = 0x00;
+	#if(defined MCP2515_USE_EXT_TX)
+		if(Buffer == MCP2515_TX0)
+		{
+			GPIO_Clear(GET_PERIPHERAL(MCP2515_EXT_TX0), GET_INDEX(MCP2515_EXT_TX0));
+			GPIO_Set(GET_PERIPHERAL(MCP2515_EXT_TX0), GET_INDEX(MCP2515_EXT_TX0));
+		}
+		else if(Buffer == MCP2515_TX1)
+		{
+			GPIO_Clear(GET_PERIPHERAL(MCP2515_EXT_TX1), GET_INDEX(MCP2515_EXT_TX1));
+			GPIO_Set(GET_PERIPHERAL(MCP2515_EXT_TX1), GET_INDEX(MCP2515_EXT_TX1));
+		}
+		else
+		{
+			GPIO_Clear(GET_PERIPHERAL(MCP2515_EXT_TX2), GET_INDEX(MCP2515_EXT_TX2));
+			GPIO_Set(GET_PERIPHERAL(MCP2515_EXT_TX2), GET_INDEX(MCP2515_EXT_TX2));
+		}
+	#else
+		MCP2515_SPI_CHIP_SELECT();
+		MCP2515_SPI_TRANSMIT(MCP2515_CMD_RTS(Buffer_Int));
+		MCP2515_SPI_CHIP_DESELECT();
+	#endif
+}
 
-	if(Buffer == MCP2515_TX0)
-	{
-		Command = MCP2515_CMD_RTS0;
-	}
-	else if(Buffer == MCP2515_TX1)
-	{
-		Command = MCP2515_CMD_RTS1;
-	}
-	else if(Buffer == MCP2515_TX2)
-	{
-		Command = MCP2515_CMD_RTS2;
-	}
+void MPC2515_AbortTransmission(const MCP2515_TransmitBuffer_t Buffer)
+{
+	// Get the register address
+	uint8_t Address = MCP2515_REGISTER_TXB0CTRL + (Buffer << 0x04);
 
-	MCP2515_SPI_TRANSMIT(Command);
+	// Delete TXREQ Bit
+	MCP2515_BitModify(Address, (0x01 << MCP2515_TXREQ), 0x00);
+}
 
-	MCP2515_SPI_CHIP_DESELECT();
+void MPC2515_AbortAllTransmission(void)
+{
+	MCP2515_BitModify(MCP2515_REGISTER_CANCTRL, (0x01 << MCP2515_ABAT), (0x01 << MCP2515_ABAT));
 }
 
 void MCP2515_ReadMessage(CAN_Message_t* Message)
 {
-	uint8_t ID_High = 0x00;
-	uint8_t ID_Low = 0x00;
 	uint8_t Length = 0x00;
-	uint8_t ReceiveBufferAddress = 0x00;
+	uint8_t ReceiveCommand = 0x00;
 
 	// Get the receive status
 	uint8_t RxStatus = MCP2515_ReadRxStatus();
 
-	// Check witch receive buffer contains the message
-	if(RxStatus & 0x40)
+	// Return when no message received
+	if(!(RxStatus & ((0x01 << MCP2515_MSG_RX_1) | (0x01 << MCP2515_MSG_RX_0))))
 	{
-		ReceiveBufferAddress = MCP2515_CMD_READRX0;
+		return;
 	}
-	else if(RxStatus & 0x80)
+	else if(RxStatus & (0x01 << MCP2515_MSG_RX_1))
 	{
-		ReceiveBufferAddress = MCP2515_CMD_READRX1;
+		ReceiveCommand = MCP2515_CMD_READ_RX(MCP2515_RX1);
 	}
+	else
+	{
+		ReceiveCommand = MCP2515_CMD_READ_RX(MCP2515_RX0);
+	}
+
+	// Get the message type
+	MCP2515_MessageType_t MessageType = (RxStatus & ((0x01 << MCP2515_MSG_TYPE1) | (0x01 << MCP2515_MSG_TYPE0))) >> MCP2515_MSG_TYPE0;
 
 	MCP2515_SPI_CHIP_SELECT();
-	
-	MCP2515_SPI_TRANSMIT(ReceiveBufferAddress);
+	MCP2515_SPI_TRANSMIT(ReceiveCommand);
 	
 	// Get the message ID
-	ID_High = (MCP2515_SPI_TRANSMIT(0xFF)) << 0x03;
-	ID_Low = (MCP2515_SPI_TRANSMIT(0xFF)) >> 0x05;
-	Message->MessageID = ID_High | ID_Low;
+	if((MessageType == MCP2515_STANDARD_REMOTE) || (MessageType == MCP2515_STANDARD_DATA))
+	{
+		Message->ID = (MCP2515_SPI_TRANSMIT(0xFF)) << 0x03 | (MCP2515_SPI_TRANSMIT(0xFF)) >> 0x05;
 
-	// Read the two empty bytes
-	MCP2515_SPI_TRANSMIT(0xFF);
-	MCP2515_SPI_TRANSMIT(0xFF);
+		// Skip the extended identifier
+		MCP2515_SPI_TRANSMIT(0xFF);
+		MCP2515_SPI_TRANSMIT(0xFF);
+	}
+	else
+	{
+		// Skip the first byte of the standard identifier
+		MCP2515_SPI_TRANSMIT(0xFF);
+		Message->ID = ((((uint32_t)MCP2515_SPI_TRANSMIT(0xFF)) & 0x03) << 0x18) | (MCP2515_SPI_TRANSMIT(0xFF) << 0x08) | MCP2515_SPI_TRANSMIT(0xFF);
+	}
 
 	// Get the message length
 	Length = MCP2515_SPI_TRANSMIT(0xFF);
 
-	// Check message type
-	uint8_t MessageType = (RxStatus & 0x18) >> 0x03;
-	
 	switch(MessageType)
 	{
-		case(MCP2515_STANDARD_DATA):
+		case MCP2515_STANDARD_DATA:
+		case MCP2515_EXTENDED_DATA:
 		{
-			Message->MessageLength = Length;
-			Message->MessageType = MessageType;
+			Message->Length = Length;
+			Message->Type = MessageType;
 
-			for(uint8_t i = 0; i < Message->MessageLength; i++)
+			for(uint8_t i = 0; i < Message->Length; i++)
 			{
-				*(Message->Buffer++) = MCP2515_SPI_TRANSMIT(0xFF);
+				*(Message->pData++) = MCP2515_SPI_TRANSMIT(0xFF);
 			}
-
+				
 			break;
 		}
-		case(MCP2515_STANDARD_REMOTE):
+		case MCP2515_STANDARD_REMOTE:
+		case MCP2515_EXTENDED_REMOTE:
 		{
-			// Remove the remote bit
-			Message->MessageLength = Length - 0x40;
-
-			Message->MessageType = MessageType;
+			Message->Length = Length & (~(0x01 << MCP2515_RTR));
+			Message->Type = MessageType;
 
 			break;
 		}
@@ -687,79 +858,89 @@ void MCP2515_ReadMessage(CAN_Message_t* Message)
 	MCP2515_SPI_CHIP_DESELECT();
 }
 
-MCP2515_ErrorCodes_t MCP2515_SendMessage(CAN_Message_t* Message)
+MCP2515_ErrorCode_t MCP2515_PrepareMessage(CAN_Message_t* Message, const MCP2515_MessagePriority_t Priority, const MCP2515_TransmitBuffer_t Buffer)
 {
-	if(Message->MessageID > 0x7FF)
+	if(Message->ID > 0x3FFFF)
 	{
 		return MCP2515_INVALID_IDENTIFIER;
 	}
 	
-	// Delete TXREQ Bit
-	MCP2515_BitModify(MCP2515_REGISTER_TXB0CTRL, 0x08, 0x00);
+	// Check for an empty transmit buffer. First check the internal bitmap and then check 
+	// the TXREQ bit in the second step
+	uint8_t BufferBase = 0x00;
+	uint8_t Status = 0x00;
+	if(Buffer == MCP2515_TX0)
+	{
+		Status = MCP2515_ReadRegister(MCP2515_REGISTER_TXB0CTRL);
+		if(!(Status & (0x01 << MCP2515_TXREQ)))
+		{
+			BufferBase = MCP2515_REGISTER_TXB0CTRL;
+		}
+	}
+	else if(Buffer == MCP2515_TX1)
+	{
+		Status = MCP2515_ReadRegister(MCP2515_REGISTER_TXB1CTRL);
+		if(!(Status & (0x01 << MCP2515_TXREQ)))
+		{
+			BufferBase = MCP2515_REGISTER_TXB1CTRL;
+		}
+	}
+	else if(Buffer == MCP2515_TX2)
+	{
+		Status = MCP2515_ReadRegister(MCP2515_REGISTER_TXB2CTRL);
+		if(!(Status & (0x01 << MCP2515_TXREQ)))
+		{
+			BufferBase = MCP2515_REGISTER_TXB2CTRL;
+		}
+	}
 
-	// Set the message id
-	MCP2515_SetIdentifier(MCP2515_TX0, Message->MessageID);
+	// All Tx buffers are full - cancel transmission
+	if(BufferBase == 0x00)
+	{
+		return MCP2515_TX_BUFFER_FULL;
+	}
+
+	// Delete TXREQ Bit
+	MCP2515_BitModify(BufferBase, (0x01 << MCP2515_TXREQ), 0x00);
+
+	// Set the message ID
+	if((Message->Type == MCP2515_STANDARD_DATA) || (Message->Type == MCP2515_STANDARD_REMOTE))
+	{
+		MCP2515_WriteRegister(BufferBase + 0x02, (Message->ID & 0x07) << 0x05);
+		MCP2515_WriteRegister(BufferBase + 0x01, Message->ID >> 0x03);
+	}
+	else
+	{
+		MCP2515_WriteRegister(BufferBase + 0x02, (0x01 << MCP2515_EXIDE) | ((Message->ID >> 0x10) & 0x03));
+		MCP2515_WriteRegister(BufferBase + 0x03, (Message->ID >> 0x08) & 0xFF);
+		MCP2515_WriteRegister(BufferBase + 0x04, Message->ID & 0xFF);
+	}
 
 	// Set the message priority
-	MCP2515_SetTxPriority(MCP2515_TX0, Message->MessagePriority);
+	MCP2515_BitModify(BufferBase, 0x03, Priority & 0x03);
 
-	if(Message->MessageType == MCP2515_STANDARD_DATA)
+	switch(Message->Type)
 	{
-		MCP2515_WriteRegister(MCP2515_REGISTER_TXB0DLC, Message->MessageLength);
-
-		for(uint8_t DataByte = 0x00; DataByte < MCP2515_MAX_DATABYTES; DataByte++)
+		case MCP2515_EXTENDED_DATA:
+		case MCP2515_STANDARD_DATA:
 		{
-			MCP2515_WriteRegister(MCP2515_REGISTER_TXB0D0 + DataByte, *(Message->Buffer++));
+			MCP2515_WriteRegister(BufferBase + 0x05, (Message->Length & 0x0F));
+
+			for(uint8_t DataByte = 0x00; DataByte < MCP2515_MAX_DATABYTES; DataByte++)
+			{
+				MCP2515_WriteRegister(BufferBase + 0x06 + DataByte, *(Message->pData++));
+			}
+
+			break;
+		}
+		case MCP2515_STANDARD_REMOTE:
+		case MCP2515_EXTENDED_REMOTE:
+		{
+			MCP2515_WriteRegister(BufferBase + 0x05, (Message->Length & 0x0F) + (0x01 << MCP2515_RTR));
+
+			break;
 		}
 	}
-	else if(Message->MessageType == MCP2515_STANDARD_REMOTE)
-	{
-		MCP2515_WriteRegister(MCP2515_REGISTER_TXB0DLC,  Message->MessageLength + 0x40);
-	}
-
-	MCP2515_StartTransmission(MCP2515_TX0);
 
 	return MCP2515_NO_ERROR;
-}
-
-void MCP2515_SetIdentifier(const MCP2515_TransmitBuffer_t Buffer, const uint32_t Identifier)
-{
-	uint8_t Identifier_Low = (Identifier & 0x07) << 0x05;
-	uint8_t Identifier_High = Identifier >> 0x03;
-
-	switch(Buffer)
-	{
-		case(MCP2515_TX0):
-		{
-			MCP2515_WriteRegister(MCP2515_REGISTER_TXB0SIDL, Identifier_Low);
-			MCP2515_WriteRegister(MCP2515_REGISTER_TXB0SIDH, Identifier_High);
-		}
-		case(MCP2515_TX1):
-		{
-			MCP2515_WriteRegister(MCP2515_REGISTER_TXB1SIDL, Identifier_Low);
-			MCP2515_WriteRegister(MCP2515_REGISTER_TXB1SIDH, Identifier_High);
-		}
-		case(MCP2515_TX2):
-		{
-			MCP2515_WriteRegister(MCP2515_REGISTER_TXB2SIDL, Identifier_Low);
-			MCP2515_WriteRegister(MCP2515_REGISTER_TXB2SIDH, Identifier_High);
-		}
-	}
-}
-
-uint8_t MCP2515_ReadRxStatus(void)
-{
-	uint8_t Data;
-
-	MCP2515_SPI_CHIP_SELECT();
-	 
-	MCP2515_SPI_TRANSMIT(MCP2515_CMD_RXSTATUS);
-	Data = MCP2515_SPI_TRANSMIT(0xFF);
-
-	// Get repeat data
-	MCP2515_SPI_TRANSMIT(0xFF);
-
-	MCP2515_SPI_CHIP_DESELECT();
-
-	return Data;
 }

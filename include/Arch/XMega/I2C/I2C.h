@@ -91,7 +91,7 @@
 													 NOTE: Only needed if you use interrupt driven transmissions */  
 	 I2C_DeviceMode_t DeviceMode;				/**< Device mode */
 	 I2C_Timeout_t Timeout;						/**< Bus inactive timeout */
-	 uint32_t BitRate;							/**< I2C bus frequency */
+	 uint32_t Bitrate;							/**< I2C bus frequency */
 	 Bool_t EnableQuickCommand;					/**< Set to #TRUE to enable quick commands */
 	 Bool_t EnableSmartMode;					/**< Set to #TRUE to enable smart mode */
 	 Bool_t EnableInterruptSupport;				/**< Set to #TRUE to enable interrupt support in master mode */

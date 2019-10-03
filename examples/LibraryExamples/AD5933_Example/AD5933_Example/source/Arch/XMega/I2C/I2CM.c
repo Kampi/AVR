@@ -102,7 +102,7 @@ void I2CM_Init(I2CM_Config_t* Config)
 	I2C_PowerEnable(Config->Device);
 
 	I2CM_SetTimeout(Config->Device, Config->Timeout);
-	I2CM_SetBaudrate(Config->Device, Config->BitRate, SysClock_GetClock());
+	I2CM_SetBaudrate(Config->Device, Config->Bitrate, SysClock_GetClock());
 	I2CM_SwitchQuickCommand(Config->Device, Config->EnableQuickCommand);
 	I2CM_SwitchSmartMode(Config->Device, Config->EnableSmartMode);
 	I2C_MasterEnable(Config->Device);
