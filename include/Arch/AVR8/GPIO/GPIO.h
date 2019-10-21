@@ -79,17 +79,37 @@
 	GPIO_SENSE_RISING = 0x03,							/**< Sense rising edge only */ 
  } GPIO_InputSense_t;
 
- #undef PORTA
- #define PORTA                 (*(PORT_t *) 0x39)
+ #if(MCU_NAME == MCU_NAME_ATMEGA32)
+	 #undef PORTA
+	 #define PORTA                 (*(PORT_t *) 0x39)
 
- #undef PORTB
- #define PORTB                 (*(PORT_t *) 0x36)
+	 #undef PORTB
+	 #define PORTB                 (*(PORT_t *) 0x36)
 
- #undef PORTC
- #define PORTC                 (*(PORT_t *) 0x33)
+	 #undef PORTC
+	 #define PORTC                 (*(PORT_t *) 0x33)
 
- #undef PORTD
- #define PORTD                 (*(PORT_t *) 0x30)
+	 #undef PORTD
+	 #define PORTD                 (*(PORT_t *) 0x30)
+ #elif(MCU_NAME == MCU_NAME_AT90USB1287)
+	 #undef PORTA
+	 #define PORTA                 (*(PORT_t *) 0x20)
+
+	 #undef PORTB
+	 #define PORTB                 (*(PORT_t *) 0x23)
+
+	 #undef PORTC
+	 #define PORTC                 (*(PORT_t *) 0x26)
+
+	 #undef PORTD
+	 #define PORTD                 (*(PORT_t *) 0x29)
+
+	 #undef PORTE
+	 #define PORTE                 (*(PORT_t *) 0x2C)
+	 
+	 #undef PORTF
+	 #define PORTF                 (*(PORT_t *) 0x2F)
+ #endif
 
  /** 
   * GPIO interrupt configuration object

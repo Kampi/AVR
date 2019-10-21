@@ -33,7 +33,6 @@
 #define DATAFLASHMANAGER_H_
 
  #include "Definitions.h"
- #include "Arch/SPI.h"
 
  #if(BOARD == BOARD_NONE)
 

@@ -76,7 +76,7 @@
 	 void (*ControlRequest)(const uint8_t bRequest, const uint8_t bmRequestType, const uint16_t wValue);
 	 void (*Suspend)();
 	 void (*Wake)();
-	 void (*ConnectedWithBus)();
+	 void (*ConnectWithBus)();
 	 void (*DisconnectFromBus)();
 	 void (*StartOfFrame)();
 	 void (*Error)();

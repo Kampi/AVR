@@ -74,6 +74,6 @@
  #include "Peripheral/AnalogSensors.h"
  
  #include "Common/Services/USB/USB.h"
- #include "Common/Services/DataFlashManager/DataFlashManager.h"
+ //#include "Common/Services/DataFlashManager/DataFlashManager.h"
  
 #endif /* AT90USBKEY_H_ */

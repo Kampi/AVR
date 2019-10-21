@@ -42,14 +42,14 @@
  #define ENDPOINT_CONTROL_ADDRESS						0x00
  
  /** 
-  * Control endpoint size for USB devices
-  */
- #define ENDPOINT_CONTROL_SIZE							0x08
- 
- /** 
   * Mask for IN endpoint
   */
  #define ENDPOINT_DIR_MASK_IN							0x80
+
+ /** 
+  * Default size for the control endpoint
+  */
+ #define ENDPOINT_CONTROL_DEFAULT_SIZE					0x08
 
  /** 
   * Endpoint types
@@ -71,8 +71,10 @@
 	 ENDPOINT_SIZE_16 = 0x01,							/**< Endpoint size 16 bytes */ 
 	 ENDPOINT_SIZE_32 = 0x02,							/**< Endpoint size 32 bytes */ 
 	 ENDPOINT_SIZE_64 = 0x03,							/**< Endpoint size 64 bytes */ 
-	 ENDPOINT_SIZE_128 = 0x04,							/**< Endpoint size 128 bytes */ 
-	 ENDPOINT_SIZE_256 = 0x05,							/**< Endpoint size 256 bytes */ 
+	 ENDPOINT_SIZE_128 = 0x04,							/**< Endpoint size 128 bytes \n
+															 NOTE: Only for endpoint 1! */ 
+	 ENDPOINT_SIZE_256 = 0x05,							/**< Endpoint size 256 bytes \n
+															 NOTE: Only for endpoint 1! */ 
  } Endpoint_Size_t;
 
  /** 
@@ -83,6 +85,11 @@
 	 ENDPOINT_DIRECTION_OUT = 0x00,						/**< OUT endpoint */ 
 	 ENDPOINT_DIRECTION_IN = 0x80,						/**< IN endpoint */ 
  } Endpoint_Direction_t;
+
+ /** 
+  * Size for the control endpoint
+  */
+ extern const uint8_t Endpoint_ControlSize;
 
  /** @brief			Select an endpoint.
   *  @param Address	Endpoint address
@@ -122,7 +129,7 @@
 	 UECONX &= ~(0x01 << EPEN);
  }
  
- /** @brief		Get the direction of the current active endpoint.
+ /** @brief		Get the direction of the active endpoint.
   *				NOTE: You have so use #Endpoint_Select first!
   *  @return	Endpoint direction
   */
@@ -138,7 +145,6 @@
  }
  
  /** @brief		Get the current active endpoint.
-  *				NOTE: You have so use #Endpoint_Select first!
   *  @return	Endpoint address
   */
  static inline uint8_t Endpoint_GetCurrent(void) __attribute__ ((always_inline));
@@ -148,7 +154,6 @@
  }
  
  /** @brief		Test if the control endpoint received an setup packed.
-  *				NOTE: You have so use #Endpoint_Select first!
   *  @return	#TRUE when a setup packed was received
   */
  static inline Bool_t Endpoint_SETUPReceived(void) __attribute__ ((always_inline));
@@ -319,9 +324,10 @@
   *  @param Address		Endpoint address
   *  @param Type		Endpoint type
   *  @param Size		Endpoint size
-  *  @param Banks		Endpoint bank size
+  *  @param DoubleBank	Set to #TRUE to use a double bank for the endpoint
+  *  @return			#TRUE when successfully
   */
- Bool_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, const Endpoint_Size_t Size, const uint8_t Banks);
+ Bool_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, const Endpoint_Size_t Size, const Bool_t DoubleBank);
 
  /** @brief				Clear the input/output bank of the current endpoint.
   *  @param RequestType	USB request type
