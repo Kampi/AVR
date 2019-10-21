@@ -141,6 +141,9 @@
     <Compile Include="include\Joystick\Joystick.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="include\USB\Core\Endpoint.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="include\USB\Core\USB_Controller.h">
       <SubType>compile</SubType>
     </Compile>
@@ -154,6 +157,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\USB\Core\Endpoint.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\USB\Core\USB_Controller.c">

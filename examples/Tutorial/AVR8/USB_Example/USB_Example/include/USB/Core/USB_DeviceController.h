@@ -23,7 +23,7 @@
  */ 
 
 /** @file USB/Core/USB_DeviceController.h
- *  @brief USB device definition for AT90USB1287.
+ *  @brief USB device controller definition for AT90USB1287.
  *
  *  This file contains the prototypes and definitions for AT90USB1287 as USB device.
  *
@@ -34,6 +34,7 @@
 #ifndef USB_DEVICECONTROLLER_H_
 #define USB_DEVICECONTROLLER_H_
 
+ #include "Endpoint.h"
  #include "USB_Controller.h"
  
  /** @brief			Set the USB speed of the device.

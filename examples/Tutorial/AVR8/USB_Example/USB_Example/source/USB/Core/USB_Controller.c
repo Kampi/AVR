@@ -23,16 +23,16 @@
  */
 
 /** @file USB/Core/USB_Controller.c
- *  @brief USB-Controller for AT90USB1287s.
+ *  @brief USB controller for AT90USB1287.
  * 
  *  This file contains the implementation of the AT90USB1287 USB driver.
  *
  *  @author Daniel Kampert
  */
 
-#include "USB/Core/USB_Interrupt.h"
 #include "USB/Core/USB_Controller.h"
 #include "USB/Core/USB_DeviceController.h"
+#include "USB/Core/USB_Interrupt.h"
 
 extern volatile USB_State_t __DeviceState;
 
@@ -50,7 +50,8 @@ void USBController_Init(const USB_Mode_t Mode, const USB_Speed_t Speed)
 		
 		// Enable all necessary interrupts
 		USBController_EnableInterrupt(USB_VBUS_INTERRUPT);
-		//USBController_EnableInterrupt(USB_EOR_INTERRUPT);
+		USBController_EnableInterrupt(USB_SUSPEND_INTERRUPT);
+		USBController_EnableInterrupt(USB_EOR_INTERRUPT);
 		
 		// Attach the device to the bus
 		USBController_Attach();

@@ -34,7 +34,15 @@
 #include "USB/USB.h"
 
 int main(void)
-{	
+{
+	/*
+		Initialize the GPIO
+			-> PD4 - PD7 as outputs
+			-> Disable all outputs
+	*/
+	DDRD |= (0x01 << 0x07) | (0x01 << 0x06) | (0x01 << 0x05) | (0x01 << 0x04);
+	PORTD &= ~((0x01 << 0x07) | (0x01 << 0x06) | (0x01 << 0x05) | (0x01 << 0x04));
+	
 	/*
 		Initialize the USB
 			-> USB device

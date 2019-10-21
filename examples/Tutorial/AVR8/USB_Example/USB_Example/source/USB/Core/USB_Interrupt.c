@@ -30,7 +30,9 @@
  *  @author Daniel Kampert
  */
 
+#include "USB/Core/Endpoint.h"
 #include "USB/Core/USB_Interrupt.h"
+#include "USB/Core/USB_DeviceController.h"
 
 volatile USB_State_t __DeviceState;
 
@@ -52,16 +54,21 @@ ISR(USB_GEN_vect)
 		}
 	}
 
-/*
+
 	if(USBController_CheckForInterrupt(USB_EOR_INTERRUPT) && USBController_IsInterruptEnabled(USB_EOR_INTERRUPT))
 	{
 		USBController_ClearInterruptFlag(USB_EOR_INTERRUPT);
 
-		USBController_ClearInterruptFlag(USB_SUSPEND_INTERRUPT);
-		USBController_DisableInterrupt(USB_SUSPEND_INTERRUPT);
-		USBController_EnableInterrupt(USB_WAKE_INTERRUPT);
-
 		__DeviceState = USB_STATE_RESET;
+
+		// Configure the default control endpoint
+		if(Endpoint_Configure(0, ENDPOINT_TYPE_CONTROL, 8, 0))
+		{
+			PORTD |= (0x01 << 0x05);
+		}
+		else
+		{
+			PORTD |= (0x01 << 0x04);
+		}
 	}
-*/
 }

@@ -23,9 +23,9 @@
  */
 
 /** @file USB/Core/USB_Controller.h
- *  @brief USB-Controller for AT90USB1287s.
+ *  @brief USB controller for AT90USB1287.
  *
- *  This file contains the prototypes and definitions for the AT90USB1287 USB driver.
+ *  This file contains the prototypes and definitions for the AT90USB1287 USB controller.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs.
