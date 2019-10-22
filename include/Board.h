@@ -36,17 +36,19 @@
  #include "Common/Common.h"
  
  #ifdef BOARD
-	#if(BOARD == BOARD_XMEGA256A3_XPLAINED)
-		#include "Common/Board/XMegaA3XPlained.h"
-	#elif(BOARD == BOARD_XMEGA384C3_XPLAINED)
-		#include "Common/Board/XMegaC3XPlained.h"
-	#elif(BOARD == BOARD_CAN_NODE)
-		#include "Common/Board/CANNode.h"
-	#elif(BOARD == BOARD_RN_CONTROL)
-		#include "Common/Board/RNControl.h"
-	#elif(BOARD == BOARD_AT90USBKEY)
-		#include "Common/Board/AT90USBKey.h"
-	#endif
+	 #if(BOARD == BOARD_XMEGA256A3_XPLAINED)
+		 #include "Common/Board/XMegaA3XPlained.h"
+	 #elif(BOARD == BOARD_XMEGA384C3_XPLAINED)
+		 #include "Common/Board/XMegaC3XPlained.h"
+	 #elif(BOARD == BOARD_CAN_NODE)
+		 #include "Common/Board/CANNode.h"
+	 #elif(BOARD == BOARD_RN_CONTROL)
+		 #include "Common/Board/RNControl.h"
+	 #elif(BOARD == BOARD_AT90USBKEY)
+		 #include "Common/Board/AT90USBKey.h"
+	 #else
+		 #warning "Unknown board!"
+	 #endif
  #endif
 
 #endif /* BOARD_H_ */
