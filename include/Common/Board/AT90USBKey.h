@@ -51,7 +51,7 @@
  #define LED1_GREEN_PIN								6
  
  /*
-	Analog sensors
+	 Analog sensors
  */
  // Temperature sensor
  #define TEMPERATURE_SENSOR_PIN						0
@@ -60,9 +60,9 @@
  #define VBAT_MONITOR_PIN							3
  
  /*
-	Reference voltage [mV]
+	 Reference voltage [mV]
  */
- #define REFERENCE_VOLTAGE							3300
+ #define REFERENCE_VOLTAGE							3300						
 
  /*
 	Peripheral includes
@@ -72,8 +72,8 @@
  
  #include "Peripheral/Joystick.h"
  #include "Peripheral/AnalogSensors.h"
+ #include "Peripheral/DataFlash/DataFlash.h"
  
  #include "Common/Services/USB/USB.h"
- //#include "Common/Services/DataFlashManager/DataFlashManager.h"
  
 #endif /* AT90USBKEY_H_ */

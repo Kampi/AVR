@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Hardware definitions for the Atmel XPlainedC3 Development board.
+ *  File info: Hardware driver for the Atmel XPlainedC3 Development board.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Common/Board/XMegaC3XPlained.h
- *  @brief Hardware definitions for the Atmel XPlainedC3 development board.
+ *  @brief Hardware driver for the Atmel XPlainedC3 development board.
  *
  *  @author Daniel Kampert
  */
@@ -32,53 +32,9 @@
 #define XMEGAC3XPLAINED_H_
 
  /*
-	Define the MCU for the used board
+	Define the MCU for the board
  */
  #include "Common/Board/MCU/XMega384C3.h"
-
- /*
-	Peripheral definitions
- */
-
- /* 
-	LEDs
- */
- // Yellow LED0
- #define LED0										PORTR, 0
-
- // Yellow LED1
- #define LED1										PORTR, 1
-
- // Red/Green LED
- #define LED2										PORTD, 4
-
- // Green LED
- #define LED3										PORTD, 5
- 
- /* 
-	Push buttons
- */
- #define SW0										PORTF, 1
- #define SW1										PORTF, 2
- 
- /*
-	Analog sensors
- */
- #define LIGHT_SENSOR								0
- #define TEMPERATURE_SENSOR							1
-
- // SPI interface for SPI peripherals
- #define SPI_CLOCK									1000000
- #define SPI_DEFAULT_INTERFACE						&USARTD0							
-
- // I2C interface for SPI peripherals
- #define I2C_CLOCK									100000
- #define I2C_DEFAULT_INTERFACE						&TWIC
-
- /*
-	Reference voltage [mV]
- */
- #define REFERENCE_VOLTAGE							3300
 
  /*
 	Hardware driver
@@ -105,7 +61,7 @@
  #include "Arch/XMega/PowerManagement/PowerManagement.h"
  
  /*
-	Peripheral includes
+	Peripheral driver
  */
  #include "Peripheral/SD/SD.h"
  #include "Peripheral/AnalogSensors.h"
@@ -116,10 +72,5 @@
  #include "Common/Services/FatFs/FatFs.h"
  #include "Common/Services/SleepManager/SleepManager.h"
  #include "Common/Services/DisplayManager/DisplayManager.h"
- 
- /*
-	Additional includes
- */
- #include <stdio.h>
 
 #endif /* XMEGAC3XPLAINED_H_ */
