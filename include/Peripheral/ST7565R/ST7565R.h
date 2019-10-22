@@ -34,11 +34,7 @@
 #ifndef ST7565R_H_
 #define ST7565R_H_
 
- #ifdef USE_DISPLAYMANAGER
-	 #include "Config_DisplayManager.h"
- #elif
-	 #include "Config_ST7565R.h"
- #endif
+ #include "Common/Common.h"
 
  /*
 	Architecture specific definitions

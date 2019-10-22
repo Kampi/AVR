@@ -34,11 +34,7 @@
 #ifndef SSD1306_H_
 #define SSD1306_H_
 
- #ifdef USE_DISPLAYMANAGER
-	 #include "Config_DisplayManager.h"
- #else
-	 #include "Config_SSD1306.h"
- #endif
+ #include "Common/Common.h"
 
  /*
 	Architecture specific definitions
