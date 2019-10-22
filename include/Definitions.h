@@ -37,7 +37,7 @@
   *  @{
   */
 	#define INTERFACE_UNKNOWN									0		/**< Unknown interface */
-	#define INTERFACE_USART_SPI									1		/**< USART/SPI interface */ 
+	#define INTERFACE_USART_SPI									1		/**< USART/SPI interface */
 	#define INTERFACE_SPI										2		/**< SPI interface */
 	#define INTERFACE_I2C										3		/**< I2C interface */
 	#define INTERFACE_USART										4		/**< USART interface */
@@ -51,10 +51,10 @@
 	#define BOARD_NONE											0		/**< No board */
 	#define BOARD_XMEGA256A3_XPLAINED							1		/**< Board XMega256A3BU XPlained */
 	#define BOARD_XMEGA384C3_XPLAINED							2		/**< Board XMega384C3 XPlained */
-	#define BOARD_CAN_NODE										3		/**< My private CAN Node */ 
-	#define BOARD_RN_CONTROL									4		/**< Board RN control */ 
-	#define BOARD_AT90USBKEY									5		/**< Board AT90USBKey */ 
-	#define BOARD_CUSTOM										999		/**< Custom board */ 
+	#define BOARD_CAN_NODE										3		/**< My private CAN Node */
+	#define BOARD_RN_CONTROL									4		/**< Board RN control */
+	#define BOARD_AT90USBKEY									5		/**< Board AT90USBKey */
+	#define BOARD_CUSTOM										999		/**< Custom board */
  /** @} */ // end of Board
 
  /** @defgroup MCU
@@ -65,8 +65,8 @@
 	#define MCU_NAME_UNKNOWN									0		/**< Unknown microcontroller */
 	#define MCU_NAME_ATXMEGA256A3BU								1		/**< XMega256A3BU microcontroller */
 	#define MCU_NAME_ATXMEGA384C3								2		/**< XMega384C3 microcontroller */
-	#define MCU_NAME_AT90USB1287								3		/**< AT90USB1287 microcontroller  */ 
-	#define MCU_NAME_ATMEGA32									4		/**< ATmega32 microcontroller */ 
+	#define MCU_NAME_AT90USB1287								3		/**< AT90USB1287 microcontroller  */
+	#define MCU_NAME_ATMEGA32									4		/**< ATmega32 microcontroller */
  /** @} */ // end of MCU
 
  /** @defgroup Architecture
@@ -75,9 +75,18 @@
   *  @{
   */
 	#define MCU_ARCH_UNKNOWN									0		/**< Unknown architecture */
-	#define MCU_ARCH_XMEGA										1		/**< AVR XMega architecture */ 
-	#define MCU_ARCH_AVR8										2		/**< AVR8 architecture */ 
-	#define MCU_ARCH_UC3										3		/**< AVR UC3 architecture */ 
+	#define MCU_ARCH_XMEGA										1		/**< AVR XMega architecture */
+	#define MCU_ARCH_AVR8										2		/**< AVR8 architecture */
+	#define MCU_ARCH_UC3										3		/**< AVR UC3 architecture */
+ /** @} */ // end of Architecture
+
+ /** @defgroup Flashmemory
+  *  @ingroup Configuration
+  *  Flash memory definitions for the AVR library
+  *  @{
+  */
+	#define FLASH_UNKNOWN										0		/**< Unknown flash */
+	#define FLASH_AT45DB642D									1		/**< Atmel AT45DB642D flash memory */ 
  /** @} */ // end of Architecture
 
  #include "Doxygen.h"
