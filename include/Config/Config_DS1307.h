@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Configuration file for the DS1307 I2C RTC.
+ *  File info: Configuration example for the Dallas DS1307 I2C RTC.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Config/Config_DS1307.h
- *  @brief Configuration file for the Dallas DS1307 I2C RTC.
+ *  @brief Configuration example for the Dallas DS1307 I2C RTC.
  *
  *  @author Daniel Kampert
  */

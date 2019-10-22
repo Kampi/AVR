@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Configuration file for the AD5933 I2C impedance converter.
+ *  File info: Configuration example for the Analog Devices AD5933 I2C impedance converter.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Config/Config_AD5933.h
- *  @brief Configuration file for the Analog Devices AD5933 I2C impedance converter.
+ *  @brief Configuration example for the Analog Devices AD5933 I2C impedance converter.
  *
  *  @author Daniel Kampert
  */

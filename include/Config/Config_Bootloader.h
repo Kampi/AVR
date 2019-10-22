@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Configuration file for the AVR bootloader.
+ *  File info: Configuration example for the AVR bootloader.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Config/Config_Bootloader.h
- *  @brief Configuration file for the AVR bootloader.
+ *  @brief Configuration example for the AVR bootloader.
  *
  *  @author Daniel Kampert
  */

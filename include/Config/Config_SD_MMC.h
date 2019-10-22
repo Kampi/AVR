@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Configuration file for the SD/MMC interface.
+ *  File info: Configuration example for the SD/MMC interface.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,15 +23,13 @@
  */
 
 /** @file Config/Config_SD_MMC.h
- *  @brief Example configuration file for the SD/MMC interface.
+ *  @brief Configuration example for the SD/MMC interface.
  *
  *  @author Daniel Kampert
  */
 
 #ifndef CONFIG_SD_MMC_H_
 #define CONFIG_SD_MMC_H_
-
- #include "Common/Common.h"
  
  /*
 	SD/MMC interface

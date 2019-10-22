@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Configuration file for the display manager.
+ *  File info: Configuration example for the display manager.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Config/Config_DisplayManager.h
- *  @brief Configuration file for the display manager.
+ *  @brief Configuration example for the display manager.
  *
  *  @author Daniel Kampert
  */

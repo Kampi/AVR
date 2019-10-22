@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Configuration file for the BMP180 I2C pressure sensor.
+ *  File info: Configuration example for the Bosch BMP180 I2C pressure sensor.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Config/Config_BMP180.h
- *  @brief Configuration file for the Bosch BMP180 I2C pressure sensor.
+ *  @brief Configuration example for the Bosch BMP180 I2C pressure sensor.
  *
  *  @author Daniel Kampert
  */

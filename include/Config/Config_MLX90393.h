@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Configuration file for the MLX90393 magnetic sensor.
+ *  File info: Configuration example for the Melexis MLX90393 magnetic sensor.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Config/Config_MLX90399.h
- *  @brief Configuration file for the Melexis MLX90399 I2C magnetic sensor.
+ *  @brief Configuration example for the Melexis MLX90399 I2C magnetic sensor.
  *
  *  @author Daniel Kampert
  */

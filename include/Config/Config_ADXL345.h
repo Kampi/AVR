@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Configuration file for the ADXL345 I2C accelerometer.
+ *  File info: Configuration example for the Analog Devices ADXL345 I2C accelerometer.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Config/Config_ADXL345.h
- *  @brief Configuration file for the Analog Devices ADXL345 I2C accelerometer.
+ *  @brief Configuration example for the Analog Devices ADXL345 I2C accelerometer.
  *
  *  @author Daniel Kampert
  */

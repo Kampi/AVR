@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Configuration file for the PCA9685 PWM controller.
+ *  File info: Configuration example for the NXP PCA9685 PWM controller.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Config/Config_PCA9685.h
- *  @brief Configuration file for the NXP PCA9685 I2C PWM controller.
+ *  @brief Configuration example for the NXP PCA9685 I2C PWM controller.
  *
  *  @author Daniel Kampert
  */
