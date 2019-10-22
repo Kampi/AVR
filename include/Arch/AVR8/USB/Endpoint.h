@@ -40,16 +40,16 @@
   * Control endpoint address for USB devices
   */
  #define ENDPOINT_CONTROL_ADDRESS						0x00
- 
- /** 
-  * Mask for IN endpoint
-  */
- #define ENDPOINT_DIR_MASK_IN							0x80
 
  /** 
   * Default size for the control endpoint
   */
  #define ENDPOINT_CONTROL_DEFAULT_SIZE					0x08
+
+ /** 
+  * Mask for IN endpoint
+  */
+ #define ENDPOINT_DIR_MASK_IN							0x80
 
  /** 
   * Endpoint types
