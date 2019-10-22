@@ -67,36 +67,36 @@
  /** @brief			Initialize the display and the interface.
   *  @param Config	Pointer to display configuration object.
   */
- extern void Display_Init(DisplayInterface_t* Config);
+ void Display_Init(DisplayInterface_t* Config);
  
  /** @brief	Reset the display.
   */
- extern void Display_Reset(void);
+ void Display_Reset(void);
  
  /** @brief			Enable/Disable the display back light.
   *  @param Enable	#TRUE to enable the back light.
   */
- extern void Display_SwitchDisplay(const Bool_t Enable);
+ void Display_SwitchDisplay(const Bool_t Enable);
 
  /** @brief			Write data to the display.
   *  @param Data	Data byte
   */
- extern void Display_WriteData(const uint8_t Data);
+ void Display_WriteData(const uint8_t Data);
  
  /** @brief		Set the display page.
   *  @param Page Display page
   */
- extern void Display_SetPage(const uint8_t Page);
+ void Display_SetPage(const uint8_t Page);
  
  /** @brief			Select the display column.
   *  @param Column	Display column
   */
- extern void Display_SetColumn(const uint8_t Column);
+ void Display_SetColumn(const uint8_t Column);
  
  /** @brief			Set the start line of the display.
   *  @param Line	Start line
   */
- extern void Display_SetStartLine(const uint8_t Line);
+ void Display_SetStartLine(const uint8_t Line);
 
  /**
   * Fill options for drawing objects
