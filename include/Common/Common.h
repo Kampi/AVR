@@ -31,6 +31,8 @@
 #ifndef COMMON_H_
 #define COMMON_H_
 
+ #include "Config.h"
+
  #include "Definitions.h"
  
  #include "Common/types.h"
