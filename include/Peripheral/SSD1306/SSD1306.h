@@ -82,6 +82,7 @@
  
  /** @brief			Initialize the display controller.
   *  @param Config	Pointer to SPI master configuration object
+  *					NOTE: Set to #NULL when the SPI is already initialized!
   */
  void Display_Init(SPIM_Config_t* Config);
 
