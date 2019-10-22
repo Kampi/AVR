@@ -35,13 +35,11 @@
 #define DISPLAYMANAGER_H_
  
  #include "Common/Common.h"
- #include "Config_DisplayManager.h"
  
- #if(defined WITH_SSD1306)
+ #if(defined USE_SSD1306)
 	 #include "Peripheral/SSD1306/SSD1306.h"
-	 
 	 typedef SPIM_Config_t DisplayInterface_t;
- #elif(defined WITH_ST7565R)
+ #elif(defined USE_ST7565R)
 	 #include "Peripheral/ST7565R/ST7565R.h"
 	 
 	 typedef SPIM_Config_t DisplayInterface_t;

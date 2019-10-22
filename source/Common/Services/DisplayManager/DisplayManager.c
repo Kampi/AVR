@@ -35,7 +35,7 @@
 /*
 	Interface configuration
 */
-#if((defined WITH_SSD1306) || (defined WITH_ST7565R))
+#if((defined USE_SSD1306) || (defined USE_ST7565R))
 	static SPIM_Config_t DisplayConfig = {
 		.SPIClock = DISPLAY_CLOCK,
 		.DataOrder = SPI_DATAORDER_MSB_FIRST,

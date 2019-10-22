@@ -38,10 +38,9 @@
 #ifndef SD_H_
 #define SD_H_
  
- #include "Config_SD_MMC.h"
- #include "SD_ID.h"
- 
  #include "Common/Common.h"
+ 
+ #include "SD_ID.h"
  
  /*
 	Architecture specific definitions
