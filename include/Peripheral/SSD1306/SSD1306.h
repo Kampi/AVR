@@ -36,7 +36,7 @@
 
  #ifdef USE_DISPLAYMANAGER
 	 #include "Config_DisplayManager.h"
- #elif
+ #else
 	 #include "Config_SSD1306.h"
  #endif
 
