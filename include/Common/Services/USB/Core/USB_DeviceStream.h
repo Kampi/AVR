@@ -50,7 +50,7 @@
  } Endpoint_DS_ErrorCode_t;
 
  /** 
-  * Error codes for endpoint control stream
+  * State codes for the endpoint control stream
   */
  typedef enum
  {
@@ -58,14 +58,15 @@
 	 ENDPOINT_CS_ABORT_FROM_HOST = 0x01,			/**< Transfer aborted by host */
 	 ENDPOINT_CS_DISCONNECT = 0x02,					/**< Device was disconnected */
 	 ENDPOINT_CS_SUSPEND = 0x03,					/**< The device has entered the suspend mode */
- } Endpoint_CS_ErrorCode_t;
+ } Endpoint_CS_State_t;
 
- /** @brief			Send control data to the host by using an IN endpoint.
-  *  @param Buffer	Pointer to data buffer
-  *  @param Length	Length of data
-  *  @return		Error code
+ /** @brief					Send control data to the host by using an IN endpoint.
+  *  @param Buffer			Pointer to data buffer
+  *  @param Length			Length of data
+  *	 @param RequestedLength	Requested data length from host
+  *  @return				Error code
   */
- Endpoint_CS_ErrorCode_t USBControlStream_IN(const void* Buffer, uint16_t Length);
+ Endpoint_CS_State_t USBControlStream_IN(const void* Buffer, const uint16_t Length, const uint16_t RequestedLength);
  
  /** @brief					Send data to the host by using an IN endpoint.
   *  @param Buffer			Pointer to data buffer

@@ -154,24 +154,13 @@
  }
  
  /** @brief		Test if the control endpoint received an setup packed.
+  *				NOTE: You have so use #Endpoint_Select first!
   *  @return	#TRUE when a setup packed was received
   */
  static inline Bool_t Endpoint_SETUPReceived(void) __attribute__ ((always_inline));
  static inline Bool_t Endpoint_SETUPReceived(void)
  {
-	 // Save the current selected endpoint
-	 uint8_t PrevEndpoint = Endpoint_GetCurrent();
-
-	 // Switch to the control endpoint and check if the host sends an setup packet
-	 Endpoint_Select(ENDPOINT_CONTROL_ADDRESS);
-	 if(UEINTX & (0x01 << RXSTPI))
-	 {
-		 return TRUE;
-	 }
-	 
-	 Endpoint_Select(PrevEndpoint);
-	 
-	 return FALSE;
+	 return UEINTX & (0x01 << RXSTPI);
  }
 
  /** @brief	Acknowledge the packet and clear the bank of a control endpoint.
@@ -211,12 +200,12 @@
 	 return UEDATX;
  }
  
- /** @brief		Test if the IN direction of the endpoint is ready.
+ /** @brief		Test if the IN direction of the endpoint is empty.
   *				NOTE: You have so use #Endpoint_Select first!
   *  @return	#TRUE when ready
   */
- static inline Bool_t Endpoint_IsINReady(void) __attribute__ ((always_inline));
- static inline Bool_t Endpoint_IsINReady(void)
+ static inline Bool_t Endpoint_IsINEmpty(void) __attribute__ ((always_inline));
+ static inline Bool_t Endpoint_IsINEmpty(void)
  {
 	 if(UEINTX & (0x01 << TXINI))
 	 {
@@ -233,12 +222,7 @@
  static inline Bool_t Endpoint_IsOUTFull(void) __attribute__ ((always_inline));
  static inline Bool_t Endpoint_IsOUTFull(void)
  {
-	 if(UEINTX & (0x01 << RXOUTI))
-	 {
-		 return TRUE;
-	 }
-	 
-	 return FALSE;
+	 return UEINTX & (0x01 << RXOUTI);
  }
 
  /** @brief	Stall the current endpoint.
@@ -274,7 +258,7 @@
 	 return FALSE;
  }
 
- /** @brief		Get the number of bytes currently stored in the endpoint.
+ /** @brief		Get the number of bytes currently stored in the endpoint FIFO.
   *				NOTE: You have so use #Endpoint_Select first!
   *  @return	Byte count
   */
