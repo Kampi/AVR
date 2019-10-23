@@ -146,10 +146,9 @@
  }
 
  /** @brief			Initialize the USB interface.
-  *  @param Mode	USB device mode
-  *  @param Speed	Device speed option
+  *  @param Config	Pointer to USB configuration object
   */
- void USBController_Init(const USB_Mode_t Mode, const USB_Speed_t Speed);
+ void USBController_Init(const USB_Config_t* Config);
 
  /** @brief			Set the operation mode of the USB controller.
   *  @param Mode	USB device mode

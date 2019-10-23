@@ -31,37 +31,36 @@
   */
  typedef enum
  {
-	 USB_MODE_DEVICE = 0x00,			/**< Device mode */ 
-	 USB_MODE_HOST = 0x01,				/**< Host mode */ 
+	 USB_MODE_DEVICE = 0x00,			/**< Device mode */
+	 USB_MODE_HOST = 0x01,				/**< Host mode */
  } USB_Mode_t;
  
  /** @brief	USB bus speed options.
   */
  typedef enum
  {
-	 USB_SPEED_LOW = 0x00,				/**< Low speed bus */ 
-	 USB_SPEED_HIGH = 0x01,				/**< High speed bus */ 
+	 USB_SPEED_LOW = 0x00,				/**< Low speed bus */
+	 USB_SPEED_HIGH = 0x01,				/**< High speed bus */
  } USB_Speed_t;
  
  /** @brief	States for USB state machine.
   */
  typedef enum
  {
-	 USB_STATE_UNATTACHED = 0x00,		/**< Device unattached */ 
-	 USB_STATE_POWERED = 0x01,			/**< Device powered */ 
-	 USB_STATE_SUSPEND = 0x02,			/**< Device suspend */ 
+	 USB_STATE_UNATTACHED = 0x00,		/**< Device unattached */
+	 USB_STATE_POWERED = 0x01,			/**< Device powered */
+	 USB_STATE_SUSPEND = 0x02,			/**< Device suspend */
 	 USB_STATE_RESET = 0x03,			/**< Reset state */
 	 USB_STATE_ADDRESSED = 0x04,		/**< Device addressed */
 	 USB_STATE_CONFIGURED = 0x06,		/**< Device configured */
  } USB_State_t;
 
- /** @brief	Events for USB enumeration.
+ /** @brief	USB Events
   */
  typedef struct
  {
 	 /** @brief					USB configuration changed event.
-								NOTE: This event is needed for the USB enumeration. This event
-								is also time critical.
+								NOTE: This event is needed for the USB enumeration. So this event time critical.
 	  *  @param Configuration	Configuration number
 	  */
 	 void (*ConfigurationChanged)(const uint8_t Configuration);
@@ -81,5 +80,15 @@
 	 void (*StartOfFrame)();
 	 void (*Error)();
  } USB_DeviceCallbacks_t;
+
+ /** @brief	USB configuration object
+  */
+ typedef struct 
+ {
+	 USB_Mode_t Mode;							/**< USB device mode */
+	 USB_Speed_t Speed;							/**< USB bus speed */
+	 Bool_t EnableSOFCallbacks;					/**< Set to #TRUE to enable start of frame events */
+	 const USB_DeviceCallbacks_t* Callbacks;	/**< Pointer to USB device callbacks */
+ } USB_Config_t;
  
 #endif /* USB_BASE_H_ */

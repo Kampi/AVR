@@ -44,7 +44,7 @@
  */
  #include "Peripheral/Joystick.h"
  #include "Peripheral/AnalogSensors.h"
- #include "Peripheral/DataFlash/DataFlash.h"
+ //#include "Peripheral/DataFlash/DataFlash.h"
 
  /*
 	Services

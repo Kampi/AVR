@@ -34,7 +34,7 @@
 #ifndef USB_H_
 #define USB_H_
  
- #include "Definitions.h"
+ #include "Common/Common.h"
 
  #if(MCU_ARCH == MCU_ARCH_AVR8)
 	 #include "Arch/AVR8/USB/USB_Controller.h"
@@ -49,9 +49,9 @@
  #include "Common/Services/USB/Class/Class.h"
 
  /** @brief			Initialize the USB service.
-  *  @param Events	Pointer to USB event struct
+  *  @param Config	Pointer to USB configuration object
   */
- void USB_Init(const USB_DeviceCallbacks_t* Events);
+ void USB_Init(const USB_Config_t* Config);
  
  /** @brief	Polling function. 
   */
