@@ -152,7 +152,44 @@
  {
 	 return (UENUM & 0x0F);
  }
- 
+
+ /** @brief		Read one data byte from the current active endpoint.
+  *				NOTE: You have so use #Endpoint_Select first!
+  *  @return	Endpoint data
+  */
+ static inline uint8_t Endpoint_ReadByte(void) __attribute__ ((always_inline));
+ static inline uint8_t Endpoint_ReadByte(void)
+ {
+	 return UEDATX;
+ }
+
+ /** @brief		Acknowledge the packet and clear the endpoint bank.
+  *				NOTE: You have so use #Endpoint_Select first!
+  */
+ static inline void Endpoint_ClearSETUP(void) __attribute__ ((always_inline));
+ static inline void Endpoint_ClearSETUP(void)
+ {
+	 UEINTX &= ~(0x01 << RXSTPI);
+ }
+
+ /** @brief		Acknowledge OUT data and clear the endpoint bank.
+  *				NOTE: You have so use #Endpoint_Select first!
+  */
+ static inline void Endpoint_AckOUT(void) __attribute__ ((always_inline));
+ static inline void Endpoint_AckOUT(void)
+ {
+	 UEINTX &= ~((0x01 << RXOUTI) | (0x01 << FIFOCON));
+ }
+
+ /** @brief		Send the packet and clear the endpoint bank.
+  *				NOTE: You have so use #Endpoint_Select first!
+  */
+ static inline void Endpoint_FlushIN(void) __attribute__ ((always_inline));
+ static inline void Endpoint_FlushIN(void)
+ {
+	 UEINTX &= ~((0x01 << TXINI) | (0x01 << FIFOCON));
+ }
+
  /** @brief		Test if the control endpoint received an setup packed.
   *				NOTE: You have so use #Endpoint_Select first!
   *  @return	#TRUE when a setup packed was received
@@ -163,66 +200,24 @@
 	 return UEINTX & (0x01 << RXSTPI);
  }
 
- /** @brief	Acknowledge the packet and clear the bank of a control endpoint.
-  *			NOTE: You have so use #Endpoint_Select first!
-  */
- static inline void Endpoint_ClearSETUP(void) __attribute__ ((always_inline));
- static inline void Endpoint_ClearSETUP(void)
- {
-	 UEINTX &= ~(0x01 << RXSTPI);
- }
-
- /** @brief	Handshake the OUT transmission and clear the endpoint.
-  *			NOTE: You have so use #Endpoint_Select first!
-  */
- static inline void Endpoint_AckOUT(void) __attribute__ ((always_inline));
- static inline void Endpoint_AckOUT(void)
- {
-	 UEINTX &= ~((0x01 << RXOUTI) | (0x01 << FIFOCON));
- }
-
- /** @brief	Clear the bank free status bit of an IN endpoint and transmit the data in the FIFO.
-  *			NOTE: You have so use #Endpoint_Select first!
-  */
- static inline void Endpoint_FlushIN(void) __attribute__ ((always_inline));
- static inline void Endpoint_FlushIN(void)
- {
-	 UEINTX &= ~((0x01 << TXINI) | (0x01 << FIFOCON));
- }
-
- /** @brief		Read a data byte from the current active endpoint.
+ /** @brief		Test if new OUT data is received.
   *				NOTE: You have so use #Endpoint_Select first!
-  *  @return	Endpoint data
+  *  @return	#TRUE when OUT data received.
   */
- static inline uint8_t Endpoint_ReadByte(void) __attribute__ ((always_inline));
- static inline uint8_t Endpoint_ReadByte(void)
- {
-	 return UEDATX;
- }
- 
- /** @brief		Test if the IN direction of the endpoint is empty.
-  *				NOTE: You have so use #Endpoint_Select first!
-  *  @return	#TRUE when ready
-  */
- static inline Bool_t Endpoint_IsINEmpty(void) __attribute__ ((always_inline));
- static inline Bool_t Endpoint_IsINEmpty(void)
- {
-	 if(UEINTX & (0x01 << TXINI))
-	 {
-		 return TRUE;
-	 }
-	 
-	 return FALSE;
- }
-
- /** @brief		Test if the OUT direction receive a new packet from the host.
-  *				NOTE: You have so use #Endpoint_Select first!
-  *  @return	#TRUE when packet received
-  */
- static inline Bool_t Endpoint_IsOUTFull(void) __attribute__ ((always_inline));
- static inline Bool_t Endpoint_IsOUTFull(void)
+ static inline Bool_t Endpoint_OUTReceived(void) __attribute__ ((always_inline));
+ static inline Bool_t Endpoint_OUTReceived(void)
  {
 	 return UEINTX & (0x01 << RXOUTI);
+ }
+
+ /** @brief		Test if the bank can accept new IN data.
+  *				NOTE: You have so use #Endpoint_Select first!
+  *  @return	#TRUE when bank is ready
+  */
+ static inline Bool_t Endpoint_INReady(void) __attribute__ ((always_inline));
+ static inline Bool_t Endpoint_INReady(void)
+ {
+	 return UEINTX & (0x01 << TXINI);
  }
 
  /** @brief	Stall the current endpoint.
@@ -249,13 +244,8 @@
   */
  static inline Bool_t Endpoint_IsSTALL(void) __attribute__ ((always_inline));
  static inline Bool_t Endpoint_IsSTALL(void)
- {
-	 if(UECONX & (0x01 << STALLRQ))
-	 {
-		 return TRUE;
-	 }
-	 
-	 return FALSE;
+ { 
+	 return UECONX & (0x01 << STALLRQ);
  }
 
  /** @brief		Get the number of bytes currently stored in the endpoint FIFO.
@@ -295,13 +285,8 @@
   */
  static inline Bool_t Endpoint_IsReadWriteAllowed(void) __attribute__ ((always_inline));
  static inline Bool_t Endpoint_IsReadWriteAllowed(void)
- {
-	 if(UEINTX & (0x01 << RWAL))
-	 {
-		 return TRUE;
-	 }
-	 
-	 return FALSE;
+ { 
+	 return UEINTX & (0x01 << RWAL);
  }
 
  /** @brief				Configure an endpoint.
@@ -316,6 +301,6 @@
  /** @brief				Clear the input/output bank of the current endpoint.
   *  @param RequestType	USB request type
   */
- void Endpoint_ClearBank(const uint8_t RequestType);
+ void Endpoint_ClearEndpointBank(const uint8_t RequestType);
 
 #endif /* ENDPOINT_H_  */

@@ -60,14 +60,13 @@
  typedef struct
  {
 	 /** @brief					USB configuration changed event.
-								NOTE: This event is needed for the USB enumeration. So this event time critical.
-	  *  @param Configuration	Configuration number
+								NOTE: This event is needed for the USB enumeration. So this event is time critical.
+	  *  @param Configuration	Configuration number (start with 1)
 	  */
 	 void (*ConfigurationChanged)(const uint8_t Configuration);
 	 
-	 /** @brief					Device control request event
-								NOTE: This event is needed for the USB enumeration. This event
-								is also time critical.
+	 /** @brief					Device control request event.
+								NOTE: This event is needed for the USB enumeration. So this event is time critical.
 	  *  @param bRequest		USB request
 	  *  @param bmRequestType	Request type
 	  *  @param wValue			Request value
@@ -78,6 +77,9 @@
 	 void (*ConnectWithBus)();
 	 void (*DisconnectFromBus)();
 	 void (*StartOfFrame)();
+	 
+	 /** @brief					USB error event.
+	  */
 	 void (*Error)();
  } USB_DeviceCallbacks_t;
 
