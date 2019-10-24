@@ -84,7 +84,8 @@
  /*\@}*/
 
  /** @ingroup USB
-  *  USB base classes */
+  *  USB base classes
+  *  NOTE: Visit https://www.usb.org/defined-class-codes for more information. */
  /*\@{*/
  typedef enum
  {
@@ -128,8 +129,10 @@
 																			 NOTE: Use this in the Interface Descriptor */
  	 USB_CLASS_MISC = 0xEF,												/**< Miscellaneous device class
 																			 NOTE: Use this in the Device and Interface Descriptor */
- 	 USB_CLASS_APPLICATION = 0x08,										/**< Application specific device class
+ 	 USB_CLASS_APPLICATION = 0xFE,										/**< Application specific device class
 																			 NOTE: Use this in the Interface Descriptor */
+ 	 USB_CLASS_VENDOR = 0xFF,											/**< Vendor specific device class
+																			 NOTE: Use this in the Device and Interface Descriptor */
  } USB_BaseClass_t;
  /*\@}*/
 
@@ -145,7 +148,7 @@
 
  /** @ingroup USB
   *  USB protocols
-  *  NOTE: Only needed if you choose #USB_SUBCLASS_BOOT_INTERFACE in the Interface Descriptor. Otherwise set it to 0. */
+  *  NOTE: Only needed if you choose #USB_SUBCLASS_BOOT_INTERFACE in the Interface Descriptor. Otherwise set it to #USB_PROTOCOL_NONE. */
  /*\@{*/
  typedef enum
  {
@@ -189,23 +192,20 @@
  /*\@{*/
  typedef struct
  {
-	 uint8_t bLength;													/**< Size of this descriptor in bytes */ 
-	 uint8_t bDescriptorType;											/**< DEVICE descriptor type (=1) */ 
-	 uint16_t bcdUSB;													/**< USB Spec release number */ 
-	 uint8_t bDeviceClass;												/**< Class code assigned by USB-IF
-																			 00h means each interface defines its own class
-																			 FFh means vendor-defined class
-																			 Any other value must be a class code */ 
-	 uint8_t bDeviceSubClass;											/**< SubClass Code assigned by USB-IF */ 
-	 uint8_t bDeviceProtocol;											/**< Protocol Code assigned by USB-IF */ 
-	 uint8_t bMaxPacketSize0;											/**< Max packet size for endpoint 0. Must be 8, 16, 32 or 64 */ 
-	 uint16_t idVendor;													/**< Vendor ID - must be obtained from USB-IF */ 
-	 uint16_t idProduct;												/**< Product ID - assigned by the manufacturer */ 
-	 uint16_t bcdDevice;												/**< Device release number in binary coded decimal */ 
-	 uint8_t iManufacturer;												/**< Index of string descriptor describing manufacturer - set to 0 if no string */ 
-	 uint8_t iProduct;													/**< Index of string descriptor describing product - set to 0 if no string */ 
-	 uint8_t iSerialNumber;												/**< Index of string descriptor describing device serial number - set to 0 if no string */ 
-	 uint8_t bNumConfigurations; 										/**< Number of possible configurations */ 
+	 uint8_t bLength;													/**< Size of this descriptor in bytes */
+	 uint8_t bDescriptorType;											/**< DEVICE descriptor type (=1) */
+	 uint16_t bcdUSB;													/**< USB Spec release number */
+	 uint8_t bDeviceClass;												/**< Class code assigned by USB-IF */
+	 uint8_t bDeviceSubClass;											/**< SubClass Code assigned by USB-IF */
+	 uint8_t bDeviceProtocol;											/**< Protocol Code assigned by USB-IF */
+	 uint8_t bMaxPacketSize0;											/**< Max packet size for endpoint 0. Must be 8, 16, 32 or 64 */
+	 uint16_t idVendor;													/**< Vendor ID - must be obtained from USB-IF */
+	 uint16_t idProduct;												/**< Product ID - assigned by the manufacturer */
+	 uint16_t bcdDevice;												/**< Device release number in binary coded decimal */
+	 uint8_t iManufacturer;												/**< Index of string descriptor describing the manufacturer - set to 0 if no string */
+	 uint8_t iProduct;													/**< Index of string descriptor describing the product - set to 0 if no string */
+	 uint8_t iSerialNumber;												/**< Index of string descriptor describing the device serial number - set to 0 if no string */
+	 uint8_t bNumConfigurations; 										/**< Number of possible configurations */
  } __attribute__((packed)) USB_DeviceDescriptor_t;
  /*\@}*/
 
@@ -214,17 +214,17 @@
  /*\@{*/
  typedef struct
  {
-	 uint8_t bLength;													/**< Size of this descriptor in bytes */ 
-	 uint8_t bDescriptorType;											/**< CONFIGURATION descriptor type (=2) */ 
-	 uint16_t wTotalLength;												/**< Total number of bytes in this descriptor and all the following descriptors */ 
-	 uint8_t bNumInterfaces;											/**< Number of interfaces supported by this configuration */ 
-	 uint8_t bConfigurationValue;										/**< Value used by Set Configuration to select this configuration */ 
-	 uint8_t iConfiguration;											/**< Index of string descriptor describing configuration - set to 0 if no string */ 
+	 uint8_t bLength;													/**< Size of this descriptor in bytes */
+	 uint8_t bDescriptorType;											/**< CONFIGURATION descriptor type (=2) */
+	 uint16_t wTotalLength;												/**< Total number of bytes in this descriptor and all the following descriptors */
+	 uint8_t bNumInterfaces;											/**< Number of interfaces supported by this configuration */
+	 uint8_t bConfigurationValue;										/**< Value used by Set Configuration to select this configuration */
+	 uint8_t iConfiguration;											/**< Index of string descriptor describing configuration - set to 0 if no string */
 	 uint8_t bmAttributes;												/**< D7: Must be set to 1
 																			 D6: Self-powered
 																			 D5: Remote Wakeup
-																			 D4-D0: Set to 0 */ 
-	 uint8_t bMaxPower;													/**< Maximum current drawn by device in this configuration. In units of 2mA. So 50 means 100 mA */ 
+																			 D4-D0: Set to 0 */
+	 uint8_t bMaxPower;													/**< Maximum current drawn by device in this configuration. In units of 2mA. So 50 means 100 mA */
  } __attribute__((packed)) USB_ConfigurationDescriptor_t;
  /*\@}*/
 
@@ -233,9 +233,9 @@
  /*\@{*/
  typedef struct
  {
-	 uint8_t bLength;													/**< Size of this descriptor in bytes */ 
-	 uint8_t bDescriptorType;											/**< STRING descriptor type (=3) */ 
-	 wchar_t bString[];													/**< UNICODE encoded string */ 
+	 uint8_t bLength;													/**< Size of this descriptor in bytes */
+	 uint8_t bDescriptorType;											/**< STRING descriptor type (=3) */
+	 wchar_t bString[];													/**< UNICODE encoded string */
  } __attribute__((packed)) USB_StringDescriptor_t;
  /*\@}*/
 
@@ -244,15 +244,12 @@
  /*\@{*/
  typedef struct
  {
-	 uint8_t bLength;													/**< Size of this descriptor in bytes */ 
-	 uint8_t bDescriptorType;											/**< INTERFACE descriptor type (=4) */ 
+	 uint8_t bLength;													/**< Size of this descriptor in bytes */
+	 uint8_t bDescriptorType;											/**< INTERFACE descriptor type (=4) */
 	 uint8_t bInterfaceNumber;											/**< Number identifying this interface. Zero-based value */
 	 uint8_t bAlternateSetting;											/**< Value used to select this alternate setting for this interface */
 	 uint8_t bNumEndpoints;												/**< Number of endpoints used by this interface. Doesn't include control endpoint 0 */
-	 uint8_t bInterfaceClass;											/**< Class code assigned by USB-IF
-																			 00h is a reserved value
-																			 FFh means vendor-defined class
-																			 Any other value must be a class code */
+	 uint8_t bInterfaceClass;											/**< Class code assigned by USB-IF */
 	 uint8_t bInterfaceSubClass;										/**< SubClass Code assigned by USB-IF */
 	 uint8_t bInterfaceProtocol;										/**< Protocol Code assigned by USB-IF */
 	 uint8_t iInterface;												/**< Index of string descriptor describing interface - set to 0 if no string */
@@ -264,8 +261,8 @@
  /*\@{*/
  typedef struct
  {
-	 uint8_t bLength;													/**< Size of this descriptor in bytes */ 
-	 uint8_t bDescriptorType;											/**< ENDPOINT descriptor type (=5) */ 
+	 uint8_t bLength;													/**< Size of this descriptor in bytes */
+	 uint8_t bDescriptorType;											/**< ENDPOINT descriptor type (=5) */
 	 uint8_t bEndpointAddress;											/**< The address of this endpoint within the device.
 																			 D7: Direction
 																			 0 = OUT, 1 = IN
