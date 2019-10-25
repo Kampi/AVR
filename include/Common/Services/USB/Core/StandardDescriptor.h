@@ -37,15 +37,15 @@
 
  /** @brief	Macro to convert multiple bytes to a Unicode string descriptor.
  */
- #define BYTES_TO_STRING_DESCRIPTOR(...)				{ .bLength = sizeof(USB_StringDescriptor_t) + sizeof((uint16_t){__VA_ARGS__}), .bDescriptorType = DESCRIPTOR_TYPE_STRING, .bString = {__VA_ARGS__} }
-
- /** @brief	Macro to convert a primary and a sublanguage to a string descriptor.
- */
- #define LANG_TO_STRING_DESCRIPTOR(PRIM, SUB)			{ .bLength = sizeof(USB_StringDescriptor_t) + sizeof((uint16_t){((SUB & 0x3F) << 10) | (PRIM & 0x3FF)}), .bDescriptorType = DESCRIPTOR_TYPE_STRING, .bString = {(SUB & 0x3F) << 10 | (PRIM & 0x3FF)} }
+ #define LANG_TO_STRING_DESCRIPTOR(...)				{ .bLength = sizeof(USB_StringDescriptor_t) + (uint16_t)VA_NARGS(__VA_ARGS__), .bDescriptorType = DESCRIPTOR_TYPE_STRING, .bString = {__VA_ARGS__} }
 
  /** @brief	Macro to convert a char array to a Unicode string descriptor.
  */
  #define WCHAR_TO_STRING_DESCRIPTOR(Array)				{ .bLength = sizeof(USB_StringDescriptor_t) + (sizeof(Array) - 2), .bDescriptorType = DESCRIPTOR_TYPE_STRING, .bString = Array }
+
+ /** @brief	Macro to convert a primary language and a sub language into a 16-bit language id
+ */
+ #define CONV_LANG(PRIM, SUB)							((SUB & 0x3F << 10) | (PRIM & 0x3FF))
 
  /** @brief	Macro to convert a USB BCD version number.
  */
@@ -403,17 +403,6 @@
  /*\@}*/
 
  /** @ingroup USB
-  *  USB string descriptor definition */
- /*\@{*/
- typedef struct
- {
-	 uint8_t bLength;													/**< Size of this descriptor in bytes */
-	 uint8_t bDescriptorType;											/**< STRING descriptor type (=3) */
-	 wchar_t bString[];													/**< UNICODE encoded string */
- } __attribute__((packed)) USB_StringDescriptor_t;
- /*\@}*/
-
- /** @ingroup USB
   *  USB interface descriptor definition */
  /*\@{*/
  typedef struct
@@ -465,6 +454,17 @@
 	 uint8_t bInterval;													/**< Interval for polling endpoint for data transfers. 
 																			 Expressed in frames (ms) for low/full speed or micro frames (125us) for high speed */
  } __attribute__((packed)) USB_EndpointDescriptor_t;
+ /*\@}*/
+
+ /** @ingroup USB
+  *  USB string descriptor definition */
+ /*\@{*/
+ typedef struct
+ {
+	 uint8_t bLength;													/**< Size of this descriptor in bytes */
+	 uint8_t bDescriptorType;											/**< STRING descriptor type (=3) */
+	 wchar_t bString[];													/**< UNICODE encoded string */
+ } __attribute__((packed)) USB_StringDescriptor_t;
  /*\@}*/
 
  /** @brief		Function prototype to load an descriptor from the program memory.
