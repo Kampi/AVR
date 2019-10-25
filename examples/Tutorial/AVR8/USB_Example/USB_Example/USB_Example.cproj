@@ -159,6 +159,9 @@
     <Compile Include="include\USB\Core\StandardDescriptor.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="include\USB\Macros.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="include\USB\USB.h">
       <SubType>compile</SubType>
     </Compile>
