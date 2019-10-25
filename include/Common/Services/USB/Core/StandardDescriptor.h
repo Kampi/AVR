@@ -73,17 +73,6 @@
  /*\@}*/
 
  /** @ingroup USB
-  *  USB string descriptor types */
- /*\@{*/
- typedef enum
- {
-	 STRING_ID_LANGUAGE = 0x00,											/**< Supported Languages string descriptor ID (must be zero) */
-	 STRING_ID_MANUFACTURER = 0x01,										/**< Manufacturer string ID */
-	 STRING_ID_PRODUCT = 0x02,											/**< Product string ID */
- } StringDescriptors_t;
- /*\@}*/
-
- /** @ingroup USB
   *  USB base classes
   *  NOTE: Visit https://www.usb.org/defined-class-codes for more information. */
  /*\@{*/
