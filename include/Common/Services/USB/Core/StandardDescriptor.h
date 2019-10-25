@@ -39,9 +39,13 @@
  */
  #define BYTES_TO_STRING_DESCRIPTOR(...)				{ .bLength = sizeof(USB_StringDescriptor_t) + sizeof((uint16_t){__VA_ARGS__}), .bDescriptorType = DESCRIPTOR_TYPE_STRING, .bString = {__VA_ARGS__} }
 
+ /** @brief	Macro to convert a primary and a sublanguage to a string descriptor.
+ */
+ #define LANG_TO_STRING_DESCRIPTOR(PRIM, SUB)			{ .bLength = sizeof(USB_StringDescriptor_t) + sizeof((uint16_t){((SUB & 0x3F) << 10) | (PRIM & 0x3FF)}), .bDescriptorType = DESCRIPTOR_TYPE_STRING, .bString = {(SUB & 0x3F) << 10 | (PRIM & 0x3FF)} }
+
  /** @brief	Macro to convert a char array to a Unicode string descriptor.
  */
- #define CHAR_TO_STRING_DESCRIPTOR(Array)				{ .bLength = sizeof(USB_StringDescriptor_t) + (sizeof(Array) - 2), .bDescriptorType = DESCRIPTOR_TYPE_STRING, .bString = Array }
+ #define WCHAR_TO_STRING_DESCRIPTOR(Array)				{ .bLength = sizeof(USB_StringDescriptor_t) + (sizeof(Array) - 2), .bDescriptorType = DESCRIPTOR_TYPE_STRING, .bString = Array }
 
  /** @brief	Macro to convert a USB BCD version number.
  */
@@ -123,6 +127,187 @@
  	 USB_CLASS_VENDOR = 0xFF,											/**< Vendor specific device class
 																			 NOTE: Use this in the Device and Interface Descriptor */
  } USB_BaseClass_t;
+ /*\@}*/
+
+ /** @ingroup USB
+  *  USB primary language ID codes */
+ /*\@{*/
+ typedef enum
+ {
+	 LANG_ARABIC = 0x01,                 			 					/**< Primary language: Arabic */
+	 LANG_BULGARIAN = 0x02,              			 					/**< Primary language: Bulgarian */
+	 LANG_CATALAN = 0x03,                			 					/**< Primary language: Catalan */
+	 LANG_CHINESE = 0x04,                			 					/**< Primary language: Chinese */
+	 LANG_CZECH = 0x05,                  			 					/**< Primary language: Czech */
+	 LANG_DANISH = 0x06,                 			 					/**< Primary language: Danish */
+	 LANG_GERMAN = 0x07,                 			 					/**< Primary language: German */
+	 LANG_GREEK = 0x08,                  			 					/**< Primary language: Greek */
+	 LANG_ENGLISH = 0x09,                			 					/**< Primary language: English */
+	 LANG_SPANISH = 0x0a,                			 					/**< Primary language: Spanish */
+	 LANG_FINNISH = 0x0b,                			 					/**< Primary language: Finnish */
+	 LANG_FRENCH = 0x0c,                 			 					/**< Primary language: French */
+	 LANG_HEBREW = 0x0d,                 			 					/**< Primary language: Hebrew */
+	 LANG_HUNGARIAN = 0x0e,              			 					/**< Primary language: Hungarian */
+	 LANG_ICELANDIC = 0x0f,              			 					/**< Primary language: Icelandic */
+	 LANG_ITALIAN = 0x10,                			 					/**< Primary language: Italian */
+	 LANG_JAPANESE = 0x11,               			 					/**< Primary language: Japanese */
+	 LANG_KOREAN = 0x12,                 			 					/**< Primary language: Korean */
+	 LANG_DUTCH = 0x13,                  			 					/**< Primary language: Dutch */
+	 LANG_NORWEGIAN = 0x14,              			 					/**< Primary language: Norwegian */
+	 LANG_POLISH = 0x15,                 			 					/**< Primary language: Polish */
+	 LANG_PORTUGUESE = 0x16,             			 					/**< Primary language: Portuguese */
+	 LANG_ROMANIAN = 0x18,               			 					/**< Primary language: Romanian */
+	 LANG_RUSSIAN = 0x19,                			 					/**< Primary language: Russian */
+	 LANG_CROATIAN = 0x1a,               			 					/**< Primary language: Croatian */
+	 LANG_SERBIAN = 0x1a,                			 					/**< Primary language: Serbian */
+	 LANG_SLOVAK = 0x1b,                 			 					/**< Primary language: Slovak */
+	 LANG_ALBANIAN = 0x1c,               			 					/**< Primary language: Albanian */
+	 LANG_SWEDISH = 0x1d,                			 					/**< Primary language: Swedish */
+	 LANG_THAI = 0x1e,                   			 					/**< Primary language: Thai */
+	 LANG_TURKISH = 0x1f,                			 					/**< Primary language: Turkish */
+	 LANG_URDU = 0x20,                   			 					/**< Primary language: Urdu */
+	 LANG_INDONESIAN = 0x21,             			 					/**< Primary language: Indonesian */
+	 LANG_UKRANIAN = 0x22,               			 					/**< Primary language: Ukrainian */
+	 LANG_BELARUSIAN = 0x23,             			 					/**< Primary language: Belarusian */
+	 LANG_SLOVENIAN = 0x24,              			 					/**< Primary language: Slovenian */
+	 LANG_ESTONIAN = 0x25,               			 					/**< Primary language: Estonian */
+	 LANG_LATVIAN = 0x26,                			 					/**< Primary language: Latvian */
+	 LANG_LITHUANIAN = 0x27,             			 					/**< Primary language: Lithuanian */
+	 LANG_FARSI = 0x29,                  			 					/**< Primary language: Farsi */
+	 LANG_VIETNAMESE = 0x2a,             			 					/**< Primary language: Vietnamese */
+	 LANG_ARMENIAN = 0x2b,               			 					/**< Primary language: Armenian */
+	 LANG_AZERI = 0x2c,                  			 					/**< Primary language: Azeri */
+	 LANG_BASQUE = 0x2d,                 			 					/**< Primary language: Basque */
+	 LANG_MACEDONIAN = 0x2f,             			 					/**< Primary language: Macedonian */
+	 LANG_AFRIKAANS = 0x36,              			 					/**< Primary language: Afrikaans */
+	 LANG_GEORGIAN = 0x37,               			 					/**< Primary language: Georgian */
+	 LANG_FAEROESE = 0x38,               			 					/**< Primary language: Faeroese */
+	 LANG_HINDI = 0x39,                  			 					/**< Primary language: Hindi */
+	 LANG_MALAY = 0x3e,                  			 					/**< Primary language: Malay */
+	 LANG_KAZAK = 0x3f,                  			 					/**< Primary language: Kazak */
+	 LANG_SWAHILI = 0x41,                			 					/**< Primary language: Swahili */
+	 LANG_UZBEK = 0x43,                  			 					/**< Primary language: Uzbek */
+	 LANG_TATAR = 0x44,                  			 					/**< Primary language: Tatar */
+	 LANG_BENGALI = 0x45,                			 					/**< Primary language: Bengali */
+	 LANG_PUNJABI = 0x46,                			 					/**< Primary language: Punjabi */
+	 LANG_GUJARATI = 0x47,               			 					/**< Primary language: Gujarati */
+	 LANG_ORIYA = 0x48,                 			 					/**< Primary language: Oriya */
+	 LANG_TAMIL = 0x49,                  			 					/**< Primary language: Tamil */
+	 LANG_TELUGU = 0x4a,                 			 					/**< Primary language: Telugu */
+	 LANG_KANNADA = 0x4b,                			 					/**< Primary language: Kannada */
+	 LANG_MALAYALAM = 0x4c,              			 					/**< Primary language: Malayalam */
+	 LANG_ASSAMESE = 0x4d,               			 					/**< Primary language: Assamese */
+	 LANG_MARATHI = 0x4e,        			 							/**< Primary language: Marathi */
+	 LANG_SANSKRIT = 0x4f,       			 							/**< Primary language: Sanskrit */
+	 LANG_KONKANI = 0x57,        			 							/**< Primary language: Konkani */
+	 LANG_MANIPURI = 0x58,       			 							/**< Primary language: Manipuri */
+	 LANG_SINDHI = 0x59,         			 							/**< Primary language: Sindhi */
+	 LANG_KASHMIRI = 0x60,       			 							/**< Primary language: Kashmiri */
+	 LANG_NEPALI = 0x61,         			 							/**< Primary language: Nepali */
+	 LANG_HID = 0xff,			 										/**< Reserved for USB HID class use */
+ } USB_PrimLangID_t;
+ /*\@}*/
+
+ /** @ingroup USB
+  *  USB sublanguage ID codes */
+ /*\@{*/
+ typedef enum
+ {
+	 SUBLANG_ARABIC_SAUDI_ARABIA = 0x01,								/**< Sublanguage: Arabic (Saudi Arabia) */
+	 SUBLANG_ARABIC_IRAQ = 0x02,										/**< Sublanguage: Arabic (Iraq) */
+	 SUBLANG_ARABIC_EGYPT = 0x03,										/**< Sublanguage: Arabic (Egypt) */
+	 SUBLANG_ARABIC_LIBYA = 0x04,										/**< Sublanguage: Arabic (Libya) */
+	 SUBLANG_ARABIC_ALGERIA = 0x05,										/**< Sublanguage: Arabic (Algeria) */
+	 SUBLANG_ARABIC_MOROCCO = 0x06,										/**< Sublanguage: Arabic (Morocco) */
+	 SUBLANG_ARABIC_TUNISIA = 0x07,										/**< Sublanguage: Arabic (Tunisia) */
+	 SUBLANG_ARABIC_OMAN = 0x08,										/**< Sublanguage: Arabic (Oman) */
+	 SUBLANG_ARABIC_YEMEN = 0x09,										/**< Sublanguage: Arabic (Yemen) */
+	 SUBLANG_ARABIC_SYRIA = 0x10,										/**< Sublanguage: Arabic (Syria) */
+	 SUBLANG_ARABIC_JORDAN = 0x11,										/**< Sublanguage: Arabic (Jordan) */
+	 SUBLANG_ARABIC_LEBANON = 0x12,										/**< Sublanguage: Arabic (Lebanon) */
+	 SUBLANG_ARABIC_KUWAIT = 0x13,										/**< Sublanguage: Arabic (Kuwait) */
+	 SUBLANG_ARABIC_UAE = 0x14,											/**< Sublanguage: Arabic (U.A.E.) */
+	 SUBLANG_ARABIC_BAHRAIN = 0x15,										/**< Sublanguage: Arabic (Bahrain) */
+	 SUBLANG_ARABIC_QATAR = 0x16,										/**< Sublanguage: Arabic (Qatar) */
+	 SUBLANG_AZERI_CYRILLIC = 0x01,										/**< Sublanguage: Azeri (Cyrillic) */
+	 SUBLANG_AZERI_LATIN = 0x02,										/**< Sublanguage: Azeri (Latin) */
+	 SUBLANG_CHINESE_TRADITIONAL = 0x01,								/**< Sublanguage: Chinese (Traditional) */
+	 SUBLANG_CHINESE_SIMPLIFIED = 0x02,									/**< Sublanguage: Chinese (Simplified) */
+	 SUBLANG_CHINESE_HONGKONG = 0x03,									/**< Sublanguage: Chinese (Hong Kong SAR, PRC) */
+	 SUBLANG_CHINESE_SINGAPORE = 0x04,									/**< Sublanguage: Chinese (Singapore) */
+	 SUBLANG_CHINESE_MACAU = 0x05,										/**< Sublanguage: Chinese (Macau SAR) */
+	 SUBLANG_DUTCH = 0x01,												/**< Sublanguage: Dutch */
+	 SUBLANG_DUTCH_BELGIAN = 0x02,										/**< Sublanguage: Dutch (Belgian) */
+	 SUBLANG_ENGLISH_US = 0x01,											/**< Sublanguage: English (US) */
+	 SUBLANG_ENGLISH_UK = 0x02,											/**< Sublanguage: English (UK) */
+	 SUBLANG_ENGLISH_AUS = 0x03,										/**< Sublanguage: English (Australian) */
+	 SUBLANG_ENGLISH_CAN = 0x04,										/**< Sublanguage: English (Canadian) */
+	 SUBLANG_ENGLISH_NZ = 0x05,											/**< Sublanguage: English (New Zealand) */
+	 SUBLANG_ENGLISH_EIRE = 0x06,										/**< Sublanguage: English (Ireland) */
+	 SUBLANG_ENGLISH_SOUTH_AFRICA = 0x07,								/**< Sublanguage: English (South Africa) */
+	 SUBLANG_ENGLISH_JAMAICA = 0x08,									/**< Sublanguage: English (Jamaica) */
+	 SUBLANG_ENGLISH_CARIBBEAN = 0x09,									/**< Sublanguage: English (Caribbean) */
+	 SUBLANG_ENGLISH_BELIZE = 0x0a,										/**< Sublanguage: English (Belize) */
+	 SUBLANG_ENGLISH_TRINIDAD = 0x0b,									/**< Sublanguage: English (Trinidad) */
+	 SUBLANG_ENGLISH_PHILIPPINES = 0x0c,								/**< Sublanguage: English (Zimbabwe) */
+	 SUBLANG_ENGLISH_ZIMBABWE = 0x0d,									/**< Sublanguage: English (Philippines) */
+	 SUBLANG_FRENCH = 0x01,												/**< Sublanguage: French */
+	 SUBLANG_FRENCH_BELGIAN = 0x02,										/**< Sublanguage: French (Belgian) */
+	 SUBLANG_FRENCH_CANADIAN = 0x03,									/**< Sublanguage: French (Canadian) */
+	 SUBLANG_FRENCH_SWISS = 0x04,										/**< Sublanguage: French (Swiss) */
+	 SUBLANG_FRENCH_LUXEMBOURG = 0x05,									/**< Sublanguage: French (Luxembourg) */
+	 SUBLANG_FRENCH_MONACO = 0x06,										/**< Sublanguage: French (Monaco) */
+	 SUBLANG_GERMAN = 0x01,												/**< Sublanguage: German */
+	 SUBLANG_GERMAN_SWISS = 0x02,										/**< Sublanguage: German (Swiss) */
+	 SUBLANG_GERMAN_AUSTRIAN = 0x03,									/**< Sublanguage: German (Austrian) */
+	 SUBLANG_GERMAN_LUXEMBOURG = 0x04,									/**< Sublanguage: German (Luxembourg) */
+	 SUBLANG_GERMAN_LIECHTENSTEIN = 0x05,								/**< Sublanguage: German (Liechtenstein) */
+	 SUBLANG_ITALIAN = 0x01,											/**< Sublanguage: Italian */
+	 SUBLANG_ITALIAN_SWISS = 0x02,										/**< Sublanguage: Italian (Swiss) */
+	 SUBLANG_KASHMIRI_INDIA = 0x02,										/**< Sublanguage: Kashmiri (India) */
+	 SUBLANG_KOREAN = 0x01,												/**< Sublanguage: Korean */
+	 SUBLANG_LITHUANIAN = 0x01,											/**< Sublanguage: Lithuanian */
+	 SUBLANG_MALAY_MALAYSIA = 0x01,										/**< Sublanguage: Malay (Malaysia) */
+	 SUBLANG_MALAY_BRUNEI_DARUSSALAM = 0x02,							/**< Sublanguage: Malay (Brunei Darassalam) */
+	 SUBLANG_NEPALI_INDIA = 0x02,										/**< Sublanguage: Nepali (India) */
+	 SUBLANG_NORWEGIAN_BOKMAL = 0x01,									/**< Sublanguage: Norwegian (Bokmal) */
+	 SUBLANG_NORWEGIAN_NYNORSK = 0x02,									/**< Sublanguage: Norwegian (Nynorsk) */
+	 SUBLANG_PORTUGUESE = 0x01,											/**< Sublanguage: Portuguese (Brazilian) */
+	 SUBLANG_PORTUGUESE_BRAZILIAN = 0x02,								/**< Sublanguage: Portuguese */
+	 SUBLANG_SERBIAN_LATIN = 0x02,										/**< Sublanguage: Serbian (Latin) */
+	 SUBLANG_SERBIAN_CYRILLIC = 0x03,									/**< Sublanguage: Serbian (Cyrillic) */
+	 SUBLANG_SPANISH = 0x01,											/**< Sublanguage: Spanish (Castilian) */
+	 SUBLANG_SPANISH_MEXICAN = 0x02,									/**< Sublanguage: Spanish (Mexican) */
+	 SUBLANG_SPANISH_MODERN = 0x03,										/**< Sublanguage: Spanish (Modern) */
+	 SUBLANG_SPANISH_GUATEMALA = 0x04,									/**< Sublanguage: Spanish (Guatemala) */
+	 SUBLANG_SPANISH_COSTA_RICA = 0x05,									/**< Sublanguage: Spanish (Costa Rica) */
+	 SUBLANG_SPANISH_PANAMA = 0x06,										/**< Sublanguage: Spanish (Panama) */
+	 SUBLANG_SPANISH_DOMINICAN_REPUBLIC = 0x07, 						/**< Sublanguage: Spanish (Dominican Republic) */
+	 SUBLANG_SPANISH_VENEZUELA = 0x08,									/**< Sublanguage: Spanish (Venezuela) */
+	 SUBLANG_SPANISH_COLOMBIA = 0x09,									/**< Sublanguage: Spanish (Colombia) */
+	 SUBLANG_SPANISH_PERU = 0x0a,										/**< Sublanguage: Spanish (Peru) */
+	 SUBLANG_SPANISH_ARGENTINA = 0x0b,									/**< Sublanguage: Spanish (Argentina) */
+	 SUBLANG_SPANISH_ECUADOR = 0x0c,									/**< Sublanguage: Spanish (Ecuador) */
+	 SUBLANG_SPANISH_CHILE = 0x0d,										/**< Sublanguage: Spanish (Chile) */
+	 SUBLANG_SPANISH_URUGUAY = 0x0e,									/**< Sublanguage: Spanish (Uruguay) */
+	 SUBLANG_SPANISH_PARAGUAY = 0x0f,									/**< Sublanguage: Spanish (Paraguay) */
+	 SUBLANG_SPANISH_BOLIVIA = 0x10,									/**< Sublanguage: Spanish (Bolivia) */
+	 SUBLANG_SPANISH_EL_SALVADOR = 0x11,								/**< Sublanguage: Spanish (El Salvador) */
+	 SUBLANG_SPANISH_HONDURAS = 0x12,									/**< Sublanguage: Spanish (Honduras) */
+	 SUBLANG_SPANISH_NICARAGUA = 0x13,									/**< Sublanguage: Spanish (Nicaragua) */
+	 SUBLANG_SPANISH_PUERTO_RICO = 0x14,								/**< Sublanguage: Spanish (Puerto Rico) */
+	 SUBLANG_SWEDISH = 0x01,											/**< Sublanguage: Swedish */
+	 SUBLANG_SWEDISH_FINLAND = 0x02,									/**< Sublanguage: Swedish (Finland) */
+	 SUBLANG_URDU_PAKISTAN = 0x01,										/**< Sublanguage: Urdu (Pakistan) */
+	 SUBLANG_URDU_INDIA = 0x02,											/**< Sublanguage: Urdu (India) */
+	 SUBLANG_UZBEK_LATIN = 0x01,										/**< Sublanguage: Uzbek (Latin) */
+	 SUBLANG_UZBEK_CYRILLIC = 0x02,										/**< Sublanguage: Uzbek (Cyrillic) */
+	 SUBLANG_HID_USAGE_DATA_DESCRIPTOR = 0x01,							/**< Sublanguage: HID (Usage Data Descriptor) */
+	 SUBLANG_HID_VENDOR_DEFINED_1 = 0x3c,								/**< Sublanguage: HID (Vendor Defined 1) */
+	 SUBLANG_HID_VENDOR_DEFINED_2 = 0x3d,								/**< Sublanguage: HID (Vendor Defined 2) */
+	 SUBLANG_HID_VENDOR_DEFINED_3 = 0x3e,								/**< Sublanguage: HID (Vendor Defined 3) */
+	 SUBLANG_HID_VENDOR_DEFINED_4 = 0x3f,								/**< Sublanguage: HID (Vendor Defined 4) */
+ } USB_SubLangID_t;
  /*\@}*/
 
  /** @ingroup USB
