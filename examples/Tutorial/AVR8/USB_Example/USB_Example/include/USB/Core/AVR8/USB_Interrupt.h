@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file USB/Core/USB_Interrupt.h
+/** @file USB/Core/AVR8/USB_Interrupt.h
  *  @brief Interrupt functions for AVR8 USB.
  *
  *  This file contains the implementation of the AT90USB1287 USB driver interrupts.

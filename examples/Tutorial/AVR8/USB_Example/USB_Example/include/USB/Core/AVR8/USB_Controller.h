@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file USB/Core/USB_Controller.h
+/** @file USB/Core/AVR8/USB_Controller.h
  *  @brief USB controller for AT90USB1287.
  *
  *  This file contains the prototypes and definitions for the AT90USB1287 USB controller.
@@ -34,40 +34,11 @@
 #ifndef USB_CONTROLLER_H_
 #define USB_CONTROLLER_H_
 
- #include <avr/io.h>
- #include <avr/pgmspace.h>
- #include <avr/interrupt.h>
-
- /** 
-  * USB device modes
-  */
- typedef enum
- {
-	 USB_MODE_DEVICE = 0x00,			/**< Device mode */ 
-	 USB_MODE_HOST = 0x01,				/**< Host mode */ 
- } USB_Mode_t;
-
- /** 
-  * USB bus speed options
-  */
- typedef enum
- {
-	 USB_SPEED_LOW = 0x00,				/**< Low speed bus */ 
-	 USB_SPEED_HIGH = 0x01,				/**< High speed bus */ 
- } USB_Speed_t;
-
- /** 
-  * States for USB state machine
-  */
- typedef enum
- {
-	 USB_STATE_UNATTACHED = 0x00,		/**< Device unattached */ 
-	 USB_STATE_POWERED = 0x01,			/**< Device powered */ 
-	 USB_STATE_SUSPEND = 0x02,			/**< Device suspend */ 
-	 USB_STATE_RESET = 0x03,			/**< Reset state */
-	 USB_STATE_ADDRESSED = 0x04,		/**< Device addressed */
-	 USB_STATE_CONFIGURED = 0x06,		/**< Device configured */
- } USB_State_t;
+ #include "USB/Core/Common.h"
+ 
+ #include "Endpoint.h"
+ #include "USB_Interrupt.h"
+ #include "USB_DeviceController.h"
 
  /** @brief	Enable the PLL for the USB module.
   */

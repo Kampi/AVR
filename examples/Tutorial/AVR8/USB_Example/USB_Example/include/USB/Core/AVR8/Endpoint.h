@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file USB/Core/Endpoint.h
+/** @file USB/Core/AVR8/Endpoint.h
  *  @brief USB Endpoints for AT90USB1287.
  *
  *  This file contains the prototypes and definitions for the AT90USB1287 USB Endpoints.
@@ -34,7 +34,7 @@
 #ifndef ENDPOINT_H_
 #define ENDPOINT_H_
 
- #include "USB/Core/USB_DeviceController.h"
+ #include "USB/Core/AVR8/USB_DeviceController.h"
 
  /** 
   * Control endpoint address for USB devices

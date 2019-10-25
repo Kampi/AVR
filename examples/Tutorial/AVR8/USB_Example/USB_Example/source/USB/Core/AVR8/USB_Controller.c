@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file USB/Core/USB_Controller.c
+/** @file USB/Core/AVR8/USB_Controller.c
  *  @brief USB controller for AT90USB1287.
  * 
  *  This file contains the implementation of the AT90USB1287 USB driver.
@@ -30,9 +30,9 @@
  *  @author Daniel Kampert
  */
 
-#include "USB/Core/USB_Controller.h"
-#include "USB/Core/USB_DeviceController.h"
-#include "USB/Core/USB_Interrupt.h"
+#include "USB/Core/AVR8/USB_Controller.h"
+#include "USB/Core/AVR8/USB_DeviceController.h"
+#include "USB/Core/AVR8/USB_Interrupt.h"
 
 extern volatile USB_State_t __DeviceState;
 

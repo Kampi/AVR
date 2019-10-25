@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Arch/AVR8/USB/Endpoint.c
+/** @file USB/Core/AVR8/Endpoint.c
  *  @brief USB endpoint for AVR8 devices.
  * 
  *  This file contains the implementation of the AVR8 endpoint driver.
@@ -30,7 +30,7 @@
  *  @author Daniel Kampert
  */
 
-#include "USB/Core/Endpoint.h"
+#include "USB/Core/AVR8/Endpoint.h"
 
 volatile USB_State_t __DeviceState;
 

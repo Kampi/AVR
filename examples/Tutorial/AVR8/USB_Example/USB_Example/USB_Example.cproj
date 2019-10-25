@@ -141,31 +141,46 @@
     <Compile Include="include\Joystick\Joystick.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="include\USB\Core\Endpoint.h">
+    <Compile Include="include\USB\Core\AVR8\Endpoint.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="include\USB\Core\USB_Controller.h">
+    <Compile Include="include\USB\Core\AVR8\USB_Controller.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="include\USB\Core\USB_DeviceController.h">
+    <Compile Include="include\USB\Core\AVR8\USB_DeviceController.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="include\USB\Core\USB_Interrupt.h">
+    <Compile Include="include\USB\Core\AVR8\USB_Interrupt.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\USB\Core\Common.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\USB\Core\StandardDescriptor.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\USB\USB.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="include\USB\USB_Types.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MouseDescriptor.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MouseDescriptor.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="source\main.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="source\USB\Core\Endpoint.c">
+    <Compile Include="source\USB\Core\AVR8\Endpoint.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="source\USB\Core\USB_Controller.c">
+    <Compile Include="source\USB\Core\AVR8\USB_Controller.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="source\USB\Core\USB_Interrupt.c">
+    <Compile Include="source\USB\Core\AVR8\USB_Interrupt.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\USB\USB.c">
@@ -178,10 +193,12 @@
     <Folder Include="include\USB" />
     <Folder Include="include\USB\Core" />
     <Folder Include="include\USB\Class" />
+    <Folder Include="include\USB\Core\AVR8" />
     <Folder Include="source" />
     <Folder Include="source\USB" />
     <Folder Include="source\USB\Class" />
     <Folder Include="source\USB\Core" />
+    <Folder Include="source\USB\Core\AVR8" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

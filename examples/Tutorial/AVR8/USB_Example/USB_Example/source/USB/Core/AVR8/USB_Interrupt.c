@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file USB/Core/USB_Interrupt.c
+/** @file USB/Core/AVR8/USB_Interrupt.c
  *  @brief Interrupt functions for AT90USB1287 USB.
  * 
  *  This file contains the implementation of the AVR8 AT90USB1287 driver interrupts.
@@ -30,11 +30,13 @@
  *  @author Daniel Kampert
  */
 
-#include "USB/Core/Endpoint.h"
-#include "USB/Core/USB_Interrupt.h"
-#include "USB/Core/USB_DeviceController.h"
+#include "USB/Core/AVR8/Endpoint.h"
+#include "USB/Core/AVR8/USB_Interrupt.h"
+#include "USB/Core/AVR8/USB_DeviceController.h"
 
 volatile USB_State_t __DeviceState;
+
+extern int __Mouse_Ctrl_Ep_Size;
 
 ISR(USB_GEN_vect)
 {
@@ -62,7 +64,7 @@ ISR(USB_GEN_vect)
 		__DeviceState = USB_STATE_RESET;
 
 		// Configure the default control endpoint
-		if(Endpoint_Configure(0, ENDPOINT_TYPE_CONTROL, 8, 0))
+		if(Endpoint_Configure(0, ENDPOINT_TYPE_CONTROL, __Mouse_Ctrl_Ep_Size, 0))
 		{
 			PORTD |= (0x01 << 0x05);
 		}
