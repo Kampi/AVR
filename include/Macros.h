@@ -33,16 +33,19 @@
  
  #include "Definitions.h"
 
- #define _CONCAT(A, B)								A ## B
- #define _FIRST(A, B)								A
- #define _SECOND(A, B)								B
+ #define _CONCAT(A, B)														A ## B
+ #define _FIRST(A, B)														A
+ #define _SECOND(A, B)														B
  
- #define FIRST_ARG(A)								_FIRST(A)
- #define SECOND_ARG(A)								_SECOND(A)
- #define CONCAT(A)									_CONCAT(A)
+ #define FIRST_ARG(A)														_FIRST(A)
+ #define SECOND_ARG(A)														_SECOND(A)
+ #define CONCAT(A)															_CONCAT(A)
 
- #define GET_PERIPHERAL(Arg)						&_FIRST(Arg)
- #define GET_INDEX(Arg)								_SECOND(Arg)
+ #define GET_PERIPHERAL(Arg)												&_FIRST(Arg)
+ #define GET_INDEX(Arg)														_SECOND(Arg)
+
+ #define VA_NARGS_IMPL(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, N, ...)		2 * N
+ #define VA_NARGS(...)														VA_NARGS_IMPL(__VA_ARGS__, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
 
  #if(MCU_ARCH == MCU_ARCH_XMEGA)
  #elif(MCU_ARCH == MCU_ARCH_AVR8)
