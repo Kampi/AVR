@@ -144,7 +144,7 @@ ISR(SPIC_INT_vect)
 	{
 		SlaveBuffer.RxBuffer[SlaveBuffer.BytesProcessed] = SPIC.DATA;
 		
-		if(SlaveBuffer.BytesProcessed >= SPI_BUFFER_SIZE - 1)
+		if(SlaveBuffer.BytesProcessed < SPI_BUFFER_SIZE - 1)
 		{
 			SPIC.DATA = SlaveBuffer.TxBuffer[++SlaveBuffer.BytesProcessed];
 		}

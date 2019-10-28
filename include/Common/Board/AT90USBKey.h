@@ -44,11 +44,5 @@
  */
  #include "Peripheral/Joystick.h"
  #include "Peripheral/AnalogSensors.h"
- //#include "Peripheral/DataFlash/DataFlash.h"
-
- /*
-	Services
- */
- #include "Common/Services/USB/USB.h"
  
 #endif /* AT90USBKEY_H_ */

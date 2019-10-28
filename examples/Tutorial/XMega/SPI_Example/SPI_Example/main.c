@@ -230,6 +230,12 @@ int main(void)
 			SPI_TransmitBuffer[i] = i + 0x03;
 		}
 
+		// Fill the slave transmit buffer
+		for(uint8_t i = 0x00; i < SPI_BUFFER_SIZE; i++)
+		{
+			SPI_TxSlaveBuffer[i] = i + 0x03;
+		}
+
 		/*
 			Initialize the USART in master mode SPI
 				-> Master mode
@@ -247,12 +253,6 @@ int main(void)
 			.Port = &PORTE,
 			.Pin = 0
 		};
-
-		// Fill the slave transmit buffer
-		for(uint8_t i = 0x00; i < SPI_BUFFER_SIZE; i++)
-		{
-			SPI_TxSlaveBuffer[i] = i + 0x03;
-		}
 		
 		/*
 			Initialize slave mode SPI

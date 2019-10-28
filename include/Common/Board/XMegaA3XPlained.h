@@ -73,12 +73,10 @@
  */
  #include "Peripheral/AnalogSensors.h"
  #include "Peripheral/ST7565R/ST7565R.h"
- //#include "Peripheral/AT45DB642D/AT45DB642D.h"
  
  /*
 	Services
  */
- //#include "Common/Services/USB/USB.h"
  #include "Common/Services/SleepManager/SleepManager.h"
  #include "Common/Services/DisplayManager/DisplayManager.h"
 
