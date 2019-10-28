@@ -21,7 +21,7 @@ Please check the [docs](http://kampis-elektroecke.de/doc/libavr/index.html) or w
 | **Version** | **Description** | **Date** |
 |:---------:|:------------------------------:|:----------:|
 | 1.0       | First release                | 13.06.2019 |
-| 1.1       | Updating driver, add more example               | 28.10.2019 |
+| 1.1       | Updating driver, add more examples               | 28.10.2019 |
 
 ## Maintainer
 
