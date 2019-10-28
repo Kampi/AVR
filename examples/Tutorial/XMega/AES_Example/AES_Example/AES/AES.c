@@ -26,8 +26,6 @@
 
 const uint8_t AES_GenerateLastSubkey(const uint8_t* Key, uint8_t * Subkey)
 {
-	AES_Reset();
-
 	for(uint8_t i = 0; i < AES_KEYSIZE; i++)
 	{
 		AES.KEY = *(Key++);
@@ -259,3 +257,10 @@ const uint8_t AES_CBC_Decrypt(uint8_t* EncryptedData, uint8_t* Data, uint8_t* Ke
 
 	return 0;
 }
+
+#if(AES_MODE == 2)
+	ISR(AES_INT_vect)
+	{
+		PORTR.OUTTGL = (0x01 << 0x00);
+	}
+#endif

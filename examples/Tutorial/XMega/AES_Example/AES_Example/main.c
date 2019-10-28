@@ -32,6 +32,21 @@
  *  @author Daniel Kampert
  */
 
+/** @file main.c
+ *  @brief AES example for XMega. This example implement the EBC and the CBC mode
+ *  with the XMega AES module.
+ *
+ *	This file contains several examples:
+ *		a) AES polled example. Set symbol AES_MODE = 1.
+ *		b) AES interrupt example. Set symbol AES_MODE = 2.
+ *			   Same as exmaple 1, but with interrupt support.
+ *
+ *  Software for the XMega SPI tutorial from
+ *  https://www.kampis-elektroecke.de/avr/xmega-spi/
+ *
+ *  @author Daniel Kampert
+ */
+
 #include "AES/AES.h"
 
 #define BLOCK_COUNT							3
@@ -73,7 +88,28 @@ uint8_t EncryptedData_CBC[AES_DATASIZE * BLOCK_COUNT];
 int main(void)
 {
 	uint8_t Result = 0x00;
+
+	// Reset the AES module
+	AES_Reset();
+
+	#if(AES_MODE == 2)
+		/*
+			Configure GPIO
+				-> R.0 as output
+		*/
+		PORTR.DIRSET = (0x01 << 0x00);
 	
+		/*
+			Configure interrupts
+				-> AES low level interrupts
+				-> Enable low level interrupts
+				-> Enable global interrupts
+		*/
+		AES.INTCTRL = AES_INTLVL_LO_gc;
+		PMIC.CTRL = PMIC_LOLVLEN_bm;
+		sei();
+	#endif
+
 	Result = AES_GenerateLastSubkey(Key, Subkey);
 	
 	/*
