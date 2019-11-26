@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Type definitions for AVR microcontroller.
+ *  File info: Common type definitions for AVR microcontroller.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,8 +22,8 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */ 
 
-/** @file types.h
- *  @brief Type definitions for AVR microcontroller.
+/** @file Common/types.h
+ *  @brief Common type definitions for AVR microcontroller.
  *
  *  @author Daniel Kampert
  */
@@ -34,26 +34,23 @@
  #include <avr/io.h>
  #include <stddef.h>
  
- /** 
-  * Definition of a simple boolean data type
+ /** @brief Definition of a boolean data type.
   */
  typedef enum
  {
-	FALSE = 0x00,		/**< Boolean FALSE */ 
-	TRUE = 0x01,		/**< Boolean TRUE */ 
+	FALSE = 0x00,								/**< Boolean FALSE */ 
+	TRUE = 0x01,								/**< Boolean TRUE */ 
  } Bool_t;
 
- /** 
-  * Definition of a complex number
+ /** @brief Definition of a complex number.
   */
  typedef struct
  {
-	 uint32_t Real;		/**< Real part */ 
-	 uint32_t Imag;		/**< Imaginary part */ 
+	 uint32_t Real;								/**< Real part */ 
+	 uint32_t Imag;								/**< Imaginary part */ 
  } ComplexNumber_t;
 
- /** 
-  * Memory locations for static objects
+ /** @brief Memory locations for static objects.
   */
  typedef enum
  {
@@ -61,6 +58,72 @@
 	 MEMORY_PROGMEM = 0x01						/**< Object stored in program memory
 													 NOTE: Use this for large objects */
  } MemoryType_t;
+
+ /** @brief Time hour modes.
+  */
+ typedef enum
+ {
+	MODE_24_HOUR = 0x00,						/**< 24 hour mode */ 
+	MODE_12_HOUR = 0x01,						/**< 12 hour mode */ 
+ } HourMode_t;
+
+ /** @brief Time meridiem modes.
+  */
+ typedef enum
+ {
+	MERIDIEM_AM = 0x00,							/**< AM mode */ 
+	MERIDIEM_PM = 0x01,							/**< PM mode */ 
+ } Meridiem_t;
+
+ /** @brief Weekdays.
+  */
+ typedef enum
+ {
+	SUNDAY = 0x01,								/**< Sunday */ 
+	MONDAY = 0x02,								/**< Monday */ 
+	TUESDAY = 0x03,								/**< Tuesday */ 
+	WEDNESDAY = 0x04,							/**< Wednesday */ 
+	THURSDAY = 0x05,							/**< Thursday */ 
+	FRIDAY = 0x06,								/**< Friday */ 
+	SATURDAY = 0x07								/**< Saturday */ 
+ } WeekDays_t;
+
+ /** @brief Month of a year.
+  */
+ typedef enum 
+ {
+	JANUARY = 0x01,								/**< January */
+	FEBRUARY = 0x02,							/**< February */
+	MARCH = 0x03,								/**< March */
+	APRIL = 0x04,								/**< April */
+	MAY = 0x05,									/**< May */
+	JUNE = 0x06,								/**< June */
+	JULY = 0x07,								/**< July */
+	AUGUST = 0x08,								/**< August */
+	SEPTEMBER = 0x09,							/**< September */
+	OCTOBER = 0x0A,								/**< October */
+	NOVEMBER = 0x0B,							/**< November */
+	DECEMBER = 0x0C								/**< December */
+ } Months_t;
+
+ /** @brief Time object.
+  */
+ typedef struct
+ {
+	 uint8_t Second;							/**< Seconds */
+	 uint8_t Minute;							/**< MInutes */
+	 uint8_t Hour;								/**< Hours */
+	 WeekDays_t DayOfWeek;						/**< Days of the week */
+	 uint8_t Day;								/**< Day */
+	 Months_t Month;							/**< Month */
+	 uint8_t Year;								/**< Year */
+	 HourMode_t HourMode;						/**< Hour mode */
+	 Meridiem_t MeridiemMode;					/**< Meridiem mode */
+ } __attribute__((packed)) Time_t;
+
+ /** @brief Representation string for number conversions.
+  */
+ const static char Representation[] = "0123456789ABCDEF";
 
  /** @brief			Convert a decimal value to a BCD value.
   *  @param Decimal	Decimal value
@@ -86,7 +149,7 @@
   *  @param Array1	Pointer to array 1
   *  @param Array2	Pointer to array 2
   *  @param Length	Length of the arrays
-  *  @return		TRUE if both arrays are identical
+  *  @return		#TRUE if both arrays are identical
   */
  static inline Bool_t CompareArray(const uint8_t* Array1, const uint8_t* Array2, const uint32_t Length) __attribute__ ((always_inline));
  static inline Bool_t CompareArray(const uint8_t* Array1, const uint8_t* Array2, const uint32_t Length)

@@ -34,11 +34,6 @@
  #include "Common/Common.h"
 
  /*
-	 Main clock
- */
- #define F_CPU											16000000UL					/**< MCU clock frequency */
-
- /*
 	USART
  */
  #define USART_DEVICES									1
@@ -70,11 +65,10 @@
 	SPI
  */
  #define SPI_DEVICES									1
- #define SPI_BUFFERSIZE									16
- #define SPI_SS											4
- #define SPI_SCK										7
- #define SPI_MOSI										5
- #define SPI_MISO										6
+ #define SPI_SS_PIN										4
+ #define SPI_SCK_PIN									7
+ #define SPI_MOSI_PIN									5
+ #define SPI_MISO_PIN									6
  #define SPI_PORT										&PORTB
  
  /*

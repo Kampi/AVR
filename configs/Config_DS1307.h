@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Config_DS1307.h
+/** @file config/Config_DS1307.h
  *  @brief Configuration example for the Dallas DS1307 I2C RTC.
  *
  *  @author Daniel Kampert
@@ -33,15 +33,30 @@
 
  #include "Common/Common.h"
  
- #define DS1307_INTERFACE						TWIC					/**< I2C interface used by the RTC. */
- #define DS1307_CLOCK							100000					/**< Clock rate used by the interface. */
+ /*
+	 TWI configuration
+ */
+ #define TWI_BUFFER_SIZE						32							/**< Size of TWI buffer in bytes. */
+
+ #if(MCU_ARCH == MCU_ARCH_XMEGA)
+	 #define DS1307_INTERFACE					TWIC						/**< I2C interface used by the RTC. */
+ #endif
+
+ #define DS1307_CLOCK							100000						/**< Clock rate used by the interface. */
  
- #define DS1307_USE_IRQ													/**< Use interrupt support. */
- #undef DS1307_INT_PULLUP												/**< Enable the internal MCU pull up. */
- 
- #define DS1307_INT								PORTR, 0				/**< DS1307 interrupt pin. */
- #define DS1307_INT_CHANNEL						GPIO_INTERRUPT_0		/**< Interrupt channel used for the DS1307. */
- #define DS1307_INT_SENSE						GPIO_SENSE_FALLING		/**< Interrupt sensing. */
- #define DS1307_INT_LEVEL						INT_LVL_LO				/**< Interrupt priority. \n
-																			 NOTE: Only needed by XMega architecture. */
+ #define DS1307_USE_IRQ														/**< Use interrupt support. */
+ #undef DS1307_INT_PULLUP													/**< Enable the internal MCU pull up. */
+
+ #if(MCU_ARCH == MCU_ARCH_XMEGA)
+	 #define DS1307_INT							PORTR, 0					/**< DS1307 interrupt pin. */
+	 #define DS1307_INT_CHANNEL					GPIO_INTERRUPT_0			/**< Interrupt channel used for the DS1307. */
+	 #define DS1307_INT_SENSE					GPIO_SENSE_FALLING			/**< Interrupt sensing. */
+	 #define DS1307_INT_LEVEL					INT_LVL_LO					/**< Interrupt priority. \n
+																				  NOTE: Only needed by XMega architecture. */
+ #else
+	 #define DS1307_INT							PORTD, 2					/**< DS1307 interrupt pin. */
+	 #define DS1307_INT_CHANNEL					GPIO_INTERRUPT_0			/**< Interrupt channel used for the DS1307. */
+	 #define DS1307_INT_SENSE					GPIO_SENSE_FALLING			/**< Interrupt sensing. */
+ #endif
+
 #endif /* CONFIG_DS1307_H_ */

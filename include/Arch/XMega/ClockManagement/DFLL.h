@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega DFLL module.
+ *  File info: Driver for Atmel AVR XMega DFLL module.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,9 +23,9 @@
  */
 
 /** @file Arch/XMega/ClockManagement/DFLL.h
- *  @brief Driver for XMega DFLL module. 
+ *  @brief Driver for Atmel AVR XMega DFLL module. 
  *
- *  This file contains the prototypes and definitions for the XMega DFLL driver.
+ *  This file contains the prototypes and definitions for the Atmel AVR  XMega DFLL driver.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs.
@@ -37,9 +37,8 @@
  #include "Arch/XMega/NVM/NVM.h"
  #include "Arch/XMega/CPU/CPU.h"
  #include "Arch/XMega/ClockManagement/SysClock.h"
- 
- /** 
-  * DFLL calibration references
+
+ /** @brief DFLL calibration references.
   */
  typedef enum
  {
@@ -48,8 +47,7 @@
 	 DFFL_REFERENCE_USBOF = 0x03,				/**< USB start of frame */ 
  } DFLL_CalibReference_t;
 
- /** 
-  * DFLL configuration object
+ /** @brief DFLL configuration object.
   */
  typedef struct
  {
@@ -60,7 +58,7 @@
  /** @brief			Enable a DFLL device.
   *  @param Device	Pointer to DFLL device object
   */
- static inline void DFLL_Enable(DFLL_t* Device) __attribute__ ((always_inline));
+ static inline void DFLL_Enable(DFLL_t* Device) __attribute__((always_inline));
  static inline void DFLL_Enable(DFLL_t* Device)
  {
 	 Device->CTRL = 0x01;
@@ -69,7 +67,7 @@
  /** @brief			Disable a DFLL device.
   *  @param Device	Pointer to DFLL device object
   */
- static inline void DFLL_Disable(DFLL_t* Device) __attribute__ ((always_inline));
+ static inline void DFLL_Disable(DFLL_t* Device) __attribute__((always_inline));
  static inline void DFLL_Disable(DFLL_t* Device)
  {
 	 Device->CTRL = 0x00;
@@ -78,7 +76,7 @@
  /** @brief				Set the calibration reference for the DFLL device.
   *  @param Reference	Calibration reference
   */
- static inline void DFLL_SetCalibrationRef(const DFLL_CalibReference_t Reference) __attribute__ ((always_inline));
+ static inline void DFLL_SetCalibrationRef(const DFLL_CalibReference_t Reference) __attribute__((always_inline));
  static inline void DFLL_SetCalibrationRef(const DFLL_CalibReference_t Reference)
  {
 	 OSC.DFLLCTRL = (OSC.DFLLCTRL & (~(0x03 << 0x01))) | (Reference << 0x01);
@@ -87,7 +85,7 @@
  /** @brief			Set the compare value for a DFLL device.
   *  @param Compare	Compare value
   */
- static inline void DFLL_SetCompare(DFLL_t* Device, const uint16_t Compare) __attribute__ ((always_inline));
+ static inline void DFLL_SetCompare(DFLL_t* Device, const uint16_t Compare) __attribute__((always_inline));
  static inline void DFLL_SetCompare(DFLL_t* Device, const uint16_t Compare)
  {
 	 Device->COMP1 = Compare & 0xFF;
@@ -97,7 +95,7 @@
  /** @brief		Get the compare value for a DFLL device.
   *  @return	Compare value
   */
- static inline uint32_t DFLL_GetCompare(DFLL_t* Device) __attribute__ ((always_inline));
+ static inline uint32_t DFLL_GetCompare(DFLL_t* Device) __attribute__((always_inline));
  static inline uint32_t DFLL_GetCompare(DFLL_t* Device)
  {
 	 return ((uint32_t)Device->COMP2 << 0x10) + (Device->COMP1 << 0x08) + Device->COMP0;
@@ -106,7 +104,7 @@
  /** @brief			Calibrate a DFLL device.
   *  @param Device	Pointer to DFLL device object
   */
- static inline void DFLL_Calibrate(DFLL_t* Device) __attribute__ ((always_inline));
+ static inline void DFLL_Calibrate(DFLL_t* Device) __attribute__((always_inline));
  static inline void DFLL_Calibrate(DFLL_t* Device)
  {
 	 NVM.CMD  = NVM_CMD_READ_CALIB_ROW_gc;
@@ -116,7 +114,7 @@
  /** @brief			Initialize the DFLL device.
   *  @param Config	Pointer to DFLL configuration struct
   */
- static inline void DFLL_Init(DFLL_Config_t* Config) __attribute__ ((always_inline));
+ static inline void DFLL_Init(DFLL_Config_t* Config) __attribute__((always_inline));
  static inline void DFLL_Init(DFLL_Config_t* Config)
  {
 	 if(Config->Reference == DFLL_REFERENCE_32KHZ_INT)

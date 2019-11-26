@@ -41,15 +41,18 @@
 	 typedef SPIM_Config_t DisplayInterface_t;
  #elif(defined USE_ST7565R)
 	 #include "Peripheral/ST7565R/ST7565R.h"
-	 
 	 typedef SPIM_Config_t DisplayInterface_t;
  #endif
 
  #include "Font/Font.h"
  #include "Framebuffer/Framebuffer.h"
 
- #if((!defined DISPLAY_WIDTH) | (!defined DISPLAY_HEIGHT) | (!DISPLAY_PIXEL_PER_BYTE))
-	#error "Invalid display configuration. Please check your configuration file!"
+ #if((!defined DISPLAY_WIDTH) | (!defined DISPLAY_HEIGHT) | (!defined DISPLAY_PIXEL_PER_BYTE))
+	#error "Invalid display manager dimension configuration. Please check the configuration file!"
+ #endif
+
+ #if(!defined(DISPLAY_INTERFACE))
+	 #error "'DISPLAY_INTERFACE' missing for display manager service!"
  #endif
 
  #define DISPLAYMANAGER_LCD_WIDTH					DISPLAY_WIDTH																					/**< Width of the display in pixel*/
@@ -76,7 +79,7 @@
   */
  void Display_SwitchDisplay(const Bool_t Enable);
 
- /** @brief			Write data to the display.
+ /** @brief			Write a data byte to the display.
   *  @param Data	Data byte
   */
  void Display_WriteData(const uint8_t Data);
@@ -96,8 +99,7 @@
   */
  void Display_SetStartLine(const uint8_t Line);
 
- /**
-  * Fill options for drawing objects
+ /** @brief Fill options for drawing objects.
   */
  typedef enum
  {
@@ -105,8 +107,7 @@
 	 FILL_SOLID = 0x01,							/**< Fill object */
  } FillOptions_t;
 
- /**
-  * Pixel mask for drawing
+ /** @brief Pixel mask for drawing.
   */
  typedef enum
  {
@@ -114,8 +115,7 @@
 	 PIXELMASK_CLEAR = 0x01,					/**< Clear the pixel */
  } PixelMask_t;
 
- /**
-  * Circle segments
+ /** @brief Circle segments.
   */
  typedef enum
  {
@@ -125,8 +125,7 @@
 	 CIRCLE_SEGMENT_QUADRANT4 = 0x08,			/**< Quadrant 4 (positive x, negative y) */
  } CircleSegment_t;
 
- /**
-  * Graph object
+ /** @brief Graph object.
   */
  typedef struct 
  {
@@ -139,8 +138,7 @@
 	 uint8_t Lenght;							/**< Length of the graph */
  } Graph_t;
 
- /**
-  * Bitmap object
+ /** @brief Bitmap object.
   */
  typedef struct 
  {

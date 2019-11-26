@@ -7,6 +7,11 @@ Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "ATmega32", "ATmega32\ATmega
 EndProject
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "XMega", "XMega\XMega.cproj", "{16BB83A4-1057-4092-8477-AB4997BFC72D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{FC51FCAA-A8C0-4809-9533-B2FF9838E882}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\configs\Config_DS1307.h = ..\..\..\configs\Config_DS1307.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AVR = Debug|AVR

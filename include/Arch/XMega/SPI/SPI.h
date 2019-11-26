@@ -39,15 +39,147 @@
 
  #include "Arch/XMega/GPIO/GPIO.h"
  #include "Arch/XMega/PMIC/PMIC.h"
- 
- #include "Base/SPI_Base.h"
 
  /** @brief	ID declaration for the different MCU types.
   */
- #define SPIC_ID			0					/**< SPI C ID */
- #define SPID_ID			1					/**< SPI D ID */
- #define SPIE_ID			2					/**< SPI E ID */
- #define SPIF_ID			3					/**< SPI F ID */
+ #define SPIC_ID			0									/**< SPI C ID */
+ #define SPID_ID			1									/**< SPI D ID */
+ #define SPIE_ID			2									/**< SPI E ID */
+ #define SPIF_ID			3									/**< SPI F ID */
+
+ /** @brief	SPI callback definition.
+ */
+ typedef void (*SPI_Callback_t)(void);
+ 
+ /** @brief SPI device modes.
+  */
+ typedef enum
+ {
+	 SPI_SLAVE = 0x00,											/**< SPI slave mode */ 
+	 SPI_MASTER = 0x01,											/**< SPI master mode */ 
+ } SPI_DeviceMode_t;
+
+ /** @brief SPI data transmission modes.
+  */
+ typedef enum
+ {
+	SPI_DATAORDER_MSB_FIRST = 0x00,								/**< MSB first */ 
+	SPI_DATAORDER_LSB_FIRST = 0x01,								/**< LSB first */ 
+ } SPI_DataOrder_t;
+
+ /** @brief SPI clock polarity settings.
+  */
+ typedef enum
+ {
+	SPI_CLOCK_LOW = 0x00,										/**< Clock polarity low */ 
+	SPI_CLOCK_HIGH = 0x01,										/**< Clock polarity high */ 
+ } SPI_ClockPolarity_t;
+
+ /** @brief SPI clock phase settings.
+  */
+ typedef enum
+ {
+	SPI_PHASE_LOW = 0x00,										/**< Clock phase low */ 
+	SPI_PHASE_HIGH = 0x01,										/**< Clock phase low */ 
+ } SPI_ClockPhase_t;
+
+ /** @brief SPI clock modes.
+  */
+ typedef enum
+ {
+	 SPI_MODE_0 = (SPI_CLOCK_LOW << 0x01) | SPI_PHASE_LOW,		/**< SPI mode 0 */ 
+	 SPI_MODE_1 = (SPI_CLOCK_LOW << 0x01) | SPI_PHASE_HIGH,		/**< SPI mode 1 */ 
+	 SPI_MODE_2 = (SPI_CLOCK_HIGH << 0x01) | SPI_PHASE_LOW,		/**< SPI mode 2*/ 
+	 SPI_MODE_3 = (SPI_CLOCK_HIGH << 0x01) | SPI_PHASE_HIGH,	/**< SPI mode 3 */ 
+ } SPI_Mode_t;
+
+ /** @brief SPI clock prescaler.
+  */
+ typedef enum
+ {
+	SPI_PRESCALER_4 = 0x00,										/**< Clock prescaler 4 */ 
+	SPI_PRESCALER_16 = 0x01,									/**< Clock prescaler 16 */ 
+	SPI_PRESCALER_64 = 0x02,									/**< Clock prescaler 64 */ 
+	SPI_PRESCALER_128 = 0x03,									/**< Clock prescaler 128 */ 
+	SPI_PRESCALER_2 = 0x04,										/**< Clock prescaler 2 */ 
+	SPI_PRESCALER_8 = 0x05,										/**< Clock prescaler 8 */ 
+	SPI_PRESCALER_32 = 0x06,									/**< Clock prescaler 32 */ 
+ } SPI_ClockPrescaler_t;
+
+ /** @brief SPI communication status codes.
+  */
+ typedef enum
+ {
+	 SPI_MESSAGE_COMPLETE = 0x00,								/**< Message transmission complete */
+	 SPI_MESSAGE_PENDING = 0x01,								/**< Message transmission in progress */
+	 SPI_MESSAGE_ERROR = 0x02,									/**< Transmission error */
+	 SPI_BUFFER_OVERFLOW = 0x02,								/**< SPI slave buffer overflow */
+ } SPI_Status_t;
+
+ /** @brief SPI callback types.
+  */
+ typedef enum
+ {
+	 SPI_COMPLETE_INTERRUPT = 0x01,								/**< SPI transmit complete interrupt */
+	 SPI_ERROR_INTERRUPT = 0x02,								/**< Error interrupt */
+ } SPI_CallbackType_t;
+
+ /** @brief SPI buffer object.
+  */
+ typedef struct
+ {
+	 uint8_t* RxBuffer;											/**< Pointer to receive buffer */
+	 uint8_t* TxBuffer;											/**< Pointer to transmit buffer */
+	 volatile uint8_t BytesProcessed;							/**< Counter for processed bytes */
+	 volatile SPI_Status_t Status;								/**< Transmission status */
+ } SPI_Buffer_t;
+
+ /** @brief SPI master configuration object.
+  */
+ typedef struct
+ {
+	 void* Device;												/**< Pointer to USART-SPI or SPI device object */
+	 uint32_t SPIClock;											/**< SPI clock frequency \n
+																	 NOTE: You only need this when you use the USART-SPI interface. */
+	 SPI_Mode_t Mode;											/**< SPI mode */
+	 SPI_DataOrder_t DataOrder;									/**< Data order */
+	 Bool_t EnableDoubleSpeed;									/**< Set #TRUE to enable double speed */
+	 SPI_ClockPrescaler_t Prescaler;							/**< Clock prescaler for SPI module 
+																	 NOTE: You only need this when you use the SPI interface. */
+ } SPIM_Config_t;
+
+ /** @brief SPI slave configuration object.
+  */
+ typedef struct
+ {
+	 void* Device;												/**< Pointer to USART-SPI or SPI device object */
+	 SPI_Mode_t Mode;											/**< SPI mode */
+	 SPI_DataOrder_t DataOrder;									/**< Data order */
+ } SPIS_Config_t;
+
+ /** @brief SPI interrupt configuration object.
+  */
+ typedef struct
+ {
+	 void* Device;												/**< Pointer to USART-SPI or SPI device object */
+	 Interrupt_Level_t InterruptLevel;							/**< Interrupt level */
+	 SPI_CallbackType_t Source;									/**< SPI interrupt type */
+	 SPI_Callback_t Callback;									/**< Function pointer to SPI callback */
+ } SPI_InterruptConfig_t;
+
+ /** @brief SPI message object.
+  */
+ typedef struct
+ {
+	 void* Device;												/**< Pointer to target USART-SPI or SPI device object */
+	 PORT_t* Port;												/**< Port for slave select */	 
+	 uint8_t Pin;												/**< Pin for slave select */
+	 uint8_t* BufferOut;										/**< Pointer to output buffer */
+	 uint8_t* BufferIn;											/**< Pointer to input buffer */
+	 volatile uint8_t BytesProcessed;							/**< Counter for processed bytes */
+	 uint8_t Length;											/**< Message length */
+	 volatile SPI_Status_t Status;								/**< Transmission status */
+ } SPI_Message_t;
 
  /*
 	Common functions
@@ -85,7 +217,7 @@
  /** @brief			Enable the SPI interface.
   *  @param Device	Pointer to SPI device object
   */
- static inline void SPI_Enable(SPI_t* Device) __attribute__ ((always_inline));
+ static inline void SPI_Enable(SPI_t* Device) __attribute__((always_inline));
  static inline void SPI_Enable(SPI_t* Device)
  {
 	 Device->CTRL = (Device->CTRL & (~(0x01 << 0x06))) | (0x01 << 0x06);
@@ -94,7 +226,7 @@
  /** @brief			Disable the SPI interface.
   *  @param Device	Pointer to SPI device object
   */
- static inline void SPI_Disable(SPI_t* Device) __attribute__ ((always_inline));
+ static inline void SPI_Disable(SPI_t* Device) __attribute__((always_inline));
  static inline void SPI_Disable(SPI_t* Device)
  {
 	 Device->CTRL &= ~(0x01 << 0x06);
@@ -104,7 +236,7 @@
   *  @param Device	Pointer to SPI device object
   *  @param Mode	SPI device mode
   */
- static inline void SPI_SetMode(SPI_t* Device, const SPI_Mode_t Mode) __attribute__ ((always_inline));
+ static inline void SPI_SetMode(SPI_t* Device, const SPI_Mode_t Mode) __attribute__((always_inline));
  static inline void SPI_SetMode(SPI_t* Device, const SPI_Mode_t Mode)
  {
 	 Device->CTRL = (Device->CTRL & (~(0x01 << 0x02))) | (Mode << 0x02);
@@ -114,7 +246,7 @@
   *  @param Device	Pointer to SPI device object
   *  @param Mode	SPI device data order
   */
- static inline void SPI_SetDataOrder(SPI_t* Device, const SPI_DataOrder_t Order) __attribute__ ((always_inline));
+ static inline void SPI_SetDataOrder(SPI_t* Device, const SPI_DataOrder_t Order) __attribute__((always_inline));
  static inline void SPI_SetDataOrder(SPI_t* Device, const SPI_DataOrder_t Order)
  {
 	 Device->CTRL = (Device->CTRL & (~(0x01 << 0x05))) | (Order << 0x05);
@@ -147,7 +279,7 @@
   *  @param Device	Pointer to SPI device object
   *  @param Enable	Enable/Disable double speed
   */
- static inline void SPIM_SwitchDoubleSpeed(SPI_t* Device, const Bool_t Enable) __attribute__ ((always_inline));
+ static inline void SPIM_SwitchDoubleSpeed(SPI_t* Device, const Bool_t Enable) __attribute__((always_inline));
  static inline void SPIM_SwitchDoubleSpeed(SPI_t* Device, const Bool_t Enable)
  {
 	 if(Enable)
@@ -165,7 +297,7 @@
   *  @param Prescaler	Prescaler value
   *						NOTE: Double speed is set automatically
   */
- static inline void SPIM_SetPrescaler(SPI_t* Device, const SPI_ClockPrescaler_t Prescaler) __attribute__ ((always_inline));
+ static inline void SPIM_SetPrescaler(SPI_t* Device, const SPI_ClockPrescaler_t Prescaler) __attribute__((always_inline));
  static inline void SPIM_SetPrescaler(SPI_t* Device, const SPI_ClockPrescaler_t Prescaler)
  {
 	 if((Prescaler == SPI_PRESCALER_2) || (Prescaler == SPI_PRESCALER_8) || (Prescaler == SPI_PRESCALER_32))
@@ -180,7 +312,7 @@
   *  @param Device	Pointer to SPI device object
   *  @return		Prescaler value
   */
- static inline const SPI_ClockPrescaler_t SPIM_GetPrescaler(SPI_t* Device) __attribute__ ((always_inline));
+ static inline const SPI_ClockPrescaler_t SPIM_GetPrescaler(SPI_t* Device) __attribute__((always_inline));
  static inline const SPI_ClockPrescaler_t SPIM_GetPrescaler(SPI_t* Device)
  {
 	 return ((Device->CTRL & 0x80) >> 0x05) | (Device->CTRL & 0x03);
@@ -190,7 +322,7 @@
   *  @param Port	Pointer to I/O port for the CS
   *  @param Pin		Pin for the CS signal
   */
- static inline void SPIM_SelectDevice(PORT_t* Port, const uint8_t Pin) __attribute__ ((always_inline));
+ static inline void SPIM_SelectDevice(PORT_t* Port, const uint8_t Pin) __attribute__((always_inline));
  static inline void SPIM_SelectDevice(PORT_t* Port, const uint8_t Pin)
  {
 	 GPIO_Clear(Port, Pin);
@@ -200,7 +332,7 @@
   *  @param Port	Pointer to I/O port for the CS
   *  @param Pin		Pin for the CS signal
   */
- static inline void SPIM_DeselectDevice(PORT_t* Port, const uint8_t Pin) __attribute__ ((always_inline));
+ static inline void SPIM_DeselectDevice(PORT_t* Port, const uint8_t Pin) __attribute__((always_inline));
  static inline void SPIM_DeselectDevice(PORT_t* Port, const uint8_t Pin)
  {
 	 GPIO_Set(Port, Pin);

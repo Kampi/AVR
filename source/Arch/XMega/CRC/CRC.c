@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega CRC.
+ *  File info: Driver for the Atmel AVR XMega CRC module.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -24,9 +24,9 @@
  */
 
 /** @file Arch/XMega/CRC/CRC.c
- *  @brief Driver for XMega CRC.
+ *  @brief Driver for the Atmel AVR XMega CRC module.
  *
- *  This file contains the implementation of the XMega CRC driver.
+ *  This file contains the implementation of the Atmel AVR XMega CRC driver.
  *
  *  @author Daniel Kampert
  */

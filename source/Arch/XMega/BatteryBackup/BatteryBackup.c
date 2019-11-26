@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega battery backup system
+ *  File info: Driver for the Atmel AVR XMega battery backup system.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,10 +23,10 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file BatteryBackup.c
- *  @brief Driver for XMega battery backup system.
+/** @file Arch/XMega/BatteryBackup/BatteryBackup.c
+ *  @brief Driver for the Atmel AVR XMega battery backup system.
  *
- *  This file contains the prototypes and definitions for the XMega battery backup driver.
+ *  This file contains the prototypes and definitions for the Atmel AVR XMega battery backup driver.
  *
  *  @author Daniel Kampert
  */

@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega power management.
+ *  File info: Driver for Atmel AVR XMega power management.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,9 +23,9 @@
  */
 
 /** @file Arch/XMega/PowerManagement/PowerManagement.h
- *  @brief Driver for XMega power management.
+ *  @brief Driver for Atmel AVR XMega power management.
  *
- * This file contains the prototypes and definitions for the XMega power management driver.
+ * This file contains the prototypes and definitions for the Atmel AVR XMega power management driver.
  *
  *  @author Daniel Kampert
  */
@@ -37,9 +37,8 @@
 
  #include "Arch/XMega/PMIC/PMIC.h"
 
- /** 
-  * CPU sleep modes
-  */
+ /** @brief	UCPU sleep modes.
+ */
  typedef enum
  {
 	 SLEEPMODE_IDLE = 0x00,			/**< Idle */ 	
@@ -52,7 +51,7 @@
  /** @brief			Set the device into sleep mode.
   *  @param Mode	Sleep mode
   */
- static inline void EnableSleep(const SleepMode_t Mode) __attribute__ ((always_inline));
+ static inline void EnableSleep(const SleepMode_t Mode) __attribute__((always_inline));
  static inline void EnableSleep(const SleepMode_t Mode)
  {
 	 SLEEP.CTRL |= SLEEP_SEN_bm;
@@ -70,7 +69,7 @@
  
  /** @brief	Disable all peripherals.
   */
- static inline void PowerManagment_FreezeAll(void) __attribute__ ((always_inline));
+ static inline void PowerManagment_FreezeAll(void) __attribute__((always_inline));
  static inline void PowerManagment_FreezeAll(void)
  {
 	 PR.PRGEN = 0x5F;
@@ -88,7 +87,7 @@
  
  /** @brief	Enable all peripherals.
   */
- static inline void PowerManagment_UnfreezeAll(void) __attribute__ ((always_inline));
+ static inline void PowerManagment_UnfreezeAll(void) __attribute__((always_inline));
  static inline void PowerManagment_UnfreezeAll(void)
  {
 	 PR.PRGEN = 0x00;
@@ -107,7 +106,7 @@
  /** @brief			Enable TC0 module.
   *  @param Device	Pointer to TC0 object
   */
- static inline void Timer0_PowerEnable(TC0_t* Device) __attribute__ ((always_inline));
+ static inline void Timer0_PowerEnable(TC0_t* Device) __attribute__((always_inline));
  static inline void Timer0_PowerEnable(TC0_t* Device)
  {
 	 if(Device == &TCC0)
@@ -131,7 +130,7 @@
  /** @brief			Disable TC0 module.
   *  @param Device	Pointer to TC0 object
   */
- static inline void Timer0_PowerDisable(TC0_t* Device) __attribute__ ((always_inline));
+ static inline void Timer0_PowerDisable(TC0_t* Device) __attribute__((always_inline));
  static inline void Timer0_PowerDisable(TC0_t* Device)
  {
 	 if(Device == &TCC0)
@@ -155,7 +154,7 @@
  /** @brief			Enable TC1 module.
   *  @param Device	Pointer to TC1 object
   */
- static inline void Timer1_PowerEnable(TC1_t* Device) __attribute__ ((always_inline));
+ static inline void Timer1_PowerEnable(TC1_t* Device) __attribute__((always_inline));
  static inline void Timer1_PowerEnable(TC1_t* Device)
  {
 	 if(Device == &TCC1)
@@ -181,7 +180,7 @@
  /** @brief			Disable TC1 module
   *  @param Device	Pointer to TC1 object
   */
- static inline void Timer1_PowerDisable(TC1_t* Device) __attribute__ ((always_inline));
+ static inline void Timer1_PowerDisable(TC1_t* Device) __attribute__((always_inline));
  static inline void Timer1_PowerDisable(TC1_t* Device)
  {
 	 if(Device == &TCC1)
@@ -207,7 +206,7 @@
  /** @brief			Enable TC2 module
   *  @param Device	Pointer to TC2 object
   */
- static inline void Timer2_PowerEnable(TC2_t* Device) __attribute__ ((always_inline));
+ static inline void Timer2_PowerEnable(TC2_t* Device) __attribute__((always_inline));
  static inline void Timer2_PowerEnable(TC2_t* Device)
  {
 	 // ToDo
@@ -216,7 +215,7 @@
  /** @brief			Disable TC2 module.
   *  @param Device	Pointer to TC2 object
   */
- static inline void Timer2_PowerDisable(TC2_t* Device) __attribute__ ((always_inline));
+ static inline void Timer2_PowerDisable(TC2_t* Device) __attribute__((always_inline));
  static inline void Timer2_PowerDisable(TC2_t* Device)
  {
 	 // ToDo
@@ -225,7 +224,7 @@
  /** @brief			Enable AC module.
   *  @param Device	Pointer to AC object
   */
- static inline void AC_PowerEnable(AC_t* Device) __attribute__ ((always_inline));
+ static inline void AC_PowerEnable(AC_t* Device) __attribute__((always_inline));
  static inline void AC_PowerEnable(AC_t* Device)
  {
 	 if(Device == &ACA)
@@ -244,7 +243,7 @@
  /** @brief			Disable AC module.
   *  @param Device	Pointer to AC object
   */
- static inline void AC_PowerDisable(AC_t* Device) __attribute__ ((always_inline));
+ static inline void AC_PowerDisable(AC_t* Device) __attribute__((always_inline));
  static inline void AC_PowerDisable(AC_t* Device)
  {
 	 Device->CTRLA &= ~AC_ENABLE_bm;
@@ -265,7 +264,7 @@
  /** @brief			Enable ADC module.
   *  @param Device	Pointer to ADC object
   */
- static inline void ADC_PowerEnable(ADC_t* Device) __attribute__ ((always_inline));
+ static inline void ADC_PowerEnable(ADC_t* Device) __attribute__((always_inline));
  static inline void ADC_PowerEnable(ADC_t* Device)
  {
 	 if(Device == &ADCA)
@@ -284,7 +283,7 @@
  /** @brief			Disable ADC module.
   *  @param Device	Pointer to ADC object
   */
- static inline void ADC_PowerDisable(ADC_t* Device) __attribute__ ((always_inline));
+ static inline void ADC_PowerDisable(ADC_t* Device) __attribute__((always_inline));
  static inline void ADC_PowerDisable(ADC_t* Device)
  {
 	 Device->CTRLA &= ~ADC_ENABLE_bm;
@@ -306,7 +305,7 @@
 	 /** @brief			Enable DAC module.
 	  *  @param Device	Pointer to DAC object
 	  */
-	 static inline void DAC_PowerEnable(DAC_t* Device) __attribute__ ((always_inline));
+	 static inline void DAC_PowerEnable(DAC_t* Device) __attribute__((always_inline));
 	 static inline void DAC_PowerEnable(DAC_t* Device)
 	 {
 		 #if(defined DACB)
@@ -327,7 +326,7 @@
 	 /** @brief			Disable DAC module.
 	  *  @param Device	Pointer to DAC object
 	  */
-	 static inline void DAC_PowerDisable(DAC_t* Device) __attribute__ ((always_inline));
+	 static inline void DAC_PowerDisable(DAC_t* Device) __attribute__((always_inline));
 	 static inline void DAC_PowerDisable(DAC_t* Device)
 	 {
 		 Device->CTRLA &= ~DAC_ENABLE_bm;
@@ -351,7 +350,7 @@
  /** @brief			Enable USART module.
   *  @param Device	Pointer to USART object
   */
- static inline void USART_PowerEnable(USART_t* Device) __attribute__ ((always_inline));
+ static inline void USART_PowerEnable(USART_t* Device) __attribute__((always_inline));
  static inline void USART_PowerEnable(USART_t* Device)
  {
 	 if(Device == &USARTC0)
@@ -408,7 +407,7 @@
  /** @brief			Disable USART module.
   *  @param Device	Pointer to USART object
   */
- static inline void USART_PowerDisable(USART_t* Device) __attribute__ ((always_inline));
+ static inline void USART_PowerDisable(USART_t* Device) __attribute__((always_inline));
  static inline void USART_PowerDisable(USART_t* Device)
  {
 	 if(Device == &USARTC0)
@@ -466,7 +465,7 @@
  /** @brief			Enable TWI module.
   *  @param Device	Pointer to TWI object
   */
- static inline void I2C_PowerEnable(TWI_t* Device) __attribute__ ((always_inline));
+ static inline void I2C_PowerEnable(TWI_t* Device) __attribute__((always_inline));
  static inline void I2C_PowerEnable(TWI_t* Device)
  {
 	 if(Device == &TWIC)
@@ -497,7 +496,7 @@
  /** @brief			Disable TWI module.
   *  @param Device	Pointer to TWI object
   */
- static inline void I2C_PowerDisable(TWI_t* Device) __attribute__ ((always_inline));
+ static inline void I2C_PowerDisable(TWI_t* Device) __attribute__((always_inline));
  static inline void I2C_PowerDisable(TWI_t* Device)
  {
 	 if(Device == &TWIC)
@@ -528,7 +527,7 @@
  /** @brief			Enable SPI module.
   *  @param Device	Pointer to SPI object.
   */
- static inline void SPI_PowerEnable(SPI_t* Device) __attribute__ ((always_inline));
+ static inline void SPI_PowerEnable(SPI_t* Device) __attribute__((always_inline));
  static inline void SPI_PowerEnable(SPI_t* Device)
  {
 	 if(Device == &SPIC)
@@ -559,7 +558,7 @@
  /** @brief			Disable SPI module.
   *  @param Device	Pointer to SPI object
   */
- static inline void SPI_PowerDisable(SPI_t* Device) __attribute__ ((always_inline));
+ static inline void SPI_PowerDisable(SPI_t* Device) __attribute__((always_inline));
  static inline void SPI_PowerDisable(SPI_t* Device)
  {
 	 if(Device == &SPIC)
@@ -590,7 +589,7 @@
  /** @brief	Enable the RTC module.	
   */
  #if(defined RTC)
-	 static inline void RTC_PowerEnable(void) __attribute__ ((always_inline));
+	 static inline void RTC_PowerEnable(void) __attribute__((always_inline));
 	 static inline void RTC_PowerEnable(void)
 	 {
 		 PR.PRGEN &= ~PR_RTC_bm;
@@ -598,7 +597,7 @@
 
 	/** @brief	Enable the RTC module.	
 	 */
-	 static inline void RTC_PowerDisable(void) __attribute__ ((always_inline));
+	 static inline void RTC_PowerDisable(void) __attribute__((always_inline));
 	 static inline void RTC_PowerDisable(void)
 	 {
 		 PR.PRGEN |= PR_RTC_bm;
@@ -607,7 +606,7 @@
 
  /** @brief	Enable the DMA module.	
   */
- static inline void DMA_PowerEnable(void) __attribute__ ((always_inline));
+ static inline void DMA_PowerEnable(void) __attribute__((always_inline));
  static inline void DMA_PowerEnable(void)
  {
 	 PR.PRGEN &= ~PR_DMA_bm;
@@ -615,7 +614,7 @@
 
  /** @brief	Disable the DMA module.
   */
- static inline void DMA_PowerDisable(void) __attribute__ ((always_inline));
+ static inline void DMA_PowerDisable(void) __attribute__((always_inline));
  static inline void DMA_PowerDisable(void)
  {
 	 PR.PRGEN |= PR_DMA_bm;
@@ -623,7 +622,7 @@
 
  /** @brief	Enable the AES module.
   */
- static inline void AES_PowerEnable(void) __attribute__ ((always_inline));
+ static inline void AES_PowerEnable(void) __attribute__((always_inline));
  static inline void AES_PowerEnable(void)
  {
 	 PR.PRGEN &= ~PR_AES_bm;
@@ -631,7 +630,7 @@
 
  /** @brief	Disable the AES module.
   */
- static inline void AES_PowerDisable(void) __attribute__ ((always_inline));
+ static inline void AES_PowerDisable(void) __attribute__((always_inline));
  static inline void AES_PowerDisable(void)
  {
 	 PR.PRGEN |= PR_AES_bm;
@@ -639,7 +638,7 @@
 
  /** @brief	Enable the USB module.
   */
- static inline void USB_PowerEnable(void) __attribute__ ((always_inline));
+ static inline void USB_PowerEnable(void) __attribute__((always_inline));
  static inline void USB_PowerEnable(void)
  {
 	 PR.PRGEN &= ~PR_USB_bm;
@@ -647,7 +646,7 @@
 
  /** @brief	Disable the USB module.
   */
- static inline void USB_DisableEnable(void) __attribute__ ((always_inline));
+ static inline void USB_DisableEnable(void) __attribute__((always_inline));
  static inline void USB_DisableEnable(void)
  {
 	 PR.PRGEN |= PR_USB_bm;

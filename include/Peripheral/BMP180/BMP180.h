@@ -33,7 +33,6 @@
 #ifndef BMP180_H_
 #define BMP180_H_
 
- #include "Config_BMP180.h"
  #include "Common/Common.h"
 
  /*
@@ -41,7 +40,6 @@
  */
  #if(MCU_ARCH == MCU_ARCH_XMEGA)
 	 #include "Arch/XMega/GPIO/GPIO.h"
-	 #include "Arch/XMega/ClockManagement/SysClock.h"
 	 #include "Arch/XMega/I2C/I2C.h"
  #elif(MCU_ARCH == MCU_ARCH_AVR8)
 	 #include "Arch/AVR8/GPIO/GPIO.h"
@@ -50,18 +48,16 @@
 	 #error "Architecture not supported for BMP180!"
  #endif
 
- /** 
-  * BMP180 chip ID
+ /** @brief	BMP180 chip ID.
   */
  #define BMP180_ID							0x55
 
  /** @ingroup I2C-Addresses */
  /*\@{*/
-	 #define BMP180_ADDRESS					0x77																							/**< BMP180 I2C pressure sensor device address */
+	 #define BMP180_ADDRESS					0x77		/**< BMP180 I2C pressure sensor device address */
  /*\@}*/
 
- /**
-  * BMP180 oversampling settings
+ /** @brief	BMP180 oversampling settings.
   */
  typedef enum
  {
@@ -71,8 +67,7 @@
 	BMP180_OSS_8 = 0x03,								/**< Average of eight measurements */
  } BMP180_OSS_t;
 
- /**
-  * BMP180 calibration coefficients
+ /** @brief	BMP180 calibration coefficients.
   */
  typedef struct
  {
@@ -89,8 +84,7 @@
 	 int16_t MD;										/**< MD parameter */
  } __attribute__((packed)) BMP180_CalibCoef_t;
 
- /**
-  * BMP180 data point
+ /** @brief	BMP180 data point.
   */
  typedef struct 
  {
@@ -100,7 +94,7 @@
 
  /** @brief			Initialize the BMP180 pressure sensor and the I2C interface.
   *  @param Config	Pointer to I2C master configuration object
-  *					NOTE: Set it to *NULL if you have initialized the I2C already
+  *					NOTE: Set it to #NULL if you have initialized the I2C already
   *  @return		I2C error code
   */
  const I2C_Error_t BMP180_Init(I2CM_Config_t* Config); 

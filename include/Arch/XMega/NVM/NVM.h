@@ -37,7 +37,9 @@
  #include "Common/Common.h" 
  #include "Arch/XMega/CPU/CPU.h"
 
- typedef enum NVM_Signature_t
+ /** @brief NVM production signatures.
+  */
+ typedef enum
  {
 	 RCOSC2M = 0x00,
 	 RCOSC2MA = 0x01,
@@ -73,12 +75,12 @@
 	 DACA1GAINCAL = 0x35,
 	 DACB1OFFCAL = 0x36,
 	 DACB1GAINCAL = 0x37,
- } NVM_Signature;
+ } NVM_Signature_t;
 
  /** @brief	Enable the self programming lock.
   *			NOTE: This bit can only cleared with a reset!
   */
- static inline void NVM_EnableSPMLock(void) __attribute__ ((always_inline));
+ static inline void NVM_EnableSPMLock(void) __attribute__((always_inline));
  static inline void NVM_EnableSPMLock(void)
  {
 	 uint8_t Flags = CPU_IRQSave();
@@ -101,7 +103,7 @@
  /** @brief			Enable/Disable the power reduction mode for the flash memory.
   *  @param Enable	Enable/Disable
   */
- static inline void NVM_SwitchFlashPowerReduction(const Bool_t Enable) __attribute__ ((always_inline));
+ static inline void NVM_SwitchFlashPowerReduction(const Bool_t Enable) __attribute__((always_inline));
  static inline void NVM_SwitchFlashPowerReduction(const Bool_t Enable)
  {
 	 if(Enable == TRUE)
@@ -117,7 +119,7 @@
  /** @brief			Enable/Disable the power reduction mode for the EEPROM.
   *  @param Enable	Enable/Disable
   */
- static inline void NVM_SwitchEEPROMPowerReduction(const Bool_t Enable) __attribute__ ((always_inline));
+ static inline void NVM_SwitchEEPROMPowerReduction(const Bool_t Enable) __attribute__((always_inline));
  static inline void NVM_SwitchEEPROMPowerReduction(const Bool_t Enable)
  {
 	 if(Enable == TRUE)
@@ -133,7 +135,7 @@
  /** @brief			Enable/Disable the EEPROM data mapping.
   *  @param Enable	Enable/Disable
   */
- static inline void NVM_SwitchEEPROMMapping(const Bool_t Enable) __attribute__ ((always_inline));
+ static inline void NVM_SwitchEEPROMMapping(const Bool_t Enable) __attribute__((always_inline));
  static inline void NVM_SwitchEEPROMMapping(const Bool_t Enable)
  {
 	 if(Enable == TRUE)
@@ -149,7 +151,7 @@
  /** @brief		Read the lock bit register.
   *  @return	Lock bits
   */
- static inline const uint8_t NVM_GetLockbits(void) __attribute__ ((always_inline));
+ static inline const uint8_t NVM_GetLockbits(void) __attribute__((always_inline));
  static inline const uint8_t NVM_GetLockbits(void)
  {
 	 return NVM.LOCK_BITS;
@@ -158,7 +160,7 @@
  /** @brief			Execute a NVM command.
   *  @param Command	NVM command
   */
- static inline void NVM_ExecuteCommand(const uint8_t Command) __attribute__ ((always_inline));
+ static inline void NVM_ExecuteCommand(const uint8_t Command) __attribute__((always_inline));
  static inline void NVM_ExecuteCommand(const uint8_t Command)
  {
 	 uint8_t OldCmd = NVM.CMD;

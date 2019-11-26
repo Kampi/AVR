@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Config_AD5933.h
+/** @file configs/Config_AD5933.h
  *  @brief Configuration example for the Analog Devices AD5933 I2C impedance converter.
  *
  *  @author Daniel Kampert
@@ -32,11 +32,21 @@
 #define CONFIG_AD5933_H_
 
  #include "Common/Common.h"
- 
- #define AD5933_INTERFACE						TWIC 					/**< I2C interface used by the AD5933. */
- #define AD5933_CLOCK							100000					/**< Clock rate used by the interface. */
 
- #define AD5933_CALIBRATIONIMPEDANCE			1000					/**< Calibration impedance for the AD5933. */
- #define AD5933_SWEEP_LENGTH					100						/**< Length of frequency sweep. */
+ /*
+	 TWI configuration
+ */
+ #define TWI_BUFFER_SIZE						32							/**< Size of TWI buffer in bytes. */
+
+ /*
+	 USART configuration
+ */
+ #define USART_BUFFER_SIZE						32							/**< Size of USART buffer in bytes. */
+
+ #define AD5933_INTERFACE						TWIC 						/**< I2C interface used by the AD5933. */
+ #define AD5933_CLOCK							100000						/**< Clock rate used by the interface. */
+
+ #define AD5933_CALIBRATIONIMPEDANCE			1000						/**< Calibration impedance for the AD5933. */
+ #define AD5933_SWEEP_LENGTH					100							/**< Length of frequency sweep. */
 
 #endif /* CONFIG_AD5933_H_ */

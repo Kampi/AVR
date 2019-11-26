@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega RTC.
+ *  File info: Driver for Atmel AVR XMega RTC.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -24,9 +24,9 @@
  */
 
 /** @file Arch/XMega/RTC/RTC.c
- *  @brief Driver for XMega RTC32 module.
+ *  @brief Driver for Atmel AVR XMega RTC32 module.
  *
- *  This file contains the implementation of the XMega AES driver.
+ *  This file contains the implementation of the Atmel AVR XMega RTC driver.
  *
  *  @author Daniel Kampert
  */
@@ -69,14 +69,6 @@ void RTC_Init(RTC_Config_t* Config)
 	RTC_SetPeriod(Config->Period);
 	RTC_SetCompare(Config->Compare);
 	RTC_SetCount(Config->Count);
-}
-
-void RTC_GetConfig(RTC_Config_t* Config)
-{
-	Config->Prescaler = RTC_GetPrescaler();
-	Config->Count = RTC_GetCount();
-	Config->Compare = RTC_GetCompare();
-	Config->Period = RTC_GetPeriod();
 }
 
 void RTC_ChangeInterruptLevel(const RTC_CallbackType_t Callback, const Interrupt_Level_t InterruptLevel)

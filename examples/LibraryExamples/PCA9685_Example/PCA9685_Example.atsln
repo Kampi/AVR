@@ -7,6 +7,11 @@ Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "XMega", "XMega\XMega.cproj"
 EndProject
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "ATmega32", "ATmega32\ATmega32.cproj", "{D4617EFF-BA2A-4D50-84C4-FBD87CDFF36D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{1AC6A83C-B32B-4325-86BD-26596CEA6867}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\configs\Config_PCA9685.h = ..\..\..\configs\Config_PCA9685.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AVR = Debug|AVR

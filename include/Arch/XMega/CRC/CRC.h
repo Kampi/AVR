@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega CRC
+ *  File info: Driver for Atmel AVR XMega CRC module.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,9 +23,9 @@
  */
 
 /** @file Arch/XMega/CRC/CRC.h
- *  @brief Driver for XMega CRC module. 
+ *  @brief Driver for Atmel AVR XMega CRC module.
  *
- *  This file contains the prototypes and definitions for the XMega CRC driver.
+ *  This file contains the prototypes and definitions for the Atmel AVR XMega CRC driver.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs.
@@ -36,8 +36,7 @@
 
  #include "Common/Common.h"
 
- /** 
-  * Preset the checksum with zeros or ones.
+ /** @brief	CRC preset options.
   */
  typedef enum
  {
@@ -45,8 +44,7 @@
 	 CRC_CHECKSUM_ONES = 0x03		/**< Reset with ones */ 
  } CRC_ResetOptions_t;
 
- /** 
-  * CRC DMA channels
+ /** @brief	CRC DMA channels.
   */
  typedef enum
  {
@@ -55,18 +53,16 @@
 	 CRC_DMA_2 = 0x06,				/**< Use DMA channel 2 */ 
 	 CRC_DMA_3 = 0x07,				/**< Use DMA channel 3 */ 
  } CRC_DMA_t;
- 
- /** 
-  * Memory segments for CRC calculation
+
+ /** @brief	Memory segments for CRC calculation.
   */
  typedef enum
  {
 	 CRC_SEGMENT_BOOT = 0x00,		/**< Bootloader section */ 
 	 CRC_SEGMENT_APP = 0x01,		/**< Application section */ 
  } CRC_MemorySegment_t;
- 
- /** 
-  * Length of the CRC checksum.
+
+ /** @brief	Length of the CRC checksum..
   */
  typedef enum
  {
@@ -76,7 +72,7 @@
 
  /** @brief	Disable the CRC module.
   */
- static inline void CRC_Disable(void) __attribute__ ((always_inline));
+ static inline void CRC_Disable(void) __attribute__((always_inline));
  static inline void CRC_Disable(void)
  {
 	 CRC.CTRL &= ~0x0F;
@@ -85,7 +81,7 @@
  /** @brief					Reset the CRC module.
   *  @param Options			Reset mode for the module
   */
- static inline void CRC_Reset(const CRC_ResetOptions_t Options) __attribute__ ((always_inline));
+ static inline void CRC_Reset(const CRC_ResetOptions_t Options) __attribute__((always_inline));
  static inline void CRC_Reset(const CRC_ResetOptions_t Options)
  {
 	 CRC.CTRL |= (CRC.CTRL & (~(0x03 << 0x06))) | (Options << 0x06);

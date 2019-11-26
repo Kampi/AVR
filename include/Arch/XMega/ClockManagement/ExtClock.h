@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega external clocks.
+ *  File info: Driver for Atmel AVR XMega external clocks.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,9 +23,9 @@
  */
 
 /** @file Arch/XMega/ClockManagement/ExtClock.h
- *  @brief Driver for XMega external clocks. 
+ *  @brief Driver for Atmel AVR  XMega external clocks. 
  *
- *  This file contains the prototypes and definitions for the XMega external clocks.
+ *  This file contains the prototypes and definitions for the Atmel AVR XMega external clocks.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs.
@@ -38,7 +38,7 @@
 
  /** @brief	Enable the low power mode for a external 32 kHz oscillator.
   */
- static inline void ExtClock_32kLowPowerEnable(void) __attribute__ ((always_inline));
+ static inline void ExtClock_32kLowPowerEnable(void) __attribute__((always_inline));
  static inline void ExtClock_32kLowPowerEnable(void)
  {
 	 OSC.XOSCCTRL |= OSC_X32KLPM_bm;
@@ -46,7 +46,7 @@
 
  /** @brief	Disable the low power mode for a external 32 kHz oscillator.
   */
- static inline void ExtClock_32kLowPowerDisable(void) __attribute__ ((always_inline));
+ static inline void ExtClock_32kLowPowerDisable(void) __attribute__((always_inline));
  static inline void ExtClock_32kLowPowerDisable(void)
  {
 	 OSC.XOSCCTRL &= ~OSC_X32KLPM_bm;

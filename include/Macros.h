@@ -30,8 +30,6 @@
 
 #ifndef MACROS_H_
 #define MACROS_H_
- 
- #include "Definitions.h"
 
  #define _CONCAT(A, B)														A ## B
  #define _FIRST(A, B)														A
@@ -47,10 +45,7 @@
  #define VA_NARGS_IMPL(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, N, ...)		2 * N
  #define VA_NARGS(...)														VA_NARGS_IMPL(__VA_ARGS__, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
 
- #if(MCU_ARCH == MCU_ARCH_XMEGA)
- #elif(MCU_ARCH == MCU_ARCH_AVR8)
- #else
-	 #warning "Architecture not supported!"
- #endif
+ #define _STR(x) #x
+ #define STR(x) _STR(x)
 
 #endif /* MACROS_H_ */

@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *  Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega USART interface.
+ *  File info: Driver for Atmel AVR XMega USART interface.
  
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -24,9 +24,9 @@
  */
 
 /** @file Arch/XMega/USART/USART.c
- *  @brief Driver for XMega USART module.
+ *  @brief Driver for Atmel AVR XMega USART module.
  *
- *  This contains the implementation of the XMega USART driver.
+ *  This contains the implementation of the Atmel AVR XMega USART driver.
  *
  *  @author Daniel Kampert
  */
@@ -34,23 +34,21 @@
 #include "Arch/XMega/USART/USART.h"
 #include "Arch/XMega/PowerManagement/PowerManagement.h"
 
- /** 
-  * Tx ring buffer for each USART interface
-  */
+/** @brief Tx ring buffer for each USART interface.
+ */
 static RingBuffer_t __USART_TxRingBuffer[USART_DEVICES][USART_CHANNEL];
 
- /** 
-  * Data buffer for Tx ring buffer
-  */
+/** @brief Data buffer for Tx ring buffer.
+ */
 static uint8_t __TxData[USART_DEVICES][USART_CHANNEL][USART_BUFFER_SIZE];
 
 #ifndef DOXYGEN
 	/*
 		Object declaration
 	*/
-	extern USART_Message_t __USART_Messages[USART_DEVICES][USART_CHANNEL];
-	extern Bool_t __USART_Echo[USART_DEVICES][USART_CHANNEL];
-	extern struct
+	USART_Message_t __USART_Messages[USART_DEVICES][USART_CHANNEL];
+	Bool_t __USART_Echo[USART_DEVICES][USART_CHANNEL];
+	struct
 	{
 		USART_Callback_t RxCallback;
 		USART_Callback_t TxCallback;
@@ -123,7 +121,7 @@ void USART_InstallCallback(const USART_InterruptConfig_t* Config)
 	
 	if(Config->Source & USART_BUFFER_OVERFLOW)
 	{
-		__USART_Callbacks[Device][Channel].EmptyCallback = Config->Callback;
+		__USART_Callbacks[Device][Channel].BufferOverflow = Config->Callback;
 	}
 }
 
@@ -188,7 +186,7 @@ void USART_RemoveCallback(USART_t* Device, const USART_CallbackType_t Callback)
 	
 	if(Callback & USART_BUFFER_OVERFLOW)
 	{
-		__USART_Callbacks[USART][Channel].EmptyCallback = NULL;
+		__USART_Callbacks[USART][Channel].BufferOverflow = NULL;
 	}
 }
 
@@ -217,7 +215,6 @@ void USART_Init(USART_Config_t* Config)
 	uint8_t TxPin = 0x00;
 
 	USART_SwitchEcho(Config->Device, Config->EnableEcho);
-	
     USART_PowerEnable(Config->Device);
     USART_SetBaudrate(Config->Device, Config->Baudrate, SysClock_GetClockPer(), Config->BSCALE, Config->EnableDoubleSpeed);
     USART_SetDirection(Config->Device, Config->Direction);
@@ -348,11 +345,6 @@ void USART_DisableInterruptSupport(USART_t* Device)
 	Device->CTRLA &= ~(0x03 << 0x04);
 }
 
-void USART_GetConfig(USART_Config_t* Config, USART_t* Device)
-{
-     // ToDo
-}
-
 void USART_Write(USART_t* Device, const char* Data)
 {
     while(*Data)
@@ -361,20 +353,31 @@ void USART_Write(USART_t* Device, const char* Data)
     }
 }
  
-void USART_WriteDecimal(USART_t* Device, const uint32_t Value) 
+void USART_WriteDecimal(USART_t* Device, const uint32_t Number, const uint8_t Base) 
 {
-	uint32_t Temp = Value / 10;
-    char Buffer[2];
-     
-    if(Temp)
+	char* pBuffer;
+	uint32_t Number_Temp = Number;
+
+	// Reserve a transmit buffer. Size depends on the type of 'Number' + array end
+	char Buffer[sizeof(Number) + 2] = {0x00};
+
+	// Set the end of a char array
+	Buffer[sizeof(Buffer) - 1] = '\0';
+
+	// Pointer to the transmit buffer. Set the pointer to the last element before the
+	// array end, because the transformation starts with the ones
+	pBuffer = &Buffer[sizeof(Buffer) - 2];
+	
+	do 
+	{
+		*--pBuffer = Representation[Number_Temp % Base];
+		Number_Temp /= Base;
+	}while(Number_Temp != 0);
+	
+    while(*pBuffer)
     {
-        USART_WriteDecimal(Device, Temp);
+	    USART_SendChar(Device, *pBuffer++);
     }
-     
-    Buffer[0] = 0x30 + (Value % 10);
-    Buffer[1] = '\0';
-     
-    USART_Write(Device, Buffer);
 }
  
 void USART_WriteLine(USART_t* Device, const char* Data)
@@ -504,28 +507,45 @@ void USART_SwitchEcho(USART_t* Device, const Bool_t Enable)
 	}
 	else
 	{
-		__USART_Echo[ID][Channel]  = FALSE;
+		__USART_Echo[ID][Channel] = FALSE;
 	}
 }
- 
+
 void USART_SetBaudrate(USART_t* Device, const uint32_t Baudrate, const uint32_t Clock, const int8_t BSCALE, const Bool_t DoubleSpeed)
 {
-    uint16_t BSEL = 0x00;
- 
-    if(Baudrate < (Clock / ((DoubleSpeed + 0x01) << 0x03)))
-    {
-        BSEL = (Clock / (Baudrate << 0x01)) - 1;
-    }
- 
-    if(BSCALE >= 0x00)
-    {
-        BSEL = (uint16_t)(((float)Clock / ((float)(0x01 << BSCALE) * Baudrate * (0x10 >> DoubleSpeed))) - 0x01);
-    }
-    else
-    {
-        BSEL = (uint16_t)((0x01 << (~BSCALE + 1)) * (((float)Clock / ((float)(0x10 >> DoubleSpeed) * Baudrate)) - 0x01));
-    }
- 
+	float BSEL_Temp = 0x00;
+	uint16_t BSEL = 0x00;
+
+	// Calculate ClockRatio = f_Per / (8/16 * f_Baud)
+	if(DoubleSpeed == TRUE)
+	{
+		BSEL_Temp = (float)Clock / (Baudrate << 0x03);
+	}
+	else
+	{
+		BSEL_Temp = (float)Clock / (Baudrate << 0x04);
+	}
+
+	// Calculate BSEL = 1/(2^BSCALE) * ClockRatio
+	if(BSCALE < 0x00)
+	{
+		int8_t BSCALE_Temp = 0x00;
+
+		// Subtract 1 from 'ClockRatio' when BSCALE < 0
+		BSEL_Temp -= 0x01;
+		
+		BSCALE_Temp = (~BSCALE) + 0x01;
+		BSEL_Temp = BSEL_Temp * (float)(0x01 << BSCALE_Temp);
+	}
+	else
+	{
+		BSEL_Temp = BSEL_Temp * (0x01 >> BSCALE);
+
+		// Subtract 1 from 'BSEL' when BSCALE >= 0
+		BSEL_Temp -= 0x01;
+	}
+
+	BSEL = (uint16_t)BSEL_Temp;
     Device->CTRLB = (Device->CTRLB & ~((0x01 << 0x02))) | (DoubleSpeed << 0x02);
     Device->BAUDCTRLB = ((BSCALE & 0x0F) << 0x04) | ((BSEL & 0xF00) >> 0x08);
     Device->BAUDCTRLA = BSEL & 0xFF;

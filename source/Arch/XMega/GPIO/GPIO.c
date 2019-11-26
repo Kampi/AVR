@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *	Website: www.kampis-elektroecke.de
- *  File info: GPIO Driver for XMega microcontroller
+ *  File info: Driver for Atmel AVR XMega GPIO.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -24,9 +24,9 @@
  */
 
 /** @file @file Arch/XMega/GPIO/GPIO.c
- *  @brief Driver for XMega GPIO.
+ *  @brief Driver for Atmel AVR XMega GPIO.
  *
- *  This file contains the implementation of the XMega GPIO driver.
+ *  This file contains the implementation of the Atmel AVR XMega GPIO driver.
  *
  *  @author Daniel Kampert
  */

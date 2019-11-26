@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega RTC module.
+ *  File info: Driver for Atmel AVR XMega RTC module.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,12 +23,12 @@
  */ 
 
 /** @file Arch/XMega/RTC/RTC.h
- *  @brief Driver for XMega RTC module.
+ *  @brief Driver for Atmel AVR XMega RTC module.
  *
  *  This file contains the prototypes and definitions for the XMega RTC driver.
  *
  *  @author Daniel Kampert
- *  @bug No known bugs.
+ *  @bug	- No external clock support
  */
 
 #ifndef RTC_H_
@@ -259,11 +259,6 @@
   *  @param Config	Pointer to RTC configuration struct
   */
  void RTC_Init(RTC_Config_t* Config);
- 
- /** @brief			Get the configuration of the RTC module.
-  *  @param Config	Pointer to RTC device configuration struct
-  */
- void RTC_GetConfig(RTC_Config_t* Config);
  
  /** @brief					Change the interrupt level of the RTC module interrupts.
   *  @param Callback		Callback which should be changed

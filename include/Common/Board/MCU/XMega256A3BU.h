@@ -44,11 +44,6 @@
  #define DEFAULT_REFERENCE_VOLTAGE						1000						/**< Default reference voltage for analog parts */ 
 
  /*
-	 Main clock
- */
- #define F_CPU											32000000UL					/**< MCU clock frequency */ 
-
- /*
 	GPIO
  */
  #define GPIO_PORT_COUNT								7							/**< GPIO port count */ 
@@ -56,8 +51,7 @@
  /*
 	DMA
  */
- #define DMA_CHANNEL									4							/**< DMA channel count for each controller */ 
- #define DMA_BUFFER_SIZE								32							/**< Size of the DMA buffer */ 
+ #define DMA_CHANNEL									4							/**< DMA channel count for each controller */
  
  /*
 	DAC
@@ -87,7 +81,6 @@
  */
  #define USART_DEVICES									3							/**< USART device count in MCU */
  #define USART_CHANNEL									2							/**< Channels per USART device */
- #define USART_BUFFER_SIZE								32							/**< Size of USART buffer in bytes */
  #define USART_XCK0_PIN									1							/**< Pin number of USART XCK0 pin */
  #define USART_RX0_PIN									2							/**< Pin number of USART RxD0 pin */
  #define USART_TX0_PIN									3							/**< Pin number of USART TxD0 pin */
@@ -117,7 +110,6 @@
 	SPI
  */
  #define SPI_DEVICES									2							/**< SPI device count in MCU */
- #define SPI_BUFFER_SIZE								32							/**< Size of SPI buffer in bytes */
  #define SPI_SS_PIN										4							/**< Pin number of SPI SS pin */
  #define SPI_MOSI_PIN									3							/**< Pin number of SPI MOSI pin */
  #define SPI_MISO_PIN									2							/**< Pin number of SPI MISO pin */
@@ -127,7 +119,6 @@
 	TWI
  */
  #define TWI_DEVICES									2							/**< TWI device count in MCU */
- #define TWI_BUFFER_SIZE								32							/**< Size of TWI buffer in bytes */
  #define TWI_SDA_PIN									0							/**< Pin number of TWI SDA pin */
  #define TWI_SCL_PIN									1							/**< Pin number of TWI SCL pin */
 

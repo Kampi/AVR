@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Configuration example for the NXP PCA9685 PWM controller.
+ *  File info: Configuration example for the PCA9685 PWM controller.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Config_PCA9685.h
+/** @file configs/Config_PCA9685.h
  *  @brief Configuration example for the NXP PCA9685 I2C PWM controller.
  *
  *  @author Daniel Kampert
@@ -32,16 +32,28 @@
 #define CONFIG_PCA9685_H_
 
  #include "Common/Common.h"
- 
- #define PCA9685_INTERFACE						TWIC					/**< I2C interface used by the PCA9685. */
- #define PCA9685_CLOCK							100000					/**< Clock used by the interface. */
- #define PCA9685_A0								0						/**< Voltage level of the address pin A0. */
- #define PCA9685_A1								0						/**< Voltage level of the address pin A1. */
- #define PCA9685_A2								0						/**< Voltage level of the address pin A2. */
- #define PCA9685_A3								0						/**< Voltage level of the address pin A3. */
- #define PCA9685_A4								0						/**< Voltage level of the address pin A4. */
- #define PCA9685_A5								0						/**< Voltage level of the address pin A5. */
 
- #define PCA9685_OE								PORTE, 0				/**< Pin for PCA9685 OE. */
+ /*
+	 TWI configuration
+ */
+ #define TWI_BUFFER_SIZE						32							/**< Size of TWI buffer in bytes. */
+
+ #if(MCU_ARCH == MCU_ARCH_XMEGA)
+	 #define PCA9685_INTERFACE					TWIC						/**< I2C interface used by the PCA9685. */
+ #endif
+
+ #define PCA9685_CLOCK							100000						/**< Clock used by the interface. */
+ #define PCA9685_A0								0							/**< Voltage level of the address pin A0. */
+ #define PCA9685_A1								0							/**< Voltage level of the address pin A1. */
+ #define PCA9685_A2								0							/**< Voltage level of the address pin A2. */
+ #define PCA9685_A3								0							/**< Voltage level of the address pin A3. */
+ #define PCA9685_A4								0							/**< Voltage level of the address pin A4. */
+ #define PCA9685_A5								0							/**< Voltage level of the address pin A5. */
+
+ #if(MCU_ARCH == MCU_ARCH_XMEGA)
+	 #define PCA9685_OE							PORTE, 0					/**< PCA9685 OE pin for XMega microcontroller. */
+ #else
+	#define PCA9685_OE							PORTD, 0					/**< PCA9685 OE pin for ATmega32 microcontroller. */
+ #endif
 
 #endif /* CONFIG_PCA9685_H_ */

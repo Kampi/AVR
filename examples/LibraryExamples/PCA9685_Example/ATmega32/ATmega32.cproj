@@ -113,11 +113,12 @@
       <Value>MCU_NAME=MCU_NAME_ATMEGA32</Value>
       <Value>MCU_ARCH=MCU_ARCH_AVR8</Value>
       <Value>MCU_LITTLE_ENDIAN</Value>
+      <Value>CONFIG="Config_PCA9685.h"</Value>
     </ListValues>
   </avrgcc.compiler.symbols.DefSymbols>
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
-      <Value>../include</Value>
+      <Value>../../../../../configs</Value>
       <Value>../../../../../include</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
@@ -128,8 +129,14 @@
   <avrgcc.linker.libraries.Libraries>
     <ListValues>
       <Value>libm</Value>
+      <Value>libMega32</Value>
     </ListValues>
   </avrgcc.linker.libraries.Libraries>
+  <avrgcc.linker.libraries.LibrarySearchPaths>
+    <ListValues>
+      <Value>../../../../../lib</Value>
+    </ListValues>
+  </avrgcc.linker.libraries.LibrarySearchPaths>
   <avrgcc.assembler.general.IncludePaths>
     <ListValues>
       <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.3.300\include</Value>
@@ -140,22 +147,7 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="include\Config_PCA9685.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="main.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\Arch\AVR8\I2C\I2C.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\Arch\AVR8\I2C\I2CM.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\Arch\AVR8\I2C\I2CS.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\Arch\AVR8\I2C\I2C_Interrupt.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\Peripheral\PCA9685\PCA9685.c">
@@ -163,11 +155,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="include" />
     <Folder Include="source" />
-    <Folder Include="source\Arch" />
-    <Folder Include="source\Arch\AVR8" />
-    <Folder Include="source\Arch\AVR8\I2C" />
     <Folder Include="source\Peripheral" />
     <Folder Include="source\Peripheral\PCA9685" />
   </ItemGroup>

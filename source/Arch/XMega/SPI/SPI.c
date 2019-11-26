@@ -38,7 +38,7 @@
 	/*
 		Object declaration
 	*/
-	extern struct
+	struct
 	{
 		SPI_Callback_t CompleteInterrupt;
 		SPI_Callback_t ErrorCallback;

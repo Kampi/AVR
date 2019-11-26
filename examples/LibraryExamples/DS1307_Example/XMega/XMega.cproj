@@ -30,38 +30,38 @@
     <EraseKey />
     <AsfFrameworkConfig>
       <framework-data xmlns="">
-  <options />
-  <configurations />
-  <files />
-  <documentation help="" />
-  <offline-documentation help="" />
-  <dependencies>
-    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.45.0" />
-  </dependencies>
-</framework-data>
+        <options />
+        <configurations />
+        <files />
+        <documentation help="" />
+        <offline-documentation help="" />
+        <dependencies>
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.45.0" />
+        </dependencies>
+      </framework-data>
     </AsfFrameworkConfig>
     <avrtool />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
       <AvrGcc>
-  <avrgcc.common.Device>-mmcu=atxmega384c3 -B "%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\gcc\dev\atxmega384c3"</avrgcc.common.Device>
-  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
-  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
-  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
-  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
-  <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
-  <avrgcc.compiler.directories.IncludePaths>
-    <ListValues>
-      <Value>%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\include</Value>
-    </ListValues>
-  </avrgcc.compiler.directories.IncludePaths>
-  <avrgcc.assembler.general.IncludePaths>
-    <ListValues>
-      <Value>%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\include</Value>
-    </ListValues>
-  </avrgcc.assembler.general.IncludePaths>
-</AvrGcc>
+        <avrgcc.common.Device>-mmcu=atxmega384c3 -B "%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\gcc\dev\atxmega384c3"</avrgcc.common.Device>
+        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+        <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+        <avrgcc.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\include</Value>
+          </ListValues>
+        </avrgcc.compiler.directories.IncludePaths>
+        <avrgcc.assembler.general.IncludePaths>
+          <ListValues>
+            <Value>%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\include</Value>
+          </ListValues>
+        </avrgcc.assembler.general.IncludePaths>
+      </AvrGcc>
     </ToolchainSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -79,15 +79,26 @@
       <Value>MCU_NAME=MCU_NAME_ATXMEGA384C3</Value>
       <Value>MCU_ARCH=MCU_ARCH_XMEGA</Value>
       <Value>MCU_LITTLE_ENDIAN</Value>
+      <Value>CONFIG="Config_DS1307.h"</Value>
     </ListValues>
   </avrgcc.compiler.symbols.DefSymbols>
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
-      <Value>../include</Value>
-      <Value>../../../../../include</Value>
       <Value>%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\include</Value>
+      <Value>../../../../../include</Value>
+      <Value>../../../../../configs</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
+  <avrgcc.linker.libraries.Libraries>
+    <ListValues>
+      <Value>libXMega384C3</Value>
+    </ListValues>
+  </avrgcc.linker.libraries.Libraries>
+  <avrgcc.linker.libraries.LibrarySearchPaths>
+    <ListValues>
+      <Value>../../../../../lib</Value>
+    </ListValues>
+  </avrgcc.linker.libraries.LibrarySearchPaths>
   <avrgcc.assembler.general.IncludePaths>
     <ListValues>
       <Value>%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\include</Value>
@@ -97,7 +108,7 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="include" />
+    <Folder Include="config" />
     <Folder Include="source" />
     <Folder Include="source\Arch" />
     <Folder Include="source\Arch\XMega" />
@@ -107,9 +118,6 @@
     <Folder Include="source\Peripheral\DS1307" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="include\Config_DS1307.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>

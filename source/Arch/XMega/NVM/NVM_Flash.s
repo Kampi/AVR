@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega NVM controller.
+ *  File info: Driver for the Atmel AVR XMega NVM controller.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -24,9 +24,9 @@
  */
 
  /** @file Arch/XMega/NVM/NVM_Flash.s
- *  @brief Driver for XMega NVM controller.
+ *  @brief Driver for the Atmel AVR XMega NVM controller.
  *
- *  This file contains the implementation of the flash routines for the NVM driver.
+ *  This file contains the implementation of the flash routines for the Atmel AVR XMega NVM driver.
  *
  *		Note on IAR calling convention:
  *			Scratch registers:		R18-R27, R30-R31

@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Config_BMP180.h
+/** @file configs/Config_BMP180.h
  *  @brief Configuration example for the Bosch BMP180 I2C pressure sensor.
  *
  *  @author Daniel Kampert
@@ -32,8 +32,13 @@
 #define CONFIG_BMP180_H_
 
  #include "Common/Common.h"
- 
- #define BMP180_INTERFACE						TWIC 					/**< I2C interface used by the BMP180. */
- #define BMP180_CLOCK							100000					/**< Clock rate used by the interface. */
+
+ /*
+	 TWI configuration
+ */
+ #define TWI_BUFFER_SIZE						32							/**< Size of TWI buffer in bytes. */
+
+ #define BMP180_INTERFACE						TWIC 						/**< I2C interface used by the BMP180. */
+ #define BMP180_CLOCK							100000						/**< Clock rate used by the interface. */
 
 #endif /* CONFIG_BMP180_H_ */

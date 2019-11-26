@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Config_SD_MMC.h
+/** @file configs/Config_SD_MMC.h
  *  @brief Configuration example for the SD/MMC interface.
  *
  *  @author Daniel Kampert
@@ -30,27 +30,31 @@
 
 #ifndef CONFIG_SD_MMC_H_
 #define CONFIG_SD_MMC_H_
- 
+
+ /*
+	 USART configuration
+ */
+ #define USART_BUFFER_SIZE						32							/**< Size of USART buffer in bytes. */
+
  /*
 	SD/MMC interface
  */
- #define SD_INTERFACE_TYPE						INTERFACE_USART_SPI		/**< Interface type used by the SD card. */
- #define SD_INTERFACE							USARTD, 0				/**< SPI interface used by the SD card. */
+ #define SD_INTERFACE_TYPE						INTERFACE_USART_SPI			/**< Interface type used by the SD card. */
+ #define SD_INTERFACE							USARTD, 0					/**< SPI interface used by the SD card. */
 
  /*
 	 SD/MMC interface connections
  */
- #define SD_SS									PORTE, 5				/**< Chip select used by the SD card. */
+ #define SD_SS									PORTE, 5					/**< Chip select used by the SD card. */
  
- #define SD_WITH_SWA													/**< Enable card detection. 
-																			 NOTE: Must pulled low when SD card is 
-																			 available.
-																			 NOTE: You have to enable interrupts! */
- #define SD_SWA									PORTE, 4				/**< SWA used by the SD card. */
+ #define SD_WITH_SWA														/**< Enable card detection. 
+																				 NOTE: Must pulled low when SD card is available.
+																				 NOTE: You have to enable interrupts! */
+ #define SD_SWA									PORTE, 4					/**< SWA used by the SD card. */
 
  /*
 	SD/MMC settings
  */
- #define SD_BLOCK_SIZE							512						/**< Block size for the SD card. */
+ #define SD_BLOCK_SIZE							512							/**< Block size for the SD card. */
 
 #endif /* CONFIG_SD_MMC_H_ */

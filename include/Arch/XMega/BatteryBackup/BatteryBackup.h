@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega battery backup system.
+ *  File info: Driver for Atmel AVR XMega battery backup system.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,9 +23,9 @@
  */ 
 
 /** @file Arch/XMega/BatteryBackup/BatteryBackup.h
- *  @brief Driver for XMega battery backup system.
+ *  @brief Driver for Atmel AVR XMega battery backup system.
  *
- *  This file contains the prototypes and definitions for the XMega battery backup driver.
+ *  This file contains the prototypes and definitions for the Atmel AVR XMega battery backup driver.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs.
@@ -70,7 +70,7 @@
 
  /** @brief Enable the external oscillator.
   */
- static inline void BatteryBackup_EnableExtOsc(void) __attribute__ ((always_inline));
+ static inline void BatteryBackup_EnableExtOsc(void) __attribute__((always_inline));
  static inline void BatteryBackup_EnableExtOsc(void)
  {
 	 VBAT.CTRL |= VBAT_XOSCEN_bm;
@@ -79,7 +79,7 @@
 
  /** @brief Disable the external oscillator.
   */
- static inline void BatteryBackup_DisableExtOsc(void) __attribute__ ((always_inline));
+ static inline void BatteryBackup_DisableExtOsc(void) __attribute__((always_inline));
  static inline void BatteryBackup_DisableExtOsc(void)
  {
 	 VBAT.CTRL &= ~VBAT_XOSCEN_bm;

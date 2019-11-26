@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega AES encryption module
+ *  File info: Driver for Atmel AVR XMega AES encryption module.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,15 +23,17 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file AES.c
- *  @brief Driver for XMega AES encryption module.
+/** @file Arch/XMega/AES/AES.c
+ *  @brief Driver for Atmel AVR XMega AES encryption module.
  *
- *  This file contains the implementation of the XMega AES driver.
+ *  This file contains the implementation of the Atmel AVR XMega AES driver.
  *
  *  @author Daniel Kampert
  */
 
 #include "Arch/XMega/AES/AES.h"
+
+static uint8_t* __AES_DataPtr;
 
 #ifndef DOXYGEN
 	static struct
@@ -44,7 +46,7 @@
  */
 static void __AES_InterruptHandler(void)
 {
-	// Clear interrupt flag
+	// Clear the interrupt flag
 	AES.STATUS |= AES_SRIF_bm;
 	
 	if(AES_Callbacks.ReadyCallback)
@@ -76,34 +78,28 @@ void AES_RemoveCallback(AES_CallbackType_t Callback)
 	}
 }
 
-const Bool_t AES_GenerateLastSubkey(const uint8_t* Key, uint8_t * SubKey)
+const AES_Error_t AES_GenerateLastSubkey(const uint8_t* Key, uint8_t* SubKey)
 {
-	AES_Reset();
-
-	for(uint8_t i = 0; i < AES_KEYSIZE; i++)
+	for(uint8_t i = 0x00; i < AES_KEYSIZE; i++)
 	{
 		AES.KEY = *(Key++);
 	}
 
-	for(uint8_t i = 0; i < AES_DATASIZE; i++)
+	for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 	{
 		AES.STATE = 0x00;
 	}
 
-	/* 
-		Set module in encryption mode and start it
-	*/
+	// Set module in encryption mode and start it
 	AES_SetEncryptMode();
 	AES_Start();
 
 	while(AES_IsBusy());
 
-	/* 
-		Check for error
-	*/
+	// Check for error
 	if(!(AES.STATUS & AES_ERROR_bm))
 	{
-		for(uint8_t i = 0; i < AES_DATASIZE; i++)
+		for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 		{
 			*(SubKey++) = AES.KEY;
 		}
@@ -114,142 +110,154 @@ const Bool_t AES_GenerateLastSubkey(const uint8_t* Key, uint8_t * SubKey)
 	{
 		AES.STATUS = AES_ERROR_bm;
 
-		return FALSE;
+		return AES_ERROR;
 	}
 	
-	return TRUE;
+	return AES_NO_ERROR;
 }
 
-const Bool_t AES_Encrypt(const volatile uint8_t* Data, volatile uint8_t* EncryptedData, volatile const uint8_t* Key)
-{	
-	for(uint8_t i = 0; i < AES_DATASIZE; i++)
+void AES_Run(uint8_t* Data, const uint8_t* Key, const AES_Direction_t Direction)
+{
+	__AES_DataPtr = Data;
+
+	for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 	{
 		AES.KEY = *(Key++);
 	}
 
-	for(uint8_t i = 0; i < AES_KEYSIZE; i++)
+	for(uint8_t i = 0x00; i < AES_KEYSIZE; i++)
 	{
-		AES.STATE = *(Data++);
+		AES.STATE = *(__AES_DataPtr++);
 	}
 
-	/* 
-		Set the module in encryption mode and start it
-	*/
+	if(Direction == AES_DECRYPT)
+	{
+		AES_SetDecryptMode();
+	}
+	else
+	{
+		AES_SetEncryptMode();
+	}
+
+	__AES_DataPtr = Data;
+
+	AES_Start();
+}
+
+const AES_Error_t AES_Encrypt(const volatile uint8_t* DecryptedData, volatile uint8_t* EncryptedData, volatile const uint8_t* Key)
+{	
+	for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
+	{
+		AES.KEY = *(Key++);
+	}
+
+	for(uint8_t i = 0x00; i < AES_KEYSIZE; i++)
+	{
+		AES.STATE = *(DecryptedData++);
+	}
+
+	// Set the module in encryption mode and start it
 	AES_SetEncryptMode();
 	AES_Start();
 	
 	while(AES_IsBusy());
 
-	/* 
-		Check for error
-	*/
+	// If no error, read data
 	if(!(AES.STATUS & AES_ERROR_bm))
 	{
-		for(uint8_t i = 0; i < AES_DATASIZE; i++)
+		for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 		{
 			*(EncryptedData++) = AES.STATE;
 		}
 		
-		return TRUE;
+		return AES_NO_ERROR;
 	}
 	
-	return FALSE;
+	return AES_ERROR;
 }
 
-const Bool_t AES_Decrypt(const volatile uint8_t* EncryptedData, volatile uint8_t* Data, const volatile uint8_t* Key)
+const AES_Error_t AES_Decrypt(const volatile uint8_t* EncryptedData, volatile uint8_t* DecryptedData, const volatile uint8_t* Key)
 {	
-	for(uint8_t i = 0; i < AES_KEYSIZE; i++)
+	for(uint8_t i = 0x00; i < AES_KEYSIZE; i++)
 	{
 		AES.KEY = *(Key++);
 	}
 
-	for(uint8_t i = 0; i < AES_DATASIZE; i++)
+	for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 	{
 		AES.STATE = *(EncryptedData++);
 	}
 
-	/* 
-		Set module in decryption mode and start it
-	*/
+	// Set module in decryption mode and start it
 	AES_SetDecryptMode();
 	AES_Start();
 
 	while(AES_IsBusy());
 
-	/* 
-		Check for error
-	*/
+	// If no error, read data
 	if(!(AES.STATUS & AES_ERROR_bm))
 	{
 		for(uint8_t i = 0; i < AES_DATASIZE; i++)
 		{
-			*(Data++) = AES.STATE;
+			*(DecryptedData++) = AES.STATE;
 		}
 		
-		return TRUE;
+		return AES_NO_ERROR;
 	}
 
-	return FALSE;
+	return AES_ERROR;
 }
 
-const Bool_t AES_CBC_Encrypt(const volatile uint8_t* Data, volatile uint8_t* EncryptedData, uint8_t* Key, const volatile uint8_t* InitVector, const uint16_t BlockCount)
+const AES_Error_t AES_CBC_Encrypt(const volatile uint8_t* DecryptedData, volatile uint8_t* EncryptedData, uint8_t* Key, const volatile uint8_t* InitVector, const uint16_t BlockCount)
 {
 	uint8_t* KeyTemp;
 
-  	/* 
-	  Use the initialization vector for the first encryption
-	*/
-	for(uint8_t i = 0; i < AES_DATASIZE; i++)
+  	// Use the initialization vector for the first encryption
+	for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 	{
 		AES.STATE = *(InitVector++);
 	}
 
-	/* 
-		Set module in encryption mode, enables the XOR feature and the AUTO start
-	*/
+	// Set module in encryption mode, enables the XOR feature and the AUTO start
 	AES_SetEncryptMode();
 	AES_EnableCBC();
 
-	for(uint8_t Block = 0; Block < BlockCount; Block++)
+	for(uint8_t Block = 0x00; Block < BlockCount; Block++)
 	{
 		KeyTemp = Key;
-		for(uint8_t i = 0; i < AES_KEYSIZE; i++)
+		for(uint8_t i = 0x00; i < AES_KEYSIZE; i++)
 		{
 			AES.KEY = *(KeyTemp++);
 		}
 
-		for(uint8_t i = 0; i < AES_DATASIZE; i++)
+		for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 		{
-			AES.STATE = *(Data++);
+			AES.STATE = *(DecryptedData++);
 		}
 
 		while(AES_IsBusy());
 
-		/* 
-			Check for error
-		*/
+		// If no error, read data
 		if(!(AES.STATUS & AES_ERROR_bm))
 		{
-			for(uint8_t i = 0; i < AES_DATASIZE; i++)
+			for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 			{
 				*(EncryptedData++) = AES.STATE;
 			}
 		}
 		else
 		{
-			return FALSE;
+			return AES_ERROR;
 		}
 	}
 
-	/* 
-		Disable auto mode and XOR feature
-	*/
+	// Disable auto mode and XOR feature
 	AES_DisableCBC();
 
-	return TRUE;
+	return AES_NO_ERROR;
 }
 
-const Bool_t AES_CBC_Decrypt(uint8_t* EncryptedData, volatile uint8_t* Data, uint8_t* volatile Key, const uint8_t* InitVector, const uint16_t BlockCount)
+const AES_Error_t AES_CBC_Decrypt(uint8_t* EncryptedData, volatile uint8_t* DecryptedData, uint8_t* volatile Key, const uint8_t* InitVector, const uint16_t BlockCount)
 {
 	uint8_t* KeyTemp;
 
@@ -257,32 +265,26 @@ const Bool_t AES_CBC_Decrypt(uint8_t* EncryptedData, volatile uint8_t* Data, uin
 	{
 		// Reset the pointer for the key each block
 		KeyTemp = Key;
-		for(uint8_t i = 0; i < AES_KEYSIZE; i++)
+		for(uint8_t i = 0x00; i < AES_KEYSIZE; i++)
 		{
 			AES.KEY = *(KeyTemp++);
 		}
 
-		for(uint8_t i = 0; i < AES_DATASIZE; i++)
+		for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 		{
 			AES.STATE = *(EncryptedData++);
 		}
 
-		/* 
-			Set the module in decryption mode, enable XOR and start it
-		*/
+		// Set the module in decryption mode, enable XOR and start it
 		AES_SetDecryptMode();
 		AES_EnableCBC();
 		
 		while(AES_IsBusy());
 
-		/* 
-			Check for error
-		*/
+		// Check for error
 		if(!(AES.STATUS & AES_ERROR_bm))
 		{
-			/* 
-				Use the initialization vector for the first block
-			*/
+			// Use the initialization vector for the first block
 			if(Block == BlockCount)
 			{
 				for(uint8_t i = 0; i < AES_DATASIZE; i++)
@@ -293,31 +295,29 @@ const Bool_t AES_CBC_Decrypt(uint8_t* EncryptedData, volatile uint8_t* Data, uin
 			else
 			{
 			  	uint8_t* LastBlock = EncryptedData - (AES_DATASIZE << 1);
-				for(uint8_t i = 0; i < AES_DATASIZE; i++)
+				for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 				{
 					AES.STATE = *(LastBlock++);
 				}
 			}
 
-			for(uint8_t i = 0; i < AES_DATASIZE; i++)
+			for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 			{
-				*(Data++) = AES.STATE;
+				*(DecryptedData++) = AES.STATE;
 			}
 			
 			AES.CTRL = AES.CTRL & (~AES_XOR_bm);
 		}
 		else
 		{
-			return FALSE;
+			return AES_ERROR;
 		}
 	}
 	
-	/* 
-		Disable auto mode and XOR feature
-	*/
+	// Disable auto mode and XOR feature
 	AES_DisableCBC();
 
-	return TRUE;
+	return AES_NO_ERROR;
 }
 
 /*
@@ -326,6 +326,15 @@ const Bool_t AES_CBC_Decrypt(uint8_t* EncryptedData, volatile uint8_t* Data, uin
 #ifndef DOXYGEN
 	ISR(AES_INT_vect)
 	{
+		// If no error, read data
+		if(!(AES.STATUS & AES_ERROR_bm))
+		{
+			for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
+			{
+				*(__AES_DataPtr++) = AES.STATE;
+			}
+		}
+		
 		__AES_InterruptHandler();
 	}
 #endif

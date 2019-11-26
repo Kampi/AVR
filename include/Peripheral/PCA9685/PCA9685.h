@@ -33,20 +33,24 @@
 
 #ifndef PCA9685_H_
 #define PCA9685_H_
- 
- #include "Config_PCA9685.h"
+
  #include "Common/Common.h"
  
  /*
 	Architecture specific definitions
  */
- #if(MCU_ARCH == MCU_ARCH_XMEGA)
+ #if(MCU_ARCH == MCU_ARCH_AVR8)
+ 	 #if(MCU_NAME == MCU_NAME_ATMEGA32)
+ 		 #include "Arch/AVR8/megaAVR/GPIO/GPIO.h"
+ 		 #include "Arch/AVR8/megaAVR/I2C/I2C.h"
+	 #else
+		 #error "Invalid CPU for PCA9685!"
+	 #endif 
+
+ #elif(MCU_ARCH == MCU_ARCH_XMEGA)
 	 #include "Arch/XMega/GPIO/GPIO.h"
 	 #include "Arch/XMega/ClockManagement/SysClock.h"
 	 #include "Arch/XMega/I2C/I2C.h"
- #elif(MCU_ARCH == MCU_ARCH_AVR8)
-	 #include "Arch/AVR8/GPIO/GPIO.h"
-	 #include "Arch/AVR8/I2C/I2C.h"
  #else
 	 #error "Architecture not supported for PCA9685!"
  #endif
@@ -61,13 +65,11 @@
 															PCA9685_A0)					/**< PCA9685 I2C PWM controller device address */
  /*\@}*/
 
- /** 
-  * Max time value for PCA9685
+ /** @brief Max timer value for PCA9685.
   */
  #define PCA9685_TIME_RANGE							4096							
 
- /** 
-  * PCA9685 clock sources
+ /** @brief PCA9685 clock sources.
   */
  typedef enum
  {
@@ -75,8 +77,7 @@
 	 PCA9685_CLOCK_EXT = 0x01,						/**< External clock */
  } PCA9685_ClockSource_t;
 
- /** 
-  * PCA9685 output change options
+ /** @brief PCA9685 output change options.
   */
  typedef enum
  {
@@ -84,8 +85,7 @@
 	 PCA9685_OCH_ACK = 0x01,						/**< Output change on ACK */
  } PCA9685_OutputChange_t;
 
- /** 
-  * PCA9685 output drive options
+ /** @brief PCA9685 output drive options.
   */
  typedef enum
  {
@@ -93,8 +93,7 @@
 	 PCA9685_OUTDRV_TP = 0x01,						/**< Totem pole output drive */
  } PCA9685_OutputDrive_t;
 
- /** 
-  * PCA9685 output enable mode
+ /** @brief PCA9685 output enable mode.
   */
  typedef enum
  {
@@ -104,8 +103,7 @@
 	 PCA9685_OUTNE_MODE_2 = 0x02,					/**< OE = 1 -> LEDn = high impedance */
  } PCA9685_OutputEnable_t;
 
- /** 
-  * PCA9685 output channel
+ /** @brief PCA9685 output channels.
   */
  typedef enum
  {

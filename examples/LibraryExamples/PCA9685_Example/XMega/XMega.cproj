@@ -112,12 +112,13 @@
       <Value>MCU_NAME=MCU_NAME_ATXMEGA384C3</Value>
       <Value>MCU_ARCH=MCU_ARCH_XMEGA</Value>
       <Value>MCU_LITTLE_ENDIAN</Value>
+      <Value>CONFIG="Config_PCA9685.h"</Value>
     </ListValues>
   </avrgcc.compiler.symbols.DefSymbols>
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
       <Value>%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\include</Value>
-      <Value>../include</Value>
+      <Value>../../../../../configs</Value>
       <Value>../../../../../include</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
@@ -128,8 +129,14 @@
   <avrgcc.linker.libraries.Libraries>
     <ListValues>
       <Value>libm</Value>
+      <Value>libXMega384C3</Value>
     </ListValues>
   </avrgcc.linker.libraries.Libraries>
+  <avrgcc.linker.libraries.LibrarySearchPaths>
+    <ListValues>
+      <Value>../../../../../lib</Value>
+    </ListValues>
+  </avrgcc.linker.libraries.LibrarySearchPaths>
   <avrgcc.assembler.general.IncludePaths>
     <ListValues>
       <Value>%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\include</Value>
@@ -140,22 +147,7 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="include\Config_PCA9685.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="main.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\Arch\XMega\I2C\I2C.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\Arch\XMega\I2C\I2CM.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\Arch\XMega\I2C\I2CS.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\Arch\XMega\I2C\I2C_Interrupt.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\Peripheral\PCA9685\PCA9685.c">
@@ -163,11 +155,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="include" />
+    <Folder Include="config" />
     <Folder Include="source" />
-    <Folder Include="source\Arch" />
-    <Folder Include="source\Arch\XMega" />
-    <Folder Include="source\Arch\XMega\I2C" />
     <Folder Include="source\Peripheral" />
     <Folder Include="source\Peripheral\PCA9685" />
   </ItemGroup>

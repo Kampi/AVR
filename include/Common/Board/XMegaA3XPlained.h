@@ -56,9 +56,7 @@
  #include "Arch/XMega/USART/USART.h"
  #include "Arch/XMega/RTC32/RTC32.h"
  #include "Arch/XMega/IRCOM/IRCOM.h"
- #include "Arch/XMega/Timer0/Timer0.h"
- #include "Arch/XMega/Timer1/Timer1.h"
- #include "Arch/XMega/Timer2/Timer2.h"
+ #include "Arch/XMega/Timer/Timer.h"
  #include "Arch/XMega/Watchdog/Watchdog.h"
  #include "Arch/XMega/ClockManagement/PLL.h"
  #include "Arch/XMega/ClockManagement/DFLL.h"
@@ -73,10 +71,12 @@
  */
  #include "Peripheral/AnalogSensors.h"
  #include "Peripheral/ST7565R/ST7565R.h"
+ //#include "Peripheral/AT45DB642D/AT45DB642D.h"
  
  /*
 	Services
  */
+ //#include "Common/Services/USB/USB.h"
  #include "Common/Services/SleepManager/SleepManager.h"
  #include "Common/Services/DisplayManager/DisplayManager.h"
 

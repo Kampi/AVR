@@ -27,7 +27,7 @@
  *
  *  This file contains the prototypes and definitions for the SD card driver.
  *
- *  NOTE: Please read the following link if you need more informations about communication with an SD card.
+ *  NOTE: Please check the following link when you need more informations about communication with an SD card.
  *  http://elm-chan.org/docs/mmc/mmc_e.html
  *  http://users.ece.utexas.edu/~valvano/EE345M/SD_Physical_Layer_Spec.pdf
  *
@@ -37,7 +37,7 @@
 
 #ifndef SD_H_
 #define SD_H_
- 
+
  #include "Common/Common.h"
  
  #include "SD_ID.h"
@@ -67,19 +67,16 @@
 	 #define SD_SS							&PORTE, 5
  #endif
 
- /** @ingroup SD
-  *  SD card states */
- /*\@{*/
+ /** @brief SD card states.
+  */
  typedef enum
  {
 	 SD_STATE_INSERT = 0x00,			/**< SD card insert */
 	 SD_STATE_REMOVED = 0x01,			/**< SD card removed */
  } SD_State_t;
- /*\@}*/
 
- /** @ingroup SD
-  * SD card types */
- /*\@{*/
+ /** @brief SD card types.
+  */
  typedef enum
  {
      SD_VER_UNKNOWN = 0x00,				/**< Unknown card type */
@@ -88,11 +85,9 @@
      SD_VER_2_STD = 0x03,				/**< Version 2 SD card with less than 4 GB memory */ 
      SD_VER_2_HI = 0x04,				/**< Version 2 SD card with large memory */ 
  } SD_CardType_t;
- /*\@}*/
 
- /** @ingroup SD
-  * SD speed classes */
- /*\@{*/
+ /** @brief SD speed classes.
+  */
  typedef enum
  {
 	 SD_CLASS_0 = 0x00, 				/**< Class 0 */
@@ -100,11 +95,9 @@
 	 SD_CLASS_4 = 0x02, 				/**< Class 4 */
 	 SD_CLASS_6 = 0x03, 				/**< Class 6 */
  } SD_Class_t;
- /*\@}*/
 
- /** @ingroup SD
-  * SD card communication errors */
- /*\@{*/
+ /** @brief SD card communication errors.
+  */
  typedef enum
  {
 	 SD_SUCCESSFULL			= 0x00,		/**< No error */
@@ -115,12 +108,10 @@
 	 SD_ADDRESS_ERROR		= 0x10,		/**< Address error */
 	 SD_PARAMETER_ERROR		= 0x20,		/**< Parameter error */
  } SD_Error_t; 
- /*\@}*/
-
- /** @ingroup SD
-  * SD card OCR object
-  * NOTE: Please check http://users.ece.utexas.edu/~valvano/EE345M/SD_Physical_Layer_Spec.pdf if you need additional information. */
- /*\@{*/
+ 
+ /** @brief SD card OCR object.
+  *			NOTE: Please check http://users.ece.utexas.edu/~valvano/EE345M/SD_Physical_Layer_Spec.pdf if you need additional information.
+  */
  typedef struct  
  {
 	 uint8_t Busy:1;					/**< Busy flag 
@@ -152,12 +143,10 @@
 	 uint8_t Vcc17:1;					/**< Vdd 1.7 - 1.6 V */
 	 uint8_t Reserved1:4;				/**< Reserved */ 
  } __attribute__((packed)) SD_OCR_t;
- /*\@}*/
 
- /** @ingroup SD
-  * SD card CID object
-  * NOTE: Please check http://users.ece.utexas.edu/~valvano/EE345M/SD_Physical_Layer_Spec.pdf if you need additional information. */
- /*\@{*/
+ /** @brief SD card CID object.
+  *			NOTE: Please check http://users.ece.utexas.edu/~valvano/EE345M/SD_Physical_Layer_Spec.pdf if you need additional information.
+  */
  typedef struct  
  {
 	 uint8_t MID;						/**< Manufacturer ID */ 
@@ -170,12 +159,10 @@
 	 uint8_t CRC0:6;					/**< CRC */ 
 	 uint8_t Reserved1:1;				/**< Reserved */ 
  } __attribute__((packed)) SD_CID_t;
- /*\@}*/
-
- /** @ingroup SD
-  * SD card CSD object
-  * NOTE: Please check http://users.ece.utexas.edu/~valvano/EE345M/SD_Physical_Layer_Spec.pdf if you need additional information. */
- /*\@{*/
+ 
+ /** @brief SD card CSD object.
+  *			NOTE: Please check http://users.ece.utexas.edu/~valvano/EE345M/SD_Physical_Layer_Spec.pdf if you need additional information.
+  */
  typedef struct  
  {
 	 uint8_t CSD_STRUCTURE:2;			/**< CSD structure */
@@ -215,12 +202,10 @@
 	 uint8_t CHECK:7;					/**< CRC checksum */	 
 	 uint8_t Reserved5:1;				/**< Reserved */
  } __attribute__((packed)) SD_CSD_t;
- /*\@}*/
 
- /** @ingroup SD
-  * SD card status object
-  * NOTE: Please check http://users.ece.utexas.edu/~valvano/EE345M/SD_Physical_Layer_Spec.pdf if you need additional information. */
- /*\@{*/
+ /** @brief SD card status object.
+  *			NOTE: Please check http://users.ece.utexas.edu/~valvano/EE345M/SD_Physical_Layer_Spec.pdf if you need additional information.
+  */
  typedef struct  
  {
 	 uint8_t DAT_BUS_WIDTH:2;			/**< Data bus width 
@@ -248,7 +233,6 @@
 	 uint8_t Zero[11];					/**< All zero */
 	 uint8_t Reserved3[39];				/**< Reserved for manufacturer */
  } __attribute__((packed)) SD_Status_t;
- /*\@}*/
 
  /** @brief	Macro to convert a SD command ID into a SD card command.
  */

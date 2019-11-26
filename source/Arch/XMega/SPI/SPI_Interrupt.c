@@ -34,7 +34,7 @@
 #include "Arch/XMega/SPI/SPI.h"
 
 #ifndef DOXYGEN
-	struct
+	extern struct
 	{
 		SPI_Callback_t CompleteInterrupt;
 		SPI_Callback_t ErrorCallback;

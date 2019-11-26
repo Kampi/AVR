@@ -33,7 +33,6 @@
 #ifndef AD5933_H_
 #define AD5933_H_
 
- #include "Config_AD5933.h"
  #include "Common/Common.h"
  
  /*
@@ -41,7 +40,6 @@
  */
  #if(MCU_ARCH == MCU_ARCH_XMEGA)
 	 #include "Arch/XMega/GPIO/GPIO.h"
-	 #include "Arch/XMega/ClockManagement/SysClock.h"
 	 #include "Arch/XMega/I2C/I2C.h"
  #elif(MCU_ARCH == MCU_ARCH_AVR8)
 	 #include "Arch/AVR8/GPIO/GPIO.h"
@@ -50,18 +48,16 @@
 	  #error "Architecture not supported for AD5933!"
  #endif
 
- /** 
-  * AD5933 clock frequency
+ /** @ingroup I2C-Addresses */
+ /*\@{*/
+	 #define AD5933_ADDRESS					0x0D		/**< AD5933 I2C impedance converter device address */
+ /*\@}*/
+
+ /** @brief AD5933 clock frequency.
   */
  #define AD5933_MCLK						16.000f
 
- /** @ingroup I2C-Addresses */
- /*\@{*/
-	 #define AD5933_ADDRESS					0x0D																							/**< AD5933 I2C impedance converter device address */
- /*\@}*/
-
- /** 
-  * AD5933 output voltages
+ /** @brief AD5933 output voltages.
   */
  typedef enum
  {
@@ -71,8 +67,7 @@
 	AD5933_OUTPUT_1V	= 0x03, 						/**< 1 V p-p */
  } AD5933_OutputVoltage_t;
  
- /** 
-  * AD5933 input gain
+ /** @brief AD5933 input gain.
   */
  typedef enum
  {
@@ -80,8 +75,7 @@
 	AD5933_GAIN_1 = 0x01,								/**< Gain x1 */
  } AD5933_Gain_t;
 
- /** 
-  * AD5933 device modes
+ /** @brief AD5933 device modes.
   */
  typedef enum
  {
@@ -95,8 +89,7 @@
 	AD5933_MODE_STANDBY			= 0x0B,					/**< Standby */
  } AD5933_Mode_t;
 
- /** 
-  * AD5933 clock sources
+ /** @brief AD5933 clock sources.
   */
  typedef enum
  {
@@ -104,8 +97,7 @@
 	AD5933_CLOCK_EXT = 0x01,							/**< External oscillator */
  } AD5933_Clock_t;
 
- /** 
-  * AD5933 settling time multiplier
+ /** @brief AD5933 settling time multiplier.
   */
  typedef enum
  {
@@ -114,8 +106,7 @@
 	AD5933_SETTLING_X4 = 0x03,							/**< Settling time x4 */
  } AD5933_SettlingMultiplier_t;
 
- /** 
-  * AD5933 calibration point definition
+ /** @brief AD5933 calibration point object.
   */
  typedef struct 
  {
@@ -123,8 +114,7 @@
 	 float Phase;										/**< Value for the phase in radians */
  } AD5933_CalPoint_t;
 
- /** 
-  * AD5933 data point
+ /** @brief AD5933 data point object.
   */
  typedef struct 
  {
@@ -132,8 +122,7 @@
 	 float Phase;										/**< Phase in radians */
  } AD5933_DataPoint_t;
 
- /** 
-  * AD5933 frequency sweep configuration object
+ /** @brief AD5933 frequency sweep configuration object.
   */
  typedef struct
  {
@@ -144,8 +133,7 @@
 	 AD5933_SettlingMultiplier_t Mult;	 				/**< Settling multiplier */
  } AD5933_SweepSetup_t;
 
- /** 
-  * AD5933 single frequency configuration object
+ /** @brief AD5933 single step frequency configuration object.
   */
  typedef struct
  {
@@ -154,8 +142,7 @@
 	 AD5933_SettlingMultiplier_t Mult;	 				/**< Settling multiplier */
  } AD5933_SingleFrequency_t;
 
- /** 
-  * AD5933 device configuration object
+ /** @brief AD5933 device configuration object.
   */
  typedef struct
  {

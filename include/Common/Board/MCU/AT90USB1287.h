@@ -34,11 +34,6 @@
  #include "Definitions.h"
 
  /*
-	 Main clock
- */
- #define F_CPU											8000000UL					/**< MCU clock frequency */
-
- /*
 	ADC
  */
  #define ADC_DEVICES									1							/**< ADC device count in MCU */
@@ -50,7 +45,6 @@
  */
  #define SPI_PORT										&PORTB						/**< SPI port */
  #define SPI_DEVICES									1							/**< SPI device count in MCU */
- #define SPI_BUFFER_SIZE								32							/**< Size of SPI buffer in bytes */
  #define SPI_SS_PIN										0							/**< Pin number of SPI SS pin */
  #define SPI_MOSI_PIN									2							/**< Pin number of SPI MOSI pin */
  #define SPI_MISO_PIN									3							/**< Pin number of SPI MISO pin */

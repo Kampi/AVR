@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega DAC
+ *  File info: Driver for Atmel AVR XMega DAC module.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,9 +23,9 @@
  */
 
 /** @file Arch/XMega/DAC/DAC.h
- *  @brief Driver for XMega DAC module.
+ *  @brief Driver for Atmel AVR XMega DAC module.
  *
- *  This file contains the prototypes and definitions for the XMega DAC driver.
+ *  This file contains the prototypes and definitions for the Atmel AVR XMega DAC driver.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs
@@ -34,79 +34,68 @@
 #ifndef DAC_H_
 #define DAC_H_
 
- #include "Board.h"
  #include "Common/Common.h"
 
- #ifndef REFERENCE_VOLTAGE
-	#define REFERENCE_VOLTAGE				DEFAULT_REFERENCE_VOLTAGE
-	#warning "No DAC reference defined!"
- #endif
-
- /** 
-  * DAC channels
+ /** @brief	DAC channels.
   */
  typedef enum
  {
-	DAC_CHANNEL_0 = 0x01,				/**< DAC channel 0 */ 
-	DAC_CHANNEL_1 = 0x02,				/**< DAC channel 1 */ 
-	DAC_CHANNEL_INT = 0x04,				/**< Internal DAC channel for the ADC or the AC */ 
+	DAC_CHANNEL_0 = 0x01,				/**< DAC channel 0 */
+	DAC_CHANNEL_1 = 0x02,				/**< DAC channel 1 */
+	DAC_CHANNEL_INT = 0x04,				/**< Internal DAC channel for the ADC or the AC */
  } DAC_Channel_t;
 
- /** 
-  * DAC channel configuration
+ /** @brief	DAC channel configuration.
   */
  typedef enum
  {
-	 DAC_SINGLE_CHANNEL_0 = 0x00,		/**< Use channel 0 only */ 
-	 DAC_SINGLE_CHANNEL_1 = 0x01,		/**< Use channel 1 only */ 
-	 DAC_DUAL_CHANNEL = 0x02			/**< Use both channels */ 
+	 DAC_SINGLE_CHANNEL_0 = 0x00,		/**< Use channel 0 only */
+	 DAC_SINGLE_CHANNEL_1 = 0x01,		/**< Use channel 1 only */
+	 DAC_DUAL_CHANNEL = 0x02			/**< Use both channels */
  } DAC_OutputConfig_t;
 
- /** 
-  * DAC channel data adjustment
+ /** @brief	DAC channel data adjustment.
   */
  typedef enum
  {
-	 DAC_ADJUST_RIGHT = 0x00,			/**< Adjustment right */ 
-	 DAC_ADJUST_LEFT = 0x01,			/**< Adjustment left */ 
+	 DAC_ADJUST_RIGHT = 0x00,			/**< Adjustment right */
+	 DAC_ADJUST_LEFT = 0x01,			/**< Adjustment left */
  } DAC_Adjustment_t;
 
- /** 
-  * DAC reference voltage
+ /** @brief	DAC reference voltage.
   */
  typedef enum
  {
-	 DAC_REFERENCE_INT1V = 0x00,		/**< Internal 1 V reference */ 
-	 DAC_REFERENCE_AVCC = 0x01,			/**< Use AVCC pin as reference */ 
-	 DAC_REFERENCE_AREFA = 0x02,		/**< Port A reference */ 
-	 DAC_REFERENCE_AREFB = 0x03,		/**< Port B reference */ 
+	 DAC_REFERENCE_INT1V = 0x00,		/**< Internal 1 V reference */
+	 DAC_REFERENCE_AVCC = 0x01,			/**< Use AVCC pin as reference */
+	 DAC_REFERENCE_AREFA = 0x02,		/**< Port A reference */
+	 DAC_REFERENCE_AREFB = 0x03,		/**< Port B reference */
  } DAC_Reference_t;
 
- /** 
-  * DAC event inputs
+ /** @brief	DAC event inputs.
   */
  typedef enum
  {
-	 DAC_EVENT_0 = 0x00,			/**< Event channel 0 inputs */
-	 DAC_EVENT_1 = 0x01,			/**< Event channel 1 inputs */
-	 DAC_EVENT_2 = 0x02,			/**< Event channel 2 inputs */
-	 DAC_EVENT_3 = 0x03,			/**< Event channel 3 inputs */
-	 DAC_EVENT_4 = 0x04,			/**< Event channel 4 inputs */
-	 DAC_EVENT_5 = 0x05,			/**< Event channel 5 inputs */
-	 DAC_EVENT_6 = 0x06,			/**< Event channel 6 inputs */
-	 DAC_EVENT_7 = 0x07,			/**< Event channel 7 inputs */
+	 DAC_EVENT_0 = 0x00,				/**< Event channel 0 inputs */
+	 DAC_EVENT_1 = 0x01,				/**< Event channel 1 inputs */
+	 DAC_EVENT_2 = 0x02,				/**< Event channel 2 inputs */
+	 DAC_EVENT_3 = 0x03,				/**< Event channel 3 inputs */
+	 DAC_EVENT_4 = 0x04,				/**< Event channel 4 inputs */
+	 DAC_EVENT_5 = 0x05,				/**< Event channel 5 inputs */
+	 DAC_EVENT_6 = 0x06,				/**< Event channel 6 inputs */
+	 DAC_EVENT_7 = 0x07,				/**< Event channel 7 inputs */
  } DAC_EventChannel_t;
 
- /** 
-  * DAC configuration object
+ /** @brief	DAC configuration object.
   */
  typedef struct
  {
-	DAC_t* Device;						/**< Pointer to DAC object */ 
-	DAC_Channel_t Channel;				/**< DAC channel */ 
-	DAC_OutputConfig_t OutputConfig;	/**< Channel selection */ 
-	DAC_Adjustment_t Adjustment;		/**< DAC data adjustment */ 
-	DAC_Reference_t Reference;			/**< Reference voltage */ 
+	DAC_t* Device;						/**< Pointer to DAC object */
+	DAC_Channel_t Channel;				/**< DAC channel */
+	DAC_OutputConfig_t OutputConfig;	/**< Channel selection */
+	DAC_Adjustment_t Adjustment;		/**< DAC data adjustment */
+	DAC_Reference_t Reference;			/**< Reference voltage */
+	float RefVoltage;					/**< Reference voltage in [V] */
  } DAC_Config_t;
 
  /** @brief			Start the AES module.
@@ -174,6 +163,11 @@
   *  @param Reference	Reference
   */
  void DAC_SetReference(DAC_t* Device, const DAC_Reference_t Reference);
+
+ /** @brief				Set the voltage devider value.
+  *  @param Reference	Reference voltage in [V]
+  */
+ void DAC_SetVoltageDivider(const float Reference);
  
  /** @brief			Get the reference for DAC module.
   *  @param Device	Pointer to DAC object
@@ -199,12 +193,6 @@
   *  @param Value	Output value in binary format
   */
  void DAC_WriteChannel(DAC_t* Device, const DAC_Channel_t Channel, const uint16_t Value);
- 
- /** @brief			Get the configuration of a DAC module.
-  *  @param Config	Pointer to DAC configuration object
-  *  @param Device	Pointer to DAC object
-  */
- void DAC_GetConfig(DAC_Config_t* Config, DAC_t* Device);
  
  /** @brief			Set the output voltage of a DAC module.
   *  @param Device	Pointer to DAC object

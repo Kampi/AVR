@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega DMA
+ *  File info: Driver for Atmel AVR XMega DMA controller.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,9 +23,9 @@
  */
 
 /** @file Arch/XMega/DMA/DMA.h
- *  @brief Driver for XMega direct memory access controller.
+ *  @brief Driver for Atmel AVR XMega DMA controller.
  *
- *  This file contains the prototypes and definitions for the XMega DMA driver.
+ *  This file contains the prototypes and definitions for the Atmel AVR XMega DMA driver.
  *
  *  @author Daniel Kampert
  *  @bug - Event mode
@@ -44,18 +44,15 @@
  */
  typedef void (*DMA_Callback_t)(uint8_t Channel);
 
- /** 
-  * DMA source buffer
+ /** @brief DMA source buffer.
   */
  typedef volatile uint8_t DMA_SourceBuffer[DMA_BUFFER_SIZE];
  
- /** 
-  * DMA destination buffer
+ /** @brief DMA destination buffer.
   */
  typedef volatile uint8_t DMA_DestinationBuffer[DMA_BUFFER_SIZE];
 
- /** 
-  * DMA callback types
+ /** @brief DMA callback types.
   */
  typedef enum
  {
@@ -63,8 +60,7 @@
 	DMA_ERROR_INTERRUPT = 0x02,				/**< DMA error interrupt */ 
  } DMA_CallbackType_t;
 
- /** 
-  * DMA burst length
+ /** @brief DMA burst length.
   */
  typedef enum
  {
@@ -74,8 +70,7 @@
 	 DMA_BURSTLENGTH_8 = 0x03,				/**< Burst length 8 byte */ 
  } DMA_BurstLength_t;
 
- /** 
-  * DMA double buffer setting
+ /** @brief DMA double buffer setting.
   */
  typedef enum
  {
@@ -85,8 +80,7 @@
 	 DMA_DOUBLEBUFFER_BOOTH = 0x03,			/**< Double buffer enabled for channel 0/1 and 2/3  */ 
  } DMA_BufferMode_t;
 
- /** 
-  * DMA channel priority
+ /** @brief DMA channel priority.
   */
  typedef enum
  {
@@ -96,8 +90,7 @@
 	 DMA_PRIORITY_CH0123 = 0x03,			/**< Channel 0 > Channel 1 > Channel 2 > Channel 3 */ 
  } DMA_Priority_t;
  
- /** 
-  * DMA trigger sources
+ /** @brief DMA trigger sources.
   */
  typedef enum
  {	
@@ -188,8 +181,7 @@
 	DMA_TRIGGER_USARTF1_DRE = 0xAF,			/**<  */ 
  } DMA_TriggerSource_t;
 
- /** 
-  * DMA address reload mode
+ /** @brief DMA address reload modes.
   */
  typedef enum
  {
@@ -199,8 +191,7 @@
 	 DMA_ADDRESS_RELOAD_TRANSACTION = 0x03, /**< Reload after transaction */ 
  } DMA_AddressReload_t;
  
- /** 
-  * DMA address mode
+ /** @brief DMA address modes.
   */
  typedef enum
  {
@@ -209,8 +200,7 @@
 	DMA_ADDRESS_MODE_DEC = 0x02,			/**< Decrease address */ 
  } DMA_AddressMode_t;
 
- /** 
-  * DMA controller configuration
+ /** @brief DMA controller configuration object.
   */
  typedef struct
  {
@@ -218,8 +208,7 @@
 	DMA_Priority_t Priority;				/**< DMA controller channel priority */ 
  } DMA_Config_t;
 
- /** 
-  * DMA interrupt configuration object
+ /** @brief DMA interrupt configuration object.
   */
  typedef struct
  {
@@ -229,8 +218,7 @@
 	 DMA_Callback_t Callback;				/**< Function pointer to DMA callback */
  } DMA_InterruptConfig_t;
 
- /** 
-  * DMA channel configuration
+ /** @brief DMA channel configuration object.
   */
  typedef struct
  {
@@ -249,25 +237,25 @@
 	 uintptr_t DstAddress;					/**< Destination address */ 
  } DMA_TransferConfig_t;
 
- /** @brief				Enable the DMA controller.
+ /** @brief	Enable the DMA controller.
   */
- static inline void DMA_Enable(void) __attribute__ ((always_inline)); 
+ static inline void DMA_Enable(void) __attribute__((always_inline)); 
  static inline void DMA_Enable(void)
  {
 	 DMA.CTRL |= DMA_ENABLE_bm;
  }
 
- /** @brief				Disable the DMA controller.
+ /** @brief	Disable the DMA controller.
   */
- static inline void DMA_Disable(void) __attribute__ ((always_inline)); 
+ static inline void DMA_Disable(void) __attribute__((always_inline)); 
  static inline void DMA_Disable(void)
  {
 	 DMA.CTRL &= ~DMA_ENABLE_bm;
  }
 
- /** @brief				Reset the DMA controller.
+ /** @brief	Reset the DMA controller.
   */
- static inline void DMA_Reset(void) __attribute__ ((always_inline)); 
+ static inline void DMA_Reset(void) __attribute__((always_inline)); 
  static inline void DMA_Reset(void)
  {
 	 DMA_Disable();
@@ -277,37 +265,37 @@
 	 DMA_Enable();
  }
 
- /** @brief				Read the status register.
-  *  @return			Content of the status register
+ /** @brief		Read the status register.
+  *  @return	Content of the status register
   */
- static inline uint8_t DMA_ReadStatus(void) __attribute__ ((always_inline)); 
+ static inline uint8_t DMA_ReadStatus(void) __attribute__((always_inline)); 
  static inline uint8_t DMA_ReadStatus(void)
  {
 	 return DMA.INTFLAGS;
  }
 
- /** @brief				Write the status register.
-  *  @param Status		Content for the status register
+ /** @brief			Write the status register.
+  *  @param Status	Content for the status register
   */
- static inline void DMA_WriteStatus(const uint8_t Status) __attribute__ ((always_inline)); 
+ static inline void DMA_WriteStatus(const uint8_t Status) __attribute__((always_inline)); 
  static inline void DMA_WriteStatus(const uint8_t Status)
  {
 	 DMA.INTFLAGS = Status;
  }
 
- /** @brief				Set the buffer mode of the DMA controller.
-  *  @param Status		Double buffer mode
+ /** @brief			Set the buffer mode of the DMA controller.
+  *  @param Status	Double buffer mode
   */
- static inline void DMA_SetBufferMode(const DMA_BufferMode_t DoubleBuffer) __attribute__ ((always_inline)); 
+ static inline void DMA_SetBufferMode(const DMA_BufferMode_t DoubleBuffer) __attribute__((always_inline)); 
  static inline void DMA_SetBufferMode(const DMA_BufferMode_t DoubleBuffer)
  {
 	 DMA.CTRL = (DMA.CTRL & (~(DoubleBuffer << 0x02))) | (DoubleBuffer << 0x02);
  }
 
- /** @brief				Get the buffer mode of the DMA controller.
-  *  @return			Double buffer mode
+ /** @brief		Get the buffer mode of the DMA controller.
+  *  @return	Double buffer mode
   */
- static inline const DMA_BufferMode_t DMA_GetDBufferMode(void) __attribute__ ((always_inline)); 
+ static inline const DMA_BufferMode_t DMA_GetDBufferMode(void) __attribute__((always_inline)); 
  static inline const DMA_BufferMode_t DMA_GetDBufferMode(void)
  {
 	 return ((DMA.CTRL & 0x0C) >> 0x02);
@@ -316,25 +304,25 @@
  /** @brief				Set the channel priority of the DMA controller.
   *  @param Priority	Channel priority
   */
- static inline void DMA_SetChannelPriorityMode(const DMA_Priority_t Priority) __attribute__ ((always_inline)); 
+ static inline void DMA_SetChannelPriorityMode(const DMA_Priority_t Priority) __attribute__((always_inline)); 
  static inline void DMA_SetChannelPriorityMode(const DMA_Priority_t Priority)
  {
 	 DMA.CTRL = (DMA.CTRL & (~Priority)) | Priority;
  }
 
- /** @brief				Get the channel priority of the DMA controller.
-  *  @return			Channel priority
+ /** @brief		Get the channel priority of the DMA controller.
+  *  @return	Channel priority
   */
- static inline const DMA_Priority_t DMA_GetChannelPriorityMode(void) __attribute__ ((always_inline)); 
+ static inline const DMA_Priority_t DMA_GetChannelPriorityMode(void) __attribute__((always_inline)); 
  static inline const DMA_Priority_t DMA_GetChannelPriorityMode(void)
  {
 	 return (DMA.CTRL & 0x03);
  }
 
- /** @brief				Initialize the DMA controller.
-  *  @param Config		Pointer to configuration struct
+ /** @brief			Initialize the DMA controller.
+  *  @param Config	Pointer to configuration struct
   */
- static inline void DMA_Init(DMA_Config_t* Config) __attribute__ ((always_inline));
+ static inline void DMA_Init(DMA_Config_t* Config) __attribute__((always_inline));
  static inline void DMA_Init(DMA_Config_t* Config)
  {
 	 DMA_PowerEnable();
@@ -344,33 +332,33 @@
 	 DMA_Enable();
  }
 
- /** @brief				Get the configuration of the DMA controller.
-  *  param Config		Pointer to configuration struct
+ /** @brief			Get the configuration of the DMA controller.
+  *  param Config	Pointer to configuration struct
   */
- static inline void DMA_GetConfig(DMA_Config_t* Config) __attribute__ ((always_inline));
+ static inline void DMA_GetConfig(DMA_Config_t* Config) __attribute__((always_inline));
  static inline void DMA_GetConfig(DMA_Config_t* Config)
  {
 	 Config->BufferMode = DMA_GetDBufferMode();
 	 Config->Priority = DMA_GetChannelPriorityMode();
  }
  
- /** @brief				Get the configuration of the DMA controller.
-  *  param Config		Pointer to configuration struct
+ /** @brief			Get the configuration of the DMA controller.
+  *  param Config	Pointer to configuration struct
   */
  void DMA_Channel_Reset(DMA_CH_t* Channel);
  
- /** @brief				Get the configuration of the DMA controller.
-  *  param Config		Pointer to configuration struct
+ /** @brief			Get the configuration of the DMA controller.
+  *  param Config	Pointer to configuration struct
   */
  void DMA_Channel_Enable(DMA_CH_t* Channel);
  
- /** @brief				Get the configuration of the DMA controller.
-  *  param Config		Pointer to configuration struct
+ /** @brief			Get the configuration of the DMA controller.
+  *  param Config	Pointer to configuration struct
   */
  void DMA_Channel_SwitchRepeatMode(DMA_CH_t* Channel, Bool_t RepeatMode);
  
- /** @brief				Get the configuration of the DMA controller.
-  *  param Config		Pointer to configuration object
+ /** @brief			Get the configuration of the DMA controller.
+  *  param Config	Pointer to configuration object
   */
  void DMA_Channel_Disable(DMA_CH_t* Channel);
  
@@ -381,8 +369,8 @@
   */
  void DMA_Channel_ChangeInterruptLevel(DMA_CH_t* Channel, DMA_CallbackType_t Callback, Interrupt_Level_t InterruptLevel);
  
- /** @brief				Install a new DMA callback.
-  *  @param Config		Pointer to interrupt configuration
+ /** @brief			Install a new DMA callback.
+  *  @param Config	Pointer to interrupt configuration
   */
  void DMA_Channel_InstallCallback(DMA_InterruptConfig_t* Config);
  
@@ -392,8 +380,8 @@
   */
  void DMA_Channel_RemoveCallback(DMA_CH_t* Channel, DMA_CallbackType_t Callback);
  
- /** @brief				Configure a DMA channel.
-  *  param Config		Pointer to channel configuration object
+ /** @brief			Configure a DMA channel.
+  *  param Config	Pointer to channel configuration object
   */
  void DMA_Channel_Config(DMA_TransferConfig_t* Config);
  
@@ -421,39 +409,39 @@
   */
  void DMA_Channel_SwitchSingleShot(DMA_CH_t* Channel, Bool_t SingleShot);
 
- /** @brief				Set the source reload mode of a channel.
-  *  param Channel		Pointer to DMA channel object
-  *  param Mode			Reload mode
+ /** @brief			Set the source reload mode of a channel.
+  *  param Channel	Pointer to DMA channel object
+  *  param Mode		Reload mode
   */
  void DMA_Channel_SetSrcReloadMode(DMA_CH_t* Channel, DMA_AddressReload_t Mode);
  
- /** @brief				Get the destination reload mode of a channel.
-  *  param Channel		Pointer to DMA channel object
-  *  param Mode			Reload mode
+ /** @brief			Get the destination reload mode of a channel.
+  *  param Channel	Pointer to DMA channel object
+  *  param Mode		Reload mode
   */
  void DMA_Channel_SetDestReloadMode(DMA_CH_t* Channel, DMA_AddressReload_t Mode);
  
- /** @brief				Set the source addressing mode of a channel.
-  *  param Channel		Pointer to DMA channel object
-  *  param Mode			Addressing mode
+ /** @brief			Set the source addressing mode of a channel.
+  *  param Channel	Pointer to DMA channel object
+  *  param Mode		Addressing mode
   */
  void DMA_Channel_SetDestAddressingMode(DMA_CH_t* Channel, DMA_AddressMode_t Mode);
  
- /** @brief				Set the destination addressing mode of a channel.
-  *  param Channel		Pointer to DMA channel object
-  *  param Mode			Addressing mode
+ /** @brief			Set the destination addressing mode of a channel.
+  *  param Channel	Pointer to DMA channel object
+  *  param Mode		Addressing mode
   */
  void DMA_Channel_SetSrcAddressingMode(DMA_CH_t* Channel, DMA_AddressMode_t Mode);
  
- /** @brief				Set the source address of a channel.
-  *  param Channel		Pointer to DMA channel object
-  *  param Address		Source address
+ /** @brief			Set the source address of a channel.
+  *  param Channel	Pointer to DMA channel object
+  *  param Address	Source address
   */
  void DMA_Channel_SetSrcAddress(DMA_CH_t* Channel, uintptr_t Address);
  
- /** @brief				Set the destination address of a channel.
-  *  param Channel		Pointer to DMA channel object
-  *  param Address		Destination address
+ /** @brief			Set the destination address of a channel.
+  *  param Channel	Pointer to DMA channel object
+  *  param Address	Destination address
   */
  void DMA_Channel_SetDestAddress(DMA_CH_t* Channel, uintptr_t Address);
  
@@ -463,13 +451,13 @@
   */
  void DMA_Channel_SetTriggerSource(DMA_CH_t* Channel, DMA_TriggerSource_t TriggerSource);
  
- /** @brief				Start a DMA transfer with the given channel.
-  *  param Channel		Pointer to DMA channel object
+ /** @brief			Start a DMA transfer with the given channel.
+  *  param Channel	Pointer to DMA channel object
   */
  void DMA_Channel_StartTransfer(DMA_CH_t* Channel);
  
- /** @brief				Repeat the last transfer.
-  *  param Channel		Pointer to DMA channel object
+ /** @brief			Repeat the last transfer.
+  *  param Channel	Pointer to DMA channel object
   */
  void DMA_Channel_RepeatTransfer(DMA_CH_t* Channel);
 

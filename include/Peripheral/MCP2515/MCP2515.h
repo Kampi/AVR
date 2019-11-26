@@ -35,7 +35,6 @@
 #ifndef MCP2515_H_
 #define MCP2515_H_
 
- #include "Config_MCP2515.h"
  #include "Common/Common.h"
 
  #if(!defined MCP2515_INT)
@@ -49,8 +48,13 @@
  #endif
 
  #if(MCU_ARCH == MCU_ARCH_AVR8)
-	#include "Arch/AVR8/GPIO/GPIO.h"
-	#include "Arch/AVR8/SPI/SPI.h"
+	 #if(MCU_NAME == MCU_NAME_ATMEGA32)
+		 #include "Arch/AVR8/megaAVR/GPIO/GPIO.h"
+		 #include "Arch/AVR8/megaAVR/SPI/SPI.h"
+	 #else
+		 #error "Invalid CPU for MCP2515!"
+	 #endif
+
  #elif(MCU_ARCH == MCU_ARCH_XMEGA)
 	 #include "Arch/XMega/GPIO/GPIO.h"
 	 #if(MCP2515_INTERFACE_TYPE == INTERFACE_USART_SPI)
@@ -66,8 +70,7 @@
 
  #define MCP2515_MAX_DATABYTES		8					/**< Max. data bytes per message */
 
- /** 
-  * MCP2515 error codes
+ /** @brief MCP2515 error codes.
   */
  typedef enum
  {
@@ -76,8 +79,7 @@
 	MCP2515_TX_BUFFER_FULL = -2,						/**< Transmit buffer full */
  } MCP2515_ErrorCode_t;
 
- /** 
-  * MCP2515 clock out prescaler
+ /** @brief MCP2515 clock out prescaler.
   */
  typedef enum
  {
@@ -87,8 +89,7 @@
 	 MCP2515_CLOCKOUT_8 = 0x03,							/**< Prescaler 8 */
  } MCP2515_ClockOutPrescaler_t;
 
- /** 
-  * MCP2515 synchronization jump width length
+ /** @brief MCP2515 synchronization jump width length.
   */
  typedef enum
  {
@@ -98,85 +99,77 @@
 	 MCP2515_SJW_4 = 0x03,								/**< 4 x Tq */
  } MCP2515_SJW_t;
 
- /** 
-  * MCP2515 modes
+ /** @brief MCP2515 device modes.
   */
  typedef enum
  {
-	MCP2515_NORMAL_MODE = 0x00,							/**< Normal mode */ 
-	MCP2515_SLEEP_MODE = 0x01,							/**< Sleep mode */ 
-	MCP2515_LOOPBACK_MODE = 0x02,						/**< Loop back mode */ 
-	MCP2515_LISTEN_ONLY_MODE = 0x03,					/**< Listen only mode */ 
-	MCP2515_CONFIG_MODE = 0x04,							/**< Configuration mode */ 
+	MCP2515_NORMAL_MODE = 0x00,							/**< Normal mode */
+	MCP2515_SLEEP_MODE = 0x01,							/**< Sleep mode */
+	MCP2515_LOOPBACK_MODE = 0x02,						/**< Loop back mode */
+	MCP2515_LISTEN_ONLY_MODE = 0x03,					/**< Listen only mode */
+	MCP2515_CONFIG_MODE = 0x04,							/**< Configuration mode */
  } MCP2515_DeviceMode_t;
 
- /** 
-  * MCP2515 message priorities
+ /** @brief MCP2515 message priorities.
   */
  typedef enum
  {
-	MCP2515_PRIO_LOWEST		= 0x00,						/**< Lowest priority */ 
-	MCP2515_PRIO_LOW		= 0x01,						/**< Low priority */ 
-	MCP2515_PRIO_HIGH		= 0x02,						/**< High priority */ 
-	MCP2515_PRIO_HIGHEST	= 0x03,						/**< Highest priority */ 
+	MCP2515_PRIO_LOWEST		= 0x00,						/**< Lowest priority */
+	MCP2515_PRIO_LOW		= 0x01,						/**< Low priority */
+	MCP2515_PRIO_HIGH		= 0x02,						/**< High priority */
+	MCP2515_PRIO_HIGHEST	= 0x03,						/**< Highest priority */
  } MCP2515_MessagePriority_t;
 
- /** 
-  * MCP2515 filter configuration
+ /** @brief MCP2515 filter configuration.
   */
  typedef enum
  {
-	MCP2515_FILTER_RECEIVE_ALL = 0x00,					/**< Receive all */ 
-	MCP2515_FILTER_RECEIVE_STD = 0x01,					/**< Receive only standard messages */ 
-	MCP2515_FILTER_RECEIVE_EXT = 0x02,					/**< Receive only extended messages */ 
-	MCP2515_FILTER_OFF = 0x03,							/**< Filter off */ 
+	MCP2515_FILTER_RECEIVE_ALL = 0x00,					/**< Receive all */
+	MCP2515_FILTER_RECEIVE_STD = 0x01,					/**< Receive only standard messages */
+	MCP2515_FILTER_RECEIVE_EXT = 0x02,					/**< Receive only extended messages */
+	MCP2515_FILTER_OFF = 0x03,							/**< Filter off */
  } MCP2515_FilterRule_t;
 
- /** 
-  * MCP2515 transmit buffer
+ /** @brief MCP2515 transmit buffer.
   */
  typedef enum
  {
-	MCP2515_TX0 = 0x01,									/**< Transmit buffer 0 */ 
-	MCP2515_TX1 = 0x02,									/**< Transmit buffer 1 */ 
-	MCP2515_TX2 = 0x04,									/**< Transmit buffer 2 */ 
+	MCP2515_TX0 = 0x01,									/**< Transmit buffer 0 */
+	MCP2515_TX1 = 0x02,									/**< Transmit buffer 1 */
+	MCP2515_TX2 = 0x04,									/**< Transmit buffer 2 */
  } MCP2515_TransmitBuffer_t;
 
- /** 
-  * MCP2515 receive buffer
+ /** @brief MCP2515 receive buffer.
   */
  typedef enum
  {
-	 MCP2515_RX0 = 0x00,								/**< Receive buffer 0 */ 
-	 MCP2515_RX1 = 0x01,								/**< Receive buffer 1 */ 
+	 MCP2515_RX0 = 0x00,								/**< Receive buffer 0 */
+	 MCP2515_RX1 = 0x01,								/**< Receive buffer 1 */
  } MCP2515_ReceiveBuffer_t;
 
- /** 
-  * MCP2515 acceptance filter
+ /** @brief MCP2515 acceptance filter.
   */
  typedef enum
  {
-	MCP2515_RXF0 = 0x00,								/**< Receive filter 0 (used by RXB0) */ 
-	MCP2515_RXF1 = 0x01,								/**< Receive filter 1 (used by RXB0) */ 
-	MCP2515_RXF2 = 0x02,								/**< Receive filter 2 (used by RXB1) */ 
-	MCP2515_RXF3 = 0x03,								/**< Receive filter 3 (used by RXB1) */ 
-	MCP2515_RXF4 = 0x04,								/**< Receive filter 4 (used by RXB1) */ 
-	MCP2515_RXF5 = 0x05,								/**< Receive filter 5 (used by RXB1) */ 
+	MCP2515_RXF0 = 0x00,								/**< Receive filter 0 (used by RXB0) */
+	MCP2515_RXF1 = 0x01,								/**< Receive filter 1 (used by RXB0) */
+	MCP2515_RXF2 = 0x02,								/**< Receive filter 2 (used by RXB1) */
+	MCP2515_RXF3 = 0x03,								/**< Receive filter 3 (used by RXB1) */
+	MCP2515_RXF4 = 0x04,								/**< Receive filter 4 (used by RXB1) */
+	MCP2515_RXF5 = 0x05,								/**< Receive filter 5 (used by RXB1) */
  } MCP2515_Filter_t;
 
- /** 
-  * MCP2515 message types
+ /** @brief MCP2515 message types.
   */
  typedef enum
  {
-	MCP2515_STANDARD_DATA	= 0x00,						/**< Standard data frame */ 
-	MCP2515_STANDARD_REMOTE = 0x01,						/**< Standard remote frame */ 
-	MCP2515_EXTENDED_DATA	= 0x02,						/**< Extended data frame */ 
-	MCP2515_EXTENDED_REMOTE = 0x03,						/**< Extended remote frame */ 
+	MCP2515_STANDARD_DATA	= 0x00,						/**< Standard data frame */
+	MCP2515_STANDARD_REMOTE = 0x01,						/**< Standard remote frame */
+	MCP2515_EXTENDED_DATA	= 0x02,						/**< Extended data frame */
+	MCP2515_EXTENDED_REMOTE = 0x03,						/**< Extended remote frame */
  } MCP2515_MessageType_t;
 
- /** 
-  * MCP2515 callback types
+ /** @brief MCP2515 callback types.
   */
  typedef enum
  {
@@ -186,8 +179,7 @@
 	 MCP2515_WAKE_INTERRUPT = 0x08,						/**< MCP2515 wakeup interrupt */ 
  } MCP2515_CallbackType_t;
 
- /** 
-  * MCP2515 message object
+ /** @brief MCP2515 message object.
   */
  typedef struct
  {
@@ -255,7 +247,7 @@
 	 Bool_t EnableLoopBack;								/**< Set to #TRUE to enable loop back mode */
 	 Bool_t EnableRollover;								/**< Set to #TRUE to enable rollover mode for receive buffer 0 */
 	 Bool_t EnableWakeUpFilter;							/**< Set to #TRUE to enable the Wake-up filter */
-	 MCP2515_Callback_t ErrorCallback;					/**< Function pointer to MCP2515 error callback \n
+	 MCP2515_ErrorCallback_t ErrorCallback;				/**< Function pointer to MCP2515 error callback \n
 															 NOTE: Set it to #NULL if you do not want to use it. */
 	 MCP2515_Callback_t RxCallback;						/**< Function pointer to MCP2515 message received callback \n
 															 NOTE: Set it to #NULL if you do not want to use it. */

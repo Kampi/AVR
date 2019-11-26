@@ -36,7 +36,7 @@
  *  @{
  */
  	/** @defgroup BMP180-Register
-	 *  AD5933 register addresses.
+	 *  BMP180 register addresses.
 	 *  @{
 	 */
 		#define BMP180_REGISTER_AC1			0xAA

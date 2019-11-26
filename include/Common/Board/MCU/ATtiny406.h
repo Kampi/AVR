@@ -34,11 +34,6 @@
  #include "Common/Common.h"
 
  /*
-	 Main clock
- */
- #define F_CPU											32000000UL					/**< MCU clock frequency */ 
-
- /*
 	GPIO
  */
  #define GPIO_PORT_COUNT								7							/**< GPIO port count */ 
@@ -47,9 +42,7 @@
 	USART
  */
  #define USART_DEVICES									1							/**< USART device count in MCU */
- #define USART_CHANNEL									1							/**< Channels per USART device */
- #define USART_BUFFER_SIZE								32							/**< Size of USART buffer in bytes */
- #define USART_CDIR0_PIN								0							/**< Pin number of USART XDIR pin */
+ #define USART_XDIR0_PIN								0							/**< Pin number of USART XDIR pin */
  #define USART_XCK0_PIN									1							/**< Pin number of USART XCK pin */
  #define USART_RX0_PIN									3							/**< Pin number of USART RxD pin */
  #define USART_TX0_PIN									2							/**< Pin number of USART TxD pin */

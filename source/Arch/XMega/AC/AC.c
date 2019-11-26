@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega analog comparator
+ *  File info: Driver for Atmel AVR XMega analog comparator module.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -24,9 +24,9 @@
  */
 
 /** @file Arch/XMega/AC/AC.c
- *  @brief Driver for XMega AC module.
+ *  @brief Driver for Atmel AVR XMega analog comparator module.
  * 
- *  This file contains the implementation of the XMega AC driver.
+ *  This file contains the implementation of the Atlem AVR XMega AC driver.
  *
  *  @author Daniel Kampert
  */
@@ -82,16 +82,6 @@ void AC_Init(AC_Config_t* Config)
 	AC_Enable(Config->Device, Config->Comparator);
 }
 
-void AC_GetConfig(AC_Config_t* Config, AC_t* Device, AC_Comparator_t Comparator)
-{
-	Config->Device = Device;
-	Config->Comparator = Comparator;
-	Config->EnableHighSpeed = AC_GetSpeed(Config->Device, Config->Comparator);
-	Config->Hysteresis = AC_GetHysteresis(Config->Device, Config->Comparator);
-	Config->Negative = AC_GetMuxNegative(Config->Device, Config->Comparator);
-	Config->Positive = AC_GetMuxPositive(Config->Device, Config->Comparator);
-}
-
 void AC_Calibrate(AC_t* Device)
 {
 	// ToDo
@@ -126,18 +116,7 @@ void AC_Disable(AC_t* Device, AC_Comparator_t Comparator)
 void AC_EnableOutput(AC_t* Device, AC_Comparator_t Comparator)
 {	
 	// Set the outputs
-	if(Device == &ACB)
-	{
-		if(Comparator == AC_COMPARATOR_1)
-		{
-			GPIO_SetDirection(&PORTB, 6, GPIO_DIRECTION_OUT);
-		}
-		else
-		{
-			GPIO_SetDirection(&PORTB, 7, GPIO_DIRECTION_OUT);
-		}
-	}
-	else
+	if(Device == &ACA)
 	{
 		if(Comparator == AC_COMPARATOR_1)
 		{
@@ -148,7 +127,20 @@ void AC_EnableOutput(AC_t* Device, AC_Comparator_t Comparator)
 			GPIO_SetDirection(&PORTA, 7, GPIO_DIRECTION_OUT);
 		}
 	}
-	
+	#if(defined(ACB))
+		else if(Device == &ACB)
+		{
+			if(Comparator == AC_COMPARATOR_1)
+			{
+				GPIO_SetDirection(&PORTB, 6, GPIO_DIRECTION_OUT);
+			}
+			else
+			{
+				GPIO_SetDirection(&PORTB, 7, GPIO_DIRECTION_OUT);
+			}
+		}
+	#endif
+
 	Device->CTRLA |= Comparator;
 }
 
@@ -255,15 +247,17 @@ void AC_InstallCallback(AC_InterruptConfig_t* Config)
 		Config->Device->AC0CTRL = (Config->Device->AC0CTRL & (~(0x03 << 0x06))) | (Config->Mode << 0x06);
 		Config->Device->AC0CTRL = (Config->Device->AC0CTRL & (~(0x03 << 0x04))) | (Config->InterruptLevel << 0x04);
 		
-		if(Config->Device == &ACB)
-		{
-			AC_Callbacks[ACB_ID].AC0 = Config->Callback;
-		}
-		else
+		if(Config->Device == &ACA)
 		{
 			AC_Callbacks[ACA_ID].AC0 = Config->Callback;
 		}
-		
+		#if(defined(ACB))
+			else if(Config->Device == &ACB)
+			{
+				AC_Callbacks[ACB_ID].AC0 = Config->Callback;
+			}
+		#endif
+
 		Config->Device->STATUS |= AC_AC0IF_bm;
 	}
 	
@@ -271,15 +265,17 @@ void AC_InstallCallback(AC_InterruptConfig_t* Config)
 	{
 		Config->Device->AC1CTRL = (Config->Device->AC1CTRL & (~(0x03 << 0x06))) | (Config->Mode << 0x06);
 		Config->Device->AC1CTRL = (Config->Device->AC1CTRL & (~(0x03 << 0x04))) | (Config->InterruptLevel << 0x04);
-		
-		if(Config->Device == &ACB)
+
+		if(Config->Device == &ACA)
 		{
 			AC_Callbacks[ACA_ID].AC1 = Config->Callback;
 		}
-		else
-		{
-			AC_Callbacks[ACA_ID].AC1 = Config->Callback;
-		}
+		#if(defined(ACB))
+			else if(Config->Device == &ACB)
+			{
+				AC_Callbacks[ACA_ID].AC1 = Config->Callback;
+			}
+		#endif
 
 		Config->Device->STATUS |= AC_AC0IF_bm;
 	}
@@ -288,16 +284,18 @@ void AC_InstallCallback(AC_InterruptConfig_t* Config)
 	{
 		Config->Device->WINCTRL = (Config->Device->WINCTRL & (~(0x03 << 0x02))) | ((Config->Mode >> 0x01) << 0x02);
 		Config->Device->WINCTRL = (Config->Device->WINCTRL & (~0x03)) | Config->InterruptLevel;
-		
-		if(Config->Device == &ACB)
-		{
-			AC_Callbacks[ACB_ID].Window = Config->Callback;
-		}
-		else
+
+		if(Config->Device == &ACA)
 		{
 			AC_Callbacks[ACA_ID].Window = Config->Callback;
 		}
-		
+		#if(defined(ACB))
+			else if(Config->Device == &ACB)
+			{
+				AC_Callbacks[ACB_ID].Window = Config->Callback;
+			}
+		#endif
+
 		Config->Device->STATUS |= AC_WIF_bm;
 	}
 }
@@ -306,43 +304,49 @@ void AC_RemoveCallback(AC_t* Device, AC_CallbackType_t Callback)
 {
 	if(Callback & AC_COMP0_INTERRUPT)
 	{
-		if(Device == &ACB)
-		{
-			AC_Callbacks[ACB_ID].AC0 = NULL;
-		}
-		else
+		if(Device == &ACA)
 		{
 			AC_Callbacks[ACA_ID].AC0 = NULL;
 		}
+		#if(defined(ACB))
+			else if(Device == &ACB)
+			{
+				AC_Callbacks[ACB_ID].AC0 = NULL;
+			}
+		#endif
 		
 		Device->STATUS &= ~AC_AC0IF_bm;
 	}
 	
 	if(Callback & AC_COMP1_INTERRUPT)
 	{
-		if(Device == &ACB)
-		{
-			AC_Callbacks[ACB_ID].AC1 = NULL;
-		}
-		else
+		if(Device == &ACA)
 		{
 			AC_Callbacks[ACA_ID].AC1 = NULL;
 		}
+		#if(defined(ACB))
+			else if(Device == &ACB)
+			{
+				AC_Callbacks[ACB_ID].AC1 = NULL;
+			}
+		#endif
 
 		Device->STATUS &= ~AC_AC0IF_bm;
 	}
 	
 	else if(Callback & AC_WINDOW_INTERRUPT)
-	{	
-		if(Device == &ACB)
-		{
-			AC_Callbacks[ACB_ID].Window = NULL;
-		}
-		else
+	{
+		if(Device == &ACA)
 		{
 			AC_Callbacks[ACA_ID].Window = NULL;
 		}
-		
+		#if(defined(ACB))
+			else if(Device == &ACB)
+			{
+				AC_Callbacks[ACB_ID].Window = NULL;
+			}
+		#endif
+
 		Device->STATUS &= ~AC_WIF_bm;
 	}
 }
@@ -392,18 +396,20 @@ uint8_t AC_GetState(AC_t* Device, AC_Comparator_t Comparator)
 		__AC_InterruptHandler(ACA_ID, AC_WINDOW_INTERRUPT);
 	}
 
-	ISR(ACB_AC0_vect)
-	{
-		__AC_InterruptHandler(ACB_ID, AC_COMP0_INTERRUPT);
-	}
+	#if(defined(ACB))
+		ISR(ACB_AC0_vect)
+		{
+			__AC_InterruptHandler(ACB_ID, AC_COMP0_INTERRUPT);
+		}
 
-	ISR(ACB_AC1_vect)
-	{
-		__AC_InterruptHandler(ACB_ID, AC_COMP1_INTERRUPT);
-	}
+		ISR(ACB_AC1_vect)
+		{
+			__AC_InterruptHandler(ACB_ID, AC_COMP1_INTERRUPT);
+		}
 
-	ISR(ACB_ACW_vect)
-	{
-		__AC_InterruptHandler(ACB_ID, AC_WINDOW_INTERRUPT);
-	}
+		ISR(ACB_ACW_vect)
+		{
+			__AC_InterruptHandler(ACB_ID, AC_WINDOW_INTERRUPT);
+		}
+	#endif
 #endif

@@ -24,14 +24,14 @@
 
 #include "AES.h"
 
-const uint8_t AES_GenerateLastSubkey(const uint8_t* Key, uint8_t * Subkey)
+const uint8_t AES_GenerateLastSubkey(const uint8_t* Key, uint8_t* Subkey)
 {
-	for(uint8_t i = 0; i < AES_KEYSIZE; i++)
+	for(uint8_t i = 0x00; i < AES_KEYSIZE; i++)
 	{
 		AES.KEY = *(Key++);
 	}
 
-	for(uint8_t i = 0; i < AES_DATASIZE; i++)
+	for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 	{
 		AES.STATE = 0x00;
 	}
@@ -67,12 +67,12 @@ const uint8_t AES_GenerateLastSubkey(const uint8_t* Key, uint8_t * Subkey)
 
 const uint8_t AES_Encrypt(const uint8_t* Data, uint8_t* EncryptedData, const uint8_t* Key)
 {	
-	for(uint8_t i = 0; i < AES_DATASIZE; i++)
+	for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 	{
 		AES.KEY = *(Key++);
 	}
 
-	for(uint8_t i = 0; i < AES_KEYSIZE; i++)
+	for(uint8_t i = 0x00; i < AES_KEYSIZE; i++)
 	{
 		AES.STATE = *(Data++);
 	}
@@ -89,12 +89,12 @@ const uint8_t AES_Encrypt(const uint8_t* Data, uint8_t* EncryptedData, const uin
 	*/
 	if(!(AES.STATUS & AES_ERROR_bm))
 	{
-		for(uint8_t i = 0; i < AES_DATASIZE; i++)
+		for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 		{
 			*(EncryptedData++) = AES.STATE;
 		}
 		
-		return 0;
+		return 0x00;
 	}
 	
 	return -1;
@@ -102,12 +102,12 @@ const uint8_t AES_Encrypt(const uint8_t* Data, uint8_t* EncryptedData, const uin
 
 const uint8_t AES_Decrypt(const uint8_t* EncryptedData, uint8_t* Data, const uint8_t* Key)
 {	
-	for(uint8_t i = 0; i < AES_KEYSIZE; i++)
+	for(uint8_t i = 0x00; i < AES_KEYSIZE; i++)
 	{
 		AES.KEY = *(Key++);
 	}
 
-	for(uint8_t i = 0; i < AES_DATASIZE; i++)
+	for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 	{
 		AES.STATE = *(EncryptedData++);
 	}
@@ -124,12 +124,12 @@ const uint8_t AES_Decrypt(const uint8_t* EncryptedData, uint8_t* Data, const uin
 	*/
 	if(!(AES.STATUS & AES_ERROR_bm))
 	{
-		for(uint8_t i = 0; i < AES_DATASIZE; i++)
+		for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 		{
 			*(Data++) = AES.STATE;
 		}
 		
-		return 0;
+		return 0x00;
 	}
 
 	return -1;
@@ -142,7 +142,7 @@ const uint8_t AES_CBC_Encrypt(const uint8_t* Data, uint8_t* EncryptedData, uint8
   	/* 
 	  Use the initialization vector for the first encryption
 	*/
-	for(uint8_t i = 0; i < AES_DATASIZE; i++)
+	for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 	{
 		AES.STATE = *(InitVector++);
 	}
@@ -152,16 +152,16 @@ const uint8_t AES_CBC_Encrypt(const uint8_t* Data, uint8_t* EncryptedData, uint8
 	*/
 	AES.CTRL = (AES.CTRL & (~AES_DECRYPT_bm)) | AES_XOR_bm | AES_AUTO_bm;
 
-	for(uint8_t Block = 0; Block < BlockCount; Block++)
+	for(uint8_t Block = 0x00; Block < BlockCount; Block++)
 	{
 		// Reset the pointer for the key each block
 		KeyTemp = Key;
-		for(uint8_t i = 0; i < AES_KEYSIZE; i++)
+		for(uint8_t i = 0x00; i < AES_KEYSIZE; i++)
 		{
 			AES.KEY = *(KeyTemp++);
 		}
 
-		for(uint8_t i = 0; i < AES_DATASIZE; i++)
+		for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 		{
 			AES.STATE = *(Data++);
 		}
@@ -173,7 +173,7 @@ const uint8_t AES_CBC_Encrypt(const uint8_t* Data, uint8_t* EncryptedData, uint8
 		*/
 		if(!(AES.STATUS & AES_ERROR_bm))
 		{
-			for(uint8_t i = 0; i < AES_DATASIZE; i++)
+			for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 			{
 				*(EncryptedData++) = AES.STATE;
 			}
@@ -202,12 +202,12 @@ const uint8_t AES_CBC_Decrypt(uint8_t* EncryptedData, uint8_t* Data, uint8_t* Ke
 	{
 		// Reset the pointer for the key each block
 		KeyTemp = Key;
-		for(uint8_t i = 0; i < AES_KEYSIZE; i++)
+		for(uint8_t i = 0x00; i < AES_KEYSIZE; i++)
 		{
 			AES.KEY = *(KeyTemp++);
 		}
 
-		for(uint8_t i = 0; i < AES_DATASIZE; i++)
+		for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 		{
 			AES.STATE = *(EncryptedData++);
 		}
@@ -228,7 +228,7 @@ const uint8_t AES_CBC_Decrypt(uint8_t* EncryptedData, uint8_t* Data, uint8_t* Ke
 			*/
 			if(Block == BlockCount)
 			{
-				for(uint8_t i = 0; i < AES_DATASIZE; i++)
+				for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 				{
 					AES.STATE = *(InitVector++);
 				}
@@ -236,13 +236,13 @@ const uint8_t AES_CBC_Decrypt(uint8_t* EncryptedData, uint8_t* Data, uint8_t* Ke
 			else
 			{
 			  	uint8_t* LastBlock = EncryptedData - (AES_DATASIZE << 1);
-				for(uint8_t i = 0; i < AES_DATASIZE; i++)
+				for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 				{
 					AES.STATE = *(LastBlock++);
 				}
 			}
 
-			for(uint8_t i = 0; i < AES_DATASIZE; i++)
+			for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 			{
 				*(Data++) = AES.STATE;
 			}

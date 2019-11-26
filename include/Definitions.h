@@ -33,7 +33,7 @@
 
  /** @defgroup Interfaces
   *  @ingroup Configuration
-  *  Interfaces for peripheral devices such as LCDs
+  *  Interfaces for peripheral devices such as LCDs.
   *  @{
   */
 	#define INTERFACE_UNKNOWN									0		/**< Unknown interface */
@@ -45,7 +45,7 @@
 
  /** @defgroup Board
   *  @ingroup Configuration
-  *  Board definitions for the AVR library
+  *  Board definitions for the AVR library.
   *  @{
   */
 	#define BOARD_NONE											0		/**< No board */
@@ -59,7 +59,7 @@
 
  /** @defgroup MCU
   *  @ingroup Configuration
-  *  MCU definitions for the AVR library
+  *  MCU definitions for the AVR library.
   *  @{
   */
 	#define MCU_NAME_UNKNOWN									0		/**< Unknown microcontroller */
@@ -67,11 +67,13 @@
 	#define MCU_NAME_ATXMEGA384C3								2		/**< XMega384C3 microcontroller */
 	#define MCU_NAME_AT90USB1287								3		/**< AT90USB1287 microcontroller  */
 	#define MCU_NAME_ATMEGA32									4		/**< ATmega32 microcontroller */
+	#define MCU_NAME_ATMEGA328P									5		/**< ATmega328P microcontroller */
+	#define MCU_NAME_ATTINY406									6		/**< ATtiny406 microcontroller */
  /** @} */ // end of MCU
 
  /** @defgroup Architecture
   *  @ingroup Configuration
-  *  Architecture definitions for the AVR library
+  *  Architecture definitions for the AVR library.
   *  @{
   */
 	#define MCU_ARCH_UNKNOWN									0		/**< Unknown architecture */
@@ -82,7 +84,7 @@
 
  /** @defgroup Flashmemory
   *  @ingroup Configuration
-  *  Flash memory definitions for the AVR library
+  *  Flash memory definitions for the AVR library.
   *  @{
   */
 	#define FLASH_UNKNOWN										0		/**< Unknown flash */

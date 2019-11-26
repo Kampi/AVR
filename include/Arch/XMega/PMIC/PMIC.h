@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega programmable interrupt controller.
+ *  File info: Driver for Atmel AVR XMega programmable interrupt controller.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */ 
 
 /** @file Arch/XMega/PMIC/PMIC.h
- *  @brief Driver for the XMega programmable interrupt controller.
+ *  @brief Driver for the Atmel AVR XMega programmable interrupt controller.
  *
  *  This contains the prototypes and definitions for the XMega programmable interrupt controller.
  *
@@ -36,8 +36,7 @@
 
  #include "Common/Common.h"
 
- /** 
-  * Interrupt levels for peripheral modules.
+ /** @brief Interrupt levels for peripheral modules.
   */
  typedef enum
  {
@@ -50,7 +49,7 @@
  /** @brief			Enable a specific interrupt level.
   *  @param Level	Interrupt level which should be activated
   */
- static inline void PMIC_EnableInterruptLevel(const Interrupt_Level_t Level) __attribute__ ((always_inline));
+ static inline void PMIC_EnableInterruptLevel(const Interrupt_Level_t Level) __attribute__((always_inline));
  static inline void PMIC_EnableInterruptLevel(const Interrupt_Level_t Level)
  {
 	 if(Level & INT_LVL_LO)
@@ -72,7 +71,7 @@
  /** @brief			Disable a specific interrupt level.
   *  @param Level	Interrupt level which should be activated
   */
- static inline void PMIC_DisableInterruptLevel(const Interrupt_Level_t Level) __attribute__ ((always_inline));
+ static inline void PMIC_DisableInterruptLevel(const Interrupt_Level_t Level) __attribute__((always_inline));
  static inline void PMIC_DisableInterruptLevel(const Interrupt_Level_t Level)
  {
 	 if(Level & INT_LVL_LO)
@@ -94,7 +93,7 @@
 
  /** @brief	Enable all interrupt level.
   */
- static inline void PMIC_EnableAllInterruptLevel(void) __attribute__ ((always_inline));
+ static inline void PMIC_EnableAllInterruptLevel(void) __attribute__((always_inline));
  static inline void PMIC_EnableAllInterruptLevel(void)
  {
 	 PMIC.CTRL |= 0x07;
@@ -102,7 +101,7 @@
 
  /** @brief	Disable all interrupt level.
   */
- static inline void PMIC_DisableAllInterruptLevel(void) __attribute__ ((always_inline));
+ static inline void PMIC_DisableAllInterruptLevel(void) __attribute__((always_inline));
  static inline void PMIC_DisableAllInterruptLevel(void)
  {
 	 PMIC.CTRL &= ~0x07;
@@ -110,7 +109,7 @@
 
  /** @brief	Enable round-robin scheduling.
   */
- static inline void PMIC_EnableRoundRobin(void) __attribute__ ((always_inline));
+ static inline void PMIC_EnableRoundRobin(void) __attribute__((always_inline));
  static inline void PMIC_EnableRoundRobin(void)
  {
 	 PMIC.CTRL |= PMIC_RREN_bm;
@@ -118,7 +117,7 @@
 
  /** @brief	Disable round-robin scheduling.
   */
- static inline void PMIC_DisableRoundRobin(void) __attribute__ ((always_inline));
+ static inline void PMIC_DisableRoundRobin(void) __attribute__((always_inline));
  static inline void PMIC_DisableRoundRobin(void)
  {
 	 PMIC.CTRL &= ~PMIC_RREN_bm;

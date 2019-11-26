@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Sleep manager service.
+ *  File info: AVR sleep manager service.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
 /** @file Common/Services/SleepManager/SleepManager.h
  *  @brief AVR sleep manager service.
  *
- *  This contains the prototypes and definitions for the sleep driver.
+ *  This contains the prototypes and definitions for the sleep service.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs
@@ -40,9 +40,8 @@
 	 #include "Arch/XMega/PowerManagement/PowerManagement.h"
  #endif
 
- /** 
-  * Sleep modes for sleep manager
-  * NOTE: You can only sleep modes which are supported by the target device
+ /** @brief	Sleep modes for sleep manager
+  * 		NOTE: You can only sleep modes which are supported by the target device
   */
  typedef enum
  {

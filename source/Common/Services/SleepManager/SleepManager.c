@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *	Website: www.kampis-elektroecke.de
- *  File info: Sleep manager service,
+ *  File info: AVR sleep manager services.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  */
 
 /** @file Common/Services/SleepManager/SleepManager.c
- *  @brief AVR Sleep manager services.
+ *  @brief AVR sleep manager services.
  * 
  *  This file contains the implementation for the AVR sleep manager service.
  *

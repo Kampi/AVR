@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Generic ring buffer
+ *  File info: Generic ring buffer.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -31,21 +31,18 @@
 #ifndef RINGBUFFER_H_
 #define RINGBUFFER_H_
 
- #include <avr/io.h>
- 
- #include "Common/types.h"
+ #include "Common/Common.h"
 
- /** 
-  * Ring buffer object definition.
+ /** @brief Ring buffer object definition.
   */
  typedef struct 
  {
-	 uint8_t* InPtr;				/**< Pointer to data current storage location. */
-	 uint8_t* OutPtr;				/**< Pointer to data current retrieval location. */
-	 uint8_t* RingStart;			/**< Pointer to the start position of the ring buffer. */
-	 uint8_t* RingEnd;				/**< Pointer to the end position of the ring buffer. */
-	 uint16_t Size;					/**< Size of the ring buffer. */
-	 uint16_t ByteCount;			/**< Bytes stored in the ring buffer. */
+	 uint8_t* InPtr;				/**< Pointer to data current storage location */
+	 uint8_t* OutPtr;				/**< Pointer to data current retrieval location */
+	 uint8_t* RingStart;			/**< Pointer to the start position of the ring buffer */
+	 uint8_t* RingEnd;				/**< Pointer to the end position of the ring buffer */
+	 uint16_t Size;					/**< Size of the ring buffer */
+	 uint16_t ByteCount;			/**< Bytes stored in the ring buffer */
  } RingBuffer_t;
 
  /** @brief			Initialize a new ring buffer.

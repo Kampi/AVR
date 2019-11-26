@@ -36,13 +36,19 @@
  /*
 	Hardware driver
  */
- #include "Arch/AVR8/GPIO/GPIO.h"
- #include "Arch/AVR8/SPI/SPI.h"
+ #include "Arch/AVR8/AT90/GPIO/GPIO.h"
+ //#include "Arch/AVR8/AT90/SPI/SPI.h"
 
  /*
 	Peripheral driver
  */
  #include "Peripheral/Joystick.h"
  #include "Peripheral/AnalogSensors.h"
+ //#include "Peripheral/DataFlash/DataFlash.h"
+
+ /*
+	Services
+ */
+ #include "Common/Services/USB/USB.h"
  
 #endif /* AT90USBKEY_H_ */

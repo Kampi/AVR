@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega analog comparator
+ *  File info: Driver for Atmel AVR XMega analog comparator module.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,12 +23,14 @@
  */ 
 
 /** @file Arch/XMega/AC/AC.h
- *  @brief Driver for XMega AC module. 
+ *  @brief Driver for Atmel AVR XMega analog comparator module.
  *
- *  This file contains the prototypes and definitions for the XMega AC driver.
+ *  This file contains the prototypes and definitions for the Atmel AVR XMega AC driver.
  *
  *  @author Daniel Kampert
- *  @bug - Event mode
+ *  @bug - Event mode missing
+ *		 - Calibration missing
+ *		 - Update documentation
  */
 
 #ifndef AC_H_
@@ -38,13 +40,32 @@
 
  #include "Arch/XMega/GPIO/GPIO.h"
  #include "Arch/XMega/PMIC/PMIC.h"
-
- #include "Base/AC_Base.h"
  
  /** @brief	ID declaration for the different MCU types.
   */
  #define ACA_ID			0					/**< Analog comparator A ID */
  #define ACB_ID			1					/**< Analog comparator B ID */
+ 
+ /** @brief	AC callback definition.
+ */
+ typedef void (*AC_Callback_t)(void);
+
+ /** @brief	ADC comparator enumeration.
+  */
+ typedef enum
+ {
+	 AC_COMPARATOR_0 = 0x01,				/**< AC comparator 0 */
+	 AC_COMPARATOR_1 = 0x02,				/**< AC comparator 1 */
+ } AC_Comparator_t;
+
+ /** @brief	AC callback types.
+  */
+ typedef enum
+ {
+	 AC_COMP0_INTERRUPT = 0x01,				/**< AC comparator 0 interrupt */ 
+	 AC_COMP1_INTERRUPT = 0x02,				/**< AC comparator 1 interrupt */ 
+	 AC_WINDOW_INTERRUPT = 0x04,			/**< AC window interrupt */ 
+ } AC_CallbackType_t;
  
  /** @brief	AC interrupt modes.
   */
@@ -130,7 +151,7 @@
  /** @brief			Enable the window mode of an AC device.
   *  @param Device	Pointer to AC object
   */
- static inline void AC_EnableWindowMode(AC_t* Device) __attribute__ ((always_inline));
+ static inline void AC_EnableWindowMode(AC_t* Device) __attribute__((always_inline));
  static inline void AC_EnableWindowMode(AC_t* Device)
  {
 	 Device->WINCTRL |= (0x01 << 0x04);
@@ -139,7 +160,7 @@
  /** @brief			Disable the window mode of an AC device.
   *  @param Device	Pointer to AC object
   */
- static inline void AC_DisableWindowMode(AC_t* Device) __attribute__ ((always_inline));
+ static inline void AC_DisableWindowMode(AC_t* Device) __attribute__((always_inline));
  static inline void AC_DisableWindowMode(AC_t* Device)
  {
 	 Device->WINCTRL &= ~(0x01 << 0x04);
@@ -149,7 +170,7 @@
   *  @param Device	Pointer to AC object
   *  @param Scale	Scale value
   */
- static inline void AC_SetScale(AC_t* Device, const uint8_t Scale) __attribute__ ((always_inline));
+ static inline void AC_SetScale(AC_t* Device, const uint8_t Scale) __attribute__((always_inline));
  static inline void AC_SetScale(AC_t* Device, const uint8_t Scale)
  {
 	 Device->CTRLB = Scale;
@@ -159,7 +180,7 @@
   *  @param Device	Pointer to AC object
   *  @return		Scale value
   */
- static inline uint8_t AC_GetScale(AC_t* Device) __attribute__ ((always_inline));
+ static inline uint8_t AC_GetScale(AC_t* Device) __attribute__((always_inline));
  static inline uint8_t AC_GetScale(AC_t* Device)
  {
 	 return (Device->CTRLB & 0x3F);
@@ -169,12 +190,6 @@
   *  @param Config	Pointer to AC configuration object
   */
  void AC_Init(AC_Config_t* Config);
- 
- /** @brief			Get the configuration of an AC module.
-  *  @param Config	Pointer to AC configuration object
-  *  @param Device	Pointer to AC object
-  */
- void AC_GetConfig(AC_Config_t* Config, AC_t* Device, AC_Comparator_t Comparator);
  
  /** @brief			Calibrate an AC module.
   *  @param Device	Pointer to AC object

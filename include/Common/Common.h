@@ -31,9 +31,13 @@
 #ifndef COMMON_H_
 #define COMMON_H_
 
- #include "Config.h"
+ #ifndef CONFIG
+	 #error "No configuration file specified!"
+ #endif
 
  #include "Definitions.h"
+ 
+ #include STR(CONFIG)
  
  #include "Common/types.h"
  #include "Common/Endianness.h"
@@ -41,15 +45,23 @@
  #include <avr/io.h>
  #include <avr/pgmspace.h>
  #include <avr/interrupt.h>
- 
+
+ #if(defined(__OPTIMIZE__))
+	 #include <util/delay.h>
+ #endif
+
  #include <util/atomic.h>
 
- #if(MCU_NAME == MCU_NAME_AT90USB1287)
+ #if(MCU_NAME == MCU_NAME_ATMEGA32)
+	 #include "Common/Board/MCU/ATmega32.h"
+ #elif(MCU_NAME == MCU_NAME_AT90USB1287)
 	 #include "Common/Board/MCU/AT90USB1287.h"
  #elif(MCU_NAME == MCU_NAME_ATXMEGA256A3BU)
 	 #include "Common/Board/MCU/XMega256A3BU.h"
  #elif(MCU_NAME == MCU_NAME_ATXMEGA384C3)
 	 #include "Common/Board/MCU/XMega384C3.h"
+ #elif(MCU_NAME == MCU_NAME_ATTINY406)
+	 #include "Common/Board/MCU/ATtiny406.h"
  #endif
 
 #endif /* COMMON_H_ */

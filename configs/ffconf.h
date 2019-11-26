@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file ffconf.h
+/** @file configs/ffconf.h
  *  @brief FAT file system module configuration file.
 
  *  @author Daniel Kampert

@@ -32,8 +32,7 @@
 #ifndef KEYBOARD_H_
 #define KEYBOARD_H_
 
- /** 
-  * Keyboard scan code
+ /** @brief Keyboard scan codes.
   */
  typedef enum
  {

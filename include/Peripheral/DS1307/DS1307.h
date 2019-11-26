@@ -35,7 +35,6 @@
 #ifndef DS1307_H_
 #define DS1307_H_
 
- #include "Config_DS1307.h"
  #include "Common/Common.h"
  
  /** @ingroup I2C-Addresses */
@@ -59,11 +58,17 @@
 	Architecture specific definitions
  */
  #if(MCU_ARCH == MCU_ARCH_AVR8)
-	 #include "Arch/AVR8/I2C/I2C.h"
+	 #if(MCU_NAME == MCU_NAME_ATMEGA32)
+		 #include "Arch/AVR8/megaAVR/I2C/I2C.h"
+	 #else
+		 #error "Invalid CPU for DS1307!"
+	 #endif
 	 
 	 #if(defined DS1307_USE_IRQ)
-		#include "Arch/AVR8/GPIO/GPIO.h"
-		#include "Arch/AVR8/CPU//CPU.h"
+		 #if(MCU_NAME == MCU_NAME_ATMEGA32)
+			 #include "Arch/AVR8/megaAVR/GPIO/GPIO.h"
+			 #include "Arch/AVR8/megaAVR/CPU//CPU.h"
+		 #endif
 	 #endif
  #elif(MCU_ARCH == MCU_ARCH_XMEGA)
 	 #include "Arch/XMega/I2C/I2C.h"
@@ -77,8 +82,6 @@
 	 #error "Architecture not supported for DS1307!"
  #endif
 
- #include "Common/time_avr.h"
-
  /** @brief			DS1307 interrupt handler
   *  @param Time	RTC time
   */
@@ -86,8 +89,7 @@
 	 typedef void (*DS1307_Callback_t)(Time_t Time);
  #endif
 
- /** 
-  * DS1307 SQW frequency
+ /** @brief	DS1307 SQW frequency.
   */
  typedef enum
  {
@@ -97,8 +99,7 @@
 	 DS1307_SQW_32KHZ = 0x03,					/**< Frequency 32 kHz */
  } DS1307_SQWFreq_t;
 
- /**
-  * DS1307 interrupt configuration object
+ /** @brief	DS1307 interrupt configuration object.
   */
  #if(defined DS1307_USE_IRQ)
 	 typedef struct 

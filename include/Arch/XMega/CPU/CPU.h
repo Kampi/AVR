@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega CPU
+ *  File info: Driver for XMega CPU.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -36,10 +36,7 @@
 
  #include "Common/Common.h"
 
- #include "Arch/XMega/PMIC/PMIC.h"
-
- /** 
-  * Analog startup time for the ADC, DAC and AC.
+ /** @brief	Analog startup time for the ADC, DAC and AC.
   */
  typedef enum
  {
@@ -113,6 +110,8 @@
  static inline void CPU_Reset(void) __attribute__ ((always_inline));
  static inline void CPU_Reset(void)
  {
+	 uint8_t Flags = CPU_IRQSave();
+	 
 	 asm volatile(	 "movw r30,  %0"	"\n\t"
 					 "ldi  r16,  %2"	"\n\t"
 					 "out   %3, r16"	"\n\t"
@@ -123,6 +122,8 @@
 					 "i" (&CCP)
 					 : "r16", "r30"
 				);
+
+	 CPU_IRQRestore(Flags);
  }
 
 #endif /* CPU_H_ */

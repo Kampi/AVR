@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega DMA
+ *  File info: Driver for Atmel AVR XMega DMA controller.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -24,9 +24,9 @@
  */ 
 
 /** @file Arch/XMega/DMA/DMA.c
- *  @brief Driver for XMega DMA.
+ *  @brief Driver for Atmel AVR XMega DMA controller.
  *
- *  This file contains the implementation of the XMega AES driver.
+ *  This file contains the implementation of the Atmel AVR XMega DMA driver.
  *
  *  @author Daniel Kampert
  */

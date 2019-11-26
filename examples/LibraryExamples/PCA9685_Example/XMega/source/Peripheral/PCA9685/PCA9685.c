@@ -143,7 +143,7 @@
 	#define PCA9685_I2CM_READBYTE(Data, Stop)												I2CM_ReadByte(&PCA9685_INTERFACE, PCA9685_ADDRESS, Data, Stop)
 	#define PCA9685_I2CM_WRITEBYTES(Length, Data, Stop)										I2CM_WriteBytes(&PCA9685_INTERFACE, PCA9685_ADDRESS, Length, Data, Stop)
 	#define PCA9685_I2CM_READBYTES(Length, Data, Stop)										I2CM_ReadBytes(&PCA9685_INTERFACE, PCA9685_ADDRESS, Length, Data, Stop)
-	#define PCA9685_RESET()																	I2CM_WriteByte(&PCA9685_INTERFACE, 0x00, 0x03, TRUE)
+	#define PCA9685_RESET()																	I2CM_WriteByte(&PCA9685_INTERFACE, 0x00, 0x06, TRUE)
 #elif(MCU_ARCH == MCU_ARCH_AVR8)
 	#define PCA9685_I2CM_INIT(Config)														I2CM_Init(Config)
 	#define PCA9685_I2CM_WRITEBYTE(Data, Stop)												I2CM_WriteByte(PCA9685_ADDRESS, Data, Stop)
@@ -201,6 +201,10 @@ const I2C_Error_t PCA9685_Init(I2CM_Config_t* Config, const PCA9685_ClockSource_
 	{
 		PCA9685_I2CM_INIT(Config);
 	}
+
+	#if(defined PCA9685_OE)
+		GPIO_SetDirection(GET_PERIPHERAL(PCA9685_OE), GET_INDEX(PCA9685_OE), GPIO_DIRECTION_OUT);
+	#endif
 
 	ErrorCode = PCA9685_RESET();
 	if(ErrorCode != I2C_NO_ERROR)

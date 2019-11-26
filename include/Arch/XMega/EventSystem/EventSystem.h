@@ -35,10 +35,10 @@
 #define EVENTSYSTEM_H_
 
  #include "Common/Common.h"
+
  #include "Arch/XMega/CPU/CPU.h"
 
- /** 
-  * Event channel
+ /** @brief	Event channel.
   */
  typedef enum
  {
@@ -52,8 +52,7 @@
 	 EVENT_CHANNEL_7 = 0x07,		/**< Event channel 7 */ 
  } Event_Channel_t;
 
- /** 
-  * Event filter coefficients
+ /** @brief	Event filter coefficients.
   */
  typedef enum
  {
@@ -113,7 +112,7 @@
 		 MuxValue = (0x0F << 0x03) | Pin;
 	 }
 	 
-	if(Channel < 8)
+	if(Channel < 0x08)
 	{
 		Mux = &EVSYS.CH0MUX + Channel;
 		*Mux = MuxValue;
@@ -130,10 +129,11 @@
 	 EVSYS.STROBE |= (0x01 << Channel);;
  }
 
- /** @brief	Lock the event system.
+ /** @brief			Lock the event system.
+  *  @param Lock	Enable/Disable the lock
   */
- static inline void Event_Lock(void) __attribute__ ((always_inline));
- static inline void Event_Lock(void)
+ static inline void Event_SwitchLock(const Bool_t Lock) __attribute__ ((always_inline));
+ static inline void Event_SwitchLock(const Bool_t Lock)
  {
 	 uint8_t Flags = CPU_IRQSave();
 
@@ -142,28 +142,7 @@
 					"out   %3, r16"     "\n\t"
 					"st     Z,  %1"     "\n\t"
 					::	"r" (&MCU.EVSYSLOCK), 
-						"r" (0x01), 
-						"M" (CCP_IOREG_gc), 
-						"i" (&CCP) 
-					: "r16", "r30"
-				);
-
-	 CPU_IRQRestore(Flags);
- }
-
- /** @brief	Unlock the event system.
-  */
- static inline void Event_Unlock(void) __attribute__ ((always_inline));
- static inline void Event_Unlock(void)
- {
-	 uint8_t Flags = CPU_IRQSave();
-
-	 asm volatile(	"movw r30,  %0"		"\n\t"
-					"ldi  r16,  %2"     "\n\t"
-					"out   %3, r16"     "\n\t"
-					"st     Z,  %1"     "\n\t"
-					::	"r" (&MCU.EVSYSLOCK), 
-						"r" (0x00), 
+						"r" (Lock & 0x01), 
 						"M" (CCP_IOREG_gc), 
 						"i" (&CCP) 
 					: "r16", "r30"

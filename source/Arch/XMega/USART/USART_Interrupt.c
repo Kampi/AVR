@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *	Website: www.kampis-elektroecke.de
- *  File info: Interrupt driver for XMega USART module.
+ *  File info: Interrupt driver for Atmel AVR8 XMega USART module.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,10 +23,10 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file XMega/USART/USART_Interrupt.c
- *  @brief Interrupt driver for XMega USART module.
+/** @file Arch/XMega/USART/USART_Interrupt.c
+ *  @brief Interrupt driver for Atmel AVR8 XMega USART module.
  *
- *  This file contains the implementation of the interrupt functions for the XMega USART driver.
+ *  This file contains the implementation of the interrupt functions for the Atmel AVR8 XMega USART driver.
  *
  *  @author Daniel Kampert
  */
@@ -34,7 +34,7 @@
 #include "Arch/XMega/USART/USART.h"
 
 #ifndef DOXYGEN
-	struct
+	extern struct
 	{
 		USART_Callback_t RxCallback;
 		USART_Callback_t TxCallback;
@@ -42,15 +42,15 @@
 		USART_Callback_t BufferOverflow;
 	} __USART_Callbacks[USART_DEVICES][USART_CHANNEL];
 
-	struct
+	extern struct
 	{
 		SPI_Callback_t CompleteInterrupt;
 	} __USART_SPI_Callbacks[USART_DEVICES][USART_CHANNEL];
 
-	Bool_t __USART_Echo[USART_DEVICES][USART_CHANNEL];
-	Bool_t __USART_IsSPI[USART_DEVICES][USART_CHANNEL];
-	
-	USART_Message_t __USART_Messages[USART_DEVICES][USART_CHANNEL];
+	extern Bool_t __USART_Echo[USART_DEVICES][USART_CHANNEL];
+	extern USART_Message_t __USART_Messages[USART_DEVICES][USART_CHANNEL];
+
+	Bool_t __USART_IsSPI[USART_DEVICES][USART_CHANNEL];	
 	SPI_Message_t __SPI_Messages[USART_DEVICES][USART_CHANNEL];
 #endif
 

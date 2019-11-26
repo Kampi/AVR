@@ -30,7 +30,6 @@
  *  @author Daniel Kampert
  *  @bug - No external driver interface support
  *		 - No smart mode support
- *		 - Add error handling
  */
 
 #ifndef I2C_H_
@@ -40,13 +39,94 @@
  
  #include "Arch/XMega/PMIC/PMIC.h"
  #include "Arch/XMega/ClockManagement/SysClock.h"
- 
- #include "Base/I2C_Base.h"
+
+ /** @defgroup I2C
+  *  @{
+  */
+	 /** @defgroup I2C-Errors
+	  *  I2C error codes.
+	  *  @{
+	  */
+	 typedef enum
+	 {
+		 I2C_NO_ERROR = 0x00,					/**< No error */
+		 I2C_START_ERROR = 0x01,				/**< Error with start condition */
+		 I2C_READ_ADDR_ERROR = 0x02,			/**< Wrong read address */
+		 I2C_WRITE_ADDR_ERROR = 0x04,			/**< Wrong write address */
+		 I2C_BUS_ERROR = 0x08,					/**< I2C bus error */
+		 I2C_NO_DEVICE = 0x10,					/**< I2C device not found */
+		 I2C_INVALID_PARAM = 0x20,				/**< Invalid parameter */
+	 } I2C_Error_t;
+	/** @} */ // end of I2C-Errors
+ /** @} */ // end of I2C
 
  /** @brief	ID declaration for the different MCU types.
   */
  #define TWIC_ID			0					/**< TWI C ID */
  #define TWIE_ID			1					/**< TWI E ID */
+
+ /** @brief	TWI callback definition.
+ */
+ typedef void (*I2C_Callback_t)(void);
+
+ /** @brief Macro to calculate the I2C write address.
+  */
+ #define I2C_WRITE(Address)						(Address << 0x01)
+ 
+ /** @brief Macro to calculate the I2C read address.
+  */
+ #define I2C_READ(Address)						((Address << 0x01) + 0x01)
+
+ /** @brief I2C device modes.
+  */
+ typedef enum
+ {
+	 I2C_SLAVE = 0x00,							/**< I2C slave mode */ 
+	 I2C_MASTER = 0x01,							/**< I2C master mode */ 
+ } I2C_DeviceMode_t;
+
+ /** @brief I2C clock prescaler.
+  */
+ typedef enum
+ {
+	 I2C_PRESCALER_1 = 0x00,					/**< Clock prescaler 1  */ 
+	 I2C_PRESCALER_4 = 0x01,					/**< Clock prescaler 4  */ 
+	 I2C_PRESCALER_16 = 0x02,					/**< Clock prescaler 16 */ 
+	 I2C_PRESCALER_64 = 0x03,					/**< Clock prescaler 64 */ 
+ } I2C_ClockPrescaler_t;
+
+ /** @brief I2C callback types.
+  */
+ typedef enum
+ {
+	 I2C_TXCOMPLETE_INTERRUPT = 0x01,			/**< Transmission complete interrupt (Master) */
+	 I2C_RXCOMPLETE_INTERRUPT = 0x02,			/**< Receive complete interrupt (Master) */
+	 I2C_ERROR_INTERRUPT = 0x04,				/**< Error interrupt (Master) */
+	 I2C_DATA_RDY_INTERRUPT = 0x08,				/**< New data ready interrupt (Slave) */
+ } I2C_CallbackType_t;
+
+ /** @brief I2C master status codes.
+  */
+ typedef enum
+ {
+	 I2C_MASTER_REGISTER = 0x00,				/**< Write register address phase */
+	 I2C_MASTER_ADDRESS = 0x01,					/**< Device address (read) phase */
+	 I2C_MASTER_WRITE = 0x02,					/**< Write phase */
+	 I2C_MASTER_READ = 0x03,					/**< Read phase */
+	 I2C_MASTER_SEND = 0x04,					/**< Data successfully transmitted */
+	 I2C_MASTER_RECEIVED = 0x05,				/**< Data successfully received */
+	 I2C_MASTER_BUFFEROVERFLOW = 0x06,			/**< Buffer overflow */
+	 I2C_MASTER_ERROR = 0xFF,					/**< Transmission error */
+ } I2C_MasterStatus_t;
+
+ /** @brief I2C slave status codes.
+  */
+ typedef enum
+ {
+	 I2C_SLAVE_IDLE = 0x00,						/**< Slave idle */
+	 I2C_SLAVE_BUFFEROVERFLOW = 0x01,			/**< Buffer overflow */
+	 I2C_SLAVE_ERROR = 0xFF,					/**< Transmission error */
+ } I2C_SlaveStatus_t;
 
  /** 
   * I2C SDA hold times
@@ -110,6 +190,45 @@
 	 uint8_t* Buffer;							/**< Pointer to data buffer */
 	 Bool_t EnablePromiscuousMode;				/**< Enable promiscuous mode */
  } I2CS_Config_t;
+
+ /** @brief I2C interrupt configuration object.
+  */
+ typedef struct
+ {
+	 TWI_t* Device;								/**< Pointer to TWI device object */
+	 Interrupt_Level_t InterruptLevel;			/**< Interrupt level */	 
+	 I2C_CallbackType_t Source;					/**< I2C interrupt type */
+	 I2C_Callback_t Callback;					/**< Function pointer to I2C callback */
+ } I2C_InterruptConfig_t;
+
+ /** @brief I2C buffer object for slave mode.
+  */
+ typedef struct 
+ {
+	 TWI_t* Device;								/**< Target TWI */
+	 uint8_t* Buffer;							/**< Pointer to data buffer */
+	 volatile uint8_t BytesReceived;			/**< Received bytes */
+	 volatile uint8_t IndexWrite;				/**< Write index */
+	 volatile uint8_t BytesSend;				/**< Transmitted bytes */
+	 volatile uint8_t IndexRead;				/**< Read index */
+	 volatile I2C_SlaveStatus_t Status;			/**< Device status */
+ } I2C_Buffer_t;
+
+ /** @brief I2C message object for interrupt driven transmission in master mode.
+  */
+ typedef struct
+ {
+	TWI_t* Device;								/**< Target TWI */
+	 uint8_t DeviceAddress;						/**< Slave address */
+	 uint8_t Register;							/**< Slave register address */
+	 uint8_t BytesToWrite;						/**< Bytes to write */
+	 volatile uint8_t IndexWrite;				/**< Write index */
+	 uint8_t BytesToRead;						/**< Bytes to read */
+	 volatile uint8_t IndexRead;				/**< Read index */
+	 uint8_t* BufferWrite;						/**< Pointer to write buffer */
+	 uint8_t* BufferRead;						/**< Pointer to read buffer */
+	 volatile I2C_MasterStatus_t Status;		/**< Device status */
+ } I2C_Message_t;
 
  /*
 	Common functions

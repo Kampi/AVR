@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega ADC module.
+ *  File info: Driver for Atmel AVR XMega ADC module.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -24,9 +24,9 @@
  */ 
 
 /** @file Arch/XMega/ADC/ADC.c
- *  @brief Driver for XMega ADC module.
+ *  @brief Driver for Atmel AVR XMega ADC module.
  *
- *  This file contains the implementation of the XMega ADC driver.
+ *  This file contains the implementation of the Atmel AVR XMega ADC driver.
  *
  *  @author Daniel Kampert
  */
@@ -84,23 +84,6 @@ void ADC_Init(ADC_Config_t* Config)
 	
 	ADC_Enable(Config->Device);
 	ADC_Flush(Config->Device);
-}
-
-void ADC_GetConfig(ADC_Config_t* Config, ADC_t* Device)
-{
-	Config->Device = Device;
-	Config->ConversionMode = ADC_GetConversionMode(Config->Device);
-	Config->Prescaler = ADC_GetPrescaler(Config->Device);
-	Config->Format = ADC_GetFormat(Config->Device);
-	Config->Reference = ADC_GetReference(Config->Device);
-	
-	#if(MCU_NAME == MCU_NAME_ATXMEGA256A3BU)
-		Config->DMARequest = ADC_GetDMARequest(Config->Device);
-	#endif
-	
-	#if(MCU_NAME == MCU_NAME_ATXMEGA384C3)
-		Config->SamplingTime = ADC_GetSamplingTime(Config->Device);
-	#endif
 }
 
 void ADC_ConfigEvent(ADC_t* Device, const ADC_EventChannel_t Channel, const ADC_EventMode_t Mode)

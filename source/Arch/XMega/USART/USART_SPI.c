@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *  Website: www.kampis-elektroecke.de
- *  File info: Driver for XMega USART-SPI interface.
+ *  File info: Driver for Atmel AVR8 XMega USART-SPI interface.
  
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,10 +23,10 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file XMega/USART/USART_SPI.c
- *  @brief Driver for XMega USART-SPI module..
+/** @file Arch/XMega/USART/USART_SPI.c
+ *  @brief Driver for Atmel AVR8 XMega USART-SPI module..
  *
- *  This contains the implementation of the XMega USART-SPI driver.
+ *  This contains the implementation of the Atmel AVR8 XMega USART-SPI driver.
  *
  *  @author Daniel Kampert
  */
@@ -41,7 +41,7 @@
 	extern SPI_Message_t __SPI_Messages[USART_DEVICES][USART_CHANNEL];
 	extern Bool_t __USART_IsSPI[USART_DEVICES][USART_CHANNEL];
 
-	extern struct
+	struct
 	{
 		SPI_Callback_t CompleteInterrupt;
 	} __USART_SPI_Callbacks[USART_DEVICES][USART_CHANNEL];
