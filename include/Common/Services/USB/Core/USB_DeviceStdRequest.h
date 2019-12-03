@@ -45,8 +45,9 @@
 	 #error "Unknown CPU architecture!"
  #endif
 
+ #include "Common/Services/USB/Core/StandardRequest.h"
+ #include "Common/Services/USB/Core/StandardDescriptor.h"
  #include "Common/Services/USB/Core/USB_DeviceStream.h"
- #include "Common/Services/USB/Core/StandardRequestTypes.h"
  
  /** @brief	Handle the standard USB device requests.
   */

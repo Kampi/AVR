@@ -34,23 +34,19 @@
 #ifndef ENDPOINT_H_
 #define ENDPOINT_H_
 
- /** 
-  * Control endpoint address for USB devices
+ /** @brief	Control endpoint address for USB devices.
   */
  #define ENDPOINT_CONTROL_ADDRESS						0x00
 
- /** 
-  * Default size for the control endpoint
+ /** @brief	Default size for control endpoint.
   */
  #define ENDPOINT_CONTROL_DEFAULT_SIZE					0x08
 
- /** 
-  * Mask for IN endpoint
+ /** @brief	Mask for IN endpoint.
   */
  #define ENDPOINT_DIR_MASK_IN							0x80
 
- /** 
-  * Endpoint types
+ /** @brief	Endpoint types.
   */
  typedef enum
  {
@@ -60,8 +56,7 @@
 	 ENDPOINT_TYPE_INTERRUPT = 0x03						/**< Interrupt endpoint */ 
  } Endpoint_Type_t;
 
- /** 
-  * Endpoint size in bytes
+ /** @brief	Endpoint size in bytes.
   */
  typedef enum
  {
@@ -75,8 +70,7 @@
 															 NOTE: Only for endpoint 1! */ 
  } Endpoint_Size_t;
 
- /** 
-  * Endpoint directions
+ /** @brief	Endpoint directions.
   */
  typedef enum
  {
@@ -299,6 +293,6 @@
  /** @brief				Clear the input/output bank of the current endpoint.
   *  @param RequestType	USB request type
   */
- void Endpoint_ClearEndpointBank(const uint8_t RequestType);
+ void Endpoint_HandleSTATUS(const uint8_t RequestType);
 
 #endif /* ENDPOINT_H_  */

@@ -23,7 +23,7 @@
  */
 
 /** @file Common/Board/XMegaC3XPlained.h
- *  @brief Hardware driver for the Atmel XPlainedC3 development board.
+ *  @brief Hardware driver driver and on-board peripheral the Atmel AVR XPlainedC3 development board.
  *
  *  @author Daniel Kampert
  */
@@ -35,6 +35,51 @@
 	Define the MCU for the board
  */
  #include "Common/Board/MCU/XMega384C3.h"
+
+ /*
+	 Board specific configurations
+ */
+
+ /* 
+	LEDs
+ */
+ // Yellow LED0
+ #define LED0										PORTR, 0
+
+ // Yellow LED1
+ #define LED1										PORTR, 1
+
+ // Red/Green LED
+ #define LED2										PORTD, 4
+
+ // Green LED
+ #define LED3										PORTD, 5
+ 
+ /* 
+	Push buttons
+ */
+ #define SW0										PORTF, 1
+ #define SW1										PORTF, 2
+ 
+ /*
+	Analog inputs
+ */
+ #define LIGHT_SENSOR								0
+ #define TEMPERATURE_SENSOR							1
+
+ /*
+	 Default interfaces 
+ */
+ #define SPI_CLOCK									1000000
+ #define SPI_DEFAULT_INTERFACE						&USARTD0							
+
+ #define I2C_CLOCK									100000
+ #define I2C_DEFAULT_INTERFACE						&TWIC
+
+ /*
+	Reference voltage [mV]
+ */
+ #define REFERENCE_VOLTAGE							3300
 
  /*
 	Hardware driver

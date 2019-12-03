@@ -30,14 +30,14 @@
  *  @bug No known bugs
  */
 
-#ifndef DESCRIPTORTYPES_H_
-#define DESCRIPTORTYPES_H_
+#ifndef STANDARDDESCRIPTOR_H_
+#define STANDARDDESCRIPTOR_H_
 
  #include "Common/Common.h"
 
  /** @brief	Macro to convert multiple bytes to a Unicode string descriptor.
  */
- #define LANG_TO_STRING_DESCRIPTOR(...)				{ .bLength = sizeof(USB_StringDescriptor_t) + (uint16_t)VA_NARGS(__VA_ARGS__), .bDescriptorType = DESCRIPTOR_TYPE_STRING, .bString = {__VA_ARGS__} }
+ #define LANG_TO_STRING_DESCRIPTOR(...)					{ .bLength = sizeof(USB_StringDescriptor_t) + (uint16_t)VA_NARGS(__VA_ARGS__), .bDescriptorType = DESCRIPTOR_TYPE_STRING, .bString = {__VA_ARGS__} }
 
  /** @brief	Macro to convert a char array to a Unicode string descriptor.
  */
@@ -45,11 +45,11 @@
 
  /** @brief	Macro to convert a primary language and a sub language into a 16-bit language id
  */
- #define CONV_LANG(PRIM, SUB)							((SUB & 0x3F << 10) | (PRIM & 0x3FF))
+ #define CONV_LANG(Primary, Sub)						(((Sub & 0x3F) << 10) | (Primary & 0x3FF))
 
  /** @brief	Macro to convert a USB BCD version number.
  */
- #define USB_VERSION(Major, Minor, Revision)			((Major & 0xFF) << 0x08) | ((Minor & 0x0F) << 0x04) | (Revision & 0x0F)
+ #define USB_VERSION(Revision, Minor, Major)			((Major & 0xFF) << 0x08) | ((Minor & 0x0F) << 0x04) | (Revision & 0x0F)
 
  /** @brief	Macro to create the value for the maximum power consumption of a device in mA.
  */
@@ -470,9 +470,9 @@
  /** @brief		Function prototype to load an descriptor from the program memory.
   *  @wValue	wValue from USB packet
   *  @wIndex	wIndex from USB packet
-  *  @Address	Pointer to descriptor address in memory
-  *  @return	Descriptor size
+  *  @Size		Descriptor length	
+  *  @return	Pointer to descriptor address in memory
   */
- uint16_t USB_GetDescriptor(const uint16_t wValue, const uint16_t wIndex, const void** Address);
+ extern const void* USB_GetDescriptor(const uint16_t wValue, const uint16_t wIndex, uint16_t* Size);
 
-#endif /* DESCRIPTORTYPES_H_  */ 
+#endif /* STANDARDDESCRIPTOR_H_  */ 

@@ -23,7 +23,7 @@
  */
 
 /** @file Common/Board/XMegaA3XPlained.h
- *  @brief Hardware driver for the Atmel XPlainedA3BU development board.
+ *  @brief Hardware driver driver and on-board peripheral the Atmel AVR XPlainedA3BU development board.
  *
  *  @author Daniel Kampert
  */
@@ -31,13 +31,60 @@
 #ifndef XMEGAA3XPLAINED_H_
 #define XMEGAA3XPLAINED_H_
 
+ #include "Common/Board/MCU/XMega256A3BU.h"
+
+ /*
+	 Board specific configurations
+ */
+
+ /*
+	Peripheral definitions
+ */
+
+ /* 
+	LEDs
+ */
+ // Yellow LED0
+ #define LED0										PORTR, 0
+
+ // Yellow LED1
+ #define LED1										PORTR, 1
+
+ // Red/Green LED
+ #define LED2										PORTD, 4
+
+ // Green LED
+ #define LED3										PORTD, 5
+ 
+ /* 
+	Push buttons
+ */
+ #define SW0										PORTE, 5
+ #define SW1										PORTF, 1
+ #define SW2										PORTF, 2
+ 
+ /*
+	Analog inputs
+ */
+ // Light sensor
+ #define LIGHT_SENSOR								0
+
+ // Temperature sensor
+ #define TEMPERATURE_SENSOR							1
+
+ /*
+	 Default interfaces 
+ */
  #define SPI_CLOCK									1000000
- #define SPI_DEFAULT_INTERFACE						&USARTD0
+ #define SPI_DEFAULT_INTERFACE						&USARTD0							
 
  #define I2C_CLOCK									100000
  #define I2C_DEFAULT_INTERFACE						&TWIC
-
- #include "Common/Board/MCU/XMega256A3BU.h"
+ 
+ /*
+	Reference voltage [mV]
+ */
+ #define REFERENCE_VOLTAGE							3300
 
  /*
 	Hardware driver

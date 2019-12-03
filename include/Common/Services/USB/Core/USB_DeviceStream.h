@@ -23,7 +23,7 @@
  */ 
 
 /** @file Common/Services/USB/Core/USB_DeviceStream.h
- *  @brief USB device stream implementation for USB service
+ *  @brief USB device stream implementation for USB service.
  *
  *  This file contains the prototypes and definitions for the USB device stream.
  *
@@ -66,7 +66,7 @@
   *	 @param RequestedLength	Requested data length from host
   *  @return				Error code
   */
- Endpoint_CS_State_t USBControlStream_IN(const void* Buffer, const uint16_t Length, const uint16_t RequestedLength);
+ Endpoint_CS_State_t USB_DeviceStream_ControlIN(const void* Buffer, const uint16_t Length, const uint16_t RequestedLength);
  
  /** @brief					Send data to the host by using an IN endpoint.
   *  @param Buffer			Pointer to data buffer

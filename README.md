@@ -23,6 +23,7 @@ Please check the [docs](http://kampis-elektroecke.de/doc/libavr/index.html) or w
 | 1.0       | First release                | 13.06.2019 |
 | 1.1       | Updating driver, add more examples               | 28.10.2019 |
 | 1.2       | Updating driver, add more examples               | 16.11.2019 |
+| 1.3       | Update AT90USB1287 USB example               | 03.12.2019 |
 
 ## Maintainer
 

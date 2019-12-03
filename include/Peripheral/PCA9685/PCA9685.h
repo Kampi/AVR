@@ -28,7 +28,7 @@
  *  This file contains the prototypes and definitions for the PWM controller driver.
  *
  *  @author Daniel Kampert
- *  @bug No known bugs
+ *  @bug	- ALLCALL missing
  */
 
 #ifndef PCA9685_H_

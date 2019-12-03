@@ -36,8 +36,7 @@
 
  #include "Common/Common.h"
 
- /** 
-  * USB interrupt types
+ /** @brief	USB interrupt types.
   */
  typedef enum
  {
