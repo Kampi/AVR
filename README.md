@@ -10,7 +10,7 @@
 
 This is a my public library for Atmel MCUs. It contains driver for the MCU peripherals and some other devices.
 
-Please check the [docs](http://kampis-elektroecke.de/doc/libavr/index.html) or write an e-mail to [DanielKampert@kampis-elektroecke.de](DanielKampert@kampis-elektroecke.de) if you have any questions.
+Please check the docs or write an e-mail to [DanielKampert@kampis-elektroecke.de](DanielKampert@kampis-elektroecke.de) if you have any questions.
 
 ## Device support
 
