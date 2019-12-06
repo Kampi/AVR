@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Atmel Studio Solution File, Format Version 11.00
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "AES_Example", "AES_Example\AES_Example.cproj", "{479EDD44-3E62-4BD2-9FDC-8CD54051A82F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{479EDD44-3E62-4BD2-9FDC-8CD54051A82F}.Debug|AVR.ActiveCfg = Debug|AVR
+		{479EDD44-3E62-4BD2-9FDC-8CD54051A82F}.Debug|AVR.Build.0 = Debug|AVR
+		{479EDD44-3E62-4BD2-9FDC-8CD54051A82F}.Release|AVR.ActiveCfg = Release|AVR
+		{479EDD44-3E62-4BD2-9FDC-8CD54051A82F}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
