@@ -61,43 +61,39 @@
  #define DISPLAYMANAGER_LCD_PAGES					(DISPLAYMANAGER_LCD_HEIGHT / DISPLAYMANAGER_LCD_PIXEL_PER_BYTE)									/**< Page count of the display, based on the display height and the bytes per pixel */
  #define DISPLAYMANAGER_LCD_FRAMEBUFFER_SIZE		((DISPLAYMANAGER_LCD_WIDTH * DISPLAYMANAGER_LCD_HEIGHT) / DISPLAYMANAGER_LCD_PIXEL_PER_BYTE)	/**< Size of the display frame buffer */
 
- /*
-	Function prototypes used by the display manager. The display driver must implement this functions.
- */
-
  /** @brief			Initialize the display and the interface.
   *  @param Config	Pointer to display configuration object.
   */
- void Display_Init(DisplayInterface_t* Config);
+ extern void Display_Init(DisplayInterface_t* Config);
  
  /** @brief	Reset the display.
   */
- void Display_Reset(void);
+ extern void Display_Reset(void);
  
  /** @brief			Enable/Disable the display back light.
   *  @param Enable	#TRUE to enable the back light.
   */
- void Display_SwitchDisplay(const Bool_t Enable);
+ extern void Display_SwitchDisplay(const Bool_t Enable);
 
  /** @brief			Write a data byte to the display.
   *  @param Data	Data byte
   */
- void Display_WriteData(const uint8_t Data);
+ extern void Display_WriteData(const uint8_t Data);
  
- /** @brief		Set the display page.
-  *  @param Page Display page
+ /** @brief			Set the display page.
+  *  @param Page 	Display page
   */
- void Display_SetPage(const uint8_t Page);
+ extern void Display_SetPage(const uint8_t Page);
  
  /** @brief			Select the display column.
   *  @param Column	Display column
   */
- void Display_SetColumn(const uint8_t Column);
+ extern void Display_SetColumn(const uint8_t Column);
  
  /** @brief			Set the start line of the display.
   *  @param Line	Start line
   */
- void Display_SetStartLine(const uint8_t Line);
+ extern void Display_SetStartLine(const uint8_t Line);
 
  /** @brief Fill options for drawing objects.
   */

@@ -179,10 +179,10 @@
 	 uint8_t DSR_IMPL:1;				/**< DSR implemented */
 	 uint8_t Reserved1:2;				/**< Reserved */
 	 uint16_t C_SIZE:12;				/**< Device size */
-	 uint8_t VDD_R_CURR_MIN:3;			/**< Max. read current @Vdd min */
-	 uint8_t VDD_R_CURR_MAX:3;			/**< Max. read current @Vdd max */
-	 uint8_t VDD_W_CURR_MIN:3;			/**< Max. write current @Vdd min */
-	 uint8_t VDD_W_CURR_MAX:3;			/**< Max. write current @Vdd max */
+	 uint8_t VDD_R_CURR_MIN:3;			/**< Max. read current Vdd min */
+	 uint8_t VDD_R_CURR_MAX:3;			/**< Max. read current Vdd max */
+	 uint8_t VDD_W_CURR_MIN:3;			/**< Max. write current Vdd min */
+	 uint8_t VDD_W_CURR_MAX:3;			/**< Max. write current Vdd max */
 	 uint8_t C_SIZE_MULT:3;				/**< Device size multiplier */
 	 uint8_t ERASE_BLK_EN:1;			/**< Erase single block enable */
 	 uint8_t SECTOR_SIZE:7;				/**< Erase sector size */

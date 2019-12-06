@@ -62,13 +62,13 @@
   */
  const SleepMgr_Modes_t SleepManager_GetSleepMode(void);
 
- /** @brief	Increase the lock count for a specific sleep manager mode.
-  *  @Mode	Sleep manager mode
+ /** @brief			Increase the lock count for a specific sleep manager mode.
+  *  @param Mode	Sleep manager mode
   */
  void SleepManager_Lock(const SleepMgr_Modes_t Mode);
  
- /** @brief	Decrease the lock count for a specific sleep manager mode.
-  *  @Mode	Sleep manager mode
+ /** @brief			Decrease the lock count for a specific sleep manager mode.
+  *  @param Mode	Sleep manager mode
   */
  void SleepManager_Unlock(const SleepMgr_Modes_t Mode);
 
