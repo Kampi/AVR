@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Atmel Studio Solution File, Format Version 11.00
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{D5223D95-3983-47A1-AF66-41337084B280}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\configs\Config_HD44780.h = ..\..\..\configs\Config_HD44780.h
+	EndProjectSection
+EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "AT90USB1287", "AT90USB1287\AT90USB1287.cproj", "{D97A6528-6252-40CC-B0EA-D6741A5A09CB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D97A6528-6252-40CC-B0EA-D6741A5A09CB}.Debug|AVR.ActiveCfg = Debug|AVR
+		{D97A6528-6252-40CC-B0EA-D6741A5A09CB}.Debug|AVR.Build.0 = Debug|AVR
+		{D97A6528-6252-40CC-B0EA-D6741A5A09CB}.Release|AVR.ActiveCfg = Release|AVR
+		{D97A6528-6252-40CC-B0EA-D6741A5A09CB}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

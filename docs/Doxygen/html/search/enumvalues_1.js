@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['batterybackup_5fclock_5f1hz',['BATTERYBACKUP_CLOCK_1HZ',['../_battery_backup_8h.html#a159cfa37c3cc117432903012e08c8fb5a435009b827a829c796859ac5649a6a3f',1,'BatteryBackup.h']]],
+  ['batterybackup_5fclock_5f1khz',['BATTERYBACKUP_CLOCK_1KHZ',['../_battery_backup_8h.html#a159cfa37c3cc117432903012e08c8fb5a07662f070603c8c059685d06b92c38f7',1,'BatteryBackup.h']]],
+  ['batterybackup_5fregister0',['BATTERYBACKUP_REGISTER0',['../_battery_backup_8h.html#a48d1d7b988ab2a7ccf16fcd594d7668fa46c7937fde55d051552736ce3e494c3d',1,'BatteryBackup.h']]],
+  ['batterybackup_5fregister1',['BATTERYBACKUP_REGISTER1',['../_battery_backup_8h.html#a48d1d7b988ab2a7ccf16fcd594d7668fa14f16f540769e336f0c2a51841073446',1,'BatteryBackup.h']]],
+  ['batterybackup_5fstatus_5fbbbod',['BATTERYBACKUP_STATUS_BBBOD',['../_battery_backup_8h.html#a02ca409e58e49001902cacab74cb7941ad62a926be96767534e8babbf76f8bd17',1,'BatteryBackup.h']]],
+  ['batterybackup_5fstatus_5fbbpor',['BATTERYBACKUP_STATUS_BBPOR',['../_battery_backup_8h.html#a02ca409e58e49001902cacab74cb7941ab9d410ea8e175124fcd7edbe772b9073',1,'BatteryBackup.h']]],
+  ['batterybackup_5fstatus_5finit',['BATTERYBACKUP_STATUS_INIT',['../_battery_backup_8h.html#a02ca409e58e49001902cacab74cb7941a77c156da95024cd06e295b0f1e83bfa8',1,'BatteryBackup.h']]],
+  ['batterybackup_5fstatus_5fno_5fpower',['BATTERYBACKUP_STATUS_NO_POWER',['../_battery_backup_8h.html#a02ca409e58e49001902cacab74cb7941afc3694c7bbba6f25eb09ba0a4173fea2',1,'BatteryBackup.h']]],
+  ['batterybackup_5fstatus_5fok',['BATTERYBACKUP_STATUS_OK',['../_battery_backup_8h.html#a02ca409e58e49001902cacab74cb7941a4b83a6d7f71c8bd9e63d743d03f0bcda',1,'BatteryBackup.h']]],
+  ['batterybackup_5fstatus_5fxoscfail',['BATTERYBACKUP_STATUS_XOSCFAIL',['../_battery_backup_8h.html#a02ca409e58e49001902cacab74cb7941ad0e8be0842d7c0e6cfccbf977a4149a5',1,'BatteryBackup.h']]],
+  ['bh1750vi_5fmode_5fnormal',['BH1750VI_MODE_NORMAL',['../group___i2_c-_addresses.html#gga2f63345ba71041a192e676f6c49f5006abc5335d95f948aad25a6158acb556b5a',1,'BH1750FVI.h']]],
+  ['bh1750vi_5fmode_5fpwr_5fdown',['BH1750VI_MODE_PWR_DOWN',['../group___i2_c-_addresses.html#gga2f63345ba71041a192e676f6c49f5006ad7e148ba0a72122bf991b9dcfaf73b1a',1,'BH1750FVI.h']]],
+  ['bh1750vi_5fres_5fhigh',['BH1750VI_RES_HIGH',['../_b_h1750_f_v_i_8h.html#a233e894c8780932fd5846f815b441febad7480d04bf3e4afc2ad9cc969990ab9a',1,'BH1750FVI.h']]],
+  ['bh1750vi_5fres_5flow',['BH1750VI_RES_LOW',['../_b_h1750_f_v_i_8h.html#a233e894c8780932fd5846f815b441feba8b70dc02b7ccf668a15c922d7c81e2e0',1,'BH1750FVI.h']]],
+  ['bh1750vi_5fres_5fmed',['BH1750VI_RES_MED',['../_b_h1750_f_v_i_8h.html#a233e894c8780932fd5846f815b441febad1a28a929a3687b1420e1023b5932c3e',1,'BH1750FVI.h']]],
+  ['bmp180_5foss_5f1',['BMP180_OSS_1',['../_b_m_p180_8h.html#ac4eefbfeab5b8f6130cfd0cee0e5af76ae4fc300fa55a00b6218664394f4dd543',1,'BMP180.h']]],
+  ['bmp180_5foss_5f2',['BMP180_OSS_2',['../_b_m_p180_8h.html#ac4eefbfeab5b8f6130cfd0cee0e5af76a5d01415c4d1e6555311f4aba312dfefb',1,'BMP180.h']]],
+  ['bmp180_5foss_5f4',['BMP180_OSS_4',['../_b_m_p180_8h.html#ac4eefbfeab5b8f6130cfd0cee0e5af76a17404c7576100912fe438826feeb7c2c',1,'BMP180.h']]],
+  ['bmp180_5foss_5f8',['BMP180_OSS_8',['../_b_m_p180_8h.html#ac4eefbfeab5b8f6130cfd0cee0e5af76a6cea2a8288f64dd85a5c657c32bce1f9',1,'BMP180.h']]]
+];
