@@ -1,4 +1,4 @@
-# AVR Libray
+# AVR Library
 
 ## Table of Contents
 
