@@ -45,7 +45,7 @@
  typedef enum
  {
 	 USB_SPEED_LOW = 0x00,				/**< Low speed bus */ 
-	 USB_SPEED_FULL = 0x01,				/**< Full speed bus */ 
+	 USB_SPEED_HIGH = 0x01,				/**< High speed bus */ 
  } USB_Speed_t;
 
  /** @brief	States for USB state machine.
@@ -59,39 +59,5 @@
 	 USB_STATE_ADDRESSED = 0x04,		/**< Device addressed */
 	 USB_STATE_CONFIGURED = 0x06,		/**< Device configured */
  } USB_State_t;
-
- /** @brief	USB Events
-  */
- typedef struct
- {
-	 /** @brief					USB configuration changed event.
-								NOTE: This event is needed for the USB enumeration. So this event is time critical.
-	  *  @param Configuration	Configuration number (start with 1)
-	  */
-	 void (*ConfigurationChanged)(const uint8_t Configuration);
-	 
-	 /** @brief					Device control request event.
-								NOTE: This event is needed for the USB enumeration. So this event is time critical.
-	  *  @param bRequest		USB request
-	  *  @param bmRequestType	Request type
-	  *  @param wValue			Request value
-	  */
-	 void (*ControlRequest)(const uint8_t bRequest, const uint8_t bmRequestType, const uint16_t wValue);
-	 void (*ConnectWithBus)();
-	 void (*DisconnectFromBus)();
-	 
-	 /** @brief					USB error event.
-	  */
-	 void (*Error)();
- } USB_DeviceCallbacks_t;
-
- /** @brief	USB configuration object
-  */
- typedef struct 
- {
-	 USB_Mode_t Mode;							/**< USB device mode */
-	 USB_Speed_t Speed;							/**< USB bus speed */
-	 const USB_DeviceCallbacks_t* Callbacks;	/**< Pointer to USB device callbacks */
- } USB_Config_t;
 
 #endif /* USB_TYPES_H_ */

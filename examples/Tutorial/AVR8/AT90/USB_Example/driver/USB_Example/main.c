@@ -33,9 +33,6 @@
 
 #include "USB/USB.h"
 #include "TestDescriptor.h"
-#include "Peripheral/HD44780/HD44780.h"
-
-void USB_DeviceTask(void);
 
 void USB_Event_OnError(void);
 void USB_Event_ConfigurationChanged(const uint8_t Configuration);
@@ -49,92 +46,39 @@ const USB_DeviceCallbacks_t Events_USB =
 	.ConfigurationChanged = USB_Event_ConfigurationChanged,
 };
 
-USB_Config_t ConfigUSB = {
-	.Callbacks = &Events_USB,
-	.Mode = USB_MODE_DEVICE,
-	.Speed = USB_SPEED_FULL,
-};
-
-uint8_t Buffer[16];
-
 int main(void)
 {
 	/*
 		Initialize the GPIO
 			-> PD4 - PD7 as outputs
+			-> Disable all outputs
 	*/
-	GPIO_SetPortDirection(&PORTD, 0xF0, GPIO_DIRECTION_OUT);
-	GPIO_ClearPort(&PORTD, 0xF0);
-
-	/*
-		Initialize the LCD
-	*/
-	//HD44780_Init();
-	//HD44780_SwitchCursor(1);
-	//HD44780_SwitchBlink(1);
-	//HD44780_WriteString("Go...");
+	DDRD |= (0x01 << 0x07) | (0x01 << 0x06) | (0x01 << 0x05) | (0x01 << 0x04);
+	PORTD &= ~((0x01 << 0x07) | (0x01 << 0x06) | (0x01 << 0x05) | (0x01 << 0x04));
 
 	/*
 		Initialize the USB
 			-> USB device
 			-> Low-Speed
 	*/
-	USB_Init(&ConfigUSB);
+	USB_Init(&Events_USB);
 
 	/*
 		Enable global interrupts
 	*/
 	sei();
 
-	for(uint8_t i = 0x00; i < sizeof(Buffer); i++)
-	{
-		Buffer[i] = i;
-	}
-
 	while(1) 
 	{
 	    USB_Poll();
-		USB_DeviceTask();
 	}
-}
-
-void USB_DeviceTask(void)
-{
-	uint16_t BytesReceived = 0x00;
-	uint16_t Frame = 0x00;
-
-	if(USB_GetState() != USB_STATE_CONFIGURED)
-	{
-		return;
-	}
-
-	// Select the IN endpoint
-	Endpoint_Select(OUT_EP);
-
-	// Leave when no data are available
-	if(Endpoint_OUTReceived())
-	{
-		for(uint8_t i; i < Endpoint_GetBytes(); i++)
-		{
-			Buffer[i] = Endpoint_ReadByte();
-		}
-
-		Endpoint_AckOUT();
-		
-		for(uint8_t i = 0x00; i < 0x05; i++)
-		{
-			//HD44780_WriteChar(Buffer[i]);
-		}
-	}
-
-	return;
 }
 
 void USB_Event_OnError(void)
 {
 	// Set D2 red when the endpoint configuration was not successfully
-	GPIO_Clear(&PORTD, 0x05);
-	GPIO_Set(&PORTD, 0x04);
+	PORTD &= ~(0x01 << 0x05);
+	PORTD |= (0x01 << 0x04);
 }
 
 void USB_Event_ConfigurationChanged(const uint8_t Configuration)
@@ -143,8 +87,7 @@ void USB_Event_ConfigurationChanged(const uint8_t Configuration)
 	if(Endpoint_Configure(IN_EP, ENDPOINT_TYPE_INTERRUPT, EP_SIZE, 1) && Endpoint_Configure(OUT_EP, ENDPOINT_TYPE_INTERRUPT, EP_SIZE, 1))
 	{
 		// Set D2 red and green when the endpoint configuration was successfully
-		GPIO_Set(&PORTD, 0x04);
-		GPIO_Set(&PORTD, 0x05);
+		PORTD |= (0x01 << 0x05) | (0x01 << 0x04);
 	}
 	else
 	{

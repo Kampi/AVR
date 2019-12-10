@@ -23,7 +23,7 @@
  */
 
 /** @file USB/USB.c
- *  @brief USB driver for the AT90USB1287.
+ *  @brief USB driver for AT90USB1287.
  *
  *  This file contains the implementation of the USB driver.
  *
@@ -36,12 +36,12 @@
 extern volatile USB_State_t __DeviceState;
 extern USB_DeviceCallbacks_t __USBEvents;
 
-void USB_Init(const USB_Config_t* Config)
+void USB_Init(const USB_DeviceCallbacks_t* Events)
 {
 	// Initialize the USB controller
-	USB_Controller_Init(Config->Mode, Config->Speed);
+	USBController_Init(USB_MODE_DEVICE, USB_SPEED_LOW);
 
-	__USBEvents = *Config->Callbacks;
+	__USBEvents = *Events;
 	__DeviceState = USB_STATE_RESET;
 }
 
@@ -66,9 +66,4 @@ void USB_Poll(void)
 
 	// Switch back to the previous endpoint
 	Endpoint_Select(CurrEndpoint);
-}
-
-volatile USB_State_t USB_GetState(void)
-{
-	return __DeviceState;
 }

@@ -19,23 +19,11 @@ Device.set_configuration(1)
 # Get the active configuration
 Config = Device.get_active_configuration()[(0, 0)]
 
-# Set the first interface
-# Doesn´t work atm
-#usb.control.set_interface(Device, 1, 0)
-
 # Get the OUT endpoint
 EP_OUT = usb.util.find_descriptor(Config,
                                   custom_match = lambda e: \
                                   usb.util.endpoint_direction(e.bEndpointAddress) == \
                                   usb.util.ENDPOINT_OUT)
-
-# Get the IN endpoint
-EP_IN = usb.util.find_descriptor(Config,
-                                  custom_match = lambda e: \
-                                  usb.util.endpoint_direction(e.bEndpointAddress) == \
-                                  usb.util.ENDPOINT_IN)
-
-EP_OUT.write("Hello")
 
 # Display the target information
 print("Device:\n\r{}".format(Device))

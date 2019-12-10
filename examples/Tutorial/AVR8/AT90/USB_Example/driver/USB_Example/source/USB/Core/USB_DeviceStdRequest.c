@@ -212,13 +212,13 @@ void USBDevice_ControlRequest(void)
 				uint8_t Address = (__ControlRequest.wValue & 0x7F);
 
 				// Save the address
-				USB_Device_SetAddress(Address);
+				USBDevice_SetAddress(Address);
 
 				// Process the STATUS stage
 				Endpoint_HandleSTATUS(__ControlRequest.bmRequestType);
 
 				// Enable the new device address
-				USB_Device_EnableAddress();
+				USBDevice_EnableAddress();
 
 				__DeviceState = USB_STATE_ADDRESSED;
 			}

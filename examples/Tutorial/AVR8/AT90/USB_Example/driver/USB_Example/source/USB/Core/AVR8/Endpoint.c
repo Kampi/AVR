@@ -38,11 +38,6 @@ uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, co
 {
 	uint8_t Address_Temp = Address & 0x0F;
 
-	if((Address_Temp & 0x07) > MAX_ENDPOINTS)
-	{
-		return 0x00;
-	}
-
 	// Allocate the memory for the endpoints
 	for(uint8_t i = Address_Temp; i < MAX_ENDPOINTS; i++)
 	{
@@ -50,7 +45,7 @@ uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, co
 		uint8_t UECFG1X_Temp;
 		uint8_t UEIENX_Temp;
 
-		Endpoint_Select(Address_Temp);
+		UENUM = Address_Temp;
 
 		if(i == Address_Temp)
 		{
@@ -97,14 +92,14 @@ uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, co
 		}
 
 		// Disable the selected endpoint
-		Endpoint_Disable();
+		UECONX &= ~(0x01 << EPEN);
 		
 		// Clear the ALLOC-bit, so the endpoints will slide down
 		UECFG1X &= ~(0x01 << ALLOC);
 
 		// Configure and activate the endpoint
-		// See figure 23-2 in the device datasheet
-		Endpoint_Enable();
+		// See figure 23-2 in the device data sheet
+		UECONX |= (0x01 << EPEN);
 		UECFG0X = UECFG0X_Temp;
 		UECFG1X = UECFG1X_Temp;
 		UEIENX = UEIENX_Temp;
@@ -117,7 +112,7 @@ uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, co
 	}
 
 	// Select the configured endpoint
-	Endpoint_Select(Address_Temp);
+	UENUM = Address_Temp;
 	
 	return 0x01;
 }

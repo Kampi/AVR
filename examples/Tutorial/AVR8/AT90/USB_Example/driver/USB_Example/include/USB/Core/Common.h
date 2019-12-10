@@ -1,9 +1,9 @@
 /*
- * USB.h
+ * USB_DeviceController.h
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: USB driver for AT90USB1287.
+ *  File info: Common includes for the USB driver.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -20,31 +20,24 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
- */
+ */ 
 
-/** @file USB/USB.h
- *  @brief USB driver for AT90USB1287.
- *
- *  This file contains the prototypes and definitions for the USB driver.
+/** @file USB/Core/Common.h
+ *  @brief Common includes for the USB driver.
  *
  *  @author Daniel Kampert
- *  @bug No known bugs.
+ *  @bug No known bugs
  */
 
-#ifndef USB_H_
-#define USB_H_
+#ifndef COMMON_H_
+#define COMMON_H_
 
- #include "USB/Core/StandardDescriptor.h"
- #include "USB/Core/AVR8/USB_Controller.h"
- #include "USB/Core/USB_DeviceStdRequest.h"
+ #include <avr/io.h>
+ #include <avr/pgmspace.h>
+ #include <avr/interrupt.h>
+ #include <stddef.h>
 
- /** @brief			Initialize the USB service.
-  *  @param Events	Pointer to USB event structure
-  */
- void USB_Init(const USB_DeviceCallbacks_t* Events);
+ #include "USB/Macros.h"
+ #include "USB/USB_Types.h"
 
- /** @brief	Polling function. 
-  */
- void USB_Poll(void);
-
-#endif /* USB_H_ */
+#endif /* COMMON_H_ */

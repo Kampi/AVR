@@ -24,6 +24,7 @@
 
 /** @file TestDescriptor.c
  *  @brief Simple test descriptor for the AVR USB tutorial.
+ *		   Visit https://usb.org/sites/default/files/documents/hid1_11.pdf if you need some more information.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs

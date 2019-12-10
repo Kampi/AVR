@@ -99,62 +99,46 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <ToolchainSettings>
       <AvrGcc>
-  <avrgcc.common.Device>-mmcu=at90usb1287 -B "%24(PackRepoDir)\atmel\ATmega_DFP\1.3.300\gcc\dev\at90usb1287"</avrgcc.common.Device>
-  <avrgcc.common.optimization.RelaxBranches>True</avrgcc.common.optimization.RelaxBranches>
-  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
-  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
-  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
-  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
-  <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
-  <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
-  <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
-  <avrgcc.compiler.symbols.DefSymbols>
-    <ListValues>
-      <Value>DEBUG</Value>
-    </ListValues>
-  </avrgcc.compiler.symbols.DefSymbols>
-  <avrgcc.compiler.directories.IncludePaths>
-    <ListValues>
-      <Value>%24(PackRepoDir)\atmel\ATmega_DFP\1.3.300\include</Value>
-      <Value>../include</Value>
-      <Value>../config</Value>
-    </ListValues>
-  </avrgcc.compiler.directories.IncludePaths>
-  <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
-  <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
-  <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
-  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
-  <avrgcc.linker.libraries.Libraries>
-    <ListValues>
-      <Value>libm</Value>
-    </ListValues>
-  </avrgcc.linker.libraries.Libraries>
-  <avrgcc.assembler.general.IncludePaths>
-    <ListValues>
-      <Value>%24(PackRepoDir)\atmel\ATmega_DFP\1.3.300\include</Value>
-    </ListValues>
-  </avrgcc.assembler.general.IncludePaths>
-  <avrgcc.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcc.assembler.debugging.DebugLevel>
-</AvrGcc>
+        <avrgcc.common.Device>-mmcu=at90usb1287 -B "%24(PackRepoDir)\atmel\ATmega_DFP\1.3.300\gcc\dev\at90usb1287"</avrgcc.common.Device>
+        <avrgcc.common.optimization.RelaxBranches>True</avrgcc.common.optimization.RelaxBranches>
+        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+        <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+        <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+        <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcc.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>DEBUG</Value>
+          </ListValues>
+        </avrgcc.compiler.symbols.DefSymbols>
+        <avrgcc.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>%24(PackRepoDir)\atmel\ATmega_DFP\1.3.300\include</Value>
+            <Value>../include</Value>
+          </ListValues>
+        </avrgcc.compiler.directories.IncludePaths>
+        <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+        <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
+        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+        <avrgcc.linker.libraries.Libraries>
+          <ListValues>
+            <Value>libm</Value>
+          </ListValues>
+        </avrgcc.linker.libraries.Libraries>
+        <avrgcc.assembler.general.IncludePaths>
+          <ListValues>
+            <Value>%24(PackRepoDir)\atmel\ATmega_DFP\1.3.300\include</Value>
+          </ListValues>
+        </avrgcc.assembler.general.IncludePaths>
+        <avrgcc.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcc.assembler.debugging.DebugLevel>
+      </AvrGcc>
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="config\Config.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="include\Common.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="include\GPIO\GPIO.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="include\Macros.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="include\Peripheral\HD44780\HD44780.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="include\Peripheral\Joystick\Joystick.h">
+    <Compile Include="include\Joystick\Joystick.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\USB\Core\AVR8\Endpoint.h">
@@ -163,10 +147,13 @@
     <Compile Include="include\USB\Core\AVR8\USB_Controller.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="include\USB\Core\AVR8\USB_Device.h">
+    <Compile Include="include\USB\Core\AVR8\USB_DeviceController.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\USB\Core\AVR8\USB_Interrupt.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\USB\Core\Common.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\USB\Core\StandardDescriptor.h">
@@ -181,6 +168,9 @@
     <Compile Include="include\USB\Core\USB_DeviceStream.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="include\USB\Macros.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="include\USB\USB.h">
       <SubType>compile</SubType>
     </Compile>
@@ -188,9 +178,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="source\Peripheral\HD44780\HD44780.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="TestDescriptor.c">
@@ -220,18 +207,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="include" />
-    <Folder Include="include\GPIO" />
-    <Folder Include="include\Peripheral" />
-    <Folder Include="include\Peripheral\HD44780" />
-    <Folder Include="include\Peripheral\Joystick\" />
+    <Folder Include="include\Joystick" />
     <Folder Include="include\USB" />
     <Folder Include="include\USB\Core" />
     <Folder Include="include\USB\Class" />
     <Folder Include="include\USB\Core\AVR8" />
-    <Folder Include="config" />
     <Folder Include="source" />
-    <Folder Include="source\Peripheral\" />
-    <Folder Include="source\Peripheral\HD44780\" />
     <Folder Include="source\USB" />
     <Folder Include="source\USB\Class" />
     <Folder Include="source\USB\Core" />

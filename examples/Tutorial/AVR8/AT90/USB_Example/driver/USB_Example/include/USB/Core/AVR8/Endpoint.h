@@ -34,7 +34,7 @@
 #ifndef ENDPOINT_H_
 #define ENDPOINT_H_
 
- #include "USB/Core/AVR8/USB_Device.h"
+ #include "USB/Core/AVR8/USB_DeviceController.h"
 
  /** @brief	Max. endpoints for the device controller.
   */

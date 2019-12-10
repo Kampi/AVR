@@ -32,7 +32,7 @@
 #ifndef STANDARDREQUEST_H_
 #define STANDARDREQUEST_H_
 
- #include "Common.h"
+ #include "USB/Core/Common.h"
 
  /** @ingroup USB
   *  USB standard requests */

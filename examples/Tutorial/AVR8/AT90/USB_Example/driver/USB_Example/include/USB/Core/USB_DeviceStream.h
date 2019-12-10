@@ -34,7 +34,7 @@
 #ifndef USB_DEVICESTREAM_H_
 #define USB_DEVICESTREAM_H_
 
- #include "USB/USB.h"
+ #include "Common.h"
 
  /** @brief	Error codes for endpoint data stream.
   */
@@ -72,6 +72,6 @@
   *  @param BytesProcessed	Pointer to processed byte count
   *  @return				Error code
   */
- Endpoint_DS_ErrorCode_t USB_DeviceStream_DataIN(const void* Buffer, uint16_t Length, uint16_t* BytesProcessed);
+ Endpoint_DS_ErrorCode_t USBDataStream_IN(const void* Buffer, uint16_t Length, uint16_t* BytesProcessed);
 
 #endif /* USB_DEVICESTREAM_H_  */ 

@@ -33,7 +33,7 @@
 #ifndef DESCRIPTORTYPES_H_
 #define DESCRIPTORTYPES_H_
 
- #include "Common.h"
+ #include "USB/Core/Common.h"
 
  /** @brief	Macro to convert multiple bytes to a Unicode string descriptor.
  */

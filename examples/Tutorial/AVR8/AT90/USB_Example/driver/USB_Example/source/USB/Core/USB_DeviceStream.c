@@ -30,7 +30,9 @@
  *  @author Daniel Kampert
  */
 
+#include "USB/Core/StandardRequest.h"
 #include "USB/Core/USB_DeviceStream.h"
+#include "USB/Core/AVR8/USB_Controller.h"
 
 volatile USB_State_t __DeviceState;
 
@@ -56,50 +58,6 @@ static Endpoint_CS_State_t USB_DeviceStream_GetControlEndpointState(void)
 	}
 	
 	return ENDPOINT_CS_NO_ERROR;
-}
-
-/** @brief			Wait until the device become ready.
- *  @param Timeout	Timeout in ms
- *  @return			Error code
- */
-static Endpoint_DS_ErrorCode_t USB_DeviceStream_WaitReady(const uint8_t Timeout)
-{
-	uint8_t Timeout_Temp = Timeout;
-
-	// Get the start frame
-	uint16_t StartFrame = USB_Device_GetFrameNumber();
-
-	while(1)
-	{
-		// Check the state of the endpoint
-		if(Endpoint_INReady() || Endpoint_OUTReceived())
-		{
-			return ENDPOINT_DS_NO_ERROR;
-		}
-		else if(__DeviceState == USB_STATE_UNATTACHED)
-		{
-			return ENDPOINT_DS_DISCONNECT;
-		}
-		else if(__DeviceState == USB_STATE_SUSPEND)
-		{
-			return ENDPOINT_DS_SUSPEND;
-		}
-		else if(Endpoint_IsSTALL())
-		{
-			return ENDPOINT_DS_STALLED;
-		}
-
-		uint16_t NewFrame = USB_Device_GetFrameNumber();
-		if(NewFrame != StartFrame)
-		{
-			StartFrame = NewFrame;
-
-			if(!(Timeout_Temp--))
-			{
-				return ENDPOINT_DS_TIMEOUT;
-			}
-		}
-	}
 }
 
 Endpoint_CS_State_t USB_DeviceStream_ControlIN(const void* Buffer, const uint16_t Length, const uint16_t RequestedLength)
@@ -133,7 +91,7 @@ Endpoint_CS_State_t USB_DeviceStream_ControlIN(const void* Buffer, const uint16_
 				Endpoint_WriteByte(pgm_read_byte(Buffer_Temp++));
 				Length_Temp--;
 			}
-
+			
 			// Start the transmission of the data
 			Endpoint_FlushIN();
 			while(!Endpoint_INReady());
@@ -157,57 +115,4 @@ Endpoint_CS_State_t USB_DeviceStream_ControlIN(const void* Buffer, const uint16_
 	Endpoint_AckOUT();
 
 	return ENDPOINT_CS_NO_ERROR;
-}
-
-Endpoint_DS_ErrorCode_t USB_DeviceStream_DataIN(const void* Buffer, uint16_t Length, uint16_t* BytesProcessed)
-{
-	uint8_t* Buffer_Temp = (uint8_t*)Buffer;
-	uint16_t BytesInTransfer = 0x00;
-	Endpoint_DS_ErrorCode_t ErrorCode = ENDPOINT_DS_NO_ERROR;
-
-	// Wait for the endpoint to become ready
-	ErrorCode = USB_DeviceStream_WaitReady(100);
-	if(ErrorCode != ENDPOINT_DS_NO_ERROR)
-	{
-		return ErrorCode;
-	}
-
-	if(BytesProcessed != NULL)
-	{
-		Length -= *BytesProcessed;
-		Buffer_Temp += *BytesProcessed;
-	}
-
-	while(Length)
-	{
-		// Check if the bank is full
-		if(!(Endpoint_IsReadWriteAllowed()))
-		{
-			if(BytesProcessed != NULL)
-			{
-				*BytesProcessed += BytesInTransfer;
-				return ENDPOINT_DS_INCOMPLETE;
-			}
-
-			ErrorCode = USB_DeviceStream_WaitReady(100);
-			if(ErrorCode != ENDPOINT_DS_NO_ERROR)
-			{
-				return ErrorCode;
-			}
-
-			// Clear the bank
-			Endpoint_FlushIN();
-		}
-		// Send data if write permissions are given
-		else
-		{
-			Endpoint_WriteByte(*Buffer_Temp++);
-			Length--;
-			BytesInTransfer++;
-		}
-	}
-
-	Endpoint_FlushIN();
-
-	return ENDPOINT_DS_NO_ERROR;
 }

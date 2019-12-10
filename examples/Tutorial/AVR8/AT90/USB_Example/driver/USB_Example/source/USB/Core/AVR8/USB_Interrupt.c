@@ -32,20 +32,20 @@
 
 #include "USB/Core/AVR8/Endpoint.h"
 #include "USB/Core/AVR8/USB_Interrupt.h"
-#include "USB/Core/AVR8/USB_Device.h"
+#include "USB/Core/AVR8/USB_DeviceController.h"
 
 volatile USB_State_t __DeviceState;
 USB_DeviceCallbacks_t __USBEvents;
 
 ISR(USB_GEN_vect)
 {
-	if(USB_Controller_CheckForInterrupt(USB_VBUS_INTERRUPT) && USB_Controller_IsInterruptEnabled(USB_VBUS_INTERRUPT))
+	if(USBController_CheckForInterrupt(USB_VBUS_INTERRUPT) && USBController_IsInterruptEnabled(USB_VBUS_INTERRUPT))
 	{
-		USB_Controller_ClearInterruptFlag(USB_VBUS_INTERRUPT);
+		USBController_ClearInterruptFlag(USB_VBUS_INTERRUPT);
 
-		if(USB_Controller_CheckVBUS())
+		if(USBController_CheckVBUS())
 		{
-			USB_Controller_EnablePLL();
+			USBController_EnablePLL();
 			__DeviceState = USB_STATE_POWERED;
 
 			if(__USBEvents.ConnectWithBus != NULL)
@@ -55,7 +55,7 @@ ISR(USB_GEN_vect)
 		}
 		else
 		{
-			USB_Controller_DisablePLL();
+			USBController_DisablePLL();
 			__DeviceState = USB_STATE_UNATTACHED;
 
 			if(__USBEvents.DisconnectFromBus != NULL)
@@ -65,9 +65,9 @@ ISR(USB_GEN_vect)
 		}
 	}
 
-	if(USB_Controller_CheckForInterrupt(USB_EOR_INTERRUPT) && USB_Controller_IsInterruptEnabled(USB_EOR_INTERRUPT))
+	if(USBController_CheckForInterrupt(USB_EOR_INTERRUPT) && USBController_IsInterruptEnabled(USB_EOR_INTERRUPT))
 	{
-		USB_Controller_ClearInterruptFlag(USB_EOR_INTERRUPT);
+		USBController_ClearInterruptFlag(USB_EOR_INTERRUPT);
 
 		__DeviceState = USB_STATE_RESET;
 

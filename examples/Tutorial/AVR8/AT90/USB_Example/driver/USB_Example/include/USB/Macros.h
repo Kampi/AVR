@@ -1,9 +1,9 @@
 /*
- * Common.h
- *
+ * Macros.h
+ * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Common includes for the USB example.
+ *  File info: Common GCC macros. 
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -19,25 +19,30 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
- */ 
-
-/** @file Common.h
- *  @brief Common includes for the USB example.
- *
- *  @author Daniel Kampert
- *  @bug No known bugs
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-#ifndef COMMON_H_
-#define COMMON_H_
+/** @file Macros.h
+ *  @brief Common GCC macros.
+ *
+ *  @author Daniel Kampert
+ */
 
- #include <avr/io.h>
- #include <avr/pgmspace.h>
- #include <avr/interrupt.h>
- #include <stddef.h>
+#ifndef MACROS_H_
+#define MACROS_H_
 
- #include "Macros.h"
- #include "USB/USB_Types.h"
+ #define _CONCAT(A, B)														A ## B
+ #define _FIRST(A, B)														A
+ #define _SECOND(A, B)														B
+ 
+ #define FIRST_ARG(A)														_FIRST(A)
+ #define SECOND_ARG(A)														_SECOND(A)
+ #define CONCAT(A)															_CONCAT(A)
 
-#endif /* COMMON_H_ */
+ #define GET_PERIPHERAL(Arg)												&_FIRST(Arg)
+ #define GET_INDEX(Arg)														_SECOND(Arg)
+
+ #define VA_NARGS_IMPL(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, N, ...)		2 * N
+ #define VA_NARGS(...)														VA_NARGS_IMPL(__VA_ARGS__, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
+
+#endif /* MACROS_H_ */
