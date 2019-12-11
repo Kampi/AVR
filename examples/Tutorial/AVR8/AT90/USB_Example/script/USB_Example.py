@@ -35,7 +35,9 @@ EP_IN = usb.util.find_descriptor(Config,
                                   usb.util.endpoint_direction(e.bEndpointAddress) == \
                                   usb.util.ENDPOINT_IN)
 
-EP_OUT.write("Hello")
+#EP_OUT.write("Hello")
+
+#Rx = EP_IN.read(1)
 
 # Display the target information
 print("Device:\n\r{}".format(Device))
@@ -47,3 +49,4 @@ for n, ID in enumerate(Device.langids):
 print("Status: {}".format(usb.control.get_status(Device)))
 print("Current configuration:\n\r{}".format(Config))
 print("Interface: {}".format(usb.control.get_interface(Device, 0)))
+print("Received message: {}".format(Rx))
