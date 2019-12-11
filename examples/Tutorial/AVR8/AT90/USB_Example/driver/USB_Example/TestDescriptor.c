@@ -24,7 +24,6 @@
 
 /** @file TestDescriptor.c
  *  @brief Simple test descriptor for the AVR USB tutorial.
- *		   Visit https://usb.org/sites/default/files/documents/hid1_11.pdf if you need some more information.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs
@@ -90,7 +89,7 @@ const USB_Configuration_t PROGMEM ConfigurationDescriptor =
 		.bLength = sizeof(USB_EndpointDescriptor_t),														// Length of the descriptor
 		.bDescriptorType = DESCRIPTOR_TYPE_ENDPOINT,														// Descriptor type: Endpoint descriptor
 		.bEndpointAddress = IN_EP,
-		.bmAttributes = USB_MASK2ENDPOINT(USB_ENDPOINT_USAGE_DATA, USB_ENDPOINT_SYNC_NO, USB_ENDPOINT_TRANSFER_INTERRUPT),
+		.bmAttributes = USB_ENDPOINT_USAGE_DATA | USB_ENDPOINT_SYNC_NO | USB_ENDPOINT_TRANSFER_INTERRUPT,
 		.wMaxPacketSize = EP_SIZE,
 		.bInterval = 0x0A,
 	},
@@ -99,7 +98,7 @@ const USB_Configuration_t PROGMEM ConfigurationDescriptor =
 		.bLength = sizeof(USB_EndpointDescriptor_t),														// Length of the descriptor
 		.bDescriptorType = DESCRIPTOR_TYPE_ENDPOINT,														// Descriptor type: Endpoint descriptor
 		.bEndpointAddress = OUT_EP,
-		.bmAttributes = USB_MASK2ENDPOINT(USB_ENDPOINT_USAGE_DATA, USB_ENDPOINT_SYNC_NO, USB_ENDPOINT_TRANSFER_INTERRUPT),
+		.bmAttributes = USB_ENDPOINT_USAGE_DATA | USB_ENDPOINT_SYNC_NO | USB_ENDPOINT_TRANSFER_INTERRUPT,
 		.wMaxPacketSize = EP_SIZE,
 		.bInterval = 0x0A,
 	},

@@ -33,7 +33,7 @@
 #ifndef DESCRIPTORTYPES_H_
 #define DESCRIPTORTYPES_H_
 
- #include "USB/Core/Common.h"
+ #include "Common.h"
 
  /** @brief	Macro to convert multiple bytes to a Unicode string descriptor.
  */
@@ -58,10 +58,14 @@
  /** @brief	Macro to create the USB configuration descriptor bmAttributes bitmap from a given #USB_ConfigAttributes_t mask.
  */
  #define USB_MASK2CONFIG(Mask)							(0x80 | Mask)
-
- /** @brief Macro to create the USB endpoint descriptor bmAttributes bitmap from a given #USB_EndpointAttributes_t mask.
+ 
+ /** @brief Use class code info from Interface descriptors. Use only with #USB_CLASS_USE_INTERFACE.
   */
- #define USB_MASK2ENDPOINT(Usage, Synch, Transfer)		(Usage << 0x04 | Synch << 0x02 | Transfer)
+ #define USB_SUBCLASS_NONE								0x00
+ 
+ /** @brief Use protocol code info from Interface descriptors. Use only with #USB_CLASS_USE_INTERFACE.
+  */
+ #define USB_PROTOCOL_NONE								0x00
 
  /** @ingroup USB
   *  USB descriptor types */
@@ -311,28 +315,6 @@
  /*\@}*/
 
  /** @ingroup USB
-  *  USB subclasses */
- /*\@{*/
- typedef enum
- {
-	 USB_SUBCLASS_NONE = 0x00,											/**< No subclass */
-	 USB_SUBCLASS_BOOT_INTERFACE = 0x01,								/**< Boot interface subclass */
- } USB_Subclass_t;
- /*\@}*/
-
- /** @ingroup USB
-  *  USB protocols
-  *  NOTE: Only needed if you choose #USB_SUBCLASS_BOOT_INTERFACE in the Interface Descriptor. Otherwise set it to #USB_PROTOCOL_NONE. */
- /*\@{*/
- typedef enum
- {
-	 USB_PROTOCOL_NONE = 0x00,											/**< No protocol */
-	 USB_PROTOCOL_KEYBOARD = 0x01,										/**< Keyboard protocol */
-	 USB_PROTOCOL_MOUSE = 0x02,											/**< Mouse protocol */
- } USB_Protocol_t;
- /*\@}*/
-
- /** @ingroup USB
   *  USB configuration #bmAttributes */
  /*\@{*/
  typedef enum
@@ -347,13 +329,13 @@
  /*\@{*/
  typedef enum
  {
-	 USB_ENDPOINT_USAGE_DATA = 0x00,									/**< Data endpoint */
-	 USB_ENDPOINT_USAGE_FEEDBACK = 0x01,								/**< Feedback endpoint */
-	 USB_ENDPOINT_USAGE_IMPL_DATA = 0x02,								/**< Implicit feedback Data endpoint */
-	 USB_ENDPOINT_SYNC_NO = 0x00,										/**< No Synchronization */
-	 USB_ENDPOINT_SYNC_ASYNC = 0x01,									/**< Asynchronous Synchronization */
-	 USB_ENDPOINT_SYNC_ADAPTIVE = 0x02,									/**< Adaptive Synchronization */
-	 USB_ENDPOINT_SYNC_SYNCH = 0x03,									/**< Synchronous Synchronization */
+	 USB_ENDPOINT_USAGE_DATA = (0x00 << 0x04),							/**< Data endpoint */
+	 USB_ENDPOINT_USAGE_FEEDBACK = (0x01 << 0x04),						/**< Feedback endpoint */
+	 USB_ENDPOINT_USAGE_IMPL_DATA = (0x02 << 0x04),						/**< Implicit feedback Data endpoint */
+	 USB_ENDPOINT_SYNC_NO = (0x00 << 0x02),								/**< No Synchronization */
+	 USB_ENDPOINT_SYNC_ASYNC = (0x01 << 0x02),							/**< Asynchronous Synchronization */
+	 USB_ENDPOINT_SYNC_ADAPTIVE = (0x02 << 0x02),						/**< Adaptive Synchronization */
+	 USB_ENDPOINT_SYNC_SYNCH = (0x03 << 0x02),							/**< Synchronous Synchronization */
 	 USB_ENDPOINT_TRANSFER_CONTROL = 0x00,								/**< Control transfer */
 	 USB_ENDPOINT_TRANSFER_ISOCHR = 0x01,								/**< Isochronous transfer */
 	 USB_ENDPOINT_TRANSFER_BULK = 0x02,									/**< Bulk transfer */
