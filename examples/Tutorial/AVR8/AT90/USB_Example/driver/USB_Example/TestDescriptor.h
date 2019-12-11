@@ -41,7 +41,7 @@
 
  /** @brief	Address of the OUT endpoint.
   */
- #define OUT_EP										(ENDPOINT_DIRECTION_OUT | 0x01)
+ #define OUT_EP										(ENDPOINT_DIRECTION_OUT | 0x02)
 
  /** @brief	Size of the Mouse HID endpoint.
   */
