@@ -34,7 +34,7 @@
 #ifndef ENDPOINT_H_
 #define ENDPOINT_H_
 
- #include "USB/Core/AVR8/USB_DeviceController.h"
+ #include "USB/Core/AVR8/USB_Device.h"
 
  /** @brief	Max. endpoints for the device controller.
   */
@@ -84,16 +84,11 @@
 	 ENDPOINT_DIRECTION_IN = 0x80,						/**< IN endpoint */ 
  } Endpoint_Direction_t;
 
-
  /** @brief	Control endpoint size in bytes.
   */
  #if(!defined(ENDPOINT_CONTROL_SIZE))
 	 #define ENDPOINT_CONTROL_SIZE					ENDPOINT_CONTROL_DEFAULT_SIZE
  #endif
-
- /** @brief	Size for the control endpoint.
-  */
- extern const uint8_t Endpoint_ControlSize;
 
  /** @brief			Select an endpoint.
   *  @param Address	Endpoint address
@@ -283,24 +278,14 @@
 	 UEDATX = (Data >> 0x08);
  }
 
- /** @brief		Test if the application can read data from the endpoint or can write data to the endpoint.
-  *				NOTE: You have so use #Endpoint_Select first!
-  *  @return	#TRUE when IN endpoint and write is allowed, #TRUE when OUT endpoint and read is allowed
-  */
- static inline uint8_t Endpoint_IsReadWriteAllowed(void) __attribute__ ((always_inline));
- static inline uint8_t Endpoint_IsReadWriteAllowed(void)
- { 
-	 return UEINTX & (0x01 << RWAL);
- }
-
  /** @brief				Configure an endpoint.
   *  @param Address		Endpoint address
   *  @param Type		Endpoint type
-  *  @param Size		Endpoint size
+  *  @param Size		Endpoint size in bytes
   *  @param DoubleBank	Set to #TRUE to use a double bank for the endpoint
   *  @return			#TRUE when successfully
   */
- uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, const Endpoint_Size_t Size, const uint8_t DoubleBank);
+ uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, const uint8_t Size, const uint8_t DoubleBank);
 
  /** @brief				Process the STATUS stage of the control transmission. The operation depends on the request direction.
   *  @param Direction	USB request direction

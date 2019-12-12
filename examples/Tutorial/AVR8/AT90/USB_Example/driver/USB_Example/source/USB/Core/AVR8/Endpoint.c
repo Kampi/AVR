@@ -34,9 +34,14 @@
 
 volatile USB_State_t __DeviceState;
 
-uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, const Endpoint_Size_t Size, const uint8_t DoubleBank)
+uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, const uint8_t Size, const uint8_t DoubleBank)
 {
 	uint8_t Address_Temp = Address & 0x0F;
+
+	if((Address_Temp & 0x07) > MAX_ENDPOINTS)
+	{
+		return 0x00;
+	}
 
 	// Allocate the memory for the endpoints
 	for(uint8_t i = Address_Temp; i < MAX_ENDPOINTS; i++)
@@ -45,7 +50,7 @@ uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, co
 		uint8_t UECFG1X_Temp;
 		uint8_t UEIENX_Temp;
 
-		UENUM = Address_Temp;
+		Endpoint_Select(Address_Temp);
 
 		if(i == Address_Temp)
 		{
@@ -63,14 +68,16 @@ uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, co
 				UECFG1X_Temp |= (0x01 << EPBK0);
 			}
 			
-			if(Size > 0x06)
+			// Convert the endpoint size into the correct bit mask (see the datasheet for the mask values)
+			uint8_t Temp = 0x08;
+			uint8_t EPSIZE = 0x00;
+			while(Temp < Size)
 			{
-				UECFG1X_Temp &= ~((0x01 << EPSIZE2) | (0x01 << EPSIZE1) | (0x01 << EPSIZE0));
+				EPSIZE++;
+				Temp <<= 0x01;
 			}
-			else
-			{
-				UECFG1X_Temp |= (Size << EPSIZE0);
-			}
+			
+			UECFG1X_Temp |= (EPSIZE << EPSIZE0);
 
 			// Set the ALLOC bit
 			UECFG1X_Temp = (0x01 << ALLOC);
@@ -92,14 +99,14 @@ uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, co
 		}
 
 		// Disable the selected endpoint
-		UECONX &= ~(0x01 << EPEN);
+		Endpoint_Disable();
 		
 		// Clear the ALLOC-bit, so the endpoints will slide down
 		UECFG1X &= ~(0x01 << ALLOC);
 
 		// Configure and activate the endpoint
-		// See figure 23-2 in the device data sheet
-		UECONX |= (0x01 << EPEN);
+		// See figure 23-2 in the device datasheet
+		Endpoint_Enable();
 		UECFG0X = UECFG0X_Temp;
 		UECFG1X = UECFG1X_Temp;
 		UEIENX = UEIENX_Temp;
@@ -111,9 +118,6 @@ uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, co
 		}
 	}
 
-	// Select the configured endpoint
-	UENUM = Address_Temp;
-	
 	return 0x01;
 }
 
