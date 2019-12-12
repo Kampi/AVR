@@ -31,17 +31,17 @@
  *  @author Daniel Kampert
  */
 
+#include "ADC/ADC.h"
 #include "USB/USB.h"
+#include "GPIO/GPIO.h"
 #include "TestDescriptor.h"
-#include "Peripheral/HD44780/HD44780.h"
 
 void USB_DeviceTask(void);
 
 void USB_Event_OnError(void);
 void USB_Event_ConfigurationChanged(const uint8_t Configuration);
 
-uint16_t Idle = 0x00;
-uint8_t Protocol = 0x00;
+void ADC_Event_ConversionComplete(uint8_t Channel, uint16_t Result);
 
 const USB_DeviceCallbacks_t Events_USB =
 {
@@ -55,7 +55,8 @@ USB_Config_t ConfigUSB = {
 	.Speed = USB_SPEED_FULL,
 };
 
-uint8_t Buffer[16];
+uint16_t ADC_Value = 0x00;
+uint8_t Protocol = 0x00;
 
 int main(void)
 {
@@ -67,12 +68,14 @@ int main(void)
 	GPIO_ClearPort(&PORTD, 0xF0);
 
 	/*
-		Initialize the LCD
+		Initialize the ADC
+			-> Internal 2.56 V reference
+			-> ADC0 as input
+			-> Free run mode
+			-> Prescaler 128
+			-> Enable interrupts
 	*/
-	//HD44780_Init();
-	//HD44780_SwitchCursor(1);
-	//HD44780_SwitchBlink(1);
-	//HD44780_WriteString("Go...");
+	ADC_Init(ADC_Event_ConversionComplete);
 
 	/*
 		Initialize the USB
@@ -86,11 +89,6 @@ int main(void)
 	*/
 	sei();
 
-	for(uint8_t i = 0x00; i < sizeof(Buffer); i++)
-	{
-		Buffer[i] = i;
-	}
-
 	while(1) 
 	{
 	    USB_Poll();
@@ -100,30 +98,39 @@ int main(void)
 
 void USB_DeviceTask(void)
 {
-	uint16_t BytesReceived = 0x00;
-	uint16_t Frame = 0x00;
-
 	if(USB_GetState() != USB_STATE_CONFIGURED)
 	{
 		return;
 	}
 
-	// Select the IN endpoint
+	// Select the OUT endpoint
 	Endpoint_Select(OUT_EP);
-
-	// Leave when no data are available
-	if(Endpoint_OUTReceived())
+	if(Endpoint_IsReadWriteAllowed())
 	{
-		for(uint8_t i; i < Endpoint_GetBytes(); i++)
+		if(Endpoint_OUTReceived())
 		{
-			Buffer[i] = Endpoint_ReadByte();
-		}
+			// Set the new channel
+			ADC_SetChannel(Endpoint_ReadByte());
 
-		Endpoint_AckOUT();
-		
-		for(uint8_t i = 0x00; i < 0x05; i++)
+			Endpoint_AckOUT();
+		}
+	}
+
+	// Select the IN endpoint
+	Endpoint_Select(IN_EP);
+	if(Endpoint_IsReadWriteAllowed())
+	{
+		if(Endpoint_INReady())
 		{
-			//HD44780_WriteChar(Buffer[i]);
+			// Transmit the ADC result
+			Endpoint_WriteByte(ADC_Value & 0xFF);
+			Endpoint_WriteByte((ADC_Value >> 0x08) & 0xFF);
+
+			Endpoint_FlushIN();
+		}
+		else
+		{
+			Endpoint_FlushIN();
 		}
 	}
 
@@ -150,4 +157,9 @@ void USB_Event_ConfigurationChanged(const uint8_t Configuration)
 	{
 		USB_Event_OnError();
 	}
+}
+
+void ADC_Event_ConversionComplete(uint8_t Channel, uint16_t Result)
+{
+	ADC_Value = Result;
 }
