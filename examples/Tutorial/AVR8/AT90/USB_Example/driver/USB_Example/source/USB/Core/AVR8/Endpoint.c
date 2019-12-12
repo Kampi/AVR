@@ -34,7 +34,7 @@
 
 volatile USB_State_t __DeviceState;
 
-uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, const Endpoint_Size_t Size, const uint8_t DoubleBank)
+uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, const uint8_t Size, const uint8_t DoubleBank)
 {
 	uint8_t Address_Temp = Address & 0x0F;
 
@@ -68,14 +68,16 @@ uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, co
 				UECFG1X_Temp |= (0x01 << EPBK0);
 			}
 			
-			if(Size > 0x06)
+			// Convert the endpoint size into the correct bit mask (see the datasheet for the mask values)
+			uint8_t Temp = 0x08;
+			uint8_t EPSIZE = 0x00;
+			while(Temp < Size)
 			{
-				UECFG1X_Temp &= ~((0x01 << EPSIZE2) | (0x01 << EPSIZE1) | (0x01 << EPSIZE0));
+				EPSIZE++;
+				Temp <<= 0x01;
 			}
-			else
-			{
-				UECFG1X_Temp |= (Size << EPSIZE0);
-			}
+			
+			UECFG1X_Temp |= (EPSIZE << EPSIZE0);
 
 			// Set the ALLOC bit
 			UECFG1X_Temp = (0x01 << ALLOC);
@@ -116,9 +118,6 @@ uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, co
 		}
 	}
 
-	// Select the configured endpoint
-	Endpoint_Select(Address_Temp);
-	
 	return 0x01;
 }
 
