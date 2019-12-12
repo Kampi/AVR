@@ -1,5 +1,5 @@
 /*
- * Ringbuffer.h
+ * RingBuffer.h
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */ 
 
-/** @file Common/Ringbuffer/Ringbuffer.h
+/** @file Common/RingBuffer/RingBuffer.h
  *  @brief Generic ring buffer.
  *
  *  @author Daniel Kampert
