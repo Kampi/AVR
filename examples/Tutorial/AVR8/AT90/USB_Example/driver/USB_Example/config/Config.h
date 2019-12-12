@@ -22,45 +22,14 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Config/Config.h
+/** @file config/Config.h
  *  @brief Configuration file for the AT90USB1287 USB example.
  *
  *  @author Daniel Kampert
- *	@bug	- BUSY flag doesn´t work
  */
 
 #ifndef CONFIG_HD44780_H_
 #define CONFIG_HD44780_H_
 
- /*
-	 LCD data mode
- */
- #define HD44780_USE_4BIT													/**< Define this symbol to use the 4 bit mode of the display controller. */
- #undef HD44780_USE_8BIT													/**< Define this symbol to use the 8 bit mode of the display controller. */
- #undef HD44780_USE_BUSY													/**< Define this symbol to use the BUSY bit check instead of waiting a fixed time. */
-
- /*
-	 LCD backlight
- */
- #undef HD44780_WITH_BACKLIGHT												/**< Define this symbol if a backlight is used. */
- #undef HD44780_BACKLIGHT_ACTIVE_LOW										/**< Define this symbol if a low state is used to switch on the backlight. */
- #define HD44780_BACKLIGHT						PORTB, 0					/**< LCD backlight pin. */
-
- /*
-	 LCD control signals
- */
- #define HD44780_ENABLE							PORTC, 5					/**< LCD E pin. */
- #define HD44780_RS								PORTC, 7					/**< LCD RS pin. */
- #define HD44780_RW								PORTC, 6					/**< LCD RW pin. */
- #define HD44780_DATA							PORTD, 0					/**< First data line for the LCD. All other data lines must be connected 
-																				 to the following port pins. The pin index is set to 0 when you use #HD44780_USE_8BIT. */
-
- #define F_CPU									8000000UL					/**< MCU clock frequency. */
-
- /*
-	 LCD display dimensions
- */
- #define HD44780_LINES			2											/**< Display rows. */
- #define HD44780_COLUMNS		16											/**< Display columns. */
 
 #endif /* CONFIG_HD44780_H_ */
