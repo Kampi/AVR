@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['nvm_5fclearflashbuffer',['NVM_ClearFlashBuffer',['../_n_v_m_8h.html#aba2ba56beb26b5ca437e167d004b475f',1,'NVM_ClearFlashBuffer(void):&#160;NVM.h'],['../_n_v_m___bootloader___x_mega_8h.html#aba2ba56beb26b5ca437e167d004b475f',1,'NVM_ClearFlashBuffer(void):&#160;NVM_Bootloader_XMega.h']]],
+  ['nvm_5feepromerase',['NVM_EEPROMErase',['../_n_v_m_8c.html#ab503b45fba566d26ca057c0772a61a7b',1,'NVM_EEPROMErase(void):&#160;NVM.c'],['../_n_v_m_8h.html#ab503b45fba566d26ca057c0772a61a7b',1,'NVM_EEPROMErase(void):&#160;NVM.c']]],
+  ['nvm_5feepromerasepage',['NVM_EEPROMErasePage',['../_n_v_m_8c.html#a06ae744878d37503a394eb70a6904153',1,'NVM_EEPROMErasePage(const uint8_t Page):&#160;NVM.c'],['../_n_v_m_8h.html#a06ae744878d37503a394eb70a6904153',1,'NVM_EEPROMErasePage(const uint8_t Page):&#160;NVM.c']]],
+  ['nvm_5feepromreadbyte',['NVM_EEPROMReadByte',['../_n_v_m_8c.html#a73bbfea5b38b29bb09a2dc5d353c202e',1,'NVM_EEPROMReadByte(const uint8_t Page, const uint8_t Offset):&#160;NVM.c'],['../_n_v_m_8h.html#a73bbfea5b38b29bb09a2dc5d353c202e',1,'NVM_EEPROMReadByte(const uint8_t Page, const uint8_t Offset):&#160;NVM.c']]],
+  ['nvm_5feepromwritebyte',['NVM_EEPROMWriteByte',['../_n_v_m_8c.html#a56fb4dd44dcdf02fd1877a73d5b98731',1,'NVM_EEPROMWriteByte(const uint8_t Page, const uint8_t Offset, const uint8_t Data):&#160;NVM.c'],['../_n_v_m_8h.html#a56fb4dd44dcdf02fd1877a73d5b98731',1,'NVM_EEPROMWriteByte(const uint8_t Page, const uint8_t Offset, const uint8_t Data):&#160;NVM.c']]],
+  ['nvm_5feepromwritepage',['NVM_EEPROMWritePage',['../_n_v_m_8c.html#af9348728dc969a1b9fb9bbbbcf662312',1,'NVM_EEPROMWritePage(const uint8_t Page, const uint8_t Length, const uint8_t *Data):&#160;NVM.c'],['../_n_v_m_8h.html#af9348728dc969a1b9fb9bbbbcf662312',1,'NVM_EEPROMWritePage(const uint8_t Page, const uint8_t Length, const uint8_t *Data):&#160;NVM.c']]],
+  ['nvm_5feraseapplication',['NVM_EraseApplication',['../_n_v_m_8h.html#a345626e032a0844e5bfb25240fe04e64',1,'NVM_EraseApplication(void):&#160;NVM.h'],['../_n_v_m___bootloader___x_mega_8h.html#a345626e032a0844e5bfb25240fe04e64',1,'NVM_EraseApplication(void):&#160;NVM_Bootloader_XMega.h']]],
+  ['nvm_5feraseusersignature',['NVM_EraseUserSignature',['../_n_v_m_8h.html#a3fff76c99ddfab8e09596a48bcd139ac',1,'NVM.h']]],
+  ['nvm_5fflashrangecrc',['NVM_FlashRangeCRC',['../_n_v_m_8c.html#a09836309fcd7027646e38efffaba7ada',1,'NVM_FlashRangeCRC(const uint32_t Start, const uint32_t Length):&#160;NVM.c'],['../_n_v_m_8h.html#a09836309fcd7027646e38efffaba7ada',1,'NVM_FlashRangeCRC(const uint32_t Start, const uint32_t Length):&#160;NVM.c']]],
+  ['nvm_5fflashwritepage',['NVM_FlashWritePage',['../_n_v_m_8h.html#a8cbeec31f2a6d06c1593327ca2358c0a',1,'NVM.h']]],
+  ['nvm_5fflashwriteword',['NVM_FlashWriteWord',['../_n_v_m_8h.html#a696b1fc2b91906d7de23e29c2afc9539',1,'NVM.h']]],
+  ['nvm_5fflushflash',['NVM_FlushFlash',['../_n_v_m_8h.html#a2add04025ab86f55fcae3be3b58051a7',1,'NVM_FlushFlash(const uint16_t Page):&#160;NVM.h'],['../_n_v_m___bootloader___x_mega_8h.html#a2add04025ab86f55fcae3be3b58051a7',1,'NVM_FlushFlash(const uint16_t Page):&#160;NVM_Bootloader_XMega.h']]],
+  ['nvm_5fflushusersignature',['NVM_FlushUserSignature',['../_n_v_m_8h.html#a2718ab82e43129f368f6642b8ff163de',1,'NVM.h']]],
+  ['nvm_5floadflashbuffer',['NVM_LoadFlashBuffer',['../_n_v_m___bootloader___x_mega_8h.html#a5e4eca40705a7dfbc501db47e4da372a',1,'NVM_Bootloader_XMega.h']]],
+  ['nvm_5flockspm',['NVM_LockSPM',['../_n_v_m_8h.html#a1bce1bfc7d86e5b2d0a088dac94f3af8',1,'NVM_LockSPM(void):&#160;NVM.h'],['../_n_v_m___bootloader___x_mega_8h.html#a1bce1bfc7d86e5b2d0a088dac94f3af8',1,'NVM_LockSPM(void):&#160;NVM_Bootloader_XMega.h']]],
+  ['nvm_5freadcalibrationbyte',['NVM_ReadCalibrationByte',['../_n_v_m_8c.html#ac0450bab1bc34fd15a07fc8fb4897327',1,'NVM_ReadCalibrationByte(const uint8_t Index):&#160;NVM.c'],['../_n_v_m_8h.html#ac0450bab1bc34fd15a07fc8fb4897327',1,'NVM_ReadCalibrationByte(const uint8_t Index):&#160;NVM.c']]],
+  ['nvm_5fusersignaturereadpage',['NVM_UserSignatureReadPage',['../_n_v_m_8h.html#a5ccbaba32bf66147b902eeb7386f698b',1,'NVM.h']]],
+  ['nvm_5fusersignaturereadword',['NVM_UserSignatureReadWord',['../_n_v_m_8h.html#a5cee204e0a1e88461fefd6e9cce71190',1,'NVM.h']]]
+];
