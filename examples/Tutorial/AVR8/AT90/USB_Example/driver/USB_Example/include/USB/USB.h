@@ -23,7 +23,7 @@
  */
 
 /** @file USB/USB.h
- *  @brief USB driver for AT90USB1287.
+ *  @brief USB driver for the AT90USB1287.
  *
  *  This file contains the prototypes and definitions for the USB driver.
  *
@@ -39,12 +39,17 @@
  #include "USB/Core/USB_DeviceStdRequest.h"
 
  /** @brief			Initialize the USB service.
-  *  @param Events	Pointer to USB event structure
+  *  @param Config	Pointer to USB configuration structure
   */
- void USB_Init(const USB_DeviceCallbacks_t* Events);
+ void USB_Init(const USB_Config_t* Config);
 
  /** @brief	Polling function. 
   */
  void USB_Poll(void);
+
+ /** @brief		Get the state of the USB state machine.
+  *  @return	State of the state machine
+  */
+ volatile USB_State_t USB_GetState(void);
 
 #endif /* USB_H_ */

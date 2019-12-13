@@ -24,7 +24,6 @@
 
 /** @file TestDescriptor.h
  *  @brief Test descriptor.
- *		   Visit https://usb.org/sites/default/files/documents/hid1_11.pdf if you need some more information.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs
@@ -41,9 +40,9 @@
 
  /** @brief	Address of the OUT endpoint.
   */
- #define OUT_EP										(ENDPOINT_DIRECTION_OUT | 0x01)
+ #define OUT_EP										(ENDPOINT_DIRECTION_OUT | 0x02)
 
- /** @brief	Size of the Mouse HID endpoint.
+ /** @brief	Size of the endpoint.
   */
  #define EP_SIZE									8
 

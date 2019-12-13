@@ -26,6 +26,6 @@ var searchData=
   ['xmega384c3_2eh',['XMega384C3.h',['../_x_mega384_c3_8h.html',1,'']]],
   ['xmegaa3xplained_2eh',['XMegaA3XPlained.h',['../_x_mega_a3_x_plained_8h.html',1,'']]],
   ['xmegac3xplained_2eh',['XMegaC3XPlained.h',['../_x_mega_c3_x_plained_8h.html',1,'']]],
-  ['xoff',['XOFF',['../group___serial-_commands.html#ga67fd78ae15d2b67c10d44d69a49ab1c5',1,'XOFF():&#160;USART.h'],['../_u_s_a_r_t___bootloader_8h.html#a67fd78ae15d2b67c10d44d69a49ab1c5',1,'XOFF():&#160;USART_Bootloader.h']]],
-  ['xon',['XON',['../group___serial-_commands.html#gacdf721774c51e08c6609e6fa8cf82cc9',1,'XON():&#160;USART.h'],['../_u_s_a_r_t___bootloader_8h.html#acdf721774c51e08c6609e6fa8cf82cc9',1,'XON():&#160;USART_Bootloader.h']]]
+  ['xoff',['XOFF',['../group___serial-_commands.html#ga67fd78ae15d2b67c10d44d69a49ab1c5',1,'XOFF():&#160;USART.h'],['../group___serial-_commands.html#ga67fd78ae15d2b67c10d44d69a49ab1c5',1,'XOFF():&#160;USART.h'],['../_u_s_a_r_t___bootloader_8h.html#a67fd78ae15d2b67c10d44d69a49ab1c5',1,'XOFF():&#160;USART_Bootloader.h']]],
+  ['xon',['XON',['../group___serial-_commands.html#gacdf721774c51e08c6609e6fa8cf82cc9',1,'XON():&#160;USART.h'],['../group___serial-_commands.html#gacdf721774c51e08c6609e6fa8cf82cc9',1,'XON():&#160;USART.h'],['../_u_s_a_r_t___bootloader_8h.html#acdf721774c51e08c6609e6fa8cf82cc9',1,'XON():&#160;USART_Bootloader.h']]]
 ];

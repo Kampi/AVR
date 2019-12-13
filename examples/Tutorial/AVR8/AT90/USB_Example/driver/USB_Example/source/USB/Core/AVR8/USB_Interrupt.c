@@ -32,20 +32,20 @@
 
 #include "USB/Core/AVR8/Endpoint.h"
 #include "USB/Core/AVR8/USB_Interrupt.h"
-#include "USB/Core/AVR8/USB_DeviceController.h"
+#include "USB/Core/AVR8/USB_Device.h"
 
 volatile USB_State_t __DeviceState;
 USB_DeviceCallbacks_t __USBEvents;
 
 ISR(USB_GEN_vect)
 {
-	if(USBController_CheckForInterrupt(USB_VBUS_INTERRUPT) && USBController_IsInterruptEnabled(USB_VBUS_INTERRUPT))
+	if(USB_Controller_CheckForInterrupt(USB_VBUS_INTERRUPT) && USB_Controller_IsInterruptEnabled(USB_VBUS_INTERRUPT))
 	{
-		USBController_ClearInterruptFlag(USB_VBUS_INTERRUPT);
+		USB_Controller_ClearInterruptFlag(USB_VBUS_INTERRUPT);
 
-		if(USBController_CheckVBUS())
+		if(USB_Controller_CheckVBUS())
 		{
-			USBController_EnablePLL();
+			USB_Controller_EnablePLL();
 			__DeviceState = USB_STATE_POWERED;
 
 			if(__USBEvents.ConnectWithBus != NULL)
@@ -55,7 +55,7 @@ ISR(USB_GEN_vect)
 		}
 		else
 		{
-			USBController_DisablePLL();
+			USB_Controller_DisablePLL();
 			__DeviceState = USB_STATE_UNATTACHED;
 
 			if(__USBEvents.DisconnectFromBus != NULL)
@@ -65,18 +65,19 @@ ISR(USB_GEN_vect)
 		}
 	}
 
-	if(USBController_CheckForInterrupt(USB_EOR_INTERRUPT) && USBController_IsInterruptEnabled(USB_EOR_INTERRUPT))
+	if(USB_Controller_CheckForInterrupt(USB_EOR_INTERRUPT) && USB_Controller_IsInterruptEnabled(USB_EOR_INTERRUPT))
 	{
-		USBController_ClearInterruptFlag(USB_EOR_INTERRUPT);
+		USB_Controller_ClearInterruptFlag(USB_EOR_INTERRUPT);
 
 		__DeviceState = USB_STATE_RESET;
 
 		// Configure the default control endpoint
 		if(Endpoint_Configure(0, ENDPOINT_TYPE_CONTROL, ENDPOINT_CONTROL_SIZE, 0))
 		{
-			// Set D2 green when the endpoint configuration was successfully
-			PORTD &= ~(0x01 << 0x04);
-			PORTD |= (0x01 << 0x05);
+			if(__USBEvents.EndOfReset != NULL)
+			{
+				__USBEvents.EndOfReset();
+			}
 		}
 		else
 		{

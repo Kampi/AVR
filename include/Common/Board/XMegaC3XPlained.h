@@ -115,7 +115,6 @@
 	Services
  */
  #include "Services/FatFs/FatFs.h"
- #include "Services/SleepManager/SleepManager.h"
  #include "Services/DisplayManager/DisplayManager.h"
 
 #endif /* XMEGAC3XPLAINED_H_ */

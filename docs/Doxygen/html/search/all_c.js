@@ -20,7 +20,7 @@ var searchData=
   ['led3',['LED3',['../_x_mega_a3_x_plained_8h.html#a4b7ff8e253a7412f83deba3a447028a8',1,'LED3():&#160;XMegaA3XPlained.h'],['../_x_mega_c3_x_plained_8h.html#a4b7ff8e253a7412f83deba3a447028a8',1,'LED3():&#160;XMegaC3XPlained.h']]],
   ['lenght',['Lenght',['../struct_graph__t.html#aff62b657117a669e4a1b9591067c3335',1,'Graph_t']]],
   ['length',['Length',['../struct_s_p_i___message__t.html#a5c717192b94b7e6bc2ebc72f48a128bf',1,'SPI_Message_t::Length()'],['../struct_c_a_n___message__t.html#adf7f80b77d1b70d39f93dde914c6fa6a',1,'CAN_Message_t::Length()']]],
-  ['lf',['LF',['../group___serial-_commands.html#ga350c9d6cb81908d59427ee96844d1a9c',1,'USART.h']]],
+  ['lf',['LF',['../group___serial-_commands.html#ga350c9d6cb81908d59427ee96844d1a9c',1,'LF():&#160;USART.h'],['../group___serial-_commands.html#ga350c9d6cb81908d59427ee96844d1a9c',1,'LF():&#160;USART.h']]],
   ['light_5fsensor',['LIGHT_SENSOR',['../_x_mega_a3_x_plained_8h.html#aa207b28106c699a9fdd622dfd17ea6ca',1,'LIGHT_SENSOR():&#160;XMegaA3XPlained.h'],['../_x_mega_c3_x_plained_8h.html#aa207b28106c699a9fdd622dfd17ea6ca',1,'LIGHT_SENSOR():&#160;XMegaC3XPlained.h']]],
   ['llef',['LLEF',['../ff_8c.html#a31ec96cd263bb14418cb8b7b2b54b3ca',1,'ff.c']]],
   ['logoatmel_2ec',['LogoAtmel.c',['../_logo_atmel_8c.html',1,'']]],

@@ -34,8 +34,7 @@
 
 #include "USB/Core/USB_DeviceStdRequest.h"
 
-uint8_t __Configuration;
-uint8_t __Interface;
+static uint8_t __Configuration;
 volatile USB_State_t __DeviceState;
 
 USB_DeviceCallbacks_t __USBEvents;
@@ -212,13 +211,13 @@ void USBDevice_ControlRequest(void)
 				uint8_t Address = (__ControlRequest.wValue & 0x7F);
 
 				// Save the address
-				USBDevice_SetAddress(Address);
+				USB_Device_SetAddress(Address);
 
 				// Process the STATUS stage
 				Endpoint_HandleSTATUS(__ControlRequest.bmRequestType);
 
 				// Enable the new device address
-				USBDevice_EnableAddress();
+				USB_Device_EnableAddress();
 
 				__DeviceState = USB_STATE_ADDRESSED;
 			}

@@ -51,8 +51,8 @@
  /** @brief			Enable a specific USB interrupt.
   *  @param Source	Interrupt source
   */
- static inline void USBController_EnableInterrupt(const USB_InterruptType_t Source) __attribute__ ((always_inline));
- static inline void USBController_EnableInterrupt(const USB_InterruptType_t Source)
+ static inline void USB_Controller_EnableInterrupt(const USB_InterruptType_t Source) __attribute__ ((always_inline));
+ static inline void USB_Controller_EnableInterrupt(const USB_InterruptType_t Source)
  {
 	 switch(Source)
 	 {
@@ -104,8 +104,8 @@
   *  @param Source	Interrupt source
   *  @return		1 if the interrupt source is enabled
   */
- static inline uint8_t USBController_IsInterruptEnabled(const USB_InterruptType_t Interrupt) __attribute__ ((always_inline));
- static inline uint8_t USBController_IsInterruptEnabled(const USB_InterruptType_t Interrupt)
+ static inline uint8_t USB_Controller_IsInterruptEnabled(const USB_InterruptType_t Interrupt) __attribute__ ((always_inline));
+ static inline uint8_t USB_Controller_IsInterruptEnabled(const USB_InterruptType_t Interrupt)
  {
 	 switch(Interrupt)
 	 {
@@ -149,8 +149,8 @@
   *  @param Source	Interrupt source
   *  @return		1 if the interrupt source is enabled
   */
- static inline uint8_t USBController_CheckForInterrupt(const USB_InterruptType_t Interrupt) __attribute__ ((always_inline));
- static inline uint8_t USBController_CheckForInterrupt(const USB_InterruptType_t Interrupt)
+ static inline uint8_t USB_Controller_CheckForInterrupt(const USB_InterruptType_t Interrupt) __attribute__ ((always_inline));
+ static inline uint8_t USB_Controller_CheckForInterrupt(const USB_InterruptType_t Interrupt)
  {
 	 switch(Interrupt)
 	 {
@@ -193,8 +193,8 @@
  /** @brief			Clear a given interrupt flag.
   *  @param Source	Interrupt source
   */
- static inline void USBController_ClearInterruptFlag(const USB_InterruptType_t Interrupt) __attribute__ ((always_inline));
- static inline void USBController_ClearInterruptFlag(const USB_InterruptType_t Interrupt)
+ static inline void USB_Controller_ClearInterruptFlag(const USB_InterruptType_t Interrupt) __attribute__ ((always_inline));
+ static inline void USB_Controller_ClearInterruptFlag(const USB_InterruptType_t Interrupt)
  {
 	 switch(Interrupt)
 	 {
@@ -241,8 +241,8 @@
  /** @brief			Disable a specific USB interrupt.
   *  @param Source	Interrupt source
   */
- static inline void USBController_DisableInterrupt(const USB_InterruptType_t Source) __attribute__ ((always_inline));
- static inline void USBController_DisableInterrupt(const USB_InterruptType_t Source)
+ static inline void USB_Controller_DisableInterrupt(const USB_InterruptType_t Source) __attribute__ ((always_inline));
+ static inline void USB_Controller_DisableInterrupt(const USB_InterruptType_t Source)
  {
 	 switch(Source)
 	 {
@@ -288,8 +288,8 @@
 
  /** @brief	Disable all USB interrupts.
   */
- static inline void USBController_DisableAllInterrupts(void) __attribute__ ((always_inline));
- static inline void USBController_DisableAllInterrupts(void)
+ static inline void USB_Controller_DisableAllInterrupts(void) __attribute__ ((always_inline));
+ static inline void USB_Controller_DisableAllInterrupts(void)
  {
 	 USBCON &= ~((0x01 << VBUSTE) | (0x01 << IDTE));
 
@@ -305,8 +305,8 @@
 
  /** @brief	Disable all USB interrupt flags.
   */
- static inline void USBController_ClearInterrupts(void) __attribute__ ((always_inline));
- static inline void USBController_ClearInterrupts(void)
+ static inline void USB_Controller_ClearInterrupts(void) __attribute__ ((always_inline));
+ static inline void USB_Controller_ClearInterrupts(void)
  {
 	 // Clear all interrupt flags of the USB controller
 	 USBINT = 0x00;
