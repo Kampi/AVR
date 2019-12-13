@@ -74,9 +74,10 @@ ISR(USB_GEN_vect)
 		// Configure the default control endpoint
 		if(Endpoint_Configure(0, ENDPOINT_TYPE_CONTROL, ENDPOINT_CONTROL_SIZE, 0))
 		{
-			// Set D2 green when the endpoint configuration was successfully
-			PORTD &= ~(0x01 << 0x04);
-			PORTD |= (0x01 << 0x05);
+			if(__USBEvents.EndOfReset != NULL)
+			{
+				__USBEvents.EndOfReset();
+			}
 		}
 		else
 		{

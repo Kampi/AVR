@@ -34,10 +34,14 @@
 
 static ADC_Callback_t __ADC_Callback;
 
-void ADC_Init(ADC_Callback_t Callback)
+void ADC_Init(const ADC_Callback_t Callback)
 {
 	ADMUX = (0x01 << REFS1) | (0x01 << REFS0);
-	ADCSRA = (0x01 << ADEN) | (0x01 << ADSC) | (0x01 << ADATE) | (0x01 << ADIE) | (0x01 << ADPS2) | (0x01 << ADPS1) | (0x01 << ADPS0);
+	ADCSRA = (0x01 << ADEN) | (0x01 << ADSC) | (0x01 << ADIE) | (0x01 << ADPS2) | (0x01 << ADPS1) | (0x01 << ADPS0);
+
+	// Discard the first conversion result
+	ADC_StartConversion();
+	ADC_Wait();
 
 	__ADC_Callback = Callback;
 }

@@ -40,7 +40,7 @@
   *  @param Channel	ADC channel
   *  @param Result	Conversion result
  */
- typedef void (*ADC_Callback_t)(uint8_t Channel, uint16_t Result);
+ typedef void (*ADC_Callback_t)(const uint8_t Channel, const uint16_t Result);
 
  /** @brief			Set the conversion channel.
   *  @param Channel	ADC channel
@@ -52,9 +52,25 @@
 	 ADMUX |= (Channel & 0x07);
  }
 
+ /** @brief	Start a new ADC conversion.
+  */
+ static inline void ADC_StartConversion(void) __attribute__ ((always_inline));
+ static inline void ADC_StartConversion(void)
+ {
+	 ADCSRA |= (0x01 << ADSC);
+ }
+
+ /** @brief	Wait until a conversion has finished.
+  */
+ static inline void ADC_Wait(void) __attribute__ ((always_inline));
+ static inline void ADC_Wait(void)
+ {
+	 while(ADCSRA & (0x01 << ADSC));
+ }
+
  /** @brief				Initialize the ADC.
   *  @param Callback	ADC conversion complete callback
   */
- void ADC_Init(ADC_Callback_t Callback);
+ void ADC_Init(const ADC_Callback_t Callback);
 
 #endif /* ADC_H_ */

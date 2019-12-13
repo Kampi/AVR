@@ -83,6 +83,10 @@
 	 /** @brief					USB error event.
 	  */
 	 void (*Error)();
+	 
+	 /** @brief					USB end of reset event.
+	  */
+	 void (*EndOfReset)();
  } USB_DeviceCallbacks_t;
 
  /** @brief	USB configuration object

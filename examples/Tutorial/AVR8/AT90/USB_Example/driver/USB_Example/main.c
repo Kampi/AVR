@@ -36,15 +36,20 @@
 #include "GPIO/GPIO.h"
 #include "TestDescriptor.h"
 
+#define LED0_RED						PORTD, 4
+#define LED0_GREEN						PORTD, 5
+
 void USB_DeviceTask(void);
 
 void USB_Event_OnError(void);
+void USB_Event_EndOfReset(void);
 void USB_Event_ConfigurationChanged(const uint8_t Configuration);
 
 void ADC_Event_ConversionComplete(uint8_t Channel, uint16_t Result);
 
 const USB_DeviceCallbacks_t Events_USB =
 {
+	.EndOfReset = USB_Event_EndOfReset,
 	.Error = USB_Event_OnError,
 	.ConfigurationChanged = USB_Event_ConfigurationChanged,
 };
@@ -55,23 +60,21 @@ USB_Config_t ConfigUSB = {
 	.Speed = USB_SPEED_FULL,
 };
 
-uint16_t ADC_Value = 0x00;
 uint8_t Protocol = 0x00;
 
 int main(void)
 {
 	/*
 		Initialize the GPIO
-			-> PD4 - PD7 as outputs
+			-> LED0 red as output
+			-> LED0 green as output
 	*/
-	GPIO_SetPortDirection(&PORTD, 0xF0, GPIO_DIRECTION_OUT);
-	GPIO_ClearPort(&PORTD, 0xF0);
+	GPIO_SetDirection(GET_PERIPHERAL(LED0_RED), GET_INDEX(LED0_RED), GPIO_DIRECTION_OUT);
+	GPIO_SetDirection(GET_PERIPHERAL(LED0_GREEN), GET_INDEX(LED0_GREEN), GPIO_DIRECTION_OUT);
 
 	/*
 		Initialize the ADC
 			-> Internal 2.56 V reference
-			-> ADC0 as input
-			-> Free run mode
 			-> Prescaler 128
 			-> Enable interrupts
 	*/
@@ -109,39 +112,28 @@ void USB_DeviceTask(void)
 	{
 		if(Endpoint_OUTReceived())
 		{
+			Endpoint_AckOUT();
+
 			// Set the new channel
 			ADC_SetChannel(Endpoint_ReadByte());
 
-			Endpoint_AckOUT();
+			// Start a new ADC conversion
+			ADC_StartConversion();
 		}
 	}
+}
 
-	// Select the IN endpoint
-	Endpoint_Select(IN_EP);
-	if(Endpoint_IsReadWriteAllowed())
-	{
-		if(Endpoint_INReady())
-		{
-			// Transmit the ADC result
-			Endpoint_WriteByte(ADC_Value & 0xFF);
-			Endpoint_WriteByte((ADC_Value >> 0x08) & 0xFF);
-
-			Endpoint_FlushIN();
-		}
-		else
-		{
-			Endpoint_FlushIN();
-		}
-	}
-
-	return;
+void USB_Event_EndOfReset(void)
+{	
+	GPIO_Set(GET_PERIPHERAL(LED0_GREEN), GET_INDEX(LED0_GREEN));
+	GPIO_Clear(GET_PERIPHERAL(LED0_RED), GET_INDEX(LED0_RED));
 }
 
 void USB_Event_OnError(void)
 {
 	// Set D2 red when the endpoint configuration was not successfully
-	GPIO_Clear(&PORTD, 0x05);
-	GPIO_Set(&PORTD, 0x04);
+	GPIO_Clear(GET_PERIPHERAL(LED0_GREEN), GET_INDEX(LED0_GREEN));
+	GPIO_Set(GET_PERIPHERAL(LED0_RED), GET_INDEX(LED0_RED));
 }
 
 void USB_Event_ConfigurationChanged(const uint8_t Configuration)
@@ -150,8 +142,8 @@ void USB_Event_ConfigurationChanged(const uint8_t Configuration)
 	if(Endpoint_Configure(IN_EP, ENDPOINT_TYPE_INTERRUPT, EP_SIZE, 1) && Endpoint_Configure(OUT_EP, ENDPOINT_TYPE_INTERRUPT, EP_SIZE, 1))
 	{
 		// Set D2 red and green when the endpoint configuration was successfully
-		GPIO_Set(&PORTD, 0x04);
-		GPIO_Set(&PORTD, 0x05);
+		GPIO_Set(GET_PERIPHERAL(LED0_GREEN), GET_INDEX(LED0_GREEN));
+		GPIO_Set(GET_PERIPHERAL(LED0_RED), GET_INDEX(LED0_RED));
 	}
 	else
 	{
@@ -159,7 +151,23 @@ void USB_Event_ConfigurationChanged(const uint8_t Configuration)
 	}
 }
 
-void ADC_Event_ConversionComplete(uint8_t Channel, uint16_t Result)
+void ADC_Event_ConversionComplete(const uint8_t Channel, const uint16_t Result)
 {
-	ADC_Value = Result;
+	// Select the IN endpoint
+	Endpoint_Select(IN_EP);
+	if(Endpoint_IsReadWriteAllowed())
+	{
+		if(Endpoint_INReady())
+		{
+			// Transmit the ADC result
+			Endpoint_WriteByte(Result & 0xFF);
+			Endpoint_WriteByte((Result >> 0x08) & 0xFF);
+
+			Endpoint_FlushIN();
+		}
+		else
+		{
+			Endpoint_FlushIN();
+		}
+	}
 }
