@@ -72,7 +72,7 @@ ISR(USB_GEN_vect)
 		__DeviceState = USB_STATE_RESET;
 
 		// Configure the default control endpoint
-		if(Endpoint_Configure(0, ENDPOINT_TYPE_CONTROL, ENDPOINT_CONTROL_SIZE, 0))
+		if(Endpoint_Configure(ENDPOINT_CONTROL_ADDRESS, ENDPOINT_TYPE_CONTROL, ENDPOINT_CONTROL_SIZE, 0))
 		{
 			if(__USBEvents.EndOfReset != NULL)
 			{
