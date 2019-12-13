@@ -60,8 +60,6 @@ USB_Config_t ConfigUSB = {
 	.Speed = USB_SPEED_FULL,
 };
 
-uint8_t Protocol = 0x00;
-
 int main(void)
 {
 	/*
@@ -110,16 +108,13 @@ void USB_DeviceTask(void)
 	Endpoint_Select(OUT_EP);
 	if(Endpoint_IsReadWriteAllowed())
 	{
-		if(Endpoint_OUTReceived())
-		{
-			Endpoint_AckOUT();
+		Endpoint_AckOUT();
 
-			// Set the new channel
-			ADC_SetChannel(Endpoint_ReadByte());
+		// Set the new channel
+		ADC_SetChannel(Endpoint_ReadByte());
 
-			// Start a new ADC conversion
-			ADC_StartConversion();
-		}
+		// Start a new ADC conversion
+		ADC_StartConversion();
 	}
 }
 

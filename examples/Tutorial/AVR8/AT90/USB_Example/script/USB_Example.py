@@ -81,7 +81,7 @@ if(__name__ == "__main__"):
                 Battery = (U * 320 / 100) + 0.7
                 print(" Battery: {:.2f} V".format(Battery))
             else:
-              print("   Analog value: {:.2f}".format(U))
+                print("   Analog value: {:.2f}".format(U))
         except Exception as e:
             print("[ERROR] Invalid Input!")
             print("[ERROR] Exception: {}".format(e))
