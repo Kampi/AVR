@@ -30,9 +30,7 @@
  *  @author Daniel Kampert
  */
 
-#include "USB/Core/StandardRequest.h"
 #include "USB/Core/USB_DeviceStream.h"
-#include "USB/Core/AVR8/USB_Controller.h"
 
 volatile USB_State_t __DeviceState;
 
@@ -91,7 +89,7 @@ Endpoint_CS_State_t USB_DeviceStream_ControlIN(const void* Buffer, const uint16_
 				Endpoint_WriteByte(pgm_read_byte(Buffer_Temp++));
 				Length_Temp--;
 			}
-			
+
 			// Start the transmission of the data
 			Endpoint_FlushIN();
 			while(!Endpoint_INReady());

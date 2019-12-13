@@ -34,7 +34,7 @@
 #ifndef ENDPOINT_H_
 #define ENDPOINT_H_
 
- #include "USB/Core/AVR8/USB_DeviceController.h"
+ #include "USB/Core/AVR8/USB_Device.h"
 
  /** @brief	Max. endpoints for the device controller.
   */
@@ -245,6 +245,16 @@
  static inline uint8_t Endpoint_IsSTALL(void)
  { 
 	 return UECONX & (0x01 << STALLRQ);
+ }
+
+ /** @brief		Test if the application can read data from the endpoint or can write data to the endpoint.
+  *				NOTE: You have so use #Endpoint_Select first!
+  *  @return	#TRUE when IN endpoint and write is allowed, #TRUE when OUT endpoint and read is allowed
+  */
+ static inline uint8_t Endpoint_IsReadWriteAllowed(void) __attribute__ ((always_inline));
+ static inline uint8_t Endpoint_IsReadWriteAllowed(void)
+ { 
+	 return UEINTX & (0x01 << RWAL);
  }
 
  /** @brief		Get the number of bytes currently stored in the endpoint FIFO.

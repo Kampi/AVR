@@ -1,9 +1,9 @@
 /*
- * USB.h
+ * ADC.c
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: USB driver for AT90USB1287.
+ *  File info: Driver for Atmel AT90 ADC.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,34 +22,39 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file USB/USB.h
- *  @brief USB driver for the AT90USB1287.
+/** @file ADC/ADC.c
+ *  @brief Driver for Atmel AT90 ADC.
  *
- *  This file contains the prototypes and definitions for the USB driver.
+ *  This file contains the implementation of the AT90 ADC driver.
  *
  *  @author Daniel Kampert
- *  @bug No known bugs.
  */
 
-#ifndef USB_H_
-#define USB_H_
+#include "ADC/ADC.h"
 
- #include "USB/Core/StandardDescriptor.h"
- #include "USB/Core/AVR8/USB_Controller.h"
- #include "USB/Core/USB_DeviceStdRequest.h"
+static ADC_Callback_t __ADC_Callback;
 
- /** @brief			Initialize the USB service.
-  *  @param Config	Pointer to USB configuration structure
-  */
- void USB_Init(const USB_Config_t* Config);
+void ADC_Init(const ADC_Callback_t Callback)
+{
+	ADMUX = (0x01 << REFS1) | (0x01 << REFS0);
+	ADCSRA = (0x01 << ADEN) | (0x01 << ADSC) | (0x01 << ADIE) | (0x01 << ADPS2) | (0x01 << ADPS1) | (0x01 << ADPS0);
 
- /** @brief	Polling function. 
-  */
- void USB_Poll(void);
+	// Discard the first conversion result
+	ADC_StartConversion();
+	ADC_Wait();
 
- /** @brief		Get the state of the USB state machine.
-  *  @return	State of the state machine
-  */
- volatile USB_State_t USB_GetState(void);
+	__ADC_Callback = Callback;
+}
 
-#endif /* USB_H_ */
+/*
+    Interrupt vectors
+*/
+#ifndef DOXYGEN
+	ISR(ADC_vect)
+	{
+		if(__ADC_Callback != NULL)
+		{
+			__ADC_Callback(ADMUX & 0x07, ADC);
+		}
+	}
+#endif

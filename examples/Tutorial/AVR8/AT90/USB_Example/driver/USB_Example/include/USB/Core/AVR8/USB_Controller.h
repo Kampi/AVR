@@ -34,41 +34,16 @@
 #ifndef USB_CONTROLLER_H_
 #define USB_CONTROLLER_H_
 
- #include "USB/Core/Common.h"
+ #include "Common.h"
  
  #include "Endpoint.h"
+ #include "USB_Device.h"
  #include "USB_Interrupt.h"
- #include "USB_DeviceController.h"
-
- /** @brief	USB Events
-  */
- typedef struct
- {
-	 /** @brief					USB configuration changed event.
-								NOTE: This event is needed for the USB enumeration. So this event is time critical.
-	  *  @param Configuration	Configuration number (start with 1)
-	  */
-	 void (*ConfigurationChanged)(const uint8_t Configuration);
-	 
-	 /** @brief					Device control request event.
-								NOTE: This event is needed for the USB enumeration. So this event is time critical.
-	  *  @param bRequest		USB request
-	  *  @param bmRequestType	Request type
-	  *  @param wValue			Request value
-	  */
-	 void (*ControlRequest)(const uint8_t bRequest, const uint8_t bmRequestType, const uint16_t wValue);
-	 void (*ConnectWithBus)();
-	 void (*DisconnectFromBus)();
-	 
-	 /** @brief					USB error event.
-	  */
-	 void (*Error)();
- } USB_DeviceCallbacks_t;
 
  /** @brief	Enable the PLL for the USB module.
   */
- static inline void USBController_EnablePLL(void) __attribute__ ((always_inline));
- static inline void USBController_EnablePLL(void)
+ static inline void USB_Controller_EnablePLL(void) __attribute__ ((always_inline));
+ static inline void USB_Controller_EnablePLL(void)
  {
 	 PLLCSR = (((0x01 << PLLP1) | (0x01 << PLLP0)) | (0x01 << PLLE));
 	 while(!(PLLCSR & (0x01 << PLOCK)));
@@ -76,56 +51,56 @@
 
  /** @brief	Disable the PLL for the USB module.
   */
- static inline void USBController_DisablePLL(void) __attribute__ ((always_inline));
- static inline void USBController_DisablePLL(void)
+ static inline void USB_Controller_DisablePLL(void) __attribute__ ((always_inline));
+ static inline void USB_Controller_DisablePLL(void)
  {
 	 PLLCSR = 0x00;
  }
 
  /** @brief	Enable the VBUS pad of the USB module.
   */
- static inline void USBController_EnableVBUSPad(void) __attribute__ ((always_inline));
- static inline void USBController_EnableVBUSPad(void)
+ static inline void USB_Controller_EnableVBUSPad(void) __attribute__ ((always_inline));
+ static inline void USB_Controller_EnableVBUSPad(void)
  {
 	 USBCON |= (0x01 << OTGPADE);
  }
 
  /** @brief	Disable the VBUS pad of the USB module.
   */
- static inline void USBController_DisableVBUSPad(void) __attribute__ ((always_inline));
- static inline void USBController_DisableVBUSPad(void)
+ static inline void USB_Controller_DisableVBUSPad(void) __attribute__ ((always_inline));
+ static inline void USB_Controller_DisableVBUSPad(void)
  {
 	 USBCON &= ~(0x01 << OTGPADE);
  }
 
  /** @brief	Enable the USB pad regulator.
   */
- static inline void USBController_EnableReg(void) __attribute__ ((always_inline));
- static inline void USBController_EnableReg(void)
+ static inline void USB_Controller_EnableReg(void) __attribute__ ((always_inline));
+ static inline void USB_Controller_EnableReg(void)
  {
 	 UHWCON |= (0x01 << UVREGE);
  }
 
  /** @brief	Disable the USB pad regulator.
   */
- static inline void USBController_DisableReg(void) __attribute__ ((always_inline));
- static inline void USBController_DisableReg(void)
+ static inline void USB_Controller_DisableReg(void) __attribute__ ((always_inline));
+ static inline void USB_Controller_DisableReg(void)
  {
 	 UHWCON &= ~(0x01 << UVREGE);
  }
 
  /** @brief	Unfreeze the USB clock.
   */
- static inline void USBController_EnableClk(void) __attribute__ ((always_inline));
- static inline void USBController_EnableClk(void)
+ static inline void USB_Controller_EnableClk(void) __attribute__ ((always_inline));
+ static inline void USB_Controller_EnableClk(void)
  {
 	 USBCON &= ~(0x01 << FRZCLK);
  }
 
  /** @brief	Freeze the USB clock.
   */
- static inline void USBController_DisableClk(void) __attribute__ ((always_inline));
- static inline void USBController_DisableClk(void)
+ static inline void USB_Controller_DisableClk(void) __attribute__ ((always_inline));
+ static inline void USB_Controller_DisableClk(void)
  {
 	 USBCON |= (0x01 << FRZCLK);
  }
@@ -133,8 +108,8 @@
  /** @brief		Return the state of the USB connection.
   *  @return	1 if the device is connected with VBUS.
   */
- static inline uint8_t USBController_CheckVBUS(void) __attribute__ ((always_inline));
- static inline uint8_t USBController_CheckVBUS(void)
+ static inline uint8_t USB_Controller_CheckVBUS(void) __attribute__ ((always_inline));
+ static inline uint8_t USB_Controller_CheckVBUS(void)
  {
 	 if(USBSTA & (0x01 << VBUS))
 	 {
@@ -146,8 +121,8 @@
 
  /** @brief	Reset the USB controller.
   */
- static inline void USBController_Reset(void) __attribute__ ((always_inline));
- static inline void USBController_Reset(void)
+ static inline void USB_Controller_Reset(void) __attribute__ ((always_inline));
+ static inline void USB_Controller_Reset(void)
  {
 	 USBCON &= ~(0x01 << USBE);
 	 USBCON |= (0x01 << USBE);
@@ -156,8 +131,8 @@
  /** @brief			Set the USB device mode.
   *  @param Mode	USB device mode
   */
- static inline void USBController_SetMode(const USB_Mode_t Mode) __attribute__ ((always_inline));
- static inline void USBController_SetMode(const USB_Mode_t Mode)
+ static inline void USB_Controller_SetMode(const USB_Mode_t Mode) __attribute__ ((always_inline));
+ static inline void USB_Controller_SetMode(const USB_Mode_t Mode)
  {
 	 if(Mode == USB_MODE_DEVICE)
 	 {
@@ -171,16 +146,16 @@
 
  /** @brief	Attach the device to the USB bus.
   */
- static inline void USBController_Attach(void) __attribute__ ((always_inline));
- static inline void USBController_Attach(void)
+ static inline void USB_Controller_Attach(void) __attribute__ ((always_inline));
+ static inline void USB_Controller_Attach(void)
  {
 	 UDCON &= ~(0x01 << DETACH);
  }
  
  /** @brief	Detach the device from the USB bus.
   */
- static inline void USBController_Detach(void) __attribute__ ((always_inline));
- static inline void USBController_Detach(void)
+ static inline void USB_Controller_Detach(void) __attribute__ ((always_inline));
+ static inline void USB_Controller_Detach(void)
  {
 	 UDCON &= ~(0x01 << DETACH);
  }
@@ -189,23 +164,23 @@
   *  @param Mode	USB device mode
   *  @param Speed	Device speed option
   */
- void USBController_Init(const USB_Mode_t Mode, const USB_Speed_t Speed);
+ void USB_Controller_Init(const USB_Mode_t Mode, const USB_Speed_t Speed);
 
  /** @brief			Set the operation mode of the USB controller.
   *  @param Mode	USB device mode
   */
- void USBController_SetMode(const USB_Mode_t Mode);
+ void USB_Controller_SetMode(const USB_Mode_t Mode);
 
  /** @brief	Disable the USB interface.
   */
- void USBController_Disable(void);
+ void USB_Controller_Disable(void);
  
  /** @brief	Reset the USB interface.
   */
- void USBController_ResetInterface(void);
+ void USB_Controller_ResetInterface(void);
  
  /** @brief	Initialize the USB controller as USB device.
   */
- void USBController_InitDevice(void);
+ void USB_Controller_InitDevice(void);
 
 #endif /* USB_CONTROLLER_H_  */ 

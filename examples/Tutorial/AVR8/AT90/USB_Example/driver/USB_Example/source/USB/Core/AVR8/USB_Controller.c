@@ -32,43 +32,43 @@
 
 #include "USB/Core/AVR8/USB_Interrupt.h"
 #include "USB/Core/AVR8/USB_Controller.h"
-#include "USB/Core/AVR8/USB_DeviceController.h"
+#include "USB/Core/AVR8/USB_Device.h"
 
 extern volatile USB_State_t __DeviceState;
 
-void USBController_Init(const USB_Mode_t Mode, const USB_Speed_t Speed)
+void USB_Controller_Init(const USB_Mode_t Mode, const USB_Speed_t Speed)
 {
-	USBController_ResetInterface();
-	USBController_EnableClk();
-	USBController_EnableReg();
-	USBController_EnableVBUSPad();
+	USB_Controller_ResetInterface();
+	USB_Controller_EnableClk();
+	USB_Controller_EnableReg();
+	USB_Controller_EnableVBUSPad();
 	
-	USBController_SetMode(Mode);
+	USB_Controller_SetMode(Mode);
 	if(Mode == USB_MODE_DEVICE)
 	{
-		USBDevice_SetSpeed(Speed);
+		USB_Device_SetSpeed(Speed);
 		
 		// Enable all necessary interrupts
-		USBController_EnableInterrupt(USB_VBUS_INTERRUPT);
-		USBController_EnableInterrupt(USB_EOR_INTERRUPT);
+		USB_Controller_EnableInterrupt(USB_VBUS_INTERRUPT);
+		USB_Controller_EnableInterrupt(USB_EOR_INTERRUPT);
 		
 		// Attach the device to the bus
-		USBController_Attach();
+		USB_Controller_Attach();
 	}
 }
 
-void USBController_Disable(void)
+void USB_Controller_Disable(void)
 {
-	USBController_DisableAllInterrupts();
-	USBController_ClearInterrupts();
+	USB_Controller_DisableAllInterrupts();
+	USB_Controller_ClearInterrupts();
 
-	USBController_Detach();
-	USBController_Disable();
+	USB_Controller_Detach();
+	USB_Controller_Disable();
 }
 
-void USBController_ResetInterface(void)
+void USB_Controller_ResetInterface(void)
 {
-	USBController_Reset();
+	USB_Controller_Reset();
 	
 	__DeviceState = USB_STATE_UNATTACHED;
 }
