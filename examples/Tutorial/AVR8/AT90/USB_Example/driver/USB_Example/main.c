@@ -119,7 +119,8 @@ void USB_DeviceTask(void)
 }
 
 void USB_Event_EndOfReset(void)
-{	
+{
+	// Set D2 green to signal end of the reset
 	GPIO_Set(GET_PERIPHERAL(LED0_GREEN), GET_INDEX(LED0_GREEN));
 	GPIO_Clear(GET_PERIPHERAL(LED0_RED), GET_INDEX(LED0_RED));
 }
