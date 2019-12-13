@@ -82,4 +82,4 @@ if(__name__ == "__main__"):
               print("   Analog value: {:.2f}".format(U))
         except Exception as e:
             print("[ERROR] Invalid Input!")
-            print("[ERROR] Exception: ".format(e))
+            print("[ERROR] Exception: {}".format(e))
