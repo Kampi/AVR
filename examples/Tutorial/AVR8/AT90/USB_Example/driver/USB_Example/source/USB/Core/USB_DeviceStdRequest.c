@@ -34,8 +34,7 @@
 
 #include "USB/Core/USB_DeviceStdRequest.h"
 
-uint8_t __Configuration;
-uint8_t __Interface;
+static uint8_t __Configuration;
 volatile USB_State_t __DeviceState;
 
 USB_DeviceCallbacks_t __USBEvents;
