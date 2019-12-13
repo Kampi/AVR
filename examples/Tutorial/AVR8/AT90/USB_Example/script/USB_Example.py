@@ -14,6 +14,8 @@ if(__name__ == "__main__"):
 
     # Get the target device
     Device = usb.core.find(idVendor = Vendor, idProduct = Product)
+    if(Device is None):
+        raise ValueError("[ERROR] Device not found!")
 
     # Set the first configuration
     Device.set_configuration(1)
