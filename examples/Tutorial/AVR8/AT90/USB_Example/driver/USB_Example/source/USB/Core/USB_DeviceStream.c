@@ -58,50 +58,6 @@ static Endpoint_CS_State_t USB_DeviceStream_GetControlEndpointState(void)
 	return ENDPOINT_CS_NO_ERROR;
 }
 
-/** @brief			Wait until the device become ready.
- *  @param Timeout	Timeout in ms
- *  @return			Error code
- */
-static Endpoint_DS_ErrorCode_t USB_DeviceStream_WaitReady(const uint8_t Timeout)
-{
-	uint8_t Timeout_Temp = Timeout;
-
-	// Get the start frame
-	uint16_t StartFrame = USB_Device_GetFrameNumber();
-
-	while(1)
-	{
-		// Check the state of the endpoint
-		if(Endpoint_INReady() || Endpoint_OUTReceived())
-		{
-			return ENDPOINT_DS_NO_ERROR;
-		}
-		else if(__DeviceState == USB_STATE_UNATTACHED)
-		{
-			return ENDPOINT_DS_DISCONNECT;
-		}
-		else if(__DeviceState == USB_STATE_SUSPEND)
-		{
-			return ENDPOINT_DS_SUSPEND;
-		}
-		else if(Endpoint_IsSTALL())
-		{
-			return ENDPOINT_DS_STALLED;
-		}
-
-		uint16_t NewFrame = USB_Device_GetFrameNumber();
-		if(NewFrame != StartFrame)
-		{
-			StartFrame = NewFrame;
-
-			if(!(Timeout_Temp--))
-			{
-				return ENDPOINT_DS_TIMEOUT;
-			}
-		}
-	}
-}
-
 Endpoint_CS_State_t USB_DeviceStream_ControlIN(const void* Buffer, const uint16_t Length, const uint16_t RequestedLength)
 {
 	uint8_t* Buffer_Temp = (uint8_t*)Buffer;
