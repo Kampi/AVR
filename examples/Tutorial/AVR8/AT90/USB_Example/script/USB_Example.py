@@ -2,7 +2,7 @@ import math
 import usb.core
 import usb.control
 
-# Device specific vendor and product id
+# Device specific Vendor- and Product-ID
 Vendor = 0x0123
 Product = 0x4567
 
