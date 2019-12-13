@@ -34,6 +34,13 @@
 #ifndef ENDPOINT_H_
 #define ENDPOINT_H_
 
+ #include "Arch/AVR8/AT90/USB/USB_Controller.h"
+ #include "Services/USB/Core/StandardRequest.h"
+
+ /** @brief	Max. endpoints for the device controller.
+  */
+ #define MAX_ENDPOINTS									0x07
+
  /** @brief	Control endpoint address for USB devices.
   */
  #define ENDPOINT_CONTROL_ADDRESS						0x00
@@ -133,7 +140,7 @@
 	 {
 		 return ENDPOINT_DIRECTION_IN;
 	 }
-
+	 
 	 return ENDPOINT_DIRECTION_OUT;
  }
  
@@ -187,8 +194,8 @@
   *				NOTE: You have so use #Endpoint_Select first!
   *  @return	#TRUE when a setup packed was received
   */
- static inline Bool_t Endpoint_SETUPReceived(void) __attribute__ ((always_inline));
- static inline Bool_t Endpoint_SETUPReceived(void)
+ static inline uint8_t Endpoint_SETUPReceived(void) __attribute__ ((always_inline));
+ static inline uint8_t Endpoint_SETUPReceived(void)
  {
 	 return UEINTX & (0x01 << RXSTPI);
  }
@@ -197,8 +204,8 @@
   *				NOTE: You have so use #Endpoint_Select first!
   *  @return	#TRUE when OUT data received.
   */
- static inline Bool_t Endpoint_OUTReceived(void) __attribute__ ((always_inline));
- static inline Bool_t Endpoint_OUTReceived(void)
+ static inline uint8_t Endpoint_OUTReceived(void) __attribute__ ((always_inline));
+ static inline uint8_t Endpoint_OUTReceived(void)
  {
 	 return UEINTX & (0x01 << RXOUTI);
  }
@@ -207,8 +214,8 @@
   *				NOTE: You have so use #Endpoint_Select first!
   *  @return	#TRUE when bank is ready
   */
- static inline Bool_t Endpoint_INReady(void) __attribute__ ((always_inline));
- static inline Bool_t Endpoint_INReady(void)
+ static inline uint8_t Endpoint_INReady(void) __attribute__ ((always_inline));
+ static inline uint8_t Endpoint_INReady(void)
  {
 	 return UEINTX & (0x01 << TXINI);
  }
@@ -235,10 +242,20 @@
   *				NOTE: You have so use #Endpoint_Select first!
   *  @return	#TRUE when stalled
   */
- static inline Bool_t Endpoint_IsSTALL(void) __attribute__ ((always_inline));
- static inline Bool_t Endpoint_IsSTALL(void)
+ static inline uint8_t Endpoint_IsSTALL(void) __attribute__ ((always_inline));
+ static inline uint8_t Endpoint_IsSTALL(void)
  { 
 	 return UECONX & (0x01 << STALLRQ);
+ }
+
+ /** @brief		Test if the application can read data from the endpoint or can write data to the endpoint.
+  *				NOTE: You have so use #Endpoint_Select first!
+  *  @return	#TRUE when IN endpoint and write is allowed, #TRUE when OUT endpoint and read is allowed
+  */
+ static inline uint8_t Endpoint_IsReadWriteAllowed(void) __attribute__ ((always_inline));
+ static inline uint8_t Endpoint_IsReadWriteAllowed(void)
+ { 
+	 return UEINTX & (0x01 << RWAL);
  }
 
  /** @brief		Get the number of bytes currently stored in the endpoint FIFO.
@@ -272,28 +289,18 @@
 	 UEDATX = (Data >> 0x08);
  }
 
- /** @brief		Test if the application can read data from the endpoint or can write data to the endpoint.
-  *				NOTE: You have so use #Endpoint_Select first!
-  *  @return	#TRUE when IN endpoint and write is allowed, #TRUE when OUT endpoint and read is allowed
-  */
- static inline Bool_t Endpoint_IsReadWriteAllowed(void) __attribute__ ((always_inline));
- static inline Bool_t Endpoint_IsReadWriteAllowed(void)
- { 
-	 return UEINTX & (0x01 << RWAL);
- }
-
  /** @brief				Configure an endpoint.
   *  @param Address		Endpoint address
   *  @param Type		Endpoint type
-  *  @param Size		Endpoint size
+  *  @param Size		Endpoint size in bytes
   *  @param DoubleBank	Set to #TRUE to use a double bank for the endpoint
   *  @return			#TRUE when successfully
   */
- Bool_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, const Endpoint_Size_t Size, const Bool_t DoubleBank);
+ uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, const uint8_t Size, const uint8_t DoubleBank);
 
- /** @brief				Clear the input/output bank of the current endpoint.
-  *  @param RequestType	USB request type
+ /** @brief				Process the STATUS stage of the control transmission. The operation depends on the request direction.
+  *  @param Direction	USB request direction
   */
- void Endpoint_HandleSTATUS(const uint8_t RequestType);
+ void Endpoint_HandleSTATUS(const USB_RequestDirection_t Direction);
 
 #endif /* ENDPOINT_H_  */

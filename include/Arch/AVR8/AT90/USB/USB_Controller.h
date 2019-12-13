@@ -37,8 +37,8 @@
  #include "Services/USB/USB_Types.h"
 
  #include "Arch/AVR8/AT90/USB/Endpoint.h"
- #include "Arch/AVR8/AT90/USB/USB_Interrupt.h"
  #include "Arch/AVR8/AT90/USB/USB_Device.h"
+ #include "Arch/AVR8/AT90/USB/USB_Interrupt.h"
 
  /** @brief	Enable the PLL for the USB module.
   */

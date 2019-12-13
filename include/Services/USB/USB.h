@@ -48,9 +48,10 @@
 	 #error "Unknown CPU architecture!"
  #endif
  
- #include "Services/USB/Core/StandardDescriptor.h"
- #include "Services/USB/Core/USB_DeviceStdRequest.h"
  #include "Services/USB/Class/Class.h"
+ #include "Services/USB/Core/StandardDescriptor.h"
+ #include "Services/USB/Core/USB_DeviceStream.h"
+ #include "Services/USB/Core/USB_DeviceStdRequest.h"
 
  /** @brief			Initialize the USB service.
   *  @param Config	Pointer to USB configuration object
