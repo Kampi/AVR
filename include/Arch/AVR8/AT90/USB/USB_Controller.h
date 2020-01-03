@@ -40,6 +40,18 @@
  #include "Arch/AVR8/AT90/USB/USB_Device.h"
  #include "Arch/AVR8/AT90/USB/USB_Interrupt.h"
 
+ /** @brief	USB controller device state.
+  */
+ extern volatile USB_State_t _DeviceState;
+ 
+ /** @brief	USB controller configuration.
+  */
+ extern uint8_t _Configuration;
+ 
+ /** @brief	USB events.
+ */
+ extern USB_DeviceCallbacks_t _USBEvents;
+
  /** @brief	Enable the PLL for the USB module.
   */
  static inline void USB_Controller_EnablePLL(void) __attribute__ ((always_inline));
