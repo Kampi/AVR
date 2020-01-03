@@ -28,8 +28,8 @@
  *  @author Daniel Kampert
  */
 
-#ifndef CONFIG__LIBXMEHA384C3_H_
-#define CONFIG__LIBXMEHA384C3_H_
+#ifndef CONFIG_LIBXMEHA384C3_H_
+#define CONFIG_LIBXMEHA384C3_H_
 
  #include "Common/Common.h"
 
@@ -41,4 +41,4 @@
  #define SPI_BUFFER_SIZE							32							/**< Size of SPI buffer in bytes. */
  #define TWI_BUFFER_SIZE							32							/**< Size of TWI buffer in bytes. */
 
-#endif /* CONFIG__LIBXMEHA384C3_H_ */
+#endif /* CONFIG_LIBXMEHA384C3_H_ */
