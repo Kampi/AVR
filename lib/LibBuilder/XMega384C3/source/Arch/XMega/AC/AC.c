@@ -47,7 +47,7 @@
  *  @param Device	AC device
  *  @param Callback	Type of interrupt
  */
-static void __AC_InterruptHandler(const uint8_t Device, const AC_CallbackType_t Type)
+static void _AC_InterruptHandler(const uint8_t Device, const AC_CallbackType_t Type)
 {	
 	if(Type == AC_COMP0_INTERRUPT)
 	{
@@ -383,33 +383,33 @@ uint8_t AC_GetState(AC_t* Device, AC_Comparator_t Comparator)
 #ifndef DOXYGEN
 	ISR(ACA_AC0_vect)
 	{
-		__AC_InterruptHandler(ACA_ID, AC_COMP0_INTERRUPT);
+		_AC_InterruptHandler(ACA_ID, AC_COMP0_INTERRUPT);
 	}
 
 	ISR(ACA_AC1_vect)
 	{
-		__AC_InterruptHandler(ACA_ID, AC_COMP1_INTERRUPT);
+		_AC_InterruptHandler(ACA_ID, AC_COMP1_INTERRUPT);
 	}
 
 	ISR(ACA_ACW_vect)
 	{
-		__AC_InterruptHandler(ACA_ID, AC_WINDOW_INTERRUPT);
+		_AC_InterruptHandler(ACA_ID, AC_WINDOW_INTERRUPT);
 	}
 
 	#if(defined(ACB))
 		ISR(ACB_AC0_vect)
 		{
-			__AC_InterruptHandler(ACB_ID, AC_COMP0_INTERRUPT);
+			_AC_InterruptHandler(ACB_ID, AC_COMP0_INTERRUPT);
 		}
 
 		ISR(ACB_AC1_vect)
 		{
-			__AC_InterruptHandler(ACB_ID, AC_COMP1_INTERRUPT);
+			_AC_InterruptHandler(ACB_ID, AC_COMP1_INTERRUPT);
 		}
 
 		ISR(ACB_ACW_vect)
 		{
-			__AC_InterruptHandler(ACB_ID, AC_WINDOW_INTERRUPT);
+			_AC_InterruptHandler(ACB_ID, AC_WINDOW_INTERRUPT);
 		}
 	#endif
 #endif

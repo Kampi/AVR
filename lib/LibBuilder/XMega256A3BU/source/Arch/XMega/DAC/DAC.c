@@ -36,7 +36,7 @@
 #include "Arch/XMega/PowerManagement/PowerManagement.h"
 
 #ifndef DOXYGEN
-	static float __DAC_VoltagePerStep;
+	static float _DAC_VoltagePerStep;
 #endif
 
 void DAC_Init(DAC_Config_t* Config)
@@ -164,7 +164,7 @@ void DAC_SetReference(DAC_t* Device, const DAC_Reference_t Reference)
 
 void DAC_SetVoltageDivider(const float Reference)
 {
-	__DAC_VoltagePerStep = ((float)Reference / (0x01 << DAC_RESOLUTION)) / 1000.0;
+	_DAC_VoltagePerStep = ((float)Reference / (0x01 << DAC_RESOLUTION)) / 1000.0;
 }
 
 DAC_Reference_t DAC_GetReference(DAC_t* Device)
@@ -199,7 +199,7 @@ void DAC_WriteChannel(DAC_t* Device, const DAC_Channel_t Channel, const uint16_t
 
 void DAC_WriteVoltage(DAC_t* Device, const DAC_Channel_t Channel, const float Voltage)
 {
-	DAC_WriteChannel(Device, Channel, (Voltage / __DAC_VoltagePerStep) - 0x01);
+	DAC_WriteChannel(Device, Channel, (Voltage / _DAC_VoltagePerStep) - 0x01);
 }
 
 void DAC_ConfigEvent(DAC_t* Device, const DAC_EventChannel_t EventChannel, const DAC_Channel_t Channel)

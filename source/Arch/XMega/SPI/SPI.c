@@ -42,9 +42,9 @@
 	{
 		SPI_Callback_t CompleteInterrupt;
 		SPI_Callback_t ErrorCallback;
-	} __SPI_Callbacks[SPI_DEVICES];
+	} _SPI_Callbacks[SPI_DEVICES];
 	
-	extern SPI_DeviceMode_t __SPI_DeviceModes[SPI_DEVICES];
+	extern SPI_DeviceMode_t _SPI_DeviceModes[SPI_DEVICES];
 #endif
 
 void SPI_InstallCallback(const SPI_InterruptConfig_t* Config)
@@ -76,12 +76,12 @@ void SPI_InstallCallback(const SPI_InterruptConfig_t* Config)
 
 	if(Config->Source & SPI_COMPLETE_INTERRUPT)
 	{
-		__SPI_Callbacks[ID].CompleteInterrupt = Config->Callback;
+		_SPI_Callbacks[ID].CompleteInterrupt = Config->Callback;
 	}
 
 	if(Config->Source & SPI_ERROR_INTERRUPT)
 	{
-		__SPI_Callbacks[ID].ErrorCallback = Config->Callback;
+		_SPI_Callbacks[ID].ErrorCallback = Config->Callback;
 	}
 
 }
@@ -115,12 +115,12 @@ void SPI_RemoveCallback(SPI_t* Device, const SPI_CallbackType_t Callback)
 	
 	if(Callback & SPI_COMPLETE_INTERRUPT)
 	{
-		__SPI_Callbacks[ID].CompleteInterrupt = NULL;
+		_SPI_Callbacks[ID].CompleteInterrupt = NULL;
 	}
 	
 	if(Callback & SPI_ERROR_INTERRUPT)
 	{
-		__SPI_Callbacks[ID].ErrorCallback = NULL;
+		_SPI_Callbacks[ID].ErrorCallback = NULL;
 	}
 }
 

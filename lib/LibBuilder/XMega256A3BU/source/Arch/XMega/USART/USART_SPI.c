@@ -38,13 +38,13 @@
 	/*
 		Object declaration
 	*/
-	extern SPI_Message_t __SPI_Messages[USART_DEVICES][USART_CHANNEL];
-	extern Bool_t __USART_IsSPI[USART_DEVICES][USART_CHANNEL];
+	extern SPI_Message_t _SPI_Messages[USART_DEVICES][USART_CHANNEL];
+	extern Bool_t _USART_IsSPI[USART_DEVICES][USART_CHANNEL];
 
 	struct
 	{
 		SPI_Callback_t CompleteInterrupt;
-	} __USART_SPI_Callbacks[USART_DEVICES][USART_CHANNEL];
+	} _USART_SPI_Callbacks[USART_DEVICES][USART_CHANNEL];
 #endif
 
 void USART_SPI_Init(SPIM_Config_t* Config)
@@ -94,7 +94,7 @@ void USART_SPI_Init(SPIM_Config_t* Config)
 		}
 	#endif
 
-	__USART_IsSPI[ID][Channel] = TRUE;
+	_USART_IsSPI[ID][Channel] = TRUE;
 	
 	if(Config->Device == &USARTD0)
 	{
@@ -183,7 +183,7 @@ void USART_SPI_EnableInterruptSupport(USART_t* Device, const Interrupt_Level_t L
 		}
 	#endif
 	
-	__SPI_Messages[ID][Channel].Device = (USART_t*)Device;
+	_SPI_Messages[ID][Channel].Device = (USART_t*)Device;
 	
 	Device->CTRLA = (Level << 0x04) | (Level << 0x02);
 }
@@ -246,24 +246,24 @@ SPI_Status_t USART_SPI_Transmit(SPI_Message_t* Message)
 	#endif
 
 	// Save the message object
-	__SPI_Messages[ID][Channel] = *Message;
+	_SPI_Messages[ID][Channel] = *Message;
 	
 	// Reset the read and write counter
-	__SPI_Messages[ID][Channel].BytesProcessed = 0x00;
+	_SPI_Messages[ID][Channel].BytesProcessed = 0x00;
 
 	// Wait for active transmissions
-	if(__SPI_Messages[ID][Channel].Status != SPI_MESSAGE_COMPLETE)
+	if(_SPI_Messages[ID][Channel].Status != SPI_MESSAGE_COMPLETE)
 	{
-		return __SPI_Messages[ID][Channel].Status;
+		return _SPI_Messages[ID][Channel].Status;
 	}
 
-	__SPI_Messages[ID][Channel].Status = 0x00;
+	_SPI_Messages[ID][Channel].Status = 0x00;
 	
 	// Select the device
-	USART_SPI_SelectDevice(__SPI_Messages[ID][Channel].Port, __SPI_Messages[ID][Channel].Pin);
+	USART_SPI_SelectDevice(_SPI_Messages[ID][Channel].Port, _SPI_Messages[ID][Channel].Pin);
 	
 	// Send the first byte
-	((USART_t*)(__SPI_Messages[ID][Channel].Device))->DATA = __SPI_Messages[ID][Channel].BufferOut[__SPI_Messages[ID][Channel].BytesProcessed];
+	((USART_t*)(_SPI_Messages[ID][Channel].Device))->DATA = _SPI_Messages[ID][Channel].BufferOut[_SPI_Messages[ID][Channel].BytesProcessed];
 
 	return SPI_MESSAGE_PENDING;
 }
@@ -314,7 +314,7 @@ void USART_SPI_InstallCallback(const SPI_InterruptConfig_t* Config)
 	if(Config->Source & SPI_COMPLETE_INTERRUPT)
 	{
 		Device->CTRLA = (Config->InterruptLevel << 0x04) | (Config->InterruptLevel << 0x02);
-		__USART_SPI_Callbacks[ID][Channel].CompleteInterrupt = Config->Callback;
+		_USART_SPI_Callbacks[ID][Channel].CompleteInterrupt = Config->Callback;
 	}
 }
 
@@ -359,7 +359,7 @@ void USART_SPI_RemoveCallback(USART_t* Device, const SPI_CallbackType_t Callback
 	
 	if(Callback & SPI_COMPLETE_INTERRUPT)
 	{
-		__USART_SPI_Callbacks[USART][Channel].CompleteInterrupt = NULL;
+		_USART_SPI_Callbacks[USART][Channel].CompleteInterrupt = NULL;
 	}
 }
 
@@ -410,7 +410,7 @@ SPI_Status_t USART_SPI_Status(const USART_t* Device)
 		}
 	#endif
 	
-	return __SPI_Messages[ID][Channel].Status;
+	return _SPI_Messages[ID][Channel].Status;
 }
 
 void USART_SPI_SelectDevice(PORT_t* Port, const uint8_t Pin)

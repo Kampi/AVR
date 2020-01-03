@@ -35,8 +35,8 @@
 #include "Arch/XMega/PowerManagement/PowerManagement.h"
 
 #ifndef DOXYGEN
-	extern SPI_Message_t __SPIM_Messages[SPI_DEVICES];
-	SPI_DeviceMode_t __SPI_DeviceModes[SPI_DEVICES];
+	extern SPI_Message_t _SPIM_Messages[SPI_DEVICES];
+	SPI_DeviceMode_t _SPI_DeviceModes[SPI_DEVICES];
 #endif
 
 void SPIM_Init(SPIM_Config_t* Config)
@@ -69,7 +69,7 @@ void SPIM_Init(SPIM_Config_t* Config)
 	SPI_t* Device = (SPI_t*)Config->Device;
 	SPI_PowerEnable(Device);
 
-	__SPI_DeviceModes[ID] = SPI_MASTER;
+	_SPI_DeviceModes[ID] = SPI_MASTER;
 	
 	if(ID == SPIC_ID)
 	{
@@ -84,7 +84,7 @@ void SPIM_Init(SPIM_Config_t* Config)
 		GPIO_SetDirection(&PORTD, SPI_MOSI_PIN, GPIO_DIRECTION_OUT);
 	}
 	
-	__SPI_DeviceModes[ID] = SPI_MASTER;
+	_SPI_DeviceModes[ID] = SPI_MASTER;
 	
 	Device->CTRL = (Device->CTRL & (~(0x01 << 0x04))) | (SPI_MASTER << 0x04);
 	SPI_SetMode(Device, Config->Mode);
@@ -193,21 +193,21 @@ SPI_Status_t SPIM_Transmit(SPI_t* Device, const uint8_t Bytes, uint8_t* WriteBuf
 	#endif
 	
 
-	if(__SPIM_Messages[ID].Status != SPI_MESSAGE_COMPLETE)
+	if(_SPIM_Messages[ID].Status != SPI_MESSAGE_COMPLETE)
 	{
-		return __SPIM_Messages[ID].Status;
+		return _SPIM_Messages[ID].Status;
 	}
 	
-	__SPIM_Messages[ID].Device = Device;
-	__SPIM_Messages[ID].BufferIn = ReadBuffer;
-	__SPIM_Messages[ID].BufferOut = WriteBuffer;
-	__SPIM_Messages[ID].Length = Bytes;
-	__SPIM_Messages[ID].BytesProcessed = 0x00;
-	__SPIM_Messages[ID].Status = SPI_MESSAGE_PENDING;
-	__SPIM_Messages[ID].Port = Port;
-	__SPIM_Messages[ID].Pin = Pin;
+	_SPIM_Messages[ID].Device = Device;
+	_SPIM_Messages[ID].BufferIn = ReadBuffer;
+	_SPIM_Messages[ID].BufferOut = WriteBuffer;
+	_SPIM_Messages[ID].Length = Bytes;
+	_SPIM_Messages[ID].BytesProcessed = 0x00;
+	_SPIM_Messages[ID].Status = SPI_MESSAGE_PENDING;
+	_SPIM_Messages[ID].Port = Port;
+	_SPIM_Messages[ID].Pin = Pin;
 	
-	SPIM_SelectDevice(__SPIM_Messages[ID].Port, __SPIM_Messages[ID].Pin);
+	SPIM_SelectDevice(_SPIM_Messages[ID].Port, _SPIM_Messages[ID].Pin);
 	
 	return SPI_MESSAGE_PENDING;
 }
@@ -239,5 +239,5 @@ const SPI_Status_t SPIM_Status(const SPI_t* Device)
 		}
 	#endif
 	
-	return __SPIM_Messages[ID].Status;
+	return _SPIM_Messages[ID].Status;
 }

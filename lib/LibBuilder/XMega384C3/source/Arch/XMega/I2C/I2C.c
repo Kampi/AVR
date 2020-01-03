@@ -43,7 +43,7 @@
 		I2C_Callback_t RxCompleteInterrupt;
 		I2C_Callback_t ErrorInterrupt;
 		I2C_Callback_t DataRdyInterrupt;
-	} __I2C_Callbacks[TWI_DEVICES];
+	} _I2C_Callbacks[TWI_DEVICES];
 #endif
 
 void I2C_InstallCallback(const I2C_InterruptConfig_t* Config)
@@ -61,22 +61,22 @@ void I2C_InstallCallback(const I2C_InterruptConfig_t* Config)
 
 	if(Config->Source & I2C_TXCOMPLETE_INTERRUPT)
 	{
-		__I2C_Callbacks[ID].TxCompleteInterrupt = Config->Callback;
+		_I2C_Callbacks[ID].TxCompleteInterrupt = Config->Callback;
 	}
 
 	if(Config->Source & I2C_RXCOMPLETE_INTERRUPT)
 	{
-		__I2C_Callbacks[ID].RxCompleteInterrupt = Config->Callback;
+		_I2C_Callbacks[ID].RxCompleteInterrupt = Config->Callback;
 	}
 
 	if(Config->Source & I2C_ERROR_INTERRUPT)
 	{
-		__I2C_Callbacks[ID].ErrorInterrupt = Config->Callback;
+		_I2C_Callbacks[ID].ErrorInterrupt = Config->Callback;
 	}
 	
 	if(Config->Source & I2C_DATA_RDY_INTERRUPT)
 	{
-		__I2C_Callbacks[ID].DataRdyInterrupt = Config->Callback;
+		_I2C_Callbacks[ID].DataRdyInterrupt = Config->Callback;
 	}
 
 	if((Config->Source & I2C_TXCOMPLETE_INTERRUPT) || (Config->Source & I2C_RXCOMPLETE_INTERRUPT) || (Config->Source & I2C_ERROR_INTERRUPT))
@@ -104,22 +104,22 @@ void I2C_RemoveCallback(TWI_t* Device, const I2C_CallbackType_t Callback)
 	
 	if(Callback & I2C_TXCOMPLETE_INTERRUPT)
 	{
-		__I2C_Callbacks[ID].TxCompleteInterrupt = NULL;
+		_I2C_Callbacks[ID].TxCompleteInterrupt = NULL;
 	}
 	
 	if(Callback & I2C_RXCOMPLETE_INTERRUPT)
 	{
-		__I2C_Callbacks[ID].TxCompleteInterrupt = NULL;
+		_I2C_Callbacks[ID].TxCompleteInterrupt = NULL;
 	}
 	
 	if(Callback & I2C_ERROR_INTERRUPT)
 	{
-		__I2C_Callbacks[ID].ErrorInterrupt = NULL;
+		_I2C_Callbacks[ID].ErrorInterrupt = NULL;
 	}
 	
 	if(Callback & I2C_DATA_RDY_INTERRUPT)
 	{
-		__I2C_Callbacks[ID].DataRdyInterrupt = NULL;
+		_I2C_Callbacks[ID].DataRdyInterrupt = NULL;
 	}
 }
 

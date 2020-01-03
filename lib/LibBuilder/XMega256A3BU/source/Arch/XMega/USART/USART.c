@@ -36,25 +36,25 @@
 
 /** @brief Tx ring buffer for each USART interface.
  */
-static RingBuffer_t __USART_TxRingBuffer[USART_DEVICES][USART_CHANNEL];
+static RingBuffer_t _USART_TxRingBuffer[USART_DEVICES][USART_CHANNEL];
 
 /** @brief Data buffer for Tx ring buffer.
  */
-static uint8_t __TxData[USART_DEVICES][USART_CHANNEL][USART_BUFFER_SIZE];
+static uint8_t _TxData[USART_DEVICES][USART_CHANNEL][USART_BUFFER_SIZE];
 
 #ifndef DOXYGEN
 	/*
 		Object declaration
 	*/
-	USART_Message_t __USART_Messages[USART_DEVICES][USART_CHANNEL];
-	Bool_t __USART_Echo[USART_DEVICES][USART_CHANNEL];
+	USART_Message_t _USART_Messages[USART_DEVICES][USART_CHANNEL];
+	Bool_t _USART_Echo[USART_DEVICES][USART_CHANNEL];
 	struct
 	{
 		USART_Callback_t RxCallback;
 		USART_Callback_t TxCallback;
 		USART_Callback_t EmptyCallback;
 		USART_Callback_t BufferOverflow;
-	} __USART_Callbacks[USART_DEVICES][USART_CHANNEL];
+	} _USART_Callbacks[USART_DEVICES][USART_CHANNEL];
 #endif
 
 void USART_InstallCallback(const USART_InterruptConfig_t* Config)
@@ -104,24 +104,24 @@ void USART_InstallCallback(const USART_InterruptConfig_t* Config)
 	if(Config->Source & USART_DRE_INTERRUPT)
 	{
 		Config->Device->CTRLA = (Config->Device->CTRLA & (~0x03)) | Config->InterruptLevel;
-		__USART_Callbacks[Device][Channel].EmptyCallback = Config->Callback;
+		_USART_Callbacks[Device][Channel].EmptyCallback = Config->Callback;
 	}
 	
 	if(Config->Source & USART_TXC_INTERRUPT)
 	{
 		Config->Device->CTRLA = (Config->Device->CTRLA & (~(0x03 << 0x02))) | (Config->InterruptLevel << 0x02);
-		__USART_Callbacks[Device][Channel].TxCallback = Config->Callback;
+		_USART_Callbacks[Device][Channel].TxCallback = Config->Callback;
 	}
 	
 	if(Config->Source & USART_RXC_INTERRUPT)
 	{
 		Config->Device->CTRLA = (Config->Device->CTRLA & (~(0x03 << 0x04))) | (Config->InterruptLevel << 0x04);
-		__USART_Callbacks[Device][Channel].RxCallback = Config->Callback;
+		_USART_Callbacks[Device][Channel].RxCallback = Config->Callback;
 	}
 	
 	if(Config->Source & USART_BUFFER_OVERFLOW)
 	{
-		__USART_Callbacks[Device][Channel].BufferOverflow = Config->Callback;
+		_USART_Callbacks[Device][Channel].BufferOverflow = Config->Callback;
 	}
 }
 
@@ -171,22 +171,22 @@ void USART_RemoveCallback(USART_t* Device, const USART_CallbackType_t Callback)
 	
 	if(Callback & USART_DRE_INTERRUPT)
 	{
-		__USART_Callbacks[USART][Channel].EmptyCallback = NULL;
+		_USART_Callbacks[USART][Channel].EmptyCallback = NULL;
 	}
 	
 	if(Callback & USART_TXC_INTERRUPT)
 	{
-		__USART_Callbacks[USART][Channel].TxCallback = NULL;
+		_USART_Callbacks[USART][Channel].TxCallback = NULL;
 	}
 	
 	if(Callback & USART_RXC_INTERRUPT)
 	{
-		__USART_Callbacks[USART][Channel].RxCallback = NULL;
+		_USART_Callbacks[USART][Channel].RxCallback = NULL;
 	}
 	
 	if(Callback & USART_BUFFER_OVERFLOW)
 	{
-		__USART_Callbacks[USART][Channel].BufferOverflow = NULL;
+		_USART_Callbacks[USART][Channel].BufferOverflow = NULL;
 	}
 }
 
@@ -332,10 +332,10 @@ void USART_EnableInterruptSupport(USART_t* Device, const Interrupt_Level_t Level
 		}
 	#endif
 
-	RingBuffer_Init(&__USART_TxRingBuffer[ID][Channel], __TxData[ID][Channel], USART_BUFFER_SIZE);
+	RingBuffer_Init(&_USART_TxRingBuffer[ID][Channel], _TxData[ID][Channel], USART_BUFFER_SIZE);
 	
-	__USART_Messages[ID][Channel].Device = Device;
-	__USART_Messages[ID][Channel].Ptr_TxRingBuffer = &__USART_TxRingBuffer[ID][Channel];
+	_USART_Messages[ID][Channel].Device = Device;
+	_USART_Messages[ID][Channel].Ptr_TxRingBuffer = &_USART_TxRingBuffer[ID][Channel];
 	
 	Device->CTRLA = (Device->CTRLA & (~(0x03 << 0x04))) | (Level << 0x04);
 }
@@ -439,9 +439,9 @@ void USART_Print(USART_t* Device, const char* Data)
 	// Write data to buffer
 	while(*Data)
 	{
-		RingBuffer_Save(&__USART_TxRingBuffer[ID][Channel], *Data++);
+		RingBuffer_Save(&_USART_TxRingBuffer[ID][Channel], *Data++);
 		
-		if(RingBuffer_IsFull(&__USART_TxRingBuffer[ID][Channel]))
+		if(RingBuffer_IsFull(&_USART_TxRingBuffer[ID][Channel]))
 		{
 			// Clear the buffer if it is full
 			USART_Flush(Device);
@@ -503,11 +503,11 @@ void USART_SwitchEcho(USART_t* Device, const Bool_t Enable)
 	
 	if(Enable == TRUE)
 	{
-		__USART_Echo[ID][Channel] = TRUE;
+		_USART_Echo[ID][Channel] = TRUE;
 	}
 	else
 	{
-		__USART_Echo[ID][Channel] = FALSE;
+		_USART_Echo[ID][Channel] = FALSE;
 	}
 }
 

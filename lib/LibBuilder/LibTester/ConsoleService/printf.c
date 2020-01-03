@@ -31,7 +31,7 @@
 
 #include "Common/Services/ConsoleService/ConsoleService.h"
 
-static uint8_t __prints(const char* String)
+static uint8_t _prints(const char* String)
 {
 	int ByteCounter = 0x00;
 
@@ -44,7 +44,7 @@ static uint8_t __prints(const char* String)
 	return ByteCounter;
 }
 
-static uint8_t __printi(const int Integer, const int Base)
+static uint8_t _printi(const int Integer, const int Base)
 {
 	char* pBuffer;
 	int Integer_Temp = Integer;
@@ -65,53 +65,53 @@ static uint8_t __printi(const int Integer, const int Base)
 		Integer_Temp /= Base;
 	}while(Integer_Temp != 0);
 	
-	return __prints(pBuffer);
+	return _prints(pBuffer);
 }
 
-int	printf(const char* __fmt, ...)
+int	printf(const char* _fmt, ...)
 {
 	int ByteCounter = 0x00;
 	va_list argp;
-	va_start(argp, __fmt);
+	va_start(argp, _fmt);
 
 	// Loop through the message string
-	while(*__fmt != '\0')
+	while(*_fmt != '\0')
 	{
-		if(*__fmt == '%')
+		if(*_fmt == '%')
 		{
 			// Skip '%'
-			__fmt++;
+			_fmt++;
 
 			// Convert the value
-			if(*__fmt == 'd')
+			if(*_fmt == 'd')
 			{
 				int d = va_arg(argp, int);
-				ByteCounter += __printi(d, 10);
+				ByteCounter += _printi(d, 10);
 			}
-			else if(*__fmt == 'c')
+			else if(*_fmt == 'c')
 			{
 				int c = va_arg(argp, int);
 				putchar(c);
 				ByteCounter++;
 			}
-			else if(*__fmt == 's')
+			else if(*_fmt == 's')
 			{
 				char* s = va_arg(argp, char*);
-				ByteCounter += __prints(s);
+				ByteCounter += _prints(s);
 			}
-			else if(*__fmt == 'x')
+			else if(*_fmt == 'x')
 			{
 				int d = va_arg(argp, int);
-				ByteCounter += __printi(d, 16);
+				ByteCounter += _printi(d, 16);
 			}
 		}
 		else
 		{
-			putchar(*__fmt);
+			putchar(*_fmt);
 			ByteCounter++;
 		}
 		
-		__fmt++;
+		_fmt++;
 	}
 
 	va_end(argp);

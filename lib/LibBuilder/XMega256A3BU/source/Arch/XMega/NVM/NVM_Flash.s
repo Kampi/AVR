@@ -115,7 +115,7 @@ NVM_ExecuteSPM:
 
 	spm
 
-	; Clear __zero_reg__ (r1) for AVRGCC
+	; Clear _zero_reg_ (r1) for AVRGCC
 	clr		r1
 
 	; Clear the NVM command
@@ -264,7 +264,7 @@ NVM_UserSignatureReadPage:
 	; Clear the NVM command
 	sts		NVM_CMD, r1
 
-	; Clear __zero_reg__ (r1) for AVRGCC
+	; Clear _zero_reg_ (r1) for AVRGCC
 	clr		r1
 
 	; Restore RAMPZ
@@ -414,7 +414,7 @@ NVM_FlashWritePage:
 		dec		r21
 		brne	NVM_FlashUserSignatureWritePage_Loop
 
-	; Clear __zero_reg__ (r1) for AVRGCC
+	; Clear _zero_reg_ (r1) for AVRGCC
 	clr		r1
 
 	; Clear the NVM command

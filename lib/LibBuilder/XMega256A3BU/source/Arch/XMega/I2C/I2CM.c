@@ -35,7 +35,7 @@
 #include "Arch/XMega/PowerManagement/PowerManagement.h"
 
 #ifndef DOXYGEN
-	extern I2C_Message_t __I2CM_Messages[TWI_DEVICES];
+	extern I2C_Message_t _I2CM_Messages[TWI_DEVICES];
 #endif
 
 /** @brief			Send the address (including R/W bit) of a bus slave in master mode.
@@ -128,7 +128,7 @@ const I2C_MasterStatus_t I2CM_Status(const TWI_t* Device)
 		ID = TWIE_ID;
 	}
 	
-	return __I2CM_Messages[ID].Status;
+	return _I2CM_Messages[ID].Status;
 }
 
 I2C_Error_t I2CM_WriteByte(TWI_t* Device, const uint8_t Address, const uint8_t Data, const Bool_t Stop)
@@ -256,19 +256,19 @@ void I2CM_TransmitBytes(TWI_t* Device, const uint8_t DeviceAddress, const uint8_
 		ID = TWIE_ID;
 	}
 	
-	__I2CM_Messages[ID].BufferRead = 0x00;
-	__I2CM_Messages[ID].BytesToRead = 0x00;
+	_I2CM_Messages[ID].BufferRead = 0x00;
+	_I2CM_Messages[ID].BytesToRead = 0x00;
 	
-	__I2CM_Messages[ID].IndexWrite = 0;
-	__I2CM_Messages[ID].BufferWrite = Data;
-	__I2CM_Messages[ID].BytesToWrite = Bytes;
-	__I2CM_Messages[ID].Device = Device;
-	__I2CM_Messages[ID].DeviceAddress = DeviceAddress;
-	__I2CM_Messages[ID].Register = 0x00;
-	__I2CM_Messages[ID].Status = I2C_MASTER_WRITE;
+	_I2CM_Messages[ID].IndexWrite = 0;
+	_I2CM_Messages[ID].BufferWrite = Data;
+	_I2CM_Messages[ID].BytesToWrite = Bytes;
+	_I2CM_Messages[ID].Device = Device;
+	_I2CM_Messages[ID].DeviceAddress = DeviceAddress;
+	_I2CM_Messages[ID].Register = 0x00;
+	_I2CM_Messages[ID].Status = I2C_MASTER_WRITE;
 	
 	// Start the transmission by writing the address
-	__I2CM_Messages[ID].Device->MASTER.ADDR = I2C_WRITE(DeviceAddress);
+	_I2CM_Messages[ID].Device->MASTER.ADDR = I2C_WRITE(DeviceAddress);
 }
 
 void I2CM_Transmit(TWI_t* Device, const uint8_t DeviceAddress, const uint8_t Command, const uint8_t Bytes, uint8_t* Data)
@@ -284,19 +284,19 @@ void I2CM_Transmit(TWI_t* Device, const uint8_t DeviceAddress, const uint8_t Com
 		ID = TWIE_ID;
 	}
 	
-	__I2CM_Messages[ID].BufferRead = 0x00;
-	__I2CM_Messages[ID].BytesToRead = 0x00;
+	_I2CM_Messages[ID].BufferRead = 0x00;
+	_I2CM_Messages[ID].BytesToRead = 0x00;
 	
-	__I2CM_Messages[ID].IndexWrite = 0x00;
-	__I2CM_Messages[ID].BufferWrite = Data;
-	__I2CM_Messages[ID].BytesToWrite = Bytes;
-	__I2CM_Messages[ID].Device = Device;
-	__I2CM_Messages[ID].DeviceAddress = DeviceAddress;
-	__I2CM_Messages[ID].Register = Command;
-	__I2CM_Messages[ID].Status = I2C_MASTER_REGISTER;
+	_I2CM_Messages[ID].IndexWrite = 0x00;
+	_I2CM_Messages[ID].BufferWrite = Data;
+	_I2CM_Messages[ID].BytesToWrite = Bytes;
+	_I2CM_Messages[ID].Device = Device;
+	_I2CM_Messages[ID].DeviceAddress = DeviceAddress;
+	_I2CM_Messages[ID].Register = Command;
+	_I2CM_Messages[ID].Status = I2C_MASTER_REGISTER;
 	
 	// Start the transmission by writing the address
-	__I2CM_Messages[ID].Device->MASTER.ADDR = I2C_WRITE(__I2CM_Messages[ID].DeviceAddress);
+	_I2CM_Messages[ID].Device->MASTER.ADDR = I2C_WRITE(_I2CM_Messages[ID].DeviceAddress);
 }
 
 void I2CM_ReceiveBytes(TWI_t* Device, const uint8_t DeviceAddress, const uint8_t Bytes, uint8_t* Data)
@@ -312,19 +312,19 @@ void I2CM_ReceiveBytes(TWI_t* Device, const uint8_t DeviceAddress, const uint8_t
 		ID = TWIE_ID;
 	}
 
-	__I2CM_Messages[ID].BufferWrite = 0x00;
-	__I2CM_Messages[ID].BytesToWrite = 0x00;
+	_I2CM_Messages[ID].BufferWrite = 0x00;
+	_I2CM_Messages[ID].BytesToWrite = 0x00;
 
-	__I2CM_Messages[ID].IndexRead = 0x00;
-	__I2CM_Messages[ID].BufferRead = Data;
-	__I2CM_Messages[ID].BytesToRead = Bytes;
-	__I2CM_Messages[ID].Device = Device;
-	__I2CM_Messages[ID].DeviceAddress = DeviceAddress;
-	__I2CM_Messages[ID].Register = 0x00;
-	__I2CM_Messages[ID].Status = I2C_MASTER_READ;
+	_I2CM_Messages[ID].IndexRead = 0x00;
+	_I2CM_Messages[ID].BufferRead = Data;
+	_I2CM_Messages[ID].BytesToRead = Bytes;
+	_I2CM_Messages[ID].Device = Device;
+	_I2CM_Messages[ID].DeviceAddress = DeviceAddress;
+	_I2CM_Messages[ID].Register = 0x00;
+	_I2CM_Messages[ID].Status = I2C_MASTER_READ;
 	
 	// Start the transmission by writing the address
-	__I2CM_Messages[ID].Device->MASTER.ADDR = I2C_READ(DeviceAddress);
+	_I2CM_Messages[ID].Device->MASTER.ADDR = I2C_READ(DeviceAddress);
 }
 
 void I2CM_Receive(TWI_t* Device, const uint8_t DeviceAddress, const uint8_t Command, const uint8_t Bytes, uint8_t* Data)
@@ -340,17 +340,17 @@ void I2CM_Receive(TWI_t* Device, const uint8_t DeviceAddress, const uint8_t Comm
 		ID = TWIE_ID;
 	}
 	
-	__I2CM_Messages[ID].BufferWrite = 0x00;
-	__I2CM_Messages[ID].BytesToWrite = 0x00;
+	_I2CM_Messages[ID].BufferWrite = 0x00;
+	_I2CM_Messages[ID].BytesToWrite = 0x00;
 	
-	__I2CM_Messages[ID].IndexRead = 0x00;
-	__I2CM_Messages[ID].BufferRead = Data;
-	__I2CM_Messages[ID].BytesToRead = Bytes;
-	__I2CM_Messages[ID].Device = Device;
-	__I2CM_Messages[ID].DeviceAddress = DeviceAddress;
-	__I2CM_Messages[ID].Register = Command;
-	__I2CM_Messages[ID].Status = I2C_MASTER_REGISTER;
+	_I2CM_Messages[ID].IndexRead = 0x00;
+	_I2CM_Messages[ID].BufferRead = Data;
+	_I2CM_Messages[ID].BytesToRead = Bytes;
+	_I2CM_Messages[ID].Device = Device;
+	_I2CM_Messages[ID].DeviceAddress = DeviceAddress;
+	_I2CM_Messages[ID].Register = Command;
+	_I2CM_Messages[ID].Status = I2C_MASTER_REGISTER;
 	
 	// Start the transmission by writing the address
-	__I2CM_Messages[ID].Device->MASTER.ADDR = I2C_WRITE(__I2CM_Messages[ID].DeviceAddress);
+	_I2CM_Messages[ID].Device->MASTER.ADDR = I2C_WRITE(_I2CM_Messages[ID].DeviceAddress);
 }

@@ -49,7 +49,7 @@
  *  @param Device		Device ID
  *  @param Callback		Type of interrupt
  */
-static void __Timer0_InterruptHandler(const uint8_t Device, const Timer_CallbackType_t Callback)
+static void _Timer0_InterruptHandler(const uint8_t Device, const Timer_CallbackType_t Callback)
 {
 	switch(Callback)
 	{
@@ -274,137 +274,137 @@ void Timer0_RemoveCallback(TC0_t* Device, const Timer_CallbackType_t Callback)
 #ifndef DOXYGEN
 	ISR(TCC0_ERR_vect)
 	{
-		__Timer0_InterruptHandler(TIMER0C_ID, TIMER_ERROR_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0C_ID, TIMER_ERROR_INTERRUPT);
 	}
 
 	ISR(TCD0_ERR_vect)
 	{
-		__Timer0_InterruptHandler(TIMER0D_ID, TIMER_ERROR_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0D_ID, TIMER_ERROR_INTERRUPT);
 	}
 
 	ISR(TCE0_ERR_vect)
 	{
-		__Timer0_InterruptHandler(TIMER0E_ID, TIMER_ERROR_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0E_ID, TIMER_ERROR_INTERRUPT);
 	}
 
 	ISR(TCF0_ERR_vect)
 	{
-		__Timer0_InterruptHandler(TIMER0F_ID, TIMER_ERROR_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0F_ID, TIMER_ERROR_INTERRUPT);
 	}
 
 	ISR(TCC0_OVF_vect)
 	{
-		__Timer0_InterruptHandler(TIMER0C_ID, TIMER_OVERFLOW_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0C_ID, TIMER_OVERFLOW_INTERRUPT);
 	}
 
 	ISR(TCD0_OVF_vect)
 	{
-		__Timer0_InterruptHandler(TIMER0D_ID, TIMER_OVERFLOW_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0D_ID, TIMER_OVERFLOW_INTERRUPT);
 	}
 
 	ISR(TCE0_OVF_vect)
 	{
-		__Timer0_InterruptHandler(TIMER0E_ID, TIMER_OVERFLOW_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0E_ID, TIMER_OVERFLOW_INTERRUPT);
 	}
 
 	ISR(TCF0_OVF_vect)
 	{
-		__Timer0_InterruptHandler(TIMER0F_ID, TIMER_OVERFLOW_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0F_ID, TIMER_OVERFLOW_INTERRUPT);
 	}
 
 	ISR(TCC0_CCA_vect)
 	{
 		Timer0_ClearFlag(&TCC0, TIMER_CCA_INTERRUPT);
-		__Timer0_InterruptHandler(TIMER0C_ID, TIMER_CCA_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0C_ID, TIMER_CCA_INTERRUPT);
 	}
 
 	ISR(TCC0_CCB_vect)
 	{
 		Timer0_ClearFlag(&TCC0, TIMER_CCB_INTERRUPT);
-		__Timer0_InterruptHandler(TIMER0C_ID, TIMER_CCB_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0C_ID, TIMER_CCB_INTERRUPT);
 	}
 
 	ISR(TCC0_CCC_vect)
 	{
 		Timer0_ClearFlag(&TCC0, TIMER_CCC_INTERRUPT);
-		__Timer0_InterruptHandler(TIMER0C_ID, TIMER_CCC_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0C_ID, TIMER_CCC_INTERRUPT);
 	}
 
 	ISR(TCC0_CCD_vect)
 	{
 		Timer0_ClearFlag(&TCC0, TIMER_CCD_INTERRUPT);
-		__Timer0_InterruptHandler(TIMER0C_ID, TIMER_CCD_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0C_ID, TIMER_CCD_INTERRUPT);
 	}
 
 	ISR(TCD0_CCA_vect)
 	{
 		Timer0_ClearFlag(&TCD0, TIMER_CCA_INTERRUPT);
-		__Timer0_InterruptHandler(TIMER0D_ID, TIMER_CCA_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0D_ID, TIMER_CCA_INTERRUPT);
 	}
 
 	ISR(TCD0_CCB_vect)
 	{
 		Timer0_ClearFlag(&TCD0, TIMER_CCB_INTERRUPT);
-		__Timer0_InterruptHandler(TIMER0D_ID, TIMER_CCB_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0D_ID, TIMER_CCB_INTERRUPT);
 	}
 
 	ISR(TCD0_CCC_vect)
 	{
 		Timer0_ClearFlag(&TCD0, TIMER_CCC_INTERRUPT);
-		__Timer0_InterruptHandler(TIMER0D_ID, TIMER_CCC_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0D_ID, TIMER_CCC_INTERRUPT);
 	}
 
 	ISR(TCD0_CCD_vect)
 	{
 		Timer0_ClearFlag(&TCD0, TIMER_CCD_INTERRUPT);
-		__Timer0_InterruptHandler(TIMER0D_ID, TIMER_CCD_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0D_ID, TIMER_CCD_INTERRUPT);
 	}
 
 	ISR(TCE0_CCA_vect)
 	{
 		Timer0_ClearFlag(&TCE0, TIMER_CCA_INTERRUPT);
-		__Timer0_InterruptHandler(TIMER0E_ID, TIMER_CCA_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0E_ID, TIMER_CCA_INTERRUPT);
 	}
 
 	ISR(TCE0_CCB_vect)
 	{
 		Timer0_ClearFlag(&TCE0, TIMER_CCB_INTERRUPT);
-		__Timer0_InterruptHandler(TIMER0E_ID, TIMER_CCB_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0E_ID, TIMER_CCB_INTERRUPT);
 	}
 
 	ISR(TCE0_CCC_vect)
 	{
 		Timer0_ClearFlag(&TCE0, TIMER_CCC_INTERRUPT);
-		__Timer0_InterruptHandler(TIMER0E_ID, TIMER_CCC_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0E_ID, TIMER_CCC_INTERRUPT);
 	}
 
 	ISR(TCE0_CCD_vect)
 	{
 		Timer0_ClearFlag(&TCE0, TIMER_CCD_INTERRUPT);
-		__Timer0_InterruptHandler(TIMER0E_ID, TIMER_CCD_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0E_ID, TIMER_CCD_INTERRUPT);
 	}
 
 	ISR(TCF0_CCA_vect)
 	{
 		Timer0_ClearFlag(&TCF0, TIMER_CCA_INTERRUPT);
-		__Timer0_InterruptHandler(TIMER0F_ID, TIMER_CCA_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0F_ID, TIMER_CCA_INTERRUPT);
 	}
 
 	ISR(TCF0_CCB_vect)
 	{
 		Timer0_ClearFlag(&TCF0, TIMER_CCB_INTERRUPT);
-		__Timer0_InterruptHandler(TIMER0F_ID, TIMER_CCB_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0F_ID, TIMER_CCB_INTERRUPT);
 	}
 
 	ISR(TCF0_CCC_vect)
 	{
 		Timer0_ClearFlag(&TCF0, TIMER_CCC_INTERRUPT);
-		__Timer0_InterruptHandler(TIMER0F_ID, TIMER_CCC_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0F_ID, TIMER_CCC_INTERRUPT);
 	}
 
 	ISR(TCF0_CCD_vect)
 	{
 		Timer0_ClearFlag(&TCF0, TIMER_CCD_INTERRUPT);
-		__Timer0_InterruptHandler(TIMER0F_ID, TIMER_CCD_INTERRUPT);
+		_Timer0_InterruptHandler(TIMER0F_ID, TIMER_CCD_INTERRUPT);
 	}
 #endif

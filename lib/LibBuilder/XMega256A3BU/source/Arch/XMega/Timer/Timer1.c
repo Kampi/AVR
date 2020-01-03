@@ -49,7 +49,7 @@
  *  @param Device		Device ID
  *  @param Callback		Type of interrupt
  */
-static void __Timer1_InterruptHandler(const uint8_t Device, const Timer_CallbackType_t Callback)
+static void _Timer1_InterruptHandler(const uint8_t Device, const Timer_CallbackType_t Callback)
 {
 
 }
@@ -70,67 +70,67 @@ void Timer1_WaveInit(Timer1_WaveConfig_t* Config)
 #ifndef DOXYGEN
 	ISR(TCC1_ERR_vect)
 	{
-		__Timer1_InterruptHandler(0, TIMER_ERROR_INTERRUPT);
+		_Timer1_InterruptHandler(0, TIMER_ERROR_INTERRUPT);
 	}
 
 	ISR(TCD1_ERR_vect)
 	{
-		__Timer1_InterruptHandler(1, TIMER_ERROR_INTERRUPT);
+		_Timer1_InterruptHandler(1, TIMER_ERROR_INTERRUPT);
 	}
 
 	ISR(TCE1_ERR_vect)
 	{
-		__Timer1_InterruptHandler(2, TIMER_ERROR_INTERRUPT);
+		_Timer1_InterruptHandler(2, TIMER_ERROR_INTERRUPT);
 	}
 
 	ISR(TCC1_OVF_vect)
 	{
-		__Timer1_InterruptHandler(0, TIMER_OVERFLOW_INTERRUPT);
+		_Timer1_InterruptHandler(0, TIMER_OVERFLOW_INTERRUPT);
 	}
 
 	ISR(TCD1_OVF_vect)
 	{
-		__Timer1_InterruptHandler(1, TIMER_OVERFLOW_INTERRUPT);
+		_Timer1_InterruptHandler(1, TIMER_OVERFLOW_INTERRUPT);
 	}
 
 	ISR(TCE1_OVF_vect)
 	{
-		__Timer1_InterruptHandler(2, TIMER_OVERFLOW_INTERRUPT);
+		_Timer1_InterruptHandler(2, TIMER_OVERFLOW_INTERRUPT);
 	}
 
 	ISR(TCC1_CCA_vect)
 	{
 		Timer1_ClearFlag(&TCC1, TIMER_CCA_INTERRUPT);
-		__Timer1_InterruptHandler(0, TIMER_CCA_INTERRUPT);
+		_Timer1_InterruptHandler(0, TIMER_CCA_INTERRUPT);
 	}
 
 	ISR(TCC1_CCB_vect)
 	{
 		Timer1_ClearFlag(&TCC1, TIMER_CCB_INTERRUPT);
-		__Timer1_InterruptHandler(0, TIMER_CCB_INTERRUPT);
+		_Timer1_InterruptHandler(0, TIMER_CCB_INTERRUPT);
 	}
 
 	ISR(TCD1_CCA_vect)
 	{
 		Timer1_ClearFlag(&TCD1, TIMER_CCA_INTERRUPT);
-		__Timer1_InterruptHandler(1, TIMER_CCA_INTERRUPT);
+		_Timer1_InterruptHandler(1, TIMER_CCA_INTERRUPT);
 	}
 
 	ISR(TCD1_CCB_vect)
 	{
 		Timer1_ClearFlag(&TCD1, TIMER_CCB_INTERRUPT);
-		__Timer1_InterruptHandler(1, TIMER_CCB_INTERRUPT);
+		_Timer1_InterruptHandler(1, TIMER_CCB_INTERRUPT);
 	}
 
 	ISR(TCE1_CCA_vect)
 	{
 		Timer1_ClearFlag(&TCE1, TIMER_CCA_INTERRUPT);
-		__Timer1_InterruptHandler(2, TIMER_CCA_INTERRUPT);
+		_Timer1_InterruptHandler(2, TIMER_CCA_INTERRUPT);
 	}
 
 	ISR(TCE1_CCB_vect)
 	{
 		Timer1_ClearFlag(&TCE1, TIMER_CCB_INTERRUPT);
-		__Timer1_InterruptHandler(2, TIMER_CCB_INTERRUPT);
+		_Timer1_InterruptHandler(2, TIMER_CCB_INTERRUPT);
 	}
 #endif

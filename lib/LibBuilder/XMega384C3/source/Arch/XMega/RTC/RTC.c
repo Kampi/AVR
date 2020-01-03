@@ -38,26 +38,26 @@
 	{
 		RTC_Callback_t Overflow;
 		RTC_Callback_t Compare;
-	} __RTC_Callbacks;
+	} _RTC_Callbacks;
 #endif
 
 /** @brief			RTC interrupt handler.
  *  @param Callback	Type of interrupt
  */
-static void __RTC_InterruptHandler(const RTC_CallbackType_t Callback)
+static void _RTC_InterruptHandler(const RTC_CallbackType_t Callback)
 {	
 	if(Callback == RTC_OVFL_INTERRUPT)
 	{
-		if(__RTC_Callbacks.Overflow)
+		if(_RTC_Callbacks.Overflow)
 		{
-			__RTC_Callbacks.Overflow();
+			_RTC_Callbacks.Overflow();
 		}
 	}
 	else if(Callback == RTC_COMP_INTERRUPT)
 	{
-		if(__RTC_Callbacks.Compare)
+		if(_RTC_Callbacks.Compare)
 		{
-			__RTC_Callbacks.Compare();
+			_RTC_Callbacks.Compare();
 		}
 	}
 }
@@ -89,13 +89,13 @@ void RTC_InstallCallback(const RTC_InterruptConfig_t* Config)
 	if(Config->CallbackSource & RTC_OVFL_INTERRUPT)
 	{
 		RTC.INTCTRL = (RTC.INTCTRL & (~Config->InterruptLevel)) | Config->InterruptLevel;
-		__RTC_Callbacks.Overflow = Config->Callback;
+		_RTC_Callbacks.Overflow = Config->Callback;
 	}
 	
 	if(Config->CallbackSource & RTC_COMP_INTERRUPT)
 	{
 		RTC.INTCTRL = (RTC.INTCTRL & (~(Config->InterruptLevel << 0x02))) | (Config->InterruptLevel << 0x02);
-		__RTC_Callbacks.Compare = Config->Callback;
+		_RTC_Callbacks.Compare = Config->Callback;
 	}
 }
 
@@ -103,12 +103,12 @@ void RTC_RemoveCallback(const RTC_CallbackType_t Callback)
 {
 	if(Callback & RTC_OVFL_INTERRUPT)
 	{
-		__RTC_Callbacks.Overflow = NULL;
+		_RTC_Callbacks.Overflow = NULL;
 	}
 	
 	if(Callback & RTC_COMP_INTERRUPT)
 	{
-		__RTC_Callbacks.Compare = NULL;
+		_RTC_Callbacks.Compare = NULL;
 	}
 }
 
@@ -118,11 +118,11 @@ void RTC_RemoveCallback(const RTC_CallbackType_t Callback)
 #ifndef DOXYGEN
 	ISR(RTC_COMP_vect)
 	{
-		__RTC_InterruptHandler(RTC_COMP_INTERRUPT);
+		_RTC_InterruptHandler(RTC_COMP_INTERRUPT);
 	}
 
 	ISR(RTC_OVF_vect)
 	{
-		__RTC_InterruptHandler(RTC_OVFL_INTERRUPT);
+		_RTC_InterruptHandler(RTC_OVFL_INTERRUPT);
 	}
 #endif

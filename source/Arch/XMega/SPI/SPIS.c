@@ -35,8 +35,8 @@
 #include "Arch/XMega/PowerManagement/PowerManagement.h"
 
 #ifndef DOXYGEN
-	extern SPI_Buffer_t __SPIS_Buffer[SPI_DEVICES];
-	SPI_DeviceMode_t __SPI_DeviceModes[SPI_DEVICES];
+	extern SPI_Buffer_t _SPIS_Buffer[SPI_DEVICES];
+	SPI_DeviceMode_t _SPI_DeviceModes[SPI_DEVICES];
 #endif
 
 void SPIS_Init(SPIS_Config_t* Config)
@@ -69,7 +69,7 @@ void SPIS_Init(SPIS_Config_t* Config)
 	SPI_t* Device = (SPI_t*)Config->Device;
 	SPI_PowerEnable(Device);
 	
-	__SPI_DeviceModes[ID] = SPI_SLAVE;
+	_SPI_DeviceModes[ID] = SPI_SLAVE;
 	
 	if(ID == SPIC_ID)
 	{
@@ -118,5 +118,5 @@ const SPI_Status_t SPIS_Status(const SPI_t* Device)
 		}
 	#endif
 	
-	return __SPIS_Buffer[ID].Status;
+	return _SPIS_Buffer[ID].Status;
 }

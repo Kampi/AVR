@@ -33,7 +33,7 @@
 
 #include "Arch/XMega/AES/AES.h"
 
-static uint8_t* __AES_DataPtr;
+static uint8_t* _AES_DataPtr;
 
 #ifndef DOXYGEN
 	static struct
@@ -44,7 +44,7 @@ static uint8_t* __AES_DataPtr;
 
 /** @brief	AES interrupt handler.
  */
-static void __AES_InterruptHandler(void)
+static void _AES_InterruptHandler(void)
 {
 	// Clear the interrupt flag
 	AES.STATUS |= AES_SRIF_bm;
@@ -118,7 +118,7 @@ const AES_Error_t AES_GenerateLastSubkey(const uint8_t* Key, uint8_t* SubKey)
 
 void AES_Run(uint8_t* Data, const uint8_t* Key, const AES_Direction_t Direction)
 {
-	__AES_DataPtr = Data;
+	_AES_DataPtr = Data;
 
 	for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 	{
@@ -127,7 +127,7 @@ void AES_Run(uint8_t* Data, const uint8_t* Key, const AES_Direction_t Direction)
 
 	for(uint8_t i = 0x00; i < AES_KEYSIZE; i++)
 	{
-		AES.STATE = *(__AES_DataPtr++);
+		AES.STATE = *(_AES_DataPtr++);
 	}
 
 	if(Direction == AES_DECRYPT)
@@ -139,7 +139,7 @@ void AES_Run(uint8_t* Data, const uint8_t* Key, const AES_Direction_t Direction)
 		AES_SetEncryptMode();
 	}
 
-	__AES_DataPtr = Data;
+	_AES_DataPtr = Data;
 
 	AES_Start();
 }
@@ -331,10 +331,10 @@ const AES_Error_t AES_CBC_Decrypt(uint8_t* EncryptedData, volatile uint8_t* Decr
 		{
 			for(uint8_t i = 0x00; i < AES_DATASIZE; i++)
 			{
-				*(__AES_DataPtr++) = AES.STATE;
+				*(_AES_DataPtr++) = AES.STATE;
 			}
 		}
 		
-		__AES_InterruptHandler();
+		_AES_InterruptHandler();
 	}
 #endif

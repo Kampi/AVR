@@ -38,26 +38,26 @@
 	{
 		RTC32_Callback_t Overflow;
 		RTC32_Callback_t Compare;
-	} __RTC32_Callbacks;
+	} _RTC32_Callbacks;
 #endif
 
 /** @brief			RTC32 interrupt handler.
  *  @param Callback	Type of interrupt
  */
-static void __RTC32_InterruptHandler(const RTC32_CallbackType_t Callback)
+static void _RTC32_InterruptHandler(const RTC32_CallbackType_t Callback)
 {	
 	if(Callback == RTC32_OVFL_INTERRUPT)
 	{
-		if(__RTC32_Callbacks.Overflow)
+		if(_RTC32_Callbacks.Overflow)
 		{
-			__RTC32_Callbacks.Overflow();
+			_RTC32_Callbacks.Overflow();
 		}
 	}
 	else if(Callback == RTC32_COMP_INTERRUPT)
 	{
-		if(__RTC32_Callbacks.Compare)
+		if(_RTC32_Callbacks.Compare)
 		{
-			__RTC32_Callbacks.Compare();
+			_RTC32_Callbacks.Compare();
 		}
 	}
 }
@@ -91,13 +91,13 @@ void RTC32_InstallCallback(const RTC32_InterruptConfig_t* Config)
 	if(Config->CallbackSource & RTC32_OVFL_INTERRUPT)
 	{
 		RTC32.INTCTRL = (RTC32.INTCTRL & (~Config->InterruptLevel)) | Config->InterruptLevel;
-		__RTC32_Callbacks.Overflow = Config->Callback;
+		_RTC32_Callbacks.Overflow = Config->Callback;
 	}
 	
 	if(Config->CallbackSource & RTC32_COMP_INTERRUPT)
 	{
 		RTC32.INTCTRL = (RTC32.INTCTRL & (~(Config->InterruptLevel << 0x02))) | (Config->InterruptLevel << 0x02);
-		__RTC32_Callbacks.Compare = Config->Callback;
+		_RTC32_Callbacks.Compare = Config->Callback;
 	}
 }
 
@@ -105,12 +105,12 @@ void RTC32_RemoveCallback(const RTC32_CallbackType_t Callback)
 {
 	if(Callback & RTC32_OVFL_INTERRUPT)
 	{
-		__RTC32_Callbacks.Overflow = NULL;
+		_RTC32_Callbacks.Overflow = NULL;
 	}
 	
 	if(Callback & RTC32_COMP_INTERRUPT)
 	{
-		__RTC32_Callbacks.Compare = NULL;
+		_RTC32_Callbacks.Compare = NULL;
 	}
 }
 
@@ -120,11 +120,11 @@ void RTC32_RemoveCallback(const RTC32_CallbackType_t Callback)
 #ifndef DOXYGEN
 	ISR(RTC32_COMP_vect)
 	{
-		__RTC32_InterruptHandler(RTC32_COMP_INTERRUPT);
+		_RTC32_InterruptHandler(RTC32_COMP_INTERRUPT);
 	}
 
 	ISR(RTC32_OVF_vect)
 	{
-		__RTC32_InterruptHandler(RTC32_OVFL_INTERRUPT);
+		_RTC32_InterruptHandler(RTC32_OVFL_INTERRUPT);
 	}
 #endif

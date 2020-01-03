@@ -38,32 +38,32 @@
 	{
 		DMA_Callback_t Error;
 		DMA_Callback_t TransactionComplete;
-	} __DMA_Callbacks[DMA_CHANNEL];
+	} _DMA_Callbacks[DMA_CHANNEL];
 #endif
 
 /** @brief			DMA interrupt handler
  *  @param Channel	DMA channel
  */
-static void __DMA_Channel_InterruptHandler(const uint8_t Channel)
+static void _DMA_Channel_InterruptHandler(const uint8_t Channel)
 {	
 	uint8_t Status = DMA_ReadStatus();
 	
 	// Check for transaction complete interrupt
 	if(Status & (0x01 << Channel))
 	{
-		if(__DMA_Callbacks[Channel].TransactionComplete)
+		if(_DMA_Callbacks[Channel].TransactionComplete)
 		{
 			DMA_WriteStatus(Status | (0x01 << Channel));
-			__DMA_Callbacks[Channel].TransactionComplete(Channel);
+			_DMA_Callbacks[Channel].TransactionComplete(Channel);
 		}
 	}
 	// Check for error interrupt
 	else if((Status >> 0x04) & (0x01 << Channel))
 	{
-		if(__DMA_Callbacks[Channel].Error)
+		if(_DMA_Callbacks[Channel].Error)
 		{
 			DMA_WriteStatus(Status | (0x0A << Channel));
-			__DMA_Callbacks[Channel].Error(Channel);
+			_DMA_Callbacks[Channel].Error(Channel);
 		}
 	}
 }
@@ -140,13 +140,13 @@ void DMA_Channel_InstallCallback(DMA_InterruptConfig_t* Config)
 	if(Config->Source & DMA_TRANSACTION_INTERRUPT)
 	{
 		Config->Channel->CTRLB |= (Config->Channel->CTRLB & (~Config->InterruptLevel)) | Config->InterruptLevel;
-		__DMA_Callbacks[Channel].TransactionComplete = Config->Callback;
+		_DMA_Callbacks[Channel].TransactionComplete = Config->Callback;
 	}
 	
 	if(Config->Source & DMA_ERROR_INTERRUPT)
 	{
 		Config->Channel->CTRLB |= (Config->Channel->CTRLB & (~(Config->InterruptLevel << 0x02))) | (Config->InterruptLevel << 0x02);
-		__DMA_Callbacks[Channel].Error = Config->Callback;
+		_DMA_Callbacks[Channel].Error = Config->Callback;
 	}
 }
 
@@ -254,26 +254,26 @@ void DMA_Channel_RepeatTransfer(DMA_CH_t* Channel)
 */
 ISR(DMA_CH0_vect)
 {
-	__DMA_Channel_InterruptHandler(0);
+	_DMA_Channel_InterruptHandler(0);
 }
 
 #if(DMA_CHANNEL_COUNT > 1)
 	ISR(DMA_CH1_vect)
 	{
-		__DMA_Channel_InterruptHandler(1);
+		_DMA_Channel_InterruptHandler(1);
 	}
 #endif
 
 #if(DMA_CHANNEL_COUNT > 2)
 	ISR(DMA_CH2_vect)
 	{
-		__DMA_Channel_InterruptHandler(2);
+		_DMA_Channel_InterruptHandler(2);
 	}
 #endif
 
 #if(DMA_CHANNEL_COUNT > 3)
 	ISR(DMA_CH3_vect)
 	{
-		__DMA_Channel_InterruptHandler(3);
+		_DMA_Channel_InterruptHandler(3);
 	}
 #endif

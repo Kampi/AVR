@@ -38,66 +38,66 @@
 	{
 		SPI_Callback_t CompleteInterrupt;
 		SPI_Callback_t ErrorCallback;
-	} __SPI_Callbacks[SPI_DEVICES];
+	} _SPI_Callbacks[SPI_DEVICES];
 
-	SPI_Message_t __SPIM_Messages[SPI_DEVICES];
-	SPI_DeviceMode_t __SPI_DeviceMode[SPI_DEVICES];
-	SPI_Buffer_t __SPI__SlaveBuffer[SPI_DEVICES];
+	SPI_Message_t _SPIM_Messages[SPI_DEVICES];
+	SPI_DeviceMode_t _SPI_DeviceMode[SPI_DEVICES];
+	SPI_Buffer_t _SPI_SlaveBuffer[SPI_DEVICES];
 #endif
 
 /** @brief			SPI interrupt handler.
  *  @param Device	Device ID
  */
-static void __SPI_InterruptHandler(const uint8_t Device)
+static void _SPI_InterruptHandler(const uint8_t Device)
 {
-	SPI_t* Device_Ptr = __SPIM_Messages[Device].Device;
+	SPI_t* Device_Ptr = _SPIM_Messages[Device].Device;
 
 	// Check if master or slave mode
-	if(__SPI_DeviceMode[Device] == SPI_MASTER)
+	if(_SPI_DeviceMode[Device] == SPI_MASTER)
 	{
 		// Check for error
 		if(Device_Ptr->STATUS & SPI_WRCOL_bm)
 		{
-			__SPIM_Messages[Device].Status = SPI_MESSAGE_ERROR;
+			_SPIM_Messages[Device].Status = SPI_MESSAGE_ERROR;
 		
-			if(__SPI_Callbacks[Device].ErrorCallback != NULL)
+			if(_SPI_Callbacks[Device].ErrorCallback != NULL)
 			{
-				__SPI_Callbacks[Device].ErrorCallback();
+				_SPI_Callbacks[Device].ErrorCallback();
 			}
 		}
 		else
 		{
-			__SPIM_Messages[Device].BufferIn[__SPIM_Messages[Device].BytesProcessed] = Device_Ptr->DATA;
+			_SPIM_Messages[Device].BufferIn[_SPIM_Messages[Device].BytesProcessed] = Device_Ptr->DATA;
 		
-			if(__SPIM_Messages[Device].BytesProcessed < (__SPIM_Messages[Device].Length - 1))
+			if(_SPIM_Messages[Device].BytesProcessed < (_SPIM_Messages[Device].Length - 1))
 			{
-				Device_Ptr->DATA = __SPIM_Messages[Device].BufferOut[++__SPIM_Messages[Device].BytesProcessed];
+				Device_Ptr->DATA = _SPIM_Messages[Device].BufferOut[++_SPIM_Messages[Device].BytesProcessed];
 			}
 			else
 			{
-				__SPIM_Messages[Device].Status = SPI_MESSAGE_COMPLETE;
+				_SPIM_Messages[Device].Status = SPI_MESSAGE_COMPLETE;
 
-				if(__SPI_Callbacks[Device].CompleteInterrupt != NULL)
+				if(_SPI_Callbacks[Device].CompleteInterrupt != NULL)
 				{
-					__SPI_Callbacks[Device].CompleteInterrupt();
+					_SPI_Callbacks[Device].CompleteInterrupt();
 				}
 			
-				SPIM_DeselectDevice(__SPIM_Messages[Device].Port, __SPIM_Messages[Device].Pin);
+				SPIM_DeselectDevice(_SPIM_Messages[Device].Port, _SPIM_Messages[Device].Pin);
 			}
 		}
 	}
 	else
 	{
-		__SPI__SlaveBuffer[Device].RxBuffer[__SPI__SlaveBuffer[Device].BytesProcessed] = SPIC.DATA;
+		_SPI_SlaveBuffer[Device].RxBuffer[_SPI_SlaveBuffer[Device].BytesProcessed] = SPIC.DATA;
 		
-		if(__SPI__SlaveBuffer[Device].BytesProcessed < (SPI_BUFFER_SIZE - 1))
+		if(_SPI_SlaveBuffer[Device].BytesProcessed < (SPI_BUFFER_SIZE - 1))
 		{
-			SPIC.DATA = __SPI__SlaveBuffer[Device].TxBuffer[++__SPI__SlaveBuffer[Device].BytesProcessed];
+			SPIC.DATA = _SPI_SlaveBuffer[Device].TxBuffer[++_SPI_SlaveBuffer[Device].BytesProcessed];
 		}
 		else
 		{
-			__SPI__SlaveBuffer[Device].BytesProcessed = 0x00;
-			__SPI__SlaveBuffer[Device].Status = SPI_BUFFER_OVERFLOW;
+			_SPI_SlaveBuffer[Device].BytesProcessed = 0x00;
+			_SPI_SlaveBuffer[Device].Status = SPI_BUFFER_OVERFLOW;
 		}
 	}
 }
@@ -118,25 +118,25 @@ void SPI_DisableInterruptSupport(SPI_t* Device)
 #ifndef DOXYGEN
 	ISR(SPIC_INT_vect)
 	{
-		__SPI_InterruptHandler(SPIC_ID);
+		_SPI_InterruptHandler(SPIC_ID);
 	}
 	
 	ISR(SPID_INT_vect)
 	{
-		__SPI_InterruptHandler(SPID_ID);
+		_SPI_InterruptHandler(SPID_ID);
 	}
 	
 	#if(defined SPIE_INT_vect)
 		ISR(SPIE_INT_vect)
 		{
-			__SPI_InterruptHandler(SPIE_ID);
+			_SPI_InterruptHandler(SPIE_ID);
 		}
 	#endif
 	
 	#if(defined SPIF_INT_vect)
 		ISR(SPIF_INT_vect)
 		{
-			__SPI_InterruptHandler(SPIF_ID);
+			_SPI_InterruptHandler(SPIF_ID);
 		}
 	#endif
 #endif

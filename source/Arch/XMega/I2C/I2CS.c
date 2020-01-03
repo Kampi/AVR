@@ -35,7 +35,7 @@
 #include "Arch/XMega/PowerManagement/PowerManagement.h"
 
 #ifndef DOXYGEN
-	extern I2C_Buffer_t __I2CS_Buffer[TWI_DEVICES];
+	extern I2C_Buffer_t _I2CS_Buffer[TWI_DEVICES];
 #endif
 
 void I2CS_Init(I2CS_Config_t* Config)
@@ -59,8 +59,8 @@ void I2CS_Init(I2CS_Config_t* Config)
 	I2CS_SwitchSmartMode(Config->Device, Config->EnableSmartMode);
 	I2CS_SwitchPromiscuousMode(Config->Device, Config->EnablePromiscuousMode);
 	
-	__I2CS_Buffer[ID].Buffer = Config->Buffer;
-	__I2CS_Buffer[ID].Device = Config->Device;
+	_I2CS_Buffer[ID].Buffer = Config->Buffer;
+	_I2CS_Buffer[ID].Device = Config->Device;
 
 	Config->Device->SLAVE.CTRLA |= TWI_SLAVE_DIEN_bm | TWI_SLAVE_APIEN_bm | TWI_SLAVE_PIEN_bm;
 	Config->Device->SLAVE.CTRLA = (Config->Device->SLAVE.CTRLA & (~(0x03 << 0x06))) | (Config->InterruptLevel << 0x06);
@@ -79,5 +79,5 @@ I2C_SlaveStatus_t I2CS_Status(TWI_t* Device)
 		ID = TWIE_ID;
 	}
 
-	return __I2CS_Buffer[ID].Status;
+	return _I2CS_Buffer[ID].Status;
 }

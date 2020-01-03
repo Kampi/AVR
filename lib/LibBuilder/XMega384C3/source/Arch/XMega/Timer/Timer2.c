@@ -1,10 +1,10 @@
 /*
- * scanf.c
+ * Timer2.c
  *
- * Created: 11.05.2017 21:28:03
+ * Created: 11.05.2017 21:33:35
  *  Author: Daniel Kampert
  *	Website: www.kampis-elektroecke.de
- *  File info: scanf implementation for AVR microcontroller.
+ *  File info: Driver for the Atmel AVR XMega Timer type 2.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,15 +23,12 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Common/Services/Console/scanf.c
- *  @brief scanf implementation for AVR microcontroller.
+/** @file Arch/XMega/Timer/Timer2.c
+ *  @brief Driver for the Atmel AVR XMega Timer type 2.
+ *
+ *  This contains the implementation of the Atmel AVR XMega Timer2 driver.
  *
  *  @author Daniel Kampert
  */
 
-#include "Common/Services/Console/Console.h"
-
-int scanf(const char* _fmt, ...)
-{
-	return 0;
-}
+#include "Arch/XMega/Timer/Timer.h"

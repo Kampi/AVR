@@ -48,7 +48,7 @@
  *  @param Device	ADC device
  *  @param Channel	ADC channel
  */
-static void __ADC_Channel_InterruptHandler(const uint8_t Device, const uint8_t Channel)
+static void _ADC_Channel_InterruptHandler(const uint8_t Device, const uint8_t Channel)
 {	
 	if(ADC_Callbacks[Device][Channel].ConversionComplete)
 	{
@@ -229,43 +229,43 @@ uint16_t ADC_Channel_ReadResult(ADC_CH_t* Channel)
 #ifndef DOXYGEN
 	ISR(ADCA_CH0_vect)
 	{
-		__ADC_Channel_InterruptHandler(ADCA_ID, 0);
+		_ADC_Channel_InterruptHandler(ADCA_ID, 0);
 	}
 
 	#if(MCU_NAME == MCU_NAME_ATXMEGA256A3BU)
 		ISR(ADCA_CH1_vect)
 		{
-			__ADC_Channel_InterruptHandler(ADCA_ID, 1);
+			_ADC_Channel_InterruptHandler(ADCA_ID, 1);
 		}
 
 		ISR(ADCA_CH2_vect)
 		{
-			__ADC_Channel_InterruptHandler(ADCA_ID, 2);
+			_ADC_Channel_InterruptHandler(ADCA_ID, 2);
 		}
 
 		ISR(ADCA_CH3_vect)
 		{
-			__ADC_Channel_InterruptHandler(ADCA_ID, 3);
+			_ADC_Channel_InterruptHandler(ADCA_ID, 3);
 		}
 
 		ISR(ADCB_CH0_vect)
 		{
-			__ADC_Channel_InterruptHandler(ADCB_ID, 0);
+			_ADC_Channel_InterruptHandler(ADCB_ID, 0);
 		}
 
 		ISR(ADCB_CH1_vect)
 		{
-			__ADC_Channel_InterruptHandler(ADCB_ID, 1);
+			_ADC_Channel_InterruptHandler(ADCB_ID, 1);
 		}
 
 		ISR(ADCB_CH2_vect)
 		{
-			__ADC_Channel_InterruptHandler(ADCB_ID, 2);
+			_ADC_Channel_InterruptHandler(ADCB_ID, 2);
 		}
 
 		ISR(ADCB_CH3_vect)
 		{
-			__ADC_Channel_InterruptHandler(ADCB_ID, 3);
+			_ADC_Channel_InterruptHandler(ADCB_ID, 3);
 		}
 	#endif
 #endif

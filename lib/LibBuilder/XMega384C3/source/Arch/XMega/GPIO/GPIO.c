@@ -55,7 +55,7 @@
  *  @param Port		GPIO port
  *  @param Channel	Interrupt channel
  */
-static void __GPIO_InterruptHandler(uint8_t Port, GPIO_InterruptChannel_t Channel)
+static void _GPIO_InterruptHandler(uint8_t Port, GPIO_InterruptChannel_t Channel)
 {
 	if(Channel == GPIO_INTERRUPT_0)
 	{
@@ -156,70 +156,70 @@ void GPIO_ChangeInterruptLevel(PORT_t* Port, const uint8_t Pin, const GPIO_Inter
 #ifndef DOXYGEN
 	ISR(PORTA_INT0_vect)
 	{
-		__GPIO_InterruptHandler(GPIO_PORT_A, GPIO_INTERRUPT_0);
+		_GPIO_InterruptHandler(GPIO_PORT_A, GPIO_INTERRUPT_0);
 	}
 
 	ISR(PORTA_INT1_vect)
 	{
-		__GPIO_InterruptHandler(GPIO_PORT_A, GPIO_INTERRUPT_1);
+		_GPIO_InterruptHandler(GPIO_PORT_A, GPIO_INTERRUPT_1);
 	}
 
 	ISR(PORTB_INT0_vect)
 	{
-		__GPIO_InterruptHandler(GPIO_PORT_B, GPIO_INTERRUPT_0);
+		_GPIO_InterruptHandler(GPIO_PORT_B, GPIO_INTERRUPT_0);
 	}
 	ISR(PORTB_INT1_vect)
 	{
-		__GPIO_InterruptHandler(GPIO_PORT_B, GPIO_INTERRUPT_1);
+		_GPIO_InterruptHandler(GPIO_PORT_B, GPIO_INTERRUPT_1);
 	}
 
 	ISR(PORTC_INT0_vect)
 	{
-		__GPIO_InterruptHandler(GPIO_PORT_C, GPIO_INTERRUPT_0);
+		_GPIO_InterruptHandler(GPIO_PORT_C, GPIO_INTERRUPT_0);
 	}
 
 	ISR(PORTC_INT1_vect)
 	{
-		__GPIO_InterruptHandler(GPIO_PORT_C, GPIO_INTERRUPT_1);
+		_GPIO_InterruptHandler(GPIO_PORT_C, GPIO_INTERRUPT_1);
 	}
 
 	ISR(PORTD_INT0_vect)
 	{
-		__GPIO_InterruptHandler(GPIO_PORT_D, GPIO_INTERRUPT_0);
+		_GPIO_InterruptHandler(GPIO_PORT_D, GPIO_INTERRUPT_0);
 	}
 
 	ISR(PORTD_INT1_vect)
 	{
-		__GPIO_InterruptHandler(GPIO_PORT_D, GPIO_INTERRUPT_1);
+		_GPIO_InterruptHandler(GPIO_PORT_D, GPIO_INTERRUPT_1);
 	}
 
 	ISR(PORTE_INT0_vect)
 	{
-		__GPIO_InterruptHandler(GPIO_PORT_E, GPIO_INTERRUPT_0);
+		_GPIO_InterruptHandler(GPIO_PORT_E, GPIO_INTERRUPT_0);
 	}
 
 	ISR(PORTE_INT1_vect)
 	{
-		__GPIO_InterruptHandler(GPIO_PORT_E, GPIO_INTERRUPT_1);
+		_GPIO_InterruptHandler(GPIO_PORT_E, GPIO_INTERRUPT_1);
 	}
 
 	ISR(PORTF_INT0_vect)
 	{
-		__GPIO_InterruptHandler(GPIO_PORT_F, GPIO_INTERRUPT_0);
+		_GPIO_InterruptHandler(GPIO_PORT_F, GPIO_INTERRUPT_0);
 	}
 
 	ISR(PORTF_INT1_vect)
 	{
-		__GPIO_InterruptHandler(GPIO_PORT_F, GPIO_INTERRUPT_1);
+		_GPIO_InterruptHandler(GPIO_PORT_F, GPIO_INTERRUPT_1);
 	}
 
 	ISR(PORTR_INT0_vect)
 	{
-		__GPIO_InterruptHandler(GPIO_PORT_R, GPIO_INTERRUPT_0);
+		_GPIO_InterruptHandler(GPIO_PORT_R, GPIO_INTERRUPT_0);
 	}
 
 	ISR(PORTR_INT1_vect)
 	{
-		__GPIO_InterruptHandler(GPIO_PORT_R, GPIO_INTERRUPT_1);
+		_GPIO_InterruptHandler(GPIO_PORT_R, GPIO_INTERRUPT_1);
 	}
 #endif
