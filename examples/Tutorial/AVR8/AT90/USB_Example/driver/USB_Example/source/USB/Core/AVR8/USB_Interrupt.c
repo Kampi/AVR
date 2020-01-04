@@ -34,8 +34,8 @@
 #include "USB/Core/AVR8/USB_Interrupt.h"
 #include "USB/Core/AVR8/USB_Device.h"
 
-volatile USB_State_t __DeviceState;
-USB_DeviceCallbacks_t __USBEvents;
+volatile USB_State_t _DeviceState;
+USB_DeviceCallbacks_t _USBEvents;
 
 ISR(USB_GEN_vect)
 {
@@ -46,21 +46,21 @@ ISR(USB_GEN_vect)
 		if(USB_Controller_CheckVBUS())
 		{
 			USB_Controller_EnablePLL();
-			__DeviceState = USB_STATE_POWERED;
+			_DeviceState = USB_STATE_POWERED;
 
-			if(__USBEvents.ConnectWithBus != NULL)
+			if(_USBEvents.ConnectWithBus != NULL)
 			{
-				__USBEvents.ConnectWithBus();
+				_USBEvents.ConnectWithBus();
 			}
 		}
 		else
 		{
 			USB_Controller_DisablePLL();
-			__DeviceState = USB_STATE_UNATTACHED;
+			_DeviceState = USB_STATE_UNATTACHED;
 
-			if(__USBEvents.DisconnectFromBus != NULL)
+			if(_USBEvents.DisconnectFromBus != NULL)
 			{
-				__USBEvents.DisconnectFromBus();
+				_USBEvents.DisconnectFromBus();
 			}
 		}
 	}
@@ -69,21 +69,21 @@ ISR(USB_GEN_vect)
 	{
 		USB_Controller_ClearInterruptFlag(USB_EOR_INTERRUPT);
 
-		__DeviceState = USB_STATE_RESET;
+		_DeviceState = USB_STATE_RESET;
 
 		// Configure the default control endpoint
 		if(Endpoint_Configure(ENDPOINT_CONTROL_ADDRESS, ENDPOINT_TYPE_CONTROL, ENDPOINT_CONTROL_SIZE, 0))
 		{
-			if(__USBEvents.EndOfReset != NULL)
+			if(_USBEvents.EndOfReset != NULL)
 			{
-				__USBEvents.EndOfReset();
+				_USBEvents.EndOfReset();
 			}
 		}
 		else
 		{
-			if(__USBEvents.Error != NULL)
+			if(_USBEvents.Error != NULL)
 			{
-				__USBEvents.Error();
+				_USBEvents.Error();
 			}
 		}
 	}

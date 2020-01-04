@@ -32,7 +32,7 @@
 
 #include "USB/Core/AVR8/Endpoint.h"
 
-volatile USB_State_t __DeviceState;
+volatile USB_State_t _DeviceState;
 
 uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, const uint8_t Size, const uint8_t DoubleBank)
 {
@@ -129,7 +129,7 @@ void Endpoint_HandleSTATUS(const USB_RequestDirection_t Direction)
 		while(!(Endpoint_OUTReceived()))
 		{
 			// Cancel if the device gets unattached
-			if(__DeviceState == USB_STATE_UNATTACHED)
+			if(_DeviceState == USB_STATE_UNATTACHED)
 			{
 				return;
 			}
@@ -145,7 +145,7 @@ void Endpoint_HandleSTATUS(const USB_RequestDirection_t Direction)
 		while(!(Endpoint_INReady()))
 		{
 			// Cancel if the device gets unattached
-			if(__DeviceState == USB_STATE_UNATTACHED)
+			if(_DeviceState == USB_STATE_UNATTACHED)
 			{
 				return;
 			}
