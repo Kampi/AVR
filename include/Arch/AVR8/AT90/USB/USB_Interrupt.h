@@ -51,294 +51,36 @@
  /** @brief			Enable a specific USB interrupt.
   *  @param Source	Interrupt source
   */
- static inline void USB_Controller_EnableInterrupt(const USB_InterruptType_t Source) __attribute__ ((always_inline));
- static inline void USB_Controller_EnableInterrupt(const USB_InterruptType_t Source)
- {
-	 switch(Source)
-	 {
-		 /*
-			Device & Host interrupts
-		 */
-		 case USB_VBUS_INTERRUPT:
-		 {
-			 USBCON |= (0x01 << VBUSTE);
-			 break;
-		 }
-		 
-		 /*
-			Device interrupts
-		 */
-		 case USB_WAKE_INTERRUPT:
-		 {
-			 UDIEN |= (0x01 << WAKEUPE);
-			 break;
-		 }
-		 case USB_SUSPEND_INTERRUPT:
-		 {
-			  UDIEN |= (0x01 << SUSPE);
-			  break;
-		 }
-		 case USB_EOR_INTERRUPT:
-		 {
-			  UDIEN |= (0x01 << EORSTE);
-			  break;
-		 }
-		 case USB_SOF_INTERRUPT:
-		 {
-			  UDIEN |= (0x01 << SOFE);
-			  break;
-		 }
-		 case USB_RXSTP_INTERRUPT:
-		 {
-			  UEIENX |= (0x01 << RXSTPE);
-			  break;
-		 }
-		 default:
-		 {
-			break;
-		 }
-
-		 /*
-			Host interrupts
-		 */
-	 }
- }
-
+ void USB_Controller_EnableInterrupt(const USB_InterruptType_t Source);
+ 
  /** @brief			Check if the given interrupt is enabled.
   *  @param Source	Interrupt source
   *  @return		#TRUE if the interrupt source is enabled
   */
- static inline Bool_t USB_Controller_IsInterruptEnabled(const USB_InterruptType_t Interrupt) __attribute__ ((always_inline));
- static inline Bool_t USB_Controller_IsInterruptEnabled(const USB_InterruptType_t Interrupt)
- {
-	 switch(Interrupt)
-	 {
-		 /*
-			Device & Host interrupts
-		 */
-		 case USB_VBUS_INTERRUPT:
-		 {
-			return (USBCON & (0x01 << VBUSTE));
-		 }
-		 
-		 /*
-			Device interrupts
-		 */
-		 case USB_WAKE_INTERRUPT:
-		 {
-			 return ((UDIEN & (0x01 << WAKEUPE)) >> WAKEUPE);
-		 }
-		 case USB_SUSPEND_INTERRUPT:
-		 {
-			  return (UDIEN & (0x01 << SUSPE));
-		 }
-		 case USB_EOR_INTERRUPT:
-		 {
-			 return ((UDIEN & (0x01 << EORSTE)) >> EORSTE);
-		 }
-		 case USB_SOF_INTERRUPT:
-		 {
-			 return ((UDIEN & (0x01 << SOFE)) >> SOFE);
-		 }
-		 case USB_RXSTP_INTERRUPT:
-		 {
-			 return ((UEIENX & (0x01 << RXSTPE)) >> RXSTPE);
-		 }
-
-		 /*
-			Host interrupts
-		 */
-	 }
-	 
-	 return FALSE;
- }
+ Bool_t USB_Controller_IsInterruptEnabled(const USB_InterruptType_t Interrupt);
 
  /** @brief			Check if the given interrupt is triggered.
   *  @param Source	Interrupt source
   *  @return		#TRUE if the interrupt source is enabled
   */
- static inline Bool_t USB_Controller_CheckForInterrupt(const USB_InterruptType_t Interrupt) __attribute__ ((always_inline));
- static inline Bool_t USB_Controller_CheckForInterrupt(const USB_InterruptType_t Interrupt)
- {
-	 switch(Interrupt)
-	 {
-		 /*
-			Device & Host interrupts
-		 */
-		 case USB_VBUS_INTERRUPT:
-		 {
-			return (USBINT & (0x01 << VBUSTI));
-		 }
-		 
-		 /*
-			Device interrupts
-		 */
-		 case USB_WAKE_INTERRUPT:
-		 {
-			 return ((UDINT & (0x01 << WAKEUPI)) >> WAKEUPI);
-		 }
-		 case USB_SUSPEND_INTERRUPT:
-		 {
-			  return (UDINT & (0x01 << SUSPI));
-		 }
-		 case USB_EOR_INTERRUPT:
-		 {
-			 return ((UDINT & (0x01 << EORSTI)) >> EORSTI);
-		 }
-		 case USB_SOF_INTERRUPT:
-		 {
-			 return ((UDINT & (0x01 << SOFI)) >> SOFI);
-		 }
-		 case USB_RXSTP_INTERRUPT:
-		 {
-			 return ((UEINTX & (0x01 << RXSTPI)) >> RXSTPI);
-		 }
-
-		 /*
-			Host interrupts
-		 */
-	 }
-	 
-	 return FALSE;
- }
+ Bool_t USB_Controller_CheckForInterrupt(const USB_InterruptType_t Interrupt);
 
  /** @brief			Clear a given interrupt flag.
   *  @param Source	Interrupt source
   */
- static inline void USB_Controller_ClearInterruptFlag(const USB_InterruptType_t Interrupt) __attribute__ ((always_inline));
- static inline void USB_Controller_ClearInterruptFlag(const USB_InterruptType_t Interrupt)
- {
-	 switch(Interrupt)
-	 {
-		 /*
-			Device & Host interrupts
-		 */
-		 case USB_VBUS_INTERRUPT:
-		 {
-			 USBINT &= ~(0x01 << VBUSTI);
-			 break;
-		 }
-		 
-		 /*
-			Device interrupts
-		 */
-		 case USB_WAKE_INTERRUPT:
-		 {
-			 UDINT &= ~(0x01 << WAKEUPI);
-			 break;
-		 }
-		 case USB_SUSPEND_INTERRUPT:
-		 {
-			 UDINT &= ~(0x01 << SUSPI);
-			 break;
-		 }
-		 case USB_EOR_INTERRUPT:
-		 {
-			 UDINT &= ~(0x01 << EORSTI);
-			 break;
-		 }
-		 case USB_SOF_INTERRUPT:
-		 {
-			 UDINT &= ~(0x01 << SOFI);
-			 break;
-		 }
-		 case USB_RXSTP_INTERRUPT:
-		 {
-			 UEINTX &= ~(0x01 << RXSTPI);
-			 break;
-		 }
-
-		 /*
-			Host interrupts
-		 */
-	 }
- }
+ void USB_Controller_ClearInterruptFlag(const USB_InterruptType_t Interrupt);
 
  /** @brief			Disable a specific USB interrupt.
   *  @param Source	Interrupt source
   */
- static inline void USB_Controller_DisableInterrupt(const USB_InterruptType_t Source) __attribute__ ((always_inline));
- static inline void USB_Controller_DisableInterrupt(const USB_InterruptType_t Source)
- {
-	 switch(Source)
-	 {
-		 /*
-			Device & Host interrupts
-		 */
-		 case USB_VBUS_INTERRUPT:
-		 {
-			 USBCON &= ~(0x01 << VBUSTE);
-			 break;
-		 }
-		 
-		 /*
-			Device interrupts
-		 */
-		 case USB_WAKE_INTERRUPT:
-		 {
-			 UDIEN &= ~(0x01 << WAKEUPE);
-			 break;
-		 }
-		 case USB_SUSPEND_INTERRUPT:
-		 {
-			  UDIEN &= ~(0x01 << SUSPE);
-			  break;
-		 }
-		 case USB_EOR_INTERRUPT:
-		 {
-			  UDIEN &= ~(0x01 << EORSTE);
-			  break;
-		 }
-		 case USB_SOF_INTERRUPT:
-		 {
-			  UDIEN &= ~(0x01 << SOFE);
-			  break;
-		 }
-		 case USB_RXSTP_INTERRUPT:
-		 {
-			  UEIENX &= ~(0x01 << RXSTPE);
-			  break;
-		 }
-
-		 /*
-			Host interrupts
-		 */
-	 } 
- }
+ void USB_Controller_DisableInterrupt(const USB_InterruptType_t Source);
 
  /** @brief	Disable all USB interrupts.
   */
- static inline void USB_Controller_DisableAllInterrupts(void) __attribute__ ((always_inline));
- static inline void USB_Controller_DisableAllInterrupts(void)
- {
-	 USBCON &= ~((0x01 << VBUSTE) | (0x01 << IDTE));
-
-	 // Clear all device mode interrupt enable bits
-	 UDIEN = 0x00;
-	 
-	 // Clear all host mode interrupt enable bits
-	 UHIEN = 0x00;
-
-	 // Clear all OTG mode interrupt enable bits
-	 OTGIEN = 0x00;
- }
+ void USB_Controller_DisableAllInterrupts(void);
 
  /** @brief	Disable all USB interrupt flags.
   */
- static inline void USB_Controller_ClearInterrupts(void) __attribute__ ((always_inline));
- static inline void USB_Controller_ClearInterrupts(void)
- {
-	 // Clear all interrupt flags of the USB controller
-	 USBINT = 0x00;
-	 
-	 // Clear all device mode interrupt flags
-	 UDINT = 0x00;
-	 
-	 // Clear all host mode interrupt flags
-	 UHINT = 0x00;
-	 
-	 // Clear all OTG mode interrupt flags
-	 OTGINT = 0x00;
- }
+ void USB_Controller_ClearInterrupts(void);
 
 #endif /* USB_INTERRUPT_H_ */
