@@ -30,11 +30,13 @@
  *  @author Daniel Kampert
  */
 
+#include "Board.h"
+
 #include "Arch/AVR8/AT90/USB/Endpoint.h"
 
 #include "Services/USB/Core/StandardRequest.h"
 
-volatile USB_State_t __DeviceState;
+volatile USB_State_t _DeviceState;
 
 Bool_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, const Endpoint_Size_t Size, const Bool_t DoubleBank)
 {
@@ -132,7 +134,7 @@ void Endpoint_HandleSTATUS(const USB_RequestDirection_t Direction)
 		while(!(Endpoint_OUTReceived()))
 		{
 			// Cancel if the device gets unattached
-			if(__DeviceState == USB_STATE_UNATTACHED)
+			if(_DeviceState == USB_STATE_UNATTACHED)
 			{
 				return;
 			}
@@ -148,7 +150,7 @@ void Endpoint_HandleSTATUS(const USB_RequestDirection_t Direction)
 		while(!(Endpoint_INReady()))
 		{
 			// Cancel if the device gets unattached
-			if(__DeviceState == USB_STATE_UNATTACHED)
+			if(_DeviceState == USB_STATE_UNATTACHED)
 			{
 				return;
 			}

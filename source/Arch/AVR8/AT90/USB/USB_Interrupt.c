@@ -32,10 +32,274 @@
 
 #include "Arch/AVR8/AT90/USB/USB_Controller.h"
 
-volatile USB_State_t __DeviceState;
+volatile USB_State_t _DeviceState;
+USB_DeviceCallbacks_t _USBEvents;
+uint8_t _Configuration;
 
-extern uint8_t __Configuration;
-extern USB_DeviceCallbacks_t __USBEvents;
+void USB_Controller_EnableInterrupt(const USB_InterruptType_t Source)
+{
+	switch(Source)
+	{
+		/*
+			Device & Host interrupts
+		*/
+		case USB_VBUS_INTERRUPT:
+		{
+			USBCON |= (0x01 << VBUSTE);
+			break;
+		}
+
+		/*
+			Device interrupts
+		*/
+		case USB_WAKE_INTERRUPT:
+		{
+			UDIEN |= (0x01 << WAKEUPE);
+			break;
+		}
+		case USB_SUSPEND_INTERRUPT:
+		{
+			UDIEN |= (0x01 << SUSPE);
+			break;
+		}
+		case USB_EOR_INTERRUPT:
+		{
+			UDIEN |= (0x01 << EORSTE);
+			break;
+		}
+		case USB_SOF_INTERRUPT:
+		{
+			UDIEN |= (0x01 << SOFE);
+			break;
+		}
+		case USB_RXSTP_INTERRUPT:
+		{
+			UEIENX |= (0x01 << RXSTPE);
+			break;
+		}
+		default:
+		{
+			break;
+		}
+
+		/*
+			Host interrupts
+		*/
+	}
+}
+
+Bool_t USB_Controller_IsInterruptEnabled(const USB_InterruptType_t Interrupt)
+{
+	switch(Interrupt)
+	{
+		/*
+			Device & Host interrupts
+		*/
+		case USB_VBUS_INTERRUPT:
+		{
+			return (USBCON & (0x01 << VBUSTE));
+		}
+
+		/*
+			Device interrupts
+		*/
+		case USB_WAKE_INTERRUPT:
+		{
+			return ((UDIEN & (0x01 << WAKEUPE)) >> WAKEUPE);
+		}
+		case USB_SUSPEND_INTERRUPT:
+		{
+			return (UDIEN & (0x01 << SUSPE));
+		}
+		case USB_EOR_INTERRUPT:
+		{
+			return ((UDIEN & (0x01 << EORSTE)) >> EORSTE);
+		}
+		case USB_SOF_INTERRUPT:
+		{
+			return ((UDIEN & (0x01 << SOFE)) >> SOFE);
+		}
+		case USB_RXSTP_INTERRUPT:
+		{
+			return ((UEIENX & (0x01 << RXSTPE)) >> RXSTPE);
+		}
+
+		/*
+			Host interrupts
+		*/
+	}
+	 
+	return FALSE;
+}
+
+Bool_t USB_Controller_CheckForInterrupt(const USB_InterruptType_t Interrupt)
+{
+	switch(Interrupt)
+	{
+		/*
+			Device & Host interrupts
+		*/
+		case USB_VBUS_INTERRUPT:
+		{
+			return (USBINT & (0x01 << VBUSTI));
+		}
+
+		/*
+			Device interrupts
+		*/
+		case USB_WAKE_INTERRUPT:
+		{
+			return ((UDINT & (0x01 << WAKEUPI)) >> WAKEUPI);
+		}
+		case USB_SUSPEND_INTERRUPT:
+		{
+			return (UDINT & (0x01 << SUSPI));
+		}
+		case USB_EOR_INTERRUPT:
+		{
+			return ((UDINT & (0x01 << EORSTI)) >> EORSTI);
+		}
+		case USB_SOF_INTERRUPT:
+		{
+			return ((UDINT & (0x01 << SOFI)) >> SOFI);
+		}
+		case USB_RXSTP_INTERRUPT:
+		{
+			return ((UEINTX & (0x01 << RXSTPI)) >> RXSTPI);
+		}
+
+		/*
+			Host interrupts
+		*/
+	}
+ 
+	return FALSE;
+}
+
+void USB_Controller_ClearInterruptFlag(const USB_InterruptType_t Interrupt)
+{
+	switch(Interrupt)
+	{
+		/*
+			Device & Host interrupts
+		*/
+		case USB_VBUS_INTERRUPT:
+		{
+			USBINT &= ~(0x01 << VBUSTI);
+			break;
+		}
+
+		/*
+			Device interrupts
+		*/
+		case USB_WAKE_INTERRUPT:
+		{
+			UDINT &= ~(0x01 << WAKEUPI);
+			break;
+		}
+		case USB_SUSPEND_INTERRUPT:
+		{
+			UDINT &= ~(0x01 << SUSPI);
+			break;
+		}
+		case USB_EOR_INTERRUPT:
+		{
+			UDINT &= ~(0x01 << EORSTI);
+			break;
+		}
+		case USB_SOF_INTERRUPT:
+		{
+			UDINT &= ~(0x01 << SOFI);
+			break;
+		}
+		case USB_RXSTP_INTERRUPT:
+		{
+			UEINTX &= ~(0x01 << RXSTPI);
+			break;
+		}
+
+		/*
+			Host interrupts
+		*/
+	}
+}
+
+void USB_Controller_DisableInterrupt(const USB_InterruptType_t Source)
+{
+	switch(Source)
+	{
+		/*
+			Device & Host interrupts
+		*/
+		case USB_VBUS_INTERRUPT:
+		{
+			USBCON &= ~(0x01 << VBUSTE);
+			break;
+		}
+
+		/*
+			Device interrupts
+		*/
+		case USB_WAKE_INTERRUPT:
+		{
+			UDIEN &= ~(0x01 << WAKEUPE);
+			break;
+		}
+		case USB_SUSPEND_INTERRUPT:
+		{
+			UDIEN &= ~(0x01 << SUSPE);
+			break;
+		}
+		case USB_EOR_INTERRUPT:
+		{
+			UDIEN &= ~(0x01 << EORSTE);
+			break;
+		}
+		case USB_SOF_INTERRUPT:
+		{
+			UDIEN &= ~(0x01 << SOFE);
+			break;
+		}
+		case USB_RXSTP_INTERRUPT:
+		{
+			UEIENX &= ~(0x01 << RXSTPE);
+			break;
+		}
+
+		/*
+			Host interrupts
+		*/
+	} 
+}
+
+void USB_Controller_DisableAllInterrupts(void)
+{
+	USBCON &= ~((0x01 << VBUSTE) | (0x01 << IDTE));
+
+	// Clear all device mode interrupt enable bits
+	UDIEN = 0x00;
+
+	// Clear all host mode interrupt enable bits
+	UHIEN = 0x00;
+
+	// Clear all OTG mode interrupt enable bits
+	OTGIEN = 0x00;
+}
+
+void USB_Controller_ClearInterrupts(void)
+{
+	// Clear all interrupt flags of the USB controller
+	USBINT = 0x00;
+
+	// Clear all device mode interrupt flags
+	UDINT = 0x00;
+
+	// Clear all host mode interrupt flags
+	UHINT = 0x00;
+
+	// Clear all OTG mode interrupt flags
+	OTGINT = 0x00;
+}
 
 ISR(USB_GEN_vect)
 {
@@ -43,9 +307,9 @@ ISR(USB_GEN_vect)
 	{
 		USB_Controller_ClearInterruptFlag(USB_SOF_INTERRUPT);
 
-		if(__USBEvents.StartOfFrame != NULL)
+		if(_USBEvents.StartOfFrame != NULL)
 		{
-			__USBEvents.StartOfFrame();
+			_USBEvents.StartOfFrame();
 		}
 	}
 
@@ -57,22 +321,22 @@ ISR(USB_GEN_vect)
 		{
 			USB_Controller_EnablePLL();
 
-			__DeviceState = USB_STATE_POWERED;
+			_DeviceState = USB_STATE_POWERED;
 
-			if(__USBEvents.ConnectWithBus != NULL)
+			if(_USBEvents.ConnectWithBus != NULL)
 			{
-				__USBEvents.ConnectWithBus();
+				_USBEvents.ConnectWithBus();
 			}
 		}
 		else
 		{
 			USB_Controller_DisablePLL();
 
-			__DeviceState = USB_STATE_UNATTACHED;
+			_DeviceState = USB_STATE_UNATTACHED;
 			
-			if(__USBEvents.DisconnectFromBus != NULL)
+			if(_USBEvents.DisconnectFromBus != NULL)
 			{
-				__USBEvents.DisconnectFromBus();
+				_USBEvents.DisconnectFromBus();
 			}
 		}
 	}
@@ -86,11 +350,11 @@ ISR(USB_GEN_vect)
 
 		USB_Controller_DisableClk();
 
-		__DeviceState = USB_STATE_SUSPEND;
+		_DeviceState = USB_STATE_SUSPEND;
 		
-		if(__USBEvents.Suspend != NULL)
+		if(_USBEvents.Suspend != NULL)
 		{
-			__USBEvents.Suspend();
+			_USBEvents.Suspend();
 		}
 	}
 
@@ -104,27 +368,27 @@ ISR(USB_GEN_vect)
 		USB_Controller_EnableClk();
 
 		// Check if the device is configured
-		if(!__Configuration)
+		if(!_Configuration)
 		{
-			__DeviceState = USB_STATE_CONFIGURED;
+			_DeviceState = USB_STATE_CONFIGURED;
 		}
 		else
 		{
 			// Check if the device got an address from the host
 			if(USB_Device_IsAddressEnabled())
 			{
-				__DeviceState = USB_STATE_ADDRESSED;
+				_DeviceState = USB_STATE_ADDRESSED;
 			}
 			// No configuration or address set
 			else
 			{
-				__DeviceState = USB_STATE_POWERED;
+				_DeviceState = USB_STATE_POWERED;
 			}
 		}
 	
-		if(__USBEvents.Wake != NULL)
+		if(_USBEvents.Wake != NULL)
 		{
-			__USBEvents.Wake();
+			_USBEvents.Wake();
 		}
 	}
 
@@ -136,21 +400,19 @@ ISR(USB_GEN_vect)
 		USB_Controller_DisableInterrupt(USB_SUSPEND_INTERRUPT);
 		USB_Controller_EnableInterrupt(USB_WAKE_INTERRUPT);
 
-		if(Endpoint_Configure(ENDPOINT_CONTROL_ADDRESS, ENDPOINT_TYPE_CONTROL, ENDPOINT_CONTROL_SIZE, FALSE))
+		if(!Endpoint_Configure(ENDPOINT_CONTROL_ADDRESS, ENDPOINT_TYPE_CONTROL, ENDPOINT_CONTROL_SIZE, FALSE))
 		{
-			if(__USBEvents.EndOfReset != NULL)
+			if(_USBEvents.Error != NULL)
 			{
-				__USBEvents.EndOfReset();
-			}
-		}
-		else
-		{
-			if(__USBEvents.Error != NULL)
-			{
-				__USBEvents.Error();
+				_USBEvents.Error();
 			}
 		}
 
-		__DeviceState = USB_STATE_RESET;
+		_DeviceState = USB_STATE_RESET;
 	}
+}
+
+ISR(USB_COM_vect)
+{
+	
 }

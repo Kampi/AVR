@@ -30,13 +30,9 @@
  *  @author Daniel Kampert
  */
 
-#include "Arch/AVR8/AT90/USB/USB_Controller.h"
-
-#include "Services/USB/Core/StandardRequest.h"
 #include "Services/USB/Core/USB_DeviceStream.h"
 
- USB_SetupPacket_t __ControlRequest;
-volatile USB_State_t __DeviceState;
+volatile USB_State_t _DeviceState;
 
 /** @brief	Check the control endpoint for errors.
  *  @return	Error code
@@ -44,12 +40,12 @@ volatile USB_State_t __DeviceState;
 static Endpoint_CS_State_t USB_DeviceStream_GetControlEndpointState(void)
 {
 	// Cancel transmission if the device got disconnected
-	if(__DeviceState == USB_STATE_UNATTACHED)
+	if(_DeviceState == USB_STATE_UNATTACHED)
 	{
 		return ENDPOINT_CS_DISCONNECT;
 	}
 	// Cancel transmission if the device enter suspend mode
-	else if(__DeviceState == USB_STATE_SUSPEND)
+	else if(_DeviceState == USB_STATE_SUSPEND)
 	{
 		return ENDPOINT_CS_SUSPEND;
 	}
@@ -65,7 +61,7 @@ static Endpoint_CS_State_t USB_DeviceStream_GetControlEndpointState(void)
 /** @brief	Wait until the device become ready.
  *  @return	Error code
  */
-static Endpoint_DS_ErrorCode_t USBStream_WaitUntilReady(void)
+static Endpoint_DS_ErrorCode_t USB_DeviceStream_WaitReady(void)
 {
 	uint8_t Timeout = 100;
 	
@@ -91,11 +87,11 @@ static Endpoint_DS_ErrorCode_t USBStream_WaitUntilReady(void)
 			}
 		}
 
-		if(__DeviceState == USB_STATE_UNATTACHED)
+		if(_DeviceState == USB_STATE_UNATTACHED)
 		{
 			return ENDPOINT_DS_DISCONNECT;
 		}
-		else if(__DeviceState == USB_STATE_SUSPEND)
+		else if(_DeviceState == USB_STATE_SUSPEND)
 		{
 			return ENDPOINT_DS_SUSPEND;
 		}
@@ -127,7 +123,7 @@ Endpoint_CS_State_t USB_DeviceStream_ControlIN(const void* Buffer, const uint16_
 		Length_Temp = RequestedLength;
 	}
 
-	while(Length)
+	while(Length_Temp)
 	{
 		Endpoint_CS_State_t State = USB_DeviceStream_GetControlEndpointState();
 		if(State != ENDPOINT_CS_NO_ERROR)
@@ -148,8 +144,8 @@ Endpoint_CS_State_t USB_DeviceStream_ControlIN(const void* Buffer, const uint16_
 				Endpoint_WriteByte(pgm_read_byte(Buffer_Temp++));
 				Length_Temp--;
 			}
-
-			// Start the transmission of the data
+			
+			// Start the transmission of the data and wait for complete
 			Endpoint_FlushIN();
 			while(!Endpoint_INReady());
 		}
@@ -174,14 +170,14 @@ Endpoint_CS_State_t USB_DeviceStream_ControlIN(const void* Buffer, const uint16_
 	return ENDPOINT_CS_NO_ERROR;
 }
 
-uint8_t USBDataStream_IN(const void* Buffer, uint16_t Length, uint16_t* BytesProcessed)
+Endpoint_DS_ErrorCode_t USB_DeviceStream_DataIN(const void* Buffer, uint16_t Length, uint16_t* BytesProcessed)
 {
-	uint8_t* Buffer_Temp = ((uint8_t*)Buffer);
+	uint8_t* Buffer_Temp = (uint8_t*)Buffer;
 	uint16_t BytesInTransfer = 0x00;
 	Endpoint_DS_ErrorCode_t ErrorCode = ENDPOINT_DS_NO_ERROR;
 
 	// Wait for the endpoint to become ready
-	ErrorCode = USBStream_WaitUntilReady();
+	ErrorCode = USB_DeviceStream_WaitReady();
 	if(ErrorCode != ENDPOINT_DS_NO_ERROR)
 	{
 		return ErrorCode;
@@ -204,7 +200,7 @@ uint8_t USBDataStream_IN(const void* Buffer, uint16_t Length, uint16_t* BytesPro
 				return ENDPOINT_DS_INCOMPLETE;
 			}
 
-			ErrorCode = USBStream_WaitUntilReady();
+			ErrorCode = USB_DeviceStream_WaitReady();
 			if(ErrorCode != ENDPOINT_DS_NO_ERROR)
 			{
 				return ErrorCode;

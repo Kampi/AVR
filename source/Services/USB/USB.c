@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Services/USB/USB.c
+/** @file Common/Services/USB/USB.c
  *  @brief USB service.
  *
  *  This file contains the implementation of the USB service.
@@ -33,21 +33,21 @@
 
 #include "Services/USB/USB.h"
 
-volatile USB_State_t __DeviceState;
-USB_DeviceCallbacks_t __USBEvents;
+volatile USB_State_t _DeviceState;
+USB_DeviceCallbacks_t _USBEvents;
 
 void USB_Init(const USB_Config_t* Config)
 {
 	// Initialize the USB controller
 	USB_Controller_Init(Config);
 	
-	__USBEvents = *Config->Callbacks;
-	__DeviceState = USB_STATE_RESET;
+	_USBEvents = *Config->Callbacks;
+	_DeviceState = USB_STATE_RESET;
 }
 
 void USB_Poll(void)
 {
-	if(__DeviceState == USB_STATE_UNATTACHED)
+	if(_DeviceState == USB_STATE_UNATTACHED)
 	{
 		return;
 	}
@@ -70,5 +70,5 @@ void USB_Poll(void)
 
 volatile USB_State_t USB_GetState(void)
 {
-	return __DeviceState;
+	return _DeviceState;
 }

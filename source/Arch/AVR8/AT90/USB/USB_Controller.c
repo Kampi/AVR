@@ -32,22 +32,22 @@
 
 #include "Arch/AVR8/AT90/USB/USB_Controller.h"
 
-extern volatile USB_State_t __DeviceState;
-extern USB_DeviceCallbacks_t __USBEvents;
-extern uint8_t __Configuration;
+volatile USB_State_t _DeviceState = USB_STATE_UNATTACHED;
+USB_DeviceCallbacks_t _USBEvents;
+uint8_t _Configuration = 0x00;
 
 void USB_Controller_Init(const USB_Config_t* Config)
-{
+{	
 	USB_Controller_ResetInterface();
 	USB_Controller_EnableReg();
 	USB_Controller_EnableClk();
 	USB_Controller_EnableVBUSPad();
-
+	
 	USB_Controller_SetMode(Config->Mode);
 	if(Config->Mode == USB_MODE_DEVICE)
 	{
 		USB_Device_SetSpeed(Config->Speed);
-		
+	
 		// Enable all interrupts for plug-in detection
 		USB_Controller_EnableInterrupt(USB_VBUS_INTERRUPT);
 		USB_Controller_EnableInterrupt(USB_SUSPEND_INTERRUPT);
@@ -82,9 +82,9 @@ void USB_Controller_Disable(void)
 
 void USB_Controller_ResetInterface(void)
 {
-	__Configuration = 0x00;
+	_Configuration = 0x00;
 
 	USB_Controller_Reset();
 	
-	__DeviceState = USB_STATE_UNATTACHED;
+	_DeviceState = USB_STATE_UNATTACHED;
 }
