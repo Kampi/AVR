@@ -32,7 +32,7 @@
 
 #include "USB/Core/USB_DeviceStream.h"
 
-volatile USB_State_t __DeviceState;
+volatile USB_State_t _DeviceState;
 
 /** @brief	Check the control endpoint for errors.
  *  @return	Error code
@@ -40,12 +40,12 @@ volatile USB_State_t __DeviceState;
 static Endpoint_CS_State_t USB_DeviceStream_GetControlEndpointState(void)
 {
 	// Cancel transmission if the device got disconnected
-	if(__DeviceState == USB_STATE_UNATTACHED)
+	if(_DeviceState == USB_STATE_UNATTACHED)
 	{
 		return ENDPOINT_CS_DISCONNECT;
 	}
 	// Cancel transmission if the device enter suspend mode
-	else if(__DeviceState == USB_STATE_SUSPEND)
+	else if(_DeviceState == USB_STATE_SUSPEND)
 	{
 		return ENDPOINT_CS_SUSPEND;
 	}

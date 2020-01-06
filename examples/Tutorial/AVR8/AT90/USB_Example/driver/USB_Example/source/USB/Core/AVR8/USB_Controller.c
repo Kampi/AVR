@@ -34,7 +34,7 @@
 #include "USB/Core/AVR8/USB_Controller.h"
 #include "USB/Core/AVR8/USB_Device.h"
 
-extern volatile USB_State_t __DeviceState;
+volatile USB_State_t _DeviceState = USB_STATE_UNATTACHED;
 
 void USB_Controller_Init(const USB_Mode_t Mode, const USB_Speed_t Speed)
 {
@@ -42,12 +42,12 @@ void USB_Controller_Init(const USB_Mode_t Mode, const USB_Speed_t Speed)
 	USB_Controller_EnableClk();
 	USB_Controller_EnableReg();
 	USB_Controller_EnableVBUSPad();
-	
+
 	USB_Controller_SetMode(Mode);
 	if(Mode == USB_MODE_DEVICE)
 	{
 		USB_Device_SetSpeed(Speed);
-		
+
 		// Enable all necessary interrupts
 		USB_Controller_EnableInterrupt(USB_VBUS_INTERRUPT);
 		USB_Controller_EnableInterrupt(USB_EOR_INTERRUPT);
@@ -70,5 +70,5 @@ void USB_Controller_ResetInterface(void)
 {
 	USB_Controller_Reset();
 	
-	__DeviceState = USB_STATE_UNATTACHED;
+	_DeviceState = USB_STATE_UNATTACHED;
 }
