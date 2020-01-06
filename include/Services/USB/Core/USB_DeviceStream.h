@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */ 
 
 /** @file Services/USB/Core/USB_DeviceStream.h
@@ -34,30 +34,28 @@
 #ifndef USB_DEVICESTREAM_H_
 #define USB_DEVICESTREAM_H_
 
- #include "Common/Common.h"
  #include "Services/USB/USB.h"
 
  /** @brief	Error codes for endpoint data stream.
   */
  typedef enum
  {
-	 ENDPOINT_DS_NO_ERROR = 0x00,						/**< No error */
-	 ENDPOINT_DS_STALLED = 0x01,						/**< The endpoint got stalled during the transfer */
-	 ENDPOINT_DS_DISCONNECT = 0x02,						/**< Device was disconnected */
-	 ENDPOINT_DS_SUSPEND = 0x03,						/**< The USB bus has been suspended by the host */
-	 ENDPOINT_DS_TIMEOUT = 0x04,						/**< The host failed to accept or send the next packet */
-	 ENDPOINT_DS_INCOMPLETE = 0x05,						/**< Incomplete data transfer */
+	 ENDPOINT_DS_NO_ERROR = 0x00,										/**< No error */
+	 ENDPOINT_DS_STALLED = 0x01,										/**< The endpoint got stalled during the transfer */
+	 ENDPOINT_DS_DISCONNECT = 0x02,										/**< Device was disconnected */
+	 ENDPOINT_DS_SUSPEND = 0x03,										/**< The USB bus has been suspended by the host */
+	 ENDPOINT_DS_TIMEOUT = 0x04,										/**< The host failed to accept or send the next packet */
  } Endpoint_DS_ErrorCode_t;
 
  /** @brief	State codes for the endpoint control stream.
   */
  typedef enum
  {
-	 ENDPOINT_CS_NO_ERROR = 0x00,					/**< No error */ 
-	 ENDPOINT_CS_ABORT_FROM_HOST = 0x01,			/**< Transfer aborted by host */
-	 ENDPOINT_CS_DISCONNECT = 0x02,					/**< Device was disconnected */
-	 ENDPOINT_CS_SUSPEND = 0x03,					/**< The device has entered the suspend mode */
- } Endpoint_CS_State_t;
+	 ENDPOINT_CS_NO_ERROR = 0x00,										/**< No error */ 
+	 ENDPOINT_CS_ABORT_FROM_HOST = 0x01,								/**< Transfer aborted by host */
+	 ENDPOINT_CS_DISCONNECT = 0x02,										/**< Device was disconnected */
+	 ENDPOINT_CS_SUSPEND = 0x03,										/**< The device has entered the suspend mode */
+ } Endpoint_CS_ErrorCode_t;
 
  /** @brief					Send control data to the host by using an IN endpoint.
   *  @param Buffer			Pointer to data buffer
@@ -65,14 +63,14 @@
   *	 @param RequestedLength	Requested data length from host
   *  @return				Error code
   */
- Endpoint_CS_State_t USB_DeviceStream_ControlIN(const void* const Buffer, const uint16_t Length, const uint16_t RequestedLength);
+ Endpoint_CS_ErrorCode_t USB_DeviceStream_ControlIN(const void* const Buffer, const uint16_t Length, const uint16_t RequestedLength);
  
- /** @brief					Send data to the host by using an IN endpoint.
-  *  @param Buffer			Pointer to data buffer
-  *  @param Length			Length of data
-  *  @param BytesProcessed	Pointer to processed byte count
-  *  @return				Error code
+ /** @brief			Send data to the host by using an IN endpoint.
+  *  @param Buffer	Pointer to data buffer
+  *  @param Length	Length of data
+  *  @param Offset	Pointer for processed data bytes
+  *  @return		Error code
   */
- Endpoint_DS_ErrorCode_t USB_DeviceStream_DataIN(const void* Buffer, uint16_t Length, uint16_t* BytesProcessed);
+ Endpoint_DS_ErrorCode_t USB_DeviceStream_DataIN(const void* Buffer, const uint16_t Length, uint16_t* Offset);
 
-#endif /* USB_DEVICESTREAM_H_  */ 
+#endif /* USB_DEVICESTREAM_H_ */

@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
 /** @file MouseDescriptor.h
@@ -33,7 +33,7 @@
 #ifndef MOUSEDESCRIPTOR_H_
 #define MOUSEDESCRIPTOR_H_
 
- #include "Common/Services/USB/USB.h"
+ #include "Services/USB/USB.h"
 
  /** @brief	Address of the Mouse HID IN endpoint.
   */
@@ -42,7 +42,7 @@
  /** @brief	Size of the Mouse HID endpoint.
   */
  #define MOUSE_EP_SIZE								8
- 
+
  /** @brief Size of the mouse control endpoint.
   */
  #define MOUSE_CTRL_EP_SIZE							ENDPOINT_CONTROL_DEFAULT_SIZE

@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for the VL53L0XV2 Time-of-Flight Range Sensor.
+ *  File info: Sensor data for XPlainedC3 development board.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -50,16 +50,4 @@ const uint16_t TemperatureCodes[] = {
 	262, 252, 243, 233, 225
 };
 
-/** @brief	Ambient light sensor codes. The ambient light is calculated by the formula
-			Light = Index - 10
-			Configure the ADC for single ended measurement with Vcc / 1.6 V reference
- */
-const uint16_t AmbientCodes[] = {
-	1875, 1828, 1781, 1734, 1687, 1640, 1594, 1548, 1503, 1458, 1414, 1370,
-	1327, 1285, 1243, 1202, 1162, 1123, 1084, 1047, 1010, 975, 940, 907, 874,
-	842, 811, 781, 752, 724, 697, 671, 645, 621, 597, 575, 553, 531, 511, 491,
-	472, 454, 437, 420, 404, 388, 373, 359, 345, 332, 319, 307, 295, 283, 273,
-	262, 252, 243, 233, 225
-};
- 
 const uint16_t Size_TemperatureCodes = sizeof(TemperatureCodes);

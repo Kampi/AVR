@@ -19,10 +19,10 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Common/Services/USB/USB.c
+/** @file Services/USB/USB.c
  *  @brief USB service.
  *
  *  This file contains the implementation of the USB service.
@@ -33,8 +33,9 @@
 
 #include "Services/USB/USB.h"
 
-volatile USB_State_t _DeviceState;
+volatile USB_State_t _DeviceState = USB_STATE_UNATTACHED;
 USB_DeviceCallbacks_t _USBEvents;
+uint8_t _Configuration = 0x00;
 
 void USB_Init(const USB_Config_t* Config)
 {
@@ -52,18 +53,18 @@ void USB_Poll(void)
 		return;
 	}
 
-	 // Save the current selected endpoint
-	 uint8_t PrevEndpoint = Endpoint_GetCurrent();
+	// Save the current selected endpoint
+	uint8_t PrevEndpoint = Endpoint_GetCurrent();
 
-	 // Switch to the control endpoint
-	 Endpoint_Select(ENDPOINT_CONTROL_ADDRESS);
+	// Switch to the control endpoint
+	Endpoint_Select(ENDPOINT_CONTROL_ADDRESS);
 
 	// Wait for a new setup packet
 	if(Endpoint_SETUPReceived())
 	{
 		USB_Device_ControlRequest();
 	}
-	
+
 	// Switch back to the previous endpoint
 	Endpoint_Select(PrevEndpoint);
 }

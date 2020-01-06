@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Interrupt functions for AT90USB1287 USB.
+ *  File info: Interrupt functions for Atmel AVR AT90 USB interface.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -19,11 +19,11 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
 /** @file Arch/AVR8/AT90/USB/USB_Interrupt.c
- *  @brief Interrupt functions for AT90USB1287 USB.
+ *  @brief Interrupt functions for Atmel AVR AT90 USB interface.
  * 
  *  This file contains the implementation of the AT90USB1287 USB driver interrupts.
  *
@@ -31,10 +31,6 @@
  */
 
 #include "Arch/AVR8/AT90/USB/USB_Controller.h"
-
-volatile USB_State_t _DeviceState;
-USB_DeviceCallbacks_t _USBEvents;
-uint8_t _Configuration;
 
 void USB_Controller_EnableInterrupt(const USB_InterruptType_t Source)
 {
@@ -333,7 +329,7 @@ ISR(USB_GEN_vect)
 			USB_Controller_DisablePLL();
 
 			_DeviceState = USB_STATE_UNATTACHED;
-			
+
 			if(_USBEvents.DisconnectFromBus != NULL)
 			{
 				_USBEvents.DisconnectFromBus();
@@ -351,7 +347,7 @@ ISR(USB_GEN_vect)
 		USB_Controller_DisableClk();
 
 		_DeviceState = USB_STATE_SUSPEND;
-		
+
 		if(_USBEvents.Suspend != NULL)
 		{
 			_USBEvents.Suspend();
@@ -364,7 +360,7 @@ ISR(USB_GEN_vect)
 
 		USB_Controller_DisableInterrupt(USB_WAKE_INTERRUPT);
 		USB_Controller_EnableInterrupt(USB_SUSPEND_INTERRUPT);
-		
+
 		USB_Controller_EnableClk();
 
 		// Check if the device is configured
@@ -372,20 +368,17 @@ ISR(USB_GEN_vect)
 		{
 			_DeviceState = USB_STATE_CONFIGURED;
 		}
+		// Check if the device got an address from the host
+		else if(USB_Device_IsAddressEnabled())
+		{
+			_DeviceState = USB_STATE_ADDRESSED;
+		}
+		// No configuration or address set
 		else
 		{
-			// Check if the device got an address from the host
-			if(USB_Device_IsAddressEnabled())
-			{
-				_DeviceState = USB_STATE_ADDRESSED;
-			}
-			// No configuration or address set
-			else
-			{
-				_DeviceState = USB_STATE_POWERED;
-			}
+			_DeviceState = USB_STATE_POWERED;
 		}
-	
+
 		if(_USBEvents.Wake != NULL)
 		{
 			_USBEvents.Wake();
@@ -414,5 +407,4 @@ ISR(USB_GEN_vect)
 
 ISR(USB_COM_vect)
 {
-	
 }

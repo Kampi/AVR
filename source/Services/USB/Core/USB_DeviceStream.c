@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Common/Services/USB/Core/USB_DeviceStream.c
+/** @file Services/USB/Core/USB_DeviceStream.c
  *  @brief USB device stream implementation for USB service.
  * 
  *  This file contains the implementation of the USB stream.
@@ -32,12 +32,10 @@
 
 #include "Services/USB/Core/USB_DeviceStream.h"
 
-volatile USB_State_t _DeviceState;
-
 /** @brief	Check the control endpoint for errors.
  *  @return	Error code
  */
-static Endpoint_CS_State_t USB_DeviceStream_GetControlEndpointState(void)
+static Endpoint_CS_ErrorCode_t USB_DeviceStream_GetControlEndpointState(void)
 {
 	// Cancel transmission if the device got disconnected
 	if(_DeviceState == USB_STATE_UNATTACHED)
@@ -58,43 +56,39 @@ static Endpoint_CS_State_t USB_DeviceStream_GetControlEndpointState(void)
 	return ENDPOINT_CS_NO_ERROR;
 }
 
-/** @brief	Wait until the device become ready.
- *  @return	Error code
+/** @brief			Wait until the device become ready.
+ *  @param Timeout	Timeout in ms
+ *  @return			Error code
  */
-static Endpoint_DS_ErrorCode_t USB_DeviceStream_WaitReady(void)
-{
-	uint8_t Timeout = 100;
-	
+static Endpoint_DS_ErrorCode_t USB_DeviceStream_WaitReady(uint8_t Timeout)
+{	
 	// Get the start frame
 	uint16_t StartFrame = USB_Device_GetFrameNumber();
 
-	while(1)
+	while(Timeout)
 	{
-		// Check if the IN direction is ready
-		if(Endpoint_GetDirection() == ENDPOINT_DIRECTION_IN)
+		// Report ready when IN endpoint and empty
+		if((Endpoint_GetDirection() == ENDPOINT_DIRECTION_IN) && Endpoint_INReady())
 		{
-			if(Endpoint_INReady())
-			{
-				return ENDPOINT_DS_NO_ERROR;
-			}
+			return ENDPOINT_DS_NO_ERROR;
 		}
-		// Check if the OUT direction is ready
-		else
+		// Report ready when OUT endpoint and full
+		else if((Endpoint_GetDirection() == ENDPOINT_DIRECTION_OUT) && Endpoint_OUTReceived())
 		{
-			if(Endpoint_OUTReceived())
-			{
-				return ENDPOINT_DS_NO_ERROR;
-			}
+			return ENDPOINT_DS_NO_ERROR;
 		}
 
+		// Cancel transmission if the device got disconnected
 		if(_DeviceState == USB_STATE_UNATTACHED)
 		{
 			return ENDPOINT_DS_DISCONNECT;
 		}
+		// Cancel transmission if the device enter suspend mode
 		else if(_DeviceState == USB_STATE_SUSPEND)
 		{
 			return ENDPOINT_DS_SUSPEND;
 		}
+		// Cancel transmission when the endpoint is stalled
 		else if(Endpoint_IsSTALL())
 		{
 			return ENDPOINT_DS_STALLED;
@@ -104,16 +98,15 @@ static Endpoint_DS_ErrorCode_t USB_DeviceStream_WaitReady(void)
 		if(NewFrame != StartFrame)
 		{
 			StartFrame = NewFrame;
-
-			if(!(Timeout--))
-			{
-				return ENDPOINT_DS_TIMEOUT;
-			}
+			Timeout--;
 		}
 	}
+
+	// Cancel when timeout (only FULL- and HIGH-Speed)
+	return ENDPOINT_DS_TIMEOUT;
 }
 
-Endpoint_CS_State_t USB_DeviceStream_ControlIN(const void* Buffer, const uint16_t Length, const uint16_t RequestedLength)
+Endpoint_CS_ErrorCode_t USB_DeviceStream_ControlIN(const void* Buffer, const uint16_t Length, const uint16_t RequestedLength)
 {
 	uint8_t* Buffer_Temp = (uint8_t*)Buffer;
 	uint16_t Length_Temp = Length;
@@ -125,7 +118,7 @@ Endpoint_CS_State_t USB_DeviceStream_ControlIN(const void* Buffer, const uint16_
 
 	while(Length_Temp)
 	{
-		Endpoint_CS_State_t State = USB_DeviceStream_GetControlEndpointState();
+		Endpoint_CS_ErrorCode_t State = USB_DeviceStream_GetControlEndpointState();
 		if(State != ENDPOINT_CS_NO_ERROR)
 		{
 			return State;
@@ -157,7 +150,7 @@ Endpoint_CS_State_t USB_DeviceStream_ControlIN(const void* Buffer, const uint16_
 	// Wait for receive complete
 	while(!Endpoint_OUTReceived())
 	{
-		Endpoint_CS_State_t State = USB_DeviceStream_GetControlEndpointState();
+		Endpoint_CS_ErrorCode_t State = USB_DeviceStream_GetControlEndpointState();
 		if(State != ENDPOINT_CS_NO_ERROR)
 		{
 			return State;
@@ -170,51 +163,38 @@ Endpoint_CS_State_t USB_DeviceStream_ControlIN(const void* Buffer, const uint16_
 	return ENDPOINT_CS_NO_ERROR;
 }
 
-Endpoint_DS_ErrorCode_t USB_DeviceStream_DataIN(const void* Buffer, uint16_t Length, uint16_t* BytesProcessed)
+Endpoint_DS_ErrorCode_t USB_DeviceStream_DataIN(const void* Buffer, const uint16_t Length, uint16_t* Offset)
 {
+	uint16_t Length_Temp = Length;
 	uint8_t* Buffer_Temp = (uint8_t*)Buffer;
-	uint16_t BytesInTransfer = 0x00;
-	Endpoint_DS_ErrorCode_t ErrorCode = ENDPOINT_DS_NO_ERROR;
+	uint16_t Transfer = 0x00;
 
-	// Wait for the endpoint to become ready
-	ErrorCode = USB_DeviceStream_WaitReady();
-	if(ErrorCode != ENDPOINT_DS_NO_ERROR)
+	if(Offset != NULL)
 	{
-		return ErrorCode;
+		Length_Temp -= *Offset;
+		Buffer_Temp += *Offset;
 	}
 
-	if(BytesProcessed != NULL)
+	for(uint16_t i = 0x00; i < Length_Temp; i++)
 	{
-		Length -= *BytesProcessed;
-		Buffer_Temp += *BytesProcessed;
-	}
-
-	while(Length)
-	{
-		// Check if the bank is full
+		// Check if the bank is full and transmit the data
 		if(!(Endpoint_IsReadWriteAllowed()))
 		{
-			if(BytesProcessed != NULL)
-			{
-				*BytesProcessed += BytesInTransfer;
-				return ENDPOINT_DS_INCOMPLETE;
-			}
+			*Offset += Transfer;
 
-			ErrorCode = USB_DeviceStream_WaitReady();
+			Endpoint_DS_ErrorCode_t ErrorCode = USB_DeviceStream_WaitReady(100);
 			if(ErrorCode != ENDPOINT_DS_NO_ERROR)
 			{
 				return ErrorCode;
 			}
 
-			// Clear the bank
 			Endpoint_FlushIN();
 		}
-		// Send data if write permissions are given
 		else
 		{
+			// Fill the buffer
 			Endpoint_WriteByte(*Buffer_Temp++);
-			Length--;
-			BytesInTransfer++;
+			Transfer++;
 		}
 	}
 

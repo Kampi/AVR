@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: USB endpoint for AVR8 devices.
+ *  File info: Endpoint definition for the Atmel AVR8 AT90 USB interface.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,32 +23,27 @@
  */
 
 /** @file Arch/AVR8/AT90/USB/Endpoint.c
- *  @brief USB endpoint for AVR8 devices.
+ *  @brief Endpoint definition for the Atmel AVR8 AT90 USB interface.
  * 
  *  This file contains the implementation of the AVR8 endpoint driver.
  *
  *  @author Daniel Kampert
  */
 
-#include "Board.h"
-
 #include "Arch/AVR8/AT90/USB/Endpoint.h"
-
 #include "Services/USB/Core/StandardRequest.h"
-
-volatile USB_State_t _DeviceState;
 
 Bool_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, const Endpoint_Size_t Size, const Bool_t DoubleBank)
 {
 	uint8_t Address_Temp = Address & 0x0F;
-	
-	if((Address_Temp & 0x07) > USB_TOTAL_ENDPOINTS)
+
+	if((Address_Temp & 0x07) > USB_MAX_ENDPOINTS)
 	{
 		return FALSE;
 	}
 
 	// Allocate the memory for the endpoints
-	for(uint8_t i = Address_Temp; i < USB_TOTAL_ENDPOINTS; i++)
+	for(uint8_t i = Address_Temp; i < USB_MAX_ENDPOINTS; i++)
 	{
 		uint8_t UECFG0X_Temp;
 		uint8_t UECFG1X_Temp;
@@ -60,18 +55,18 @@ Bool_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, con
 		{
 			// Configure UECFG0X-register
 			UECFG0X_Temp = (Type << EPTYPE0);
-			
+
 			if(Address & ENDPOINT_DIR_MASK_IN)
 			{
 				UECFG0X_Temp |= (0x01 << EPDIR);
 			}
-			
+
 			// Configure UECFG1X-register			
 			if(DoubleBank > 0x01)
 			{
 				UECFG1X_Temp |= (0x01 << EPBK0);
 			}
-			
+
 			if(Size > 0x06)
 			{
 				UECFG1X_Temp &= ~((0x01 << EPSIZE2) | (0x01 << EPSIZE1) | (0x01 << EPSIZE0));
@@ -80,10 +75,10 @@ Bool_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, con
 			{
 				UECFG1X_Temp |= (Size << EPSIZE0);
 			}
-			
+
 			// Set the ALLOC bit
 			UECFG1X_Temp = (0x01 << ALLOC);
-			
+
 			// Configure UEIENX-register
 			UEIENX_Temp = 0x00;
 		}
@@ -122,7 +117,7 @@ Bool_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, con
 
 	// Select the configured endpoint
 	Endpoint_Select(Address_Temp);
-	
+
 	return TRUE;
 }
 

@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: 
+ *  File info: Standard request definitions for USB.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Services/USB/Core/StandardRequest.h
- *  @brief
+ *  @brief Standard request definitions for USB.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs
@@ -33,7 +33,7 @@
 #define STANDARDREQUEST_H_
 
  #include "Common/Common.h"
- 
+
  /** @ingroup 	USB
   *  @brief		USB standard requests.
   */
@@ -118,4 +118,4 @@
 	 uint16_t wLength;													/**< Number of bytes to transfer if there is a data stage */
  } __attribute__((packed)) USB_SetupPacket_t;
  
-#endif /* STANDARDREQUEST_H_  */ 
+#endif /* STANDARDREQUEST_H_ */ 

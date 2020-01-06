@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Interrupt functions for Atmel AVR USB.
+ *  File info: Interrupt functions for Atmel AVR AT90 USB interface.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Arch/AVR8/AT90/AT90/USB/USB_Interrupt.h
- *  @brief Interrupt functions for Atmel AVR USB.
+ *  @brief Interrupt functions for Atmel AVR AT90 USB interface.
  *
  *  This file contains the implementation of the Atmel AVR USB driver interrupts.
  *
@@ -40,12 +40,12 @@
   */
  typedef enum
  {
-	 USB_VBUS_INTERRUPT = 0x00,				/**< VBus interrupt */ 
-	 USB_WAKE_INTERRUPT = 0x01,				/**< Wake up interrupt */ 
-	 USB_SUSPEND_INTERRUPT = 0x02,			/**< Suspend interrupt */ 
-	 USB_EOR_INTERRUPT = 0x03,				/**< End of reset interrupt */ 
-	 USB_SOF_INTERRUPT = 0x04,				/**< Start of frame interrupt */ 
-	 USB_RXSTP_INTERRUPT = 0x05,			/**< Setup interrupt flag */ 
+	 USB_VBUS_INTERRUPT = 0x00,											/**< VBus interrupt */ 
+	 USB_WAKE_INTERRUPT = 0x01,											/**< Wake up interrupt */ 
+	 USB_SUSPEND_INTERRUPT = 0x02,										/**< Suspend interrupt */ 
+	 USB_EOR_INTERRUPT = 0x03,											/**< End of reset interrupt */ 
+	 USB_SOF_INTERRUPT = 0x04,											/**< Start of frame interrupt */ 
+	 USB_RXSTP_INTERRUPT = 0x05,										/**< Setup interrupt flag */ 
  } USB_InterruptType_t;
 
  /** @brief			Enable a specific USB interrupt.

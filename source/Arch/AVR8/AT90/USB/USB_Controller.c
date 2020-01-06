@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: USB controller for Atmel AVR8 MCUs.
+ *  File info: USB controller for Atmel AVR8 AT90 MCUs.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -19,11 +19,11 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
 /** @file Arch/AVR8/AT90/USB/USB_Controller.c
- *  @brief USB-Controller for Atmel AVR8 MCUs.
+ *  @brief USB controller for Atmel AVR8 AT90 MCUs.
  * 
  *  This file contains the implementation of the AVR8 USB driver.
  *
@@ -32,27 +32,23 @@
 
 #include "Arch/AVR8/AT90/USB/USB_Controller.h"
 
-volatile USB_State_t _DeviceState = USB_STATE_UNATTACHED;
-USB_DeviceCallbacks_t _USBEvents;
-uint8_t _Configuration = 0x00;
-
 void USB_Controller_Init(const USB_Config_t* Config)
 {	
 	USB_Controller_ResetInterface();
 	USB_Controller_EnableReg();
 	USB_Controller_EnableClk();
 	USB_Controller_EnableVBUSPad();
-	
+
 	USB_Controller_SetMode(Config->Mode);
 	if(Config->Mode == USB_MODE_DEVICE)
 	{
 		USB_Device_SetSpeed(Config->Speed);
-	
+
 		// Enable all interrupts for plug-in detection
 		USB_Controller_EnableInterrupt(USB_VBUS_INTERRUPT);
 		USB_Controller_EnableInterrupt(USB_SUSPEND_INTERRUPT);
 		USB_Controller_EnableInterrupt(USB_EOR_INTERRUPT);
-		
+
 		if(Config->EnableSOFCallbacks)
 		{
 			USB_Controller_EnableInterrupt(USB_SOF_INTERRUPT);
@@ -67,7 +63,6 @@ void USB_Controller_Init(const USB_Config_t* Config)
 	}
 	else if(Config->Mode == USB_MODE_HOST)
 	{
-	
 	}
 }
 
@@ -82,9 +77,8 @@ void USB_Controller_Disable(void)
 
 void USB_Controller_ResetInterface(void)
 {
-	_Configuration = 0x00;
-
 	USB_Controller_Reset();
-	
+
+	_Configuration = 0x00;
 	_DeviceState = USB_STATE_UNATTACHED;
 }

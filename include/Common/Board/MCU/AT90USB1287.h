@@ -53,6 +53,6 @@
  /*
 	USB
  */
- #define USB_TOTAL_ENDPOINTS							7
+ #define USB_MAX_ENDPOINTS								7
 
 #endif /* AT90USB1287__H_ */

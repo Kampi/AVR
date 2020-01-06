@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
 /** @file Services/USB/Class/MassStorage/MassStorage_Common.h
@@ -109,11 +109,11 @@
 																			 support multiple LUNs, the host shall place into this field the LUN to which this command block is \n
 																			 addressed. Otherwise, the host shall set this field to zero. */
 	 uint8_t bCBWCBLength;												/**< The valid length of the CBWCB in bytes. This defines the valid length of the command block. The \n
-																			 only legal values are 1 through 16 (01h through 10h). All other values are reserved. */
+																			 only legal values are 1 through 16 (0x01 through 0x10). All other values are reserved. */
 	 uint8_t CBWCB[16];													/**< The command block to be executed by the device. The device shall interpret the first \ref USB_MassStorage_CommandBlockWrapper_t.bCBWCBLength \n
 																			 bytes in this field as a command block as defined by the command set identified by \ref USB_InterfaceDescriptor_t.bInterfaceSubClass. \n
-																			 If the command set supported by the device uses command blocks of fewer than 16 (10h) bytes in \n
-																			 length, the significant bytes shall be transferred first, beginning with the byte at offset 15 (Fh). The \n
+																			 If the command set supported by the device uses command blocks of fewer than 16 (0x10) bytes in \n
+																			 length, the significant bytes shall be transferred first, beginning with the byte at offset 15 (0x0F). The \n
 																			 device shall ignore the content of the CBWCB field past the byte at offset (15 + \ref USB_MassStorage_CommandBlockWrapper_t.bCBWCBLength - 1). */
  } __attribute__((packed)) USB_MassStorage_CommandBlockWrapper_t;
 
@@ -133,11 +133,11 @@
 	 uint8_t  bCSWStatus;												/**< \ref USB_MassStorage_CommandStatusWrapper_t.bCSWStatus indicates the success or failure of the command. The device shall set this byte to zero if \n
 																			 the command completed successfully. A non-zero value shall indicate a failure during command \n
 																			 execution according to the following table: \n
-																				 00h		Command Passed ("good status") \n
-																				 01h		Command Failed \n
-																				 02h		Phase Error
-																				 03h / 04h	Reserved (Obsolete) \n
-																				 05h to FFh	Reserved */
+																				 0x00			Command Passed ("good status") \n
+																				 0x01			Command Failed \n
+																				 0x02			Phase Error
+																				 0x03 / 0x04	Reserved (Obsolete) \n
+																				 0x05 to 0xFF	Reserved */
  } __attribute__((packed)) USB_MassStorage_CommandStatusWrapper_t;
 
 #endif /* MASSSTORAGE_COMMON_H_ */

@@ -32,7 +32,33 @@
 #ifndef ANALOGSENSORS_USBKEY_H_
 #define ANALOGSENSORS_USBKEY_H_
 
- #include "Board.h"
  #include "Common/Common.h"
+
+ extern const uint16_t TemperatureCodes[];
+ extern const uint16_t Size_TemperatureCodes;
+
+ /** @brief			Convert an ADC result into a temperature [°C].
+  *  @param Result	ADC result
+  *  @return		Temperature in °C
+  */
+ static inline uint16_t ADC2Temp(const uint16_t Result) __attribute__ ((always_inline));
+ static inline uint16_t ADC2Temp(const uint16_t Result)
+ {
+	 if(Result < TemperatureCodes[0]) 
+	 {
+		 uint16_t i = 0x00;
+		 for(i = 0x00; i < (Size_TemperatureCodes / 2); i++)
+		 {
+			 if(TemperatureCodes[i] < Result)
+			 {
+				 break;
+			 }
+		 }
+
+		 return i - 10;
+	 }
+	 
+	 return -10;
+ }
 
 #endif /* ANALOGSENSORS_USBKEY_H_ */

@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
 /** @file Services/USB/USB.h
@@ -33,7 +33,7 @@
 
 #ifndef USB_H_
 #define USB_H_
- 
+
  #include "Common/Common.h"
 
  #if(MCU_ARCH == MCU_ARCH_AVR8)
@@ -47,21 +47,21 @@
  #else
 	 #error "Unknown CPU architecture!"
  #endif
- 
+
  #include "Services/USB/Class/Class.h"
  #include "Services/USB/Core/StandardDescriptor.h"
  #include "Services/USB/Core/USB_DeviceStream.h"
  #include "Services/USB/Core/USB_DeviceStdRequest.h"
 
  /** @brief			Initialize the USB service.
-  *  @param Config	Pointer to USB configuration object
+  *  @param Config	Pointer to #USB_Config_t object
   */
  void USB_Init(const USB_Config_t* Config);
- 
+
  /** @brief	USB polling function to process the USB controller.
   */
  void USB_Poll(void);
- 
+
  /** @brief		Get the state of the USB state machine.
   *  @return	State of the state machine
   */

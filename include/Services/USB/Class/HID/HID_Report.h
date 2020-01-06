@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
 /** @file Services/USB/Class/HID/HID_Report.h
@@ -27,7 +27,7 @@
  *		   See https://www.usb.org/sites/default/files/documents/hid1_11.pdf for more information.
  *
  *  @author Daniel Kampert
- *  @bug No known bugs
+ *  @bug 	- Incomplete
  */
 
 #ifndef HID_REPORT_H_
@@ -78,4 +78,4 @@
 	 HID_SIZE_3 = 0x02,										/**< 3 byte data */
  } HID_ReportSize_t;
 
-#endif /* HID_REPORT_H_ */ 
+#endif /* HID_REPORT_H_ */

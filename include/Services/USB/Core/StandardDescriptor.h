@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
 /** @file Services/USB/Core/StandardDescriptor.h
@@ -62,7 +62,7 @@
  /** @brief Use class code info from Interface descriptors. Use only with #USB_CLASS_USE_INTERFACE.
   */
  #define USB_SUBCLASS_NONE								0x00
- 
+
  /** @brief Use protocol code info from Interface descriptors. Use only with #USB_CLASS_USE_INTERFACE.
   */
  #define USB_PROTOCOL_NONE								0x00
@@ -81,7 +81,7 @@
 
  /** @ingroup 	USB
   *  @brief 	USB base classes
-  *  			NOTE: Please read https://www.usb.org/defined-class-codes  when you need more information.
+  *  			NOTE: Please read https://www.usb.org/defined-class-codes when you need more information.
   */
  typedef enum
  {
@@ -311,7 +311,7 @@
  } USB_SubLangID_t;
 
  /** @ingroup 	USB
-  *  @brief		USB configuration #bmAttributes-
+  *  @brief		USB configuration for the \ref USB_EndpointDescriptor_t.bmAttributes field.
   */
  typedef enum
  {
@@ -321,7 +321,7 @@
  } USB_ConfigAttributes_t;
 
  /** @ingroup 	USB
-  *  @brief		USB endpoint #bmAttributes.
+  *  @brief		USB endpoint for the \ref USB_EndpointDescriptor_t.bmAttributes field.
   */
  typedef enum
  {
@@ -370,10 +370,10 @@
 	 uint8_t bNumInterfaces;											/**< Number of interfaces supported by this configuration */
 	 uint8_t bConfigurationValue;										/**< Value used by Set Configuration to select this configuration */
 	 uint8_t iConfiguration;											/**< Index of string descriptor describing configuration - set to 0 if no string */
-	 uint8_t bmAttributes;												/**< D7: Must be set to 1
+	 uint8_t bmAttributes;												/**< D7: Must be set to 1.
 																			 D6: Self-powered
 																			 D5: Remote Wakeup
-																			 D4-D0: Set to 0 */
+																			 D4-D0: Set to 0. */
 	 uint8_t bMaxPower;													/**< Maximum current drawn by device in this configuration. In units of 2mA. So 50 means 100 mA */
  } __attribute__((packed)) USB_ConfigurationDescriptor_t;
 
@@ -401,28 +401,28 @@
 	 uint8_t bLength;													/**< Size of this descriptor in bytes */
 	 uint8_t bDescriptorType;											/**< ENDPOINT descriptor type (=5) */
 	 uint8_t bEndpointAddress;											/**< The address of this endpoint within the device.
-																			 D7: Direction
-																			 0 = OUT, 1 = IN
-																			 D6-D4: Set to 0
+																			 D7: Direction \n
+																				0	OUT \n
+																				1	IN \n
+																			 D6-D4: Set to 0. \n
 																			 D3-D0: Endpoint number */
-	 uint8_t bmAttributes;												/**< D1:0 Transfer Type
-																			 00 = Control
-																			 01 = Isochronous
-																			 10 = Bulk
-																			 11 = Interrupt
-																			 The following only apply to isochronous endpoints. Else set to 0.
-																			 D3:2 Synchronization Type
-																			 00 = No Synchronization
-																			 01 = Asynchronous
-																			 10 = Adaptive
-																			 11 = Synchronous
-																			 D5:4 Usage Type
-																			 00 = Data endpoint
-																			 01 = Feedback endpoint
-																			 10 = Implicit feedback Data endpoint
-																			 11 = Reserved
-																			 D7:6 Reserved
-																			 Set to 0 */
+	 uint8_t bmAttributes;												/**< D1:0 Transfer Type \n
+																				00	Control \n
+																				01	Isochronous \n
+																				10	Bulk \n
+																				11	Interrupt \n
+																			 The following only apply to isochronous endpoints. Else set to 0. \n
+																			 D3:2 Synchronization Type \n
+																				00	No Synchronization \n
+																				01	Asynchronous \n
+																				10	Adaptive \n
+																				11	Synchronous \n
+																			 D5:4 Usage Type \n
+																				00	Data endpoint \n
+																				01	Feedback endpoint \n
+																				10	Implicit feedback Data endpoint \n
+																				11	Reserved \n
+																			 D7:6 Reserved. Set to 0. */
 	 uint16_t wMaxPacketSize;											/**< Maximum packet size this endpoint can send or receive 
 																		     when this configuration is selected  */
 	 uint8_t bInterval;													/**< Interval for polling endpoint for data transfers. 
@@ -447,4 +447,4 @@
   */
  extern const void* USB_GetDescriptor(const uint16_t wValue, const uint16_t wIndex, uint16_t* Size);
 
-#endif /* STANDARDDESCRIPTOR_H_  */ 
+#endif /* STANDARDDESCRIPTOR_H_ */ 

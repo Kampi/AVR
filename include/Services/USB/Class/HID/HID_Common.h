@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
 /** @file Services/USB/Class/HID/HID_Common.h
@@ -418,7 +418,7 @@
  typedef struct
  {
 	 uint8_t Modifier;													/**< Keyboard modifier byte */
-	 uint8_t Reserved;													/**< Reserved, always set to 0 */
+	 uint8_t Reserved;													/**< Reserved. Always set to 0 */
 	 uint8_t KeyCode[6];												/**< Key codes of the pressed keys */
  } __attribute__((packed)) USB_KeyboardReport_t;
 

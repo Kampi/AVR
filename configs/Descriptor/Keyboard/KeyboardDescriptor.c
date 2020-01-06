@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
 /** @file KeyboardDescriptor.c
@@ -36,8 +36,6 @@ const USB_StringDescriptor_t PROGMEM LANGID = LANG_TO_STRING_DESCRIPTOR(CONV_LAN
 const USB_StringDescriptor_t PROGMEM ManufacturerString = WCHAR_TO_STRING_DESCRIPTOR(L"Daniel Kampert");
 const USB_StringDescriptor_t PROGMEM ProductString = WCHAR_TO_STRING_DESCRIPTOR(L"AT90USBKey Keyboard example");
 const USB_StringDescriptor_t PROGMEM SerialString = WCHAR_TO_STRING_DESCRIPTOR(L"123456");
-
-const uint8_t Endpoint_ControlSize = KEYBOARD_CTRL_EP_SIZE;
 
 const uint8_t PROGMEM KeyboardReport[] =
 {
@@ -121,7 +119,7 @@ const USB_Configuration_t PROGMEM ConfigurationDescriptor[] =
 		.bInterfaceProtocol = HID_PROTOCOL_KEYBOARD,
 		.iInterface = 0x00,
 	},
-	[0].KeyboardHID[0] =
+	[0].KeyboardHID =
 	{
 		.bLength = sizeof(USB_HID_Descriptor_t),
 		.bDescriptorType = HID_DESCRIPTOR_TYPE_HID,
@@ -174,22 +172,22 @@ const void* USB_GetDescriptor(const uint16_t wValue, const uint16_t wIndex, uint
 		{
 			switch(DescriptorNumber)
 			{
-				case MOUSE_STRING_ID_LANGUAGE:
+				case KEYBOARD_STRING_ID_LANGUAGE:
 				{
 					*Size = pgm_read_byte(&LANGID.bLength);
 					return &LANGID;
 				}
-				case MOUSE_STRING_ID_MANUFACTURER:
+				case KEYBOARD_STRING_ID_MANUFACTURER:
 				{
 					*Size = pgm_read_byte(&ManufacturerString.bLength);
 					return &ManufacturerString;
 				}
-				case MOUSE_STRING_ID_PRODUCT:
+				case KEYBOARD_STRING_ID_PRODUCT:
 				{
 					*Size = pgm_read_byte(&ProductString.bLength);
 					return &ProductString;
 				}
-				case MOUSE_STRING_ID_SERIAL:
+				case KEYBOARD_STRING_ID_SERIAL:
 				{
 					*Size = pgm_read_byte(&SerialString.bLength);
 					return &SerialString;
@@ -199,12 +197,12 @@ const void* USB_GetDescriptor(const uint16_t wValue, const uint16_t wIndex, uint
 		case HID_DESCRIPTOR_TYPE_HID:
 		{
 			*Size = sizeof(USB_HID_Descriptor_t);
-			return &ConfigurationDescriptor[DescriptorNumber].MouseHID;
+			return &ConfigurationDescriptor[DescriptorNumber].KeyboardHID;
 		}
 		case HID_DESCRIPTOR_TYPE_REPORT:
 		{
-			*Size = sizeof(MouseReport);
-			return &MouseReport;
+			*Size = sizeof(KeyboardReport);
+			return &KeyboardReport;
 		}
 	}
 

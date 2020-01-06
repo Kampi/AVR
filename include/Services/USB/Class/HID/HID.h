@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
 /** @file Services/USB/Class/HID/HID.h
@@ -35,4 +35,4 @@
  #include "HID_Common.h"
  #include "HID_Report.h"
 
-#endif /* HID_H_  */ 
+#endif /* HID_H_  */

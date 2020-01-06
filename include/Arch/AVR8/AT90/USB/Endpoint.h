@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Endpoint definition for Atmel AVR MCUs.
+ *  File info: Endpoint definition for the Atmel AVR8 AT90 USB interface.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -19,11 +19,11 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */ 
 
 /** @file Arch/AVR8/AT90/USB/Endpoint.h
- *  @brief USB endpoint for Atmel AVR MCUs.
+ *  @brief Endpoint definition for the Atmel AVR8 AT90 USB interface.
  *
  *  This file contains the prototypes and definitions for Atmel AVR endpoints.
  *
@@ -35,54 +35,39 @@
 #define ENDPOINT_H_
 
  #include "Arch/AVR8/AT90/USB/USB_Controller.h"
+ #include "Services/USB/USB_Types.h"
  #include "Services/USB/Core/StandardRequest.h"
-
- /** @brief	Max. endpoints for the device controller.
-  */
- #define MAX_ENDPOINTS									0x07
-
- /** @brief	Control endpoint address for USB devices.
-  */
- #define ENDPOINT_CONTROL_ADDRESS						0x00
-
- /** @brief	Default size for control endpoint.
-  */
- #define ENDPOINT_CONTROL_DEFAULT_SIZE					0x08
-
- /** @brief	Mask for IN endpoint.
-  */
- #define ENDPOINT_DIR_MASK_IN							0x80
 
  /** @brief	Endpoint types.
   */
  typedef enum
  {
-	 ENDPOINT_TYPE_CONTROL = 0x00,						/**< Control endpoint */ 
-	 ENDPOINT_TYPE_ISOCHRONOUS = 0x01,					/**< Isochronous endpoint */ 
-	 ENDPOINT_TYPE_BULK = 0x02,							/**< Bulk endpoint */ 
-	 ENDPOINT_TYPE_INTERRUPT = 0x03						/**< Interrupt endpoint */ 
+	 ENDPOINT_TYPE_CONTROL = 0x00,										/**< Control endpoint */ 
+	 ENDPOINT_TYPE_ISOCHRONOUS = 0x01,									/**< Isochronous endpoint */ 
+	 ENDPOINT_TYPE_BULK = 0x02,											/**< Bulk endpoint */ 
+	 ENDPOINT_TYPE_INTERRUPT = 0x03										/**< Interrupt endpoint */ 
  } Endpoint_Type_t;
 
  /** @brief	Endpoint size in bytes.
   */
  typedef enum
  {
-	 ENDPOINT_SIZE_8 = 0x00,							/**< Endpoint size 8 bytes */ 
-	 ENDPOINT_SIZE_16 = 0x01,							/**< Endpoint size 16 bytes */ 
-	 ENDPOINT_SIZE_32 = 0x02,							/**< Endpoint size 32 bytes */ 
-	 ENDPOINT_SIZE_64 = 0x03,							/**< Endpoint size 64 bytes */ 
-	 ENDPOINT_SIZE_128 = 0x04,							/**< Endpoint size 128 bytes \n
-															 NOTE: Only for endpoint 1! */ 
-	 ENDPOINT_SIZE_256 = 0x05,							/**< Endpoint size 256 bytes \n
-															 NOTE: Only for endpoint 1! */ 
+	 ENDPOINT_SIZE_8 = 0x00,											/**< Endpoint size 8 bytes */ 
+	 ENDPOINT_SIZE_16 = 0x01,											/**< Endpoint size 16 bytes */ 
+	 ENDPOINT_SIZE_32 = 0x02,											/**< Endpoint size 32 bytes */ 
+	 ENDPOINT_SIZE_64 = 0x03,											/**< Endpoint size 64 bytes */ 
+	 ENDPOINT_SIZE_128 = 0x04,											/**< Endpoint size 128 bytes \n
+																			 NOTE: Only for endpoint 1! */ 
+	 ENDPOINT_SIZE_256 = 0x05,											/**< Endpoint size 256 bytes \n
+																			 NOTE: Only for endpoint 1! */ 
  } Endpoint_Size_t;
 
  /** @brief	Endpoint directions.
   */
  typedef enum
  {
-	 ENDPOINT_DIRECTION_OUT = 0x00,						/**< OUT endpoint */ 
-	 ENDPOINT_DIRECTION_IN = 0x80,						/**< IN endpoint */ 
+	 ENDPOINT_DIRECTION_OUT = 0x00,										/**< OUT endpoint */ 
+	 ENDPOINT_DIRECTION_IN = 0x80,										/**< IN endpoint */ 
  } Endpoint_Direction_t;
 
  /** @brief	Control endpoint size in bytes.
@@ -128,7 +113,7 @@
  {
 	 UECONX &= ~(0x01 << EPEN);
  }
- 
+
  /** @brief		Get the direction of the active endpoint.
   *				NOTE: You have so use #Endpoint_Select first!
   *  @return	Endpoint direction
@@ -143,7 +128,7 @@
 	 
 	 return ENDPOINT_DIRECTION_OUT;
  }
- 
+
  /** @brief		Get the current active endpoint.
   *  @return	Endpoint address
   */
@@ -228,7 +213,7 @@
  {
 	 UECONX |= (0x01 << STALLRQ);
  }
- 
+
  /** @brief	Clear the stall condition.
   *			NOTE: You have so use #Endpoint_Select first!
   */
@@ -277,7 +262,7 @@
  {
 	 UEDATX = Data;
  }
- 
+
  /** @brief	Write two data bytes (one integer) in the currently selected endpoint.
   *			NOTE: You have so use #Endpoint_Select first!
   *  @Data	Data bytes
@@ -303,4 +288,4 @@
   */
  void Endpoint_HandleSTATUS(const USB_RequestDirection_t Direction);
 
-#endif /* ENDPOINT_H_  */
+#endif /* ENDPOINT_H_ */

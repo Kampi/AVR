@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
 /** @file MassStorageDescriptor.c
@@ -32,30 +32,28 @@
 
 #include "MassStorageDescriptor.h"
 
-const USB_StringDescriptor_t PROGMEM LANGID = LANG_TO_STRING_DESCRIPTOR(CONV_LANG(LANG_ENGLISH, SUBLANG_ARABIC_SAUDI_ARABIA));
+const USB_StringDescriptor_t PROGMEM LANGID = LANG_TO_STRING_DESCRIPTOR(0x409);
 const USB_StringDescriptor_t PROGMEM ManufacturerString = WCHAR_TO_STRING_DESCRIPTOR(L"Daniel Kampert");
 const USB_StringDescriptor_t PROGMEM ProductString = WCHAR_TO_STRING_DESCRIPTOR(L"AT90USBKey Mass Storage example");
 const USB_StringDescriptor_t PROGMEM SerialString = WCHAR_TO_STRING_DESCRIPTOR(L"123456");
-
-const uint8_t Endpoint_ControlSize = MASSSTORAGE_CTRL_EP_SIZE;
 
 const USB_DeviceDescriptor_t PROGMEM DeviceDescriptor =
 {
 	.bLength                = sizeof(USB_DeviceDescriptor_t),
 	.bDescriptorType		= DESCRIPTOR_TYPE_DEVICE,
 	.bcdUSB			        = USB_VERSION(1, 1, 0),
-	.bDeviceClass			= USB_CLASS_NONE,
+	.bDeviceClass			= USB_CLASS_USE_INTERFACE,
 	.bDeviceSubClass		= USB_SUBCLASS_NONE,
 	.bDeviceProtocol		= USB_PROTOCOL_NONE,
 	.bMaxPacketSize0		= MASSSTORAGE_CTRL_EP_SIZE,
 
 	.idVendor				= 0x03EB,
-	.idProduct				= 0x2042,
+	.idProduct				= 0x2045,
 	.bcdDevice				= USB_VERSION(1, 0, 0),
 	
-	.iManufacturer			= 1,
-	.iProduct				= 2,
-	.iSerialNumber          = 0,
+	.iManufacturer			= MASSSTORAGE_STRING_ID_MANUFACTURER,
+	.iProduct				= MASSSTORAGE_STRING_ID_PRODUCT,
+	.iSerialNumber          = MASSSTORAGE_STRING_ID_SERIAL,
 
 	.bNumConfigurations		= 1,
 };
@@ -70,7 +68,7 @@ const USB_Configuration_t PROGMEM ConfigurationDescriptor[] =
 		.bNumInterfaces = 0x01,
 		.bConfigurationValue = 0x01,
 		.iConfiguration = 0x00,
-		.bmAttributes = USB_MASK2CONFIG(USB_CONFIG_SELF_POWERED),
+		.bmAttributes = USB_MASK2CONFIG(USB_CONFIG_NO_CONFIG),
 		.bMaxPower = USB_CURRENT_CONSUMPTION(100),
 	},
 	[0].Interface =
@@ -90,18 +88,18 @@ const USB_Configuration_t PROGMEM ConfigurationDescriptor[] =
 		.bLength = sizeof(USB_EndpointDescriptor_t),
 		.bDescriptorType = DESCRIPTOR_TYPE_ENDPOINT,
 		.bEndpointAddress = MASSSTORAGE_IN_EP,
-		.bmAttributes = USB_MASK2ENDPOINT(USB_ENDPOINT_USAGE_DATA, USB_ENDPOINT_SYNC_NO, USB_ENDPOINT_TRANSFER_BULK),
+		.bmAttributes = USB_ENDPOINT_USAGE_DATA | USB_ENDPOINT_SYNC_NO | USB_ENDPOINT_TRANSFER_BULK,
 		.wMaxPacketSize = MASSSTORAGE_EP_SIZE,
-		.bInterval = 0x05,
+		.bInterval = 0x00,
 	},
 	[0].DataOUTEndpoint =
 	{
 		.bLength = sizeof(USB_EndpointDescriptor_t),
 		.bDescriptorType = DESCRIPTOR_TYPE_ENDPOINT,
 		.bEndpointAddress = MASSSTORAGE_OUT_EP,
-		.bmAttributes = USB_MASK2ENDPOINT(USB_ENDPOINT_USAGE_DATA, USB_ENDPOINT_SYNC_NO, USB_ENDPOINT_TRANSFER_BULK),
+		.bmAttributes = USB_ENDPOINT_USAGE_DATA | USB_ENDPOINT_SYNC_NO | USB_ENDPOINT_TRANSFER_BULK,
 		.wMaxPacketSize = MASSSTORAGE_EP_SIZE,
-		.bInterval = 0x05,
+		.bInterval = 0x00,
 	}
 };
 
@@ -128,22 +126,22 @@ const void* USB_GetDescriptor(const uint16_t wValue, const uint16_t wIndex, uint
 		{
 			switch(DescriptorNumber)
 			{
-				case MOUSE_STRING_ID_LANGUAGE:
+				case MASSSTORAGE_STRING_ID_LANGUAGE:
 				{
 					*Size = pgm_read_byte(&LANGID.bLength);
 					return &LANGID;
 				}
-				case MOUSE_STRING_ID_MANUFACTURER:
+				case MASSSTORAGE_STRING_ID_MANUFACTURER:
 				{
 					*Size = pgm_read_byte(&ManufacturerString.bLength);
 					return &ManufacturerString;
 				}
-				case MOUSE_STRING_ID_PRODUCT:
+				case MASSSTORAGE_STRING_ID_PRODUCT:
 				{
 					*Size = pgm_read_byte(&ProductString.bLength);
 					return &ProductString;
 				}
-				case MOUSE_STRING_ID_SERIAL:
+				case MASSSTORAGE_STRING_ID_SERIAL:
 				{
 					*Size = pgm_read_byte(&SerialString.bLength);
 					return &SerialString;

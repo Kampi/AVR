@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
 /** @file Arch/XMega/USB/USB_Controller.h
@@ -33,8 +33,5 @@
 
 #ifndef USB_CONTROLLER_H_
 #define USB_CONTROLLER_H_
-
- #include "Common/Common.h"
- #include "Base/USB_Base.h"
 
 #endif /* USB_CONTROLLER_H_  */ 

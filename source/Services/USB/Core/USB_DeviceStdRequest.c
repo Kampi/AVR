@@ -19,10 +19,10 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Common/Services/USB/Core/USB_DeviceStdRequest.c
+/** @file Services/USB/Core/USB_DeviceStdRequest.c
  *  @brief USB device standard request handling implementation.
  *
  *  This file contains the implementation for the USB device standard request handling.
@@ -36,14 +36,10 @@
 
 static USB_SetupPacket_t _ControlRequest;
 
-volatile USB_State_t _DeviceState;
-uint8_t _Configuration;
-USB_DeviceCallbacks_t _USBEvents;
-
 void USB_Device_ControlRequest(void)
-{	
+{
 	uint8_t* RequestHeader = (uint8_t*)&_ControlRequest;
-	
+
 	// Get the setup packet
 	for(uint8_t i = 0x00; i < sizeof(USB_SetupPacket_t); i++)
 	{
@@ -85,7 +81,7 @@ void USB_Device_ControlRequest(void)
 				// Get the endpoint address
 				uint8_t Endpoint = ((uint8_t)_ControlRequest.wIndex & 0x0F);
 
-				if(Endpoint >= USB_TOTAL_ENDPOINTS)
+				if(Endpoint >= USB_MAX_ENDPOINTS)
 				{
 					return;
 				}

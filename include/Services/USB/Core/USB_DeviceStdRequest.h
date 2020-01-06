@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */ 
 
 /** @file Services/USB/Core/USB_DeviceStdRequest.h
@@ -35,6 +35,10 @@
 #ifndef USB_DEVICESTDREQUEST_H_
 #define USB_DEVICESTDREQUEST_H_
 
+ #include "Services/USB/Core/StandardRequest.h"
+ #include "Services/USB/Core/USB_DeviceStream.h"
+ #include "Services/USB/Core/StandardDescriptor.h"
+
  #if(MCU_ARCH == MCU_ARCH_AVR8)
 	 #if(MCU_NAME == MCU_NAME_AT90USB1287)
 		 #include "Arch/AVR8/AT90/USB/USB_Controller.h"
@@ -45,12 +49,8 @@
 	 #error "Unknown CPU architecture!"
  #endif
 
- #include "Services/USB/Core/StandardRequest.h"
- #include "Services/USB/Core/StandardDescriptor.h"
- #include "Services/USB/Core/USB_DeviceStream.h"
- 
  /** @brief	Handle the standard USB device requests.
   */
  void USB_Device_ControlRequest(void);
 
-#endif /* USB_DEVICESTDREQUEST_H_  */ 
+#endif /* USB_DEVICESTDREQUEST_H_ */ 
