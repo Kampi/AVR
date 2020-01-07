@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: 1-Wire driver for AVR.
+ *  File info: 1-Wire interface driver for AVR.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,11 +22,11 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file OneWire/OneWire.h
- *  @brief 1-Wire driver for AVR.
+/** @file Interfaces/OneWire/OneWire.h
+ *  @brief 1-Wire interface driver for AVR.
  *		   Please check https://pdfserv.maximintegrated.com/en/an/AN126.pdf if you need additional information.
  *
- *  This file contains the prototypes and definitions for the 1-Wire service.
+ *  This file contains the prototypes and definitions for the 1-Wire interface.
  *
  *  @author Daniel Kampert
  *  @bugs	No known bugs

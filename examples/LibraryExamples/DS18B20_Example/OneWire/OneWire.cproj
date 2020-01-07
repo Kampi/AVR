@@ -129,10 +129,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="source" />
-    <Folder Include="source\OneWire\" />
+    <Folder Include="source\Interfaces" />
+    <Folder Include="source\Interfaces\OneWire\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="source\OneWire\OneWire.c">
+    <Compile Include="source\Interfaces\OneWire\OneWire.c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
