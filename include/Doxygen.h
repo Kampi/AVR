@@ -41,11 +41,20 @@
 	 /*@}*/
  /*@}*/
 
- /** @defgroup OneWire
+ /** @defgroup Interfaces
   *  @{
   */
-	 /** @defgroup OneWire-FamilyCodes
-	  *  1-Wire device family codes.
+	 /** @defgroup OneWire
+	  *  @{
+	  */
+		 /** @defgroup OneWire-FamilyCodes
+		  *  1-Wire device family codes.
+		  *  @{
+		  */
+		 /*@}*/
+	 /*@}*/
+	 
+	 /** @defgroup SCSI
 	  *  @{
 	  */
 	 /*@}*/
