@@ -28,14 +28,13 @@
  *  This file contains the prototypes and definitions for Atmel AVR endpoints.
  *
  *  @author Daniel Kampert
- *  @bug - Remove direction mask from Endpoint_GetCurrent result
+ *  @bug No known bugs
  */
 
 #ifndef ENDPOINT_H_
 #define ENDPOINT_H_
 
  #include "Arch/AVR8/AT90/USB/USB_Controller.h"
- #include "Services/USB/USB_Types.h"
  #include "Services/USB/Core/StandardRequest.h"
 
  /** @brief	Endpoint types.
@@ -66,14 +65,20 @@
   */
  typedef enum
  {
-	 ENDPOINT_DIRECTION_OUT = 0x00,										/**< OUT endpoint */ 
-	 ENDPOINT_DIRECTION_IN = 0x80,										/**< IN endpoint */ 
+	 ENDPOINT_DIRECTION_OUT = 0x00,										/**< Endpoint direction OUT */ 
+	 ENDPOINT_DIRECTION_IN = 0x80,										/**< Endpoint direction IN */ 
  } Endpoint_Direction_t;
 
  /** @brief	Control endpoint size in bytes.
   */
  #if(!defined(ENDPOINT_CONTROL_SIZE))
 	 #define ENDPOINT_CONTROL_SIZE					ENDPOINT_CONTROL_DEFAULT_SIZE
+ #endif
+ 
+ /** @brief	Control endpoint address.
+  */
+ #if(!defined(ENDPOINT_CONTROL_ADDRESS))
+	 #define ENDPOINT_CONTROL_ADDRESS				ENDPOINT_CONTROL_DEFAULT_ADDRESS
  #endif
 
  /** @brief			Select an endpoint.

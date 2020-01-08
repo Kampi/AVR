@@ -35,8 +35,74 @@
 
  #include "Common/Common.h"
 
- /** @ingroup USB
-  *  @brief USB HID subclasses.
+
+ /** @ingroup 	USB-HID
+  *  @brief		USB HID class descriptor types.
+  */
+ typedef enum 
+ {
+	 HID_DESCRIPTOR_TYPE_HID = 0x21,									/**< HID class descriptor */
+	 HID_DESCRIPTOR_TYPE_REPORT = 0x22,									/**< HID report descriptor */
+ } USB_HID_DescriptorTypes_t;
+
+ /** @ingroup 	USB-HID
+  *  @brief		USB HID class specific requests.
+  */
+ typedef enum 
+ {
+	HID_REQUEST_GET_REPORT = 0x01,										/**< Get the current HID report from the device */
+	HID_REQUEST_GET_IDLE = 0x02,										/**< Get the current device idle count */
+	HID_REQUEST_GET_PROTOCOL = 0x03,									/**< Get the current HID report protocol mode */
+	HID_REQUEST_SET_REPORT = 0x09,										/**< Set the current HID report to the device */
+	HID_REQUEST_SET_IDLE = 0x0A,										/**< Set the device's idle count */
+	HID_REQUEST_SET_PROTOCOL = 0x0B,									/**< Set the current HID report protocol mode */
+ } USB_HID_ClassRequests_t;
+
+ /** @ingroup 	USB-HID
+  *  @brief 	USB HID country codes.
+  */
+ typedef enum
+ {
+	 HID_COUNTRYCODE_NOT_SUPPORTED = 0x00,								/**< Country code: Not supported country */
+	 HID_COUNTRYCODE_ARABIC = 0x01,										/**< Country code: Arabic */
+	 HID_COUNTRYCODE_BELGIAN = 0x02,									/**< Country code: Belgian */
+	 HID_COUNTRYCODE_CANADIAN_BI = 0x03,								/**< Country code: Canadian-Bilingual */
+	 HID_COUNTRYCODE_CANADIAN_FR = 0x04,								/**< Country code: Canadian-French */
+	 HID_COUNTRYCODE_CZECH = 0x05,										/**< Country code: Czech Republic */
+	 HID_COUNTRYCODE_DANISH = 0x06,										/**< Country code: Danish */
+	 HID_COUNTRYCODE_FINNISH = 0x07,									/**< Country code: Finnish */
+	 HID_COUNTRYCODE_FRENCH = 0x08,										/**< Country code: French */
+	 HID_COUNTRYCODE_GERMAN = 0x09,										/**< Country code: German */
+	 HID_COUNTRYCODE_GREEK = 0x0A,										/**< Country code: Greek */
+	 HID_COUNTRYCODE_HEBREW = 0x0B,										/**< Country code: Hebrew */
+	 HID_COUNTRYCODE_HUNGARY = 0x0C,									/**< Country code: Hungary */
+	 HID_COUNTRYCODE_INTERNATIONAL = 0x0D,								/**< Country code: International */
+	 HID_COUNTRYCODE_ITALIAN = 0x0E,									/**< Country code: Italian */
+	 HID_COUNTRYCODE_JAPAN = 0x0F,										/**< Country code: Japan */
+	 HID_COUNTRYCODE_KOREAN = 0x10,										/**< Country code: Korean */
+	 HID_COUNTRYCODE_LATIN_AMERICAN = 0x11,								/**< Country code: Latin American */
+	 HID_COUNTRYCODE_NETHERLANDS = 0x12,								/**< Country code: Netherlands/Dutch */
+	 HID_COUNTRYCODE_NORWEGIAN = 0x13,									/**< Country code: Norwegian */
+	 HID_COUNTRYCODE_PERSIAN = 0x14,									/**< Country code: Persian */
+	 HID_COUNTRYCODE_POLAND = 0x15,										/**< Country code: Poland */
+	 HID_COUNTRYCODE_PORTUGUESE = 0x16,									/**< Country code: Portuguese */
+	 HID_COUNTRYCODE_RUSSIA = 0x17,										/**< Country code: Russia */
+	 HID_COUNTRYCODE_SLOVAKIA = 0x18,									/**< Country code: Slovakia */
+	 HID_COUNTRYCODE_SPANISH = 0x19,									/**< Country code: Spanish */
+	 HID_COUNTRYCODE_SWEDISH = 0x1A,									/**< Country code: Swedish */
+	 HID_COUNTRYCODE_SWISS_FR = 0x1B,									/**< Country code: Swiss/French */
+	 HID_COUNTRYCODE_SWISS_GER = 0x1C,									/**< Country code: Swiss/German */
+	 HID_COUNTRYCODE_SWITZERLAND = 0x1D,								/**< Country code: Switzerland */
+	 HID_COUNTRYCODE_TAIWAN = 0x1E,										/**< Country code: Taiwan */
+	 HID_COUNTRYCODE_TURKISH_Q = 0x1F,									/**< Country code: Turkish-Q */
+	 HID_COUNTRYCODE_UK = 0x20,											/**< Country code: UK */
+	 HID_COUNTRYCODE_US = 0x21,											/**< Country code: US */
+	 HID_COUNTRYCODE_YUGOSLAVIA = 0x22,									/**< Country code: Yugoslavia */
+	 HID_COUNTRYCODE_TURKISH_F = 0x23,									/**< Country code: Turkish-F */
+ } USB_HID_CountryCode_t;
+
+ /** @ingroup	USB-HID
+  *  @brief		USB HID subclasses codes used by the \ref USB_InterfaceDescriptor_t.bInterfaceSubClass field.
   */
  typedef enum
  {
@@ -44,9 +110,10 @@
 	 HID_SUBCLASS_BOOT_INTERFACE = 0x01,								/**< Boot interface subclass */
  } USB_HID_SubClass_t;
 
- /** @ingroup USB
-  *  @brief USB HID protocols.
-  *  		NOTE: Only needed if you choose #USB_SUBCLASS_BOOT_INTERFACE in the Interface Descriptor. Otherwise set it to #USB_PROTOCOL_NONE.
+ /** @ingroup	USB-HID
+  *  @brief		USB HID protocol codes used by the \ref USB_InterfaceDescriptor_t.bInterfaceProtocol field.
+  *  			NOTE: Only needed if you choose #USB_SUBCLASS_BOOT_INTERFACE in the Interface Descriptor. \n
+  *					  Otherwise set it to #USB_PROTOCOL_NONE.
   */
  typedef enum
  {
@@ -55,14 +122,14 @@
 	 HID_PROTOCOL_MOUSE = 0x02,											/**< Mouse protocol */
  } USB_HID_Protocol_t;
 
- /** @ingroup USB-HID
-  *  @brief USB HID Keyboard scan codes.
+ /** @ingroup	USB-HID-Keyboard
+  *  @brief		USB HID keyboard scan codes.
   */
  typedef enum
  {
 	 HID_KEYBOARD_SC_NONE = 0x00,										/**< No key pressed */
 	 HID_KEYBOARD_SC_ERROR_ROLLOVER = 0x01,								/**< Keyboard Error Roll Over - used for all slots if too many keys are pressed. */
-	 HID_KEYBOARD_SC_POST_FAIL = 0x02,
+	 HID_KEYBOARD_SC_POST_FAIL = 0x02,									/**< */
 	 HID_KEYBOARD_SC_ERROR_UNDEFINED = 0x03,							/**< Undefined error */
 	 HID_KEYBOARD_SC_A = 0x04,											/**< A and a */
 	 HID_KEYBOARD_SC_B = 0x05,											/**< B and b */
@@ -298,8 +365,8 @@
 	 HID_KEYBOARD_SC_MEDIA_CALCULATOR = 0xFB,
  } USB_HID_Keyboard_ScanCode_t;
 
- /** @ingroup 	USB-HID
-  *  @brief		HID Keyboard LEDs.
+ /** @ingroup 	USB-HID-Keyboard
+  *  @brief		USB HID keyboard LEDs.
   */
  typedef enum
  {
@@ -310,8 +377,8 @@
 	 HID_KEYBOARD_LED_KANA = (0x01 << 0x04),							/**< KANA LED */
  } USB_HID_Keyboard_LED_t;
 
- /** @ingroup 	USB-HID
-  *  @brief		HID Keyboard modifier.
+ /** @ingroup 	USB-HID-Keyboard
+  *  @brief		USB HID keyboard modifier used by the \ref USB_KeyboardReport_t.Modifier field.
   */
  typedef enum
  {
@@ -324,71 +391,16 @@
 	 HID_KEYBOARD_MODIFIER_ALT_RIGHT = (0x01 << 0x06),					/**< Left ALT button */
 	 HID_KEYBOARD_MODIFIER_GUI_RIGHT = (0x01 << 0x07),					/**< Left Windows or CMD button */
  } USB_HID_Keyboard_Modifier_t;
- 
- /** @ingroup 	USB-HID
-  *  @brief		USB HID class descriptor types.
+
+ /** @ingroup 	USB-HID-Mouse
+  *  @brief		USB HID mouse buttons used by the \ref USB_MouseReport_t.Button field.
   */
  typedef enum 
  {
-	 HID_DESCRIPTOR_TYPE_HID = 0x21,									/**< HID class descriptor */
-	 HID_DESCRIPTOR_TYPE_REPORT = 0x22,									/**< HID report descriptor */
- } USB_HID_DescriptorTypes_t;
-
- /** @ingroup 	USB-HID
-  *  @brief		USB HID class specific requests.
-  */
- typedef enum 
- {
-	HID_REQUEST_GET_REPORT = 0x01,										/**< Get the current HID report from the device */
-	HID_REQUEST_GET_IDLE = 0x02,										/**< Get the current device idle count */
-	HID_REQUEST_GET_PROTOCOL = 0x03,									/**< Get the current HID report protocol mode */
-	HID_REQUEST_SET_REPORT = 0x09,										/**< Set the current HID report to the device */
-	HID_REQUEST_SET_IDLE = 0x0A,										/**< Set the device's idle count */
-	HID_REQUEST_SET_PROTOCOL = 0x0B,									/**< Set the current HID report protocol mode */
- } USB_HID_ClassRequests_t;
-
- /** @ingroup 	USB-HID
-  *  @brief 	USB HID country codes.
-  */
- typedef enum
- {
-	 HID_COUNTRYCODE_NOT_SUPPORTED = 0x00,								/**< Country code: Not supported country */
-	 HID_COUNTRYCODE_ARABIC = 0x01,										/**< Country code: Arabic */
-	 HID_COUNTRYCODE_BELGIAN = 0x02,									/**< Country code: Belgian */
-	 HID_COUNTRYCODE_CANADIAN_BI = 0x03,								/**< Country code: Canadian-Bilingual */
-	 HID_COUNTRYCODE_CANADIAN_FR = 0x04,								/**< Country code: Canadian-French */
-	 HID_COUNTRYCODE_CZECH = 0x05,										/**< Country code: Czech Republic */
-	 HID_COUNTRYCODE_DANISH = 0x06,										/**< Country code: Danish */
-	 HID_COUNTRYCODE_FINNISH = 0x07,									/**< Country code: Finnish */
-	 HID_COUNTRYCODE_FRENCH = 0x08,										/**< Country code: French */
-	 HID_COUNTRYCODE_GERMAN = 0x09,										/**< Country code: German */
-	 HID_COUNTRYCODE_GREEK = 0x0A,										/**< Country code: Greek */
-	 HID_COUNTRYCODE_HEBREW = 0x0B,										/**< Country code: Hebrew */
-	 HID_COUNTRYCODE_HUNGARY = 0x0C,									/**< Country code: Hungary */
-	 HID_COUNTRYCODE_INTERNATIONAL = 0x0D,								/**< Country code: International */
-	 HID_COUNTRYCODE_ITALIAN = 0x0E,									/**< Country code: Italian */
-	 HID_COUNTRYCODE_JAPAN = 0x0F,										/**< Country code: Japan */
-	 HID_COUNTRYCODE_KOREAN = 0x10,										/**< Country code: Korean */
-	 HID_COUNTRYCODE_LATIN_AMERICAN = 0x11,								/**< Country code: Latin American */
-	 HID_COUNTRYCODE_NETHERLANDS = 0x12,								/**< Country code: Netherlands/Dutch */
-	 HID_COUNTRYCODE_NORWEGIAN = 0x13,									/**< Country code: Norwegian */
-	 HID_COUNTRYCODE_PERSIAN = 0x14,									/**< Country code: Persian */
-	 HID_COUNTRYCODE_POLAND = 0x15,										/**< Country code: Poland */
-	 HID_COUNTRYCODE_PORTUGUESE = 0x16,									/**< Country code: Portuguese */
-	 HID_COUNTRYCODE_RUSSIA = 0x17,										/**< Country code: Russia */
-	 HID_COUNTRYCODE_SLOVAKIA = 0x18,									/**< Country code: Slovakia */
-	 HID_COUNTRYCODE_SPANISH = 0x19,									/**< Country code: Spanish */
-	 HID_COUNTRYCODE_SWEDISH = 0x1A,									/**< Country code: Swedish */
-	 HID_COUNTRYCODE_SWISS_FR = 0x1B,									/**< Country code: Swiss/French */
-	 HID_COUNTRYCODE_SWISS_GER = 0x1C,									/**< Country code: Swiss/German */
-	 HID_COUNTRYCODE_SWITZERLAND = 0x1D,								/**< Country code: Switzerland */
-	 HID_COUNTRYCODE_TAIWAN = 0x1E,										/**< Country code: Taiwan */
-	 HID_COUNTRYCODE_TURKISH_Q = 0x1F,									/**< Country code: Turkish-Q */
-	 HID_COUNTRYCODE_UK = 0x20,											/**< Country code: UK */
-	 HID_COUNTRYCODE_US = 0x21,											/**< Country code: US */
-	 HID_COUNTRYCODE_YUGOSLAVIA = 0x22,									/**< Country code: Yugoslavia */
-	 HID_COUNTRYCODE_TURKISH_F = 0x23,									/**< Country code: Turkish-F */
- } USB_HID_CountryCode_t;
+	 HID_MOUSE_BUTTON_LEFT = 0x01,										/**< Left mouse button */
+	 HID_MOUSE_BUTTON_RIGHT = 0x02,										/**< Right mouse button */
+	 HID_MOUSE_BUTTON_MIDDLE = 0x04,									/**< Middle mouse button */
+ } USB_HID_Mouse_Button_t;
 
  /** @ingroup 	USB-HID
   *  @brief 	USB HID descriptor definition.
@@ -404,7 +416,8 @@
 	 uint16_t wDescriptorLength;										/**< Descriptor length */
  } __attribute__((packed)) USB_HID_Descriptor_t;
 
- /** @brief Standard HID mouse report definition.
+ /** @ingroup 	USB-HID-Mouse
+  *  @brief		Standard HID mouse report definition.
   */
  typedef struct
  {
@@ -413,7 +426,8 @@
 	 int8_t Y;															/**< Delta Y movement */
  } __attribute__((packed)) USB_MouseReport_t;
 
- /** @brief Standard HID keyboard report definition.
+ /** @ingroup 	USB-HID-Keyboard
+  *  @brief		Standard HID keyboard report definition.
   */
  typedef struct
  {

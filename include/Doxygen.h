@@ -67,6 +67,17 @@
 	  *  USB HID class definitions.
 	  *  @{
 	  */
+		 /** @defgroup USB-HID-Keyboard
+		  *  USB HID keyboard definitions
+		  *  @{
+		  */
+		 /*@}*/
+		 
+		 /** @defgroup USB-HID-Mouse
+		  *  USB HID mouse definitions
+		  *  @{
+		  */
+		 /*@}*/
 	 /*@}*/
 	 
 	 /** @defgroup USB-MassStorage

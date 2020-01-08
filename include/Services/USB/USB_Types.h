@@ -39,7 +39,7 @@
  
  /** @brief	Control endpoint address for USB devices.
   */
- #define ENDPOINT_CONTROL_ADDRESS						0x00
+ #define ENDPOINT_CONTROL_DEFAULT_ADDRESS				0x00
 
  /** @brief	Default size for control endpoint.
   */
@@ -60,6 +60,18 @@
 	 USB_SPEED_LOW = 0x00,												/**< Low speed operation */
 	 USB_SPEED_FULL = 0x01,												/**< Full speed operation */
  } USB_Speed_t;
+
+ /** @brief	States for USB state machine.
+  */
+ typedef enum
+ {
+	 USB_STATE_UNATTACHED = 0x00,										/**< Device unattached */
+	 USB_STATE_POWERED = 0x01,											/**< Device powered */
+	 USB_STATE_SUSPEND = 0x02,											/**< Device suspend */
+	 USB_STATE_RESET = 0x03,											/**< Reset state */
+	 USB_STATE_ADDRESSED = 0x04,										/**< Device addressed */
+	 USB_STATE_CONFIGURED = 0x06,										/**< Device configured */
+ } USB_State_t;
 
  /** @brief	USB bus event callback structure.
   */
@@ -101,5 +113,17 @@
 	 Bool_t EnableSOFCallbacks;											/**< Set to #TRUE to enable start of frame events */
 	 const USB_DeviceCallbacks_t* Callbacks;							/**< Pointer to USB device callbacks */
  } USB_Config_t;
+
+ /** @brief	USB controller device state.
+  */
+ extern volatile USB_State_t _DeviceState;
+ 
+ /** @brief	USB controller configuration.
+  */
+ extern uint8_t _Configuration;
+ 
+ /** @brief	USB bus event callback structure.
+ */
+ extern USB_DeviceCallbacks_t _USBEvents;
 
 #endif /* USB_TYPES_H_ */

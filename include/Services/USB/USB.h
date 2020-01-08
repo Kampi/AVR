@@ -34,7 +34,7 @@
 #ifndef USB_H_
 #define USB_H_
 
- #include "Common/Common.h"
+#include "Common/Common.h"
 
  #if(MCU_ARCH == MCU_ARCH_AVR8)
 	 #if(MCU_NAME == MCU_NAME_AT90USB1287)
@@ -48,10 +48,10 @@
 	 #error "Unknown CPU architecture!"
  #endif
 
- #include "Services/USB/Class/Class.h"
+#include "Services/USB/Core/USB_DeviceStream.h"
  #include "Services/USB/Core/StandardDescriptor.h"
- #include "Services/USB/Core/USB_DeviceStream.h"
  #include "Services/USB/Core/USB_DeviceStdRequest.h"
+ #include "Services/USB/Class/Class.h"
 
  /** @brief			Initialize the USB service.
   *  @param Config	Pointer to #USB_Config_t object

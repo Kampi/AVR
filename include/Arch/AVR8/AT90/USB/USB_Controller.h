@@ -40,30 +40,6 @@
  #include "Arch/AVR8/AT90/USB/USB_Device.h"
  #include "Arch/AVR8/AT90/USB/USB_Interrupt.h"
 
- /** @brief	States for USB state machine.
-  */
- typedef enum
- {
-	 USB_STATE_UNATTACHED = 0x00,										/**< Device unattached */
-	 USB_STATE_POWERED = 0x01,											/**< Device powered */
-	 USB_STATE_SUSPEND = 0x02,											/**< Device suspend */
-	 USB_STATE_RESET = 0x03,											/**< Reset state */
-	 USB_STATE_ADDRESSED = 0x04,										/**< Device addressed */
-	 USB_STATE_CONFIGURED = 0x06,										/**< Device configured */
- } USB_State_t;
-
- /** @brief	USB controller device state.
-  */
- extern volatile USB_State_t _DeviceState;
- 
- /** @brief	USB controller configuration.
-  */
- extern uint8_t _Configuration;
- 
- /** @brief	USB bus event callback structure.
- */
- extern USB_DeviceCallbacks_t _USBEvents;
-
  /** @brief	Enable the PLL for the USB module.
   */
  static inline void USB_Controller_EnablePLL(void) __attribute__ ((always_inline));
