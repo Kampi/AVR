@@ -41,6 +41,7 @@
 	#define INTERFACE_SPI										2		/**< SPI interface */
 	#define INTERFACE_I2C										3		/**< I2C interface */
 	#define INTERFACE_USART										4		/**< USART interface */
+	#define INTERFACE_USB										5		/**< USB interface */
  /** @} */ // end of Interfaces
 
  /** @defgroup Board
