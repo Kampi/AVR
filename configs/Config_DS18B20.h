@@ -39,6 +39,7 @@
  /*
 	 1-Wire configuration
  */
+ #define ONEWIRE_INTERFACE							INTERFACE_GPIO			/**< Use GPIO as 1-Wire interface. */
  #undef ONEWIRE_USE_EXT_PULL												/**< Use the DS18B20 in parasite mode. */
  #undef ONEWIRE_EXT_PULL													/**< Port where switchable external pull-up resistor is connected to. \n
 																				 NOTE: You only need this when you define the symbol #ONEWIRE_USE_EXT_PULL. */
