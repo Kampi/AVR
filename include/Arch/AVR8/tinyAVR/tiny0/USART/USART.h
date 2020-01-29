@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for Atmel AVR8 tinyAVR USART module.
+ *  File info: Driver for Atmel AVR8 tiny0 USART module.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,8 +22,8 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Arch/AVR8/tinyAVR/USART/USART.h
- *  @brief Driver for Atmel AVR8 megaAVR tinyAVR module.
+/** @file Arch/AVR8/tinyAVR/tiny0/USART/USART.h
+ *  @brief Driver for Atmel AVR8 tiny0 module.
  *
  *  This contains the prototypes and definitions for the tinyAVR USART driver.
  *
@@ -39,8 +39,6 @@
  
  #include "Common/Common.h"
  #include "Common/Ringbuffer/RingBuffer.h"
-
- #include "Arch/AVR8/tinyAVR/GPIO/GPIO.h"
  
  /** @defgroup Serial
   *  @{
@@ -302,6 +300,10 @@
 	 }
  }
 
+ /*
+	UART / USART functions
+ */
+
  /** @brief			Initialize the USART interface.
   *  @param Config	Pointer to USART device configuration struct
   */
@@ -349,5 +351,13 @@
   *  @param Data	Pointer to data array
   */
  void USART_WriteLine(USART_t* Device, const char* data);
+
+ /*
+	1-Wire functions
+ */
+
+ /** @brief	Initialize a USART-OneWire interface.
+  */
+ void USART_OneWire_Init(void);
 
 #endif /* USART_H_ */
