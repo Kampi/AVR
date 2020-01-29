@@ -42,6 +42,7 @@
 	#define INTERFACE_I2C										3		/**< I2C interface */
 	#define INTERFACE_USART										4		/**< USART interface */
 	#define INTERFACE_USB										5		/**< USB interface */
+	#define INTERFACE_GPIO										6		/**< GPIO interface */
  /** @} */ // end of Interfaces
 
  /** @defgroup Board
@@ -81,6 +82,16 @@
 	#define MCU_ARCH_XMEGA										1		/**< AVR XMega architecture */
 	#define MCU_ARCH_AVR8										2		/**< AVR8 architecture */
 	#define MCU_ARCH_UC3										3		/**< AVR UC3 architecture */
+ /** @} */ // end of Architecture
+
+ /** @defgroup Family
+  *  @ingroup Configuration
+  *  AVR8 family definitions for the AVR library.
+  *  @{
+  */
+	#define MCU_FAMILY_UNKNOWN									0		/**< Unknown MCU family */
+	#define MCU_FAMILY_MEGA										1		/**< AVR Mega MCU family */
+	#define MCU_FAMILY_TINY0									2		/**< AVR Tiny0 MCU family */
  /** @} */ // end of Architecture
 
  /** @defgroup Flashmemory
