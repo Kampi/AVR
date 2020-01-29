@@ -23,9 +23,9 @@
  */
 
 /** @file Arch/AVR8/tinyAVR/USART/USART.c
- *  @brief Driver for Atmel AVR8 tinyAVR USART module.
+ *  @brief Driver for Atmel AVR8 tiny0 USART module.
  *
- *  This contains the implementation of the tinyAVR USART driver.
+ *  This contains the implementation of the tiny0 USART driver.
  *
  *  @author Daniel Kampert
  */

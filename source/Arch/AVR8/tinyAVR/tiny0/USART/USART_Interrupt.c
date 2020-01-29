@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *	Website: www.kampis-elektroecke.de
- *  File info: Interrupt driver for Atmel AVR8 tinyAVR USART module.
+ *  File info: Interrupt driver for Atmel AVR8 tiny0 USART module.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,15 +23,15 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Arch/AVR8/tinyAVR/USART/USART_Interrupt.c
- *  @brief Interrupt driver for Atmel AVR8 tinyAVR USART module.
+/** @file Arch/AVR8/tinyAVR/tiny0/USART/USART_Interrupt.c
+ *  @brief Interrupt driver for Atmel AVR8 tiny0 USART module.
  *
- *  This file contains the implementation of the interrupt functions for the Atmel AVR8 tinyAVR USART driver.
+ *  This file contains the implementation of the interrupt functions for the Atmel AVR8 tiny0 USART driver.
  *
  *  @author Daniel Kampert
  */
 
-#include "Arch/AVR8/tinyAVR/USART/USART.h"
+#include "Arch/AVR8/tinyAVR/tiny0/USART/USART.h"
 
 #ifndef DOXYGEN
 	extern 	struct
