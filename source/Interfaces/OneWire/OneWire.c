@@ -73,6 +73,33 @@
 	#define ONEWIRE_DELAY_J									410
 #endif
 
+/*
+	Architecture specific definitions
+*/
+#if(MCU_ARCH == MCU_ARCH_XMEGA)
+	#if(ONEWIRE_INTERFACE == INTERFACE_GPIO)
+		#include "Arch/XMega/CPU/CPU.h"
+		#include "Arch/XMega/GPIO/GPIO.h"
+	#else
+		#error "Interface not supported for 1-Wire!"
+	#endif
+#elif(MCU_ARCH == MCU_ARCH_AVR8)
+	#if(MCU_FAMILY_TINY0)
+		#if(ONEWIRE_INTERFACE == INTERFACE_GPIO)
+			#include "Arch/AVR8/tinyAVR/tiny0/CPU/CPU.h"
+			#include "Arch/AVR8/tinyAVR/tiny0/GPIO/GPIO.h"
+		#elif(ONEWIRE_INTERFACE == INTERFACE_USART)
+			#include "Arch/AVR8/tinyAVR/tiny0/USART/USART.h"
+		#else
+			#error "Interface not supported for 1-Wire!"
+		#endif
+	#else
+		#error "Family not supported for 1-Wire!"
+	#endif
+#else
+	#error "Architecture not supported for 1-Wire!"
+#endif
+
 static uint8_t __LastFamilyDiscrepancy;
 static uint8_t __LastDiscrepancy;
 static Bool_t __LastDevice;
@@ -257,53 +284,24 @@ OneWire_Error_t OneWire_Init(void)
 {
 	__SearchActive = FALSE;
 
-	// Set DQ as output and enable the pull up resistor for the input state
-	GPIO_SetDirection(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ), GPIO_DIRECTION_OUT);
+	#if(ONEWIRE_INTERFACE == INTERFACE_GPIO)
+		// Set DQ as output and enable the pull up resistor for the input state
+		GPIO_SetDirection(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ), GPIO_DIRECTION_OUT);
 
-	#if(MCU_ARCH == MCU_ARCH_XMEGA)
-		GPIO_SetPullConfig(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ), GPIO_OUTPUTCONFIG_WIREDANDUP);
-		GPIO_Set(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ));
-	#else
-		GPIO_Set(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ));
+		#if(MCU_ARCH == MCU_ARCH_XMEGA)
+			GPIO_SetPullConfig(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ), GPIO_OUTPUTCONFIG_WIREDANDUP);
+			GPIO_Set(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ));
+		#else
+			GPIO_Set(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ));
+		#endif
+	#elif(ONEWIRE_INTERFACE == INTERFACE_USART)
+		USART_OneWire_Init();
 	#endif
 
 	// Give the devices on the bus some time to initialize
 	_delay_us(100);
 
 	return OneWire_Reset();
-}
-
-OneWire_Error_t OneWire_Reset(void)
-{
-	uint8_t State = 0x00;
-
-	// Save the SREG and disable global interrupts
-	uint8_t Reg = CPU_IRQSave();
-
-	// Send the reset instruction
-	_delay_us(ONEWIRE_DELAY_G);
-	GPIO_Clear(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ));
-	_delay_us(ONEWIRE_DELAY_H);
-	GPIO_Set(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ));
-
-	// Switch the direction to INPUT to read the bus state
-	_delay_us(ONEWIRE_DELAY_I);
-	GPIO_SetDirection(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ), GPIO_DIRECTION_IN);
-	State = GPIO_Read(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ));
-	_delay_us(ONEWIRE_DELAY_J);
-
-	// Clear the output and switch the direction back to OUTPUT
-	GPIO_SetDirection(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ), GPIO_DIRECTION_OUT);
-
-	// Restore SREG
-	CPU_IRQRestore(Reg);
-
-	if(State != 0x00)
-	{
-		return ONEWIRE_RESET_ERROR;
-	}
-
-	return ONEWIRE_NO_ERROR;
 }
 
 uint8_t OneWire_CRC(const uint8_t Length, const uint8_t* Data)
@@ -409,25 +407,6 @@ OneWire_Error_t OneWire_SelectDevice(const OneWire_ROM_t* ROM)
 	return ONEWIRE_NO_ERROR;
 }
 
-void OneWire_WriteBit(const uint8_t Bit)
-{
-	// Save the SREG and disable global interrupts
-	uint8_t Reg = CPU_IRQSave();
-
-	GPIO_Clear(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ));
-
-	if(Bit) _delay_us(ONEWIRE_DELAY_A);
-	else _delay_us(ONEWIRE_DELAY_C);
-
-	GPIO_Set(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ));
-
-	if(Bit)	_delay_us(ONEWIRE_DELAY_B);
-	else _delay_us(ONEWIRE_DELAY_D);
-
-	// Restore SREG
-	CPU_IRQRestore(Reg);
-}
-
 void OneWire_WriteByte(const uint8_t Data)
 {
 	// Data is transmitted LSB first (check the example in the app note)
@@ -435,32 +414,6 @@ void OneWire_WriteByte(const uint8_t Data)
 	{
 		OneWire_WriteBit(Data & i);
 	}
-}
-
-uint8_t OneWire_ReadBit(void)
-{
-	uint8_t State = 0x00;
-
-	// Save the SREG and disable global interrupts
-	uint8_t Reg = CPU_IRQSave();
-
-	GPIO_Clear(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ));
-	_delay_us(ONEWIRE_DELAY_A);
-	GPIO_Set(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ));
-	_delay_us(ONEWIRE_DELAY_E);
-
-	// Switch the direction to INPUT to read the bus state
-	GPIO_SetDirection(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ), GPIO_DIRECTION_IN);
-	State = GPIO_Read(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ));
-	_delay_us(ONEWIRE_DELAY_F);
-
-	// Switch the direction back to OUTPUT
-	GPIO_SetDirection(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ), GPIO_DIRECTION_OUT);
-
-	// Restore SREG
-	CPU_IRQRestore(Reg);
-
-	return State;
 }
 
 uint8_t OneWire_ReadByte(void)
@@ -472,6 +425,99 @@ uint8_t OneWire_ReadByte(void)
 	{
 		Data = Data | (OneWire_ReadBit() << i);
 	}
+
+	return Data;
+}
+
+OneWire_Error_t OneWire_Reset(void)
+{
+	#if(ONEWIRE_INTERFACE == INTERFACE_GPIO)
+		uint8_t State = 0x00;
+
+		// Save the SREG and disable global interrupts
+		uint8_t Reg = CPU_IRQSave();
+
+		// Send the reset instruction
+		_delay_us(ONEWIRE_DELAY_G);
+		GPIO_Clear(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ));
+		_delay_us(ONEWIRE_DELAY_H);
+		GPIO_Set(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ));
+
+		// Switch the direction to INPUT to read the bus state
+		_delay_us(ONEWIRE_DELAY_I);
+		GPIO_SetDirection(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ), GPIO_DIRECTION_IN);
+		State = GPIO_Read(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ));
+		_delay_us(ONEWIRE_DELAY_J);
+
+		// Clear the output and switch the direction back to OUTPUT
+		GPIO_SetDirection(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ), GPIO_DIRECTION_OUT);
+
+		// Restore SREG
+		CPU_IRQRestore(Reg);
+
+		if(State != 0x00)
+		{
+			return ONEWIRE_RESET_ERROR;
+		}
+	#elif(ONEWIRE_INTERFACE == INTERFACE_USART)
+		if(!USART_OneWire_Reset())
+		{
+			return ONEWIRE_RESET_ERROR;
+		}
+	#endif
+
+	return ONEWIRE_NO_ERROR;
+}
+
+void OneWire_WriteBit(const uint8_t Bit)
+{
+	#if(ONEWIRE_INTERFACE == INTERFACE_GPIO)
+		// Save the SREG and disable global interrupts
+		uint8_t Reg = CPU_IRQSave();
+
+		GPIO_Clear(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ));
+
+		if(Bit) _delay_us(ONEWIRE_DELAY_A);
+		else _delay_us(ONEWIRE_DELAY_C);
+
+		GPIO_Set(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ));
+
+		if(Bit)	_delay_us(ONEWIRE_DELAY_B);
+		else _delay_us(ONEWIRE_DELAY_D);
+
+		// Restore SREG
+		CPU_IRQRestore(Reg);
+	#elif(ONEWIRE_INTERFACE == INTERFACE_USART)
+		USART_OneWire_WriteBit(Bit);
+	#endif
+}
+
+uint8_t OneWire_ReadBit(void)
+{
+	uint8_t Data = 0x00;
+
+	#if(ONEWIRE_INTERFACE == INTERFACE_GPIO)
+		// Save the SREG and disable global interrupts
+		uint8_t Reg = CPU_IRQSave();
+
+		GPIO_Clear(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ));
+		_delay_us(ONEWIRE_DELAY_A);
+		GPIO_Set(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ));
+		_delay_us(ONEWIRE_DELAY_E);
+
+		// Switch the direction to INPUT to read the bus state
+		GPIO_SetDirection(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ), GPIO_DIRECTION_IN);
+		Data = GPIO_Read(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ));
+		_delay_us(ONEWIRE_DELAY_F);
+
+		// Switch the direction back to OUTPUT
+		GPIO_SetDirection(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ), GPIO_DIRECTION_OUT);
+
+		// Restore SREG
+		CPU_IRQRestore(Reg);
+	#elif(ONEWIRE_INTERFACE == INTERFACE_USART)
+		return USART_OneWire_ReadBit();
+	#endif
 
 	return Data;
 }

@@ -139,6 +139,7 @@
     <Folder Include="source\Arch\XMega\GPIO\" />
     <Folder Include="source\Arch\XMega\I2C\" />
     <Folder Include="source\Arch\XMega\AC" />
+    <Folder Include="source\Arch\XMega\ClockManagement" />
     <Folder Include="source\Arch\XMega\RTC" />
     <Folder Include="source\Arch\XMega\NVM\" />
     <Folder Include="source\Arch\XMega\SPI\" />
@@ -152,6 +153,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\Arch\XMega\AES\AES.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\Arch\XMega\ClockManagement\SysClock.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\Arch\XMega\CRC\CRC.c">

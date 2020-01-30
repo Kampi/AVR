@@ -34,6 +34,8 @@
 #ifndef SLEEPMANAGER_H_
 #define SLEEPMANAGER_H_
  
+ #include "Common/Common.h"
+ 
  #if(MCU_ARCH == MCU_ARCH_XMEGA)
 	 #include "Arch/XMega/CPU/CPU.h"
 	 #include "Arch/XMega/PMIC/PMIC.h"
