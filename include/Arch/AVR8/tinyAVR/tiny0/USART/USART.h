@@ -40,6 +40,8 @@
  #include "Common/Common.h"
  #include "Common/Ringbuffer/RingBuffer.h"
  
+ #include "Arch/AVR8/tinyAVR/tiny0/ClockManagement/SysClock.h"
+ 
  /** @defgroup Serial
   *  @{
   */
@@ -129,7 +131,6 @@
   */
  typedef struct
  {
-	 USART_t* Device;							/**< Pointer to USART device object */
 	 USART_CallbackType_t Source;				/**< USART interrupt type */
 	 USART_Callback_t Callback;					/**< Function pointer to USART callback */
  } USART_InterruptConfig_t;
@@ -138,7 +139,6 @@
   */
  typedef struct
  {
-	USART_t* Device;							/**< Pointer to USART device object */
 	USART_DeviceMode_t DeviceMode;				/**< USART device mode */ 	
 	USART_Direction_t Direction;				/**< Direction mode */ 	
 	uint32_t Baudrate;							/**< Baudrate */ 
@@ -162,137 +162,123 @@
  } USART_Message_t;
 
  /** @brief			Set the device mode for USART interface.
-  *  @param Device	Pointer to USART object
   *  @param Mode	USART device mode
   */
- static inline void USART_SetDeviceMode(USART_t* Device, const USART_DeviceMode_t DeviceMode) __attribute__ ((always_inline));
- static inline void USART_SetDeviceMode(USART_t* Device, const USART_DeviceMode_t DeviceMode)
+ static inline void USART_SetDeviceMode(const USART_DeviceMode_t DeviceMode) __attribute__ ((always_inline));
+ static inline void USART_SetDeviceMode(const USART_DeviceMode_t DeviceMode)
  {
-     Device->CTRLC = (Device->CTRLC & (~(0x03 << 0x06))) | (DeviceMode << 0x06);
+     USART0.CTRLC = (USART0.CTRLC & (~(0x03 << 0x06))) | (DeviceMode << 0x06);
  }
  
- /** @brief			Get the device mode for USART interface.
-  *  @param Device	Pointer to USART object
-  *  @return		USART device mode
+ /** @brief		Get the device mode for USART interface.
+  *  @return	USART device mode
   */
- static inline const USART_DeviceMode_t USART_GetDeviceMode(USART_t* Device) __attribute__ ((always_inline));
- static inline const USART_DeviceMode_t USART_GetDeviceMode(USART_t* Device)
+ static inline const USART_DeviceMode_t USART_GetDeviceMode(void) __attribute__ ((always_inline));
+ static inline const USART_DeviceMode_t USART_GetDeviceMode(void)
  {
-     return Device->CTRLC >> 0x06;
+     return USART0.CTRLC >> 0x06;
  }
 
  /** @brief			Set the data size for USART interface.
-  *  @param Device	Pointer to USART object
   *  @param Size	Data size
   */
- static inline void USART_SetDataSize(USART_t* Device, const USART_Size_t Size) __attribute__ ((always_inline));
- static inline void USART_SetDataSize(USART_t* Device, const USART_Size_t Size)
+ static inline void USART_SetDataSize(const USART_Size_t Size) __attribute__ ((always_inline));
+ static inline void USART_SetDataSize(const USART_Size_t Size)
  {
-     Device->CTRLC = (Device->CTRLC & ~0x07) | Size;
+     USART0.CTRLC = (USART0.CTRLC & ~0x07) | Size;
  }
  
- /** @brief			Get the data size for USART interface.
-  *  @param Device	Pointer to USART object
-  *  @return		Data size
+ /** @brief		Get the data size for USART interface.
+  *  @return	Data size
   */
- static inline const USART_Size_t USART_GetDataSize(USART_t* Device) __attribute__ ((always_inline));
- static inline const USART_Size_t USART_GetDataSize(USART_t* Device)
+ static inline const USART_Size_t USART_GetDataSize(void) __attribute__ ((always_inline));
+ static inline const USART_Size_t USART_GetDataSize(void)
  {
-     return Device->CTRLC & 0x07;
+     return USART0.CTRLC & 0x07;
  }
  
  /** @brief			Set the parity for USART interface.
-  *  @param Device	Pointer to USART object
   *  @param Parity	Parity
   */
- static inline void USART_SetParity(USART_t* Device, const USART_Parity_t Parity) __attribute__ ((always_inline));
- static inline void USART_SetParity(USART_t* Device, const USART_Parity_t Parity)
+ static inline void USART_SetParity(const USART_Parity_t Parity) __attribute__ ((always_inline));
+ static inline void USART_SetParity(const USART_Parity_t Parity)
  {
-     Device->CTRLC = (Device->CTRLC & (~(0x03 << 0x04))) | (Parity << 0x04);
+     USART0.CTRLC = (USART0.CTRLC & (~(0x03 << 0x04))) | (Parity << 0x04);
  }
 
- /** @brief			Get the parity for USART interface.
-  *  @param Device	Pointer to USART object
-  *  @return		Parity
+ /** @brief		Get the parity for USART interface.
+  *  @return	Parity
   */
- static inline const USART_Parity_t USART_GetParity(USART_t* Device) __attribute__ ((always_inline));
- static inline const USART_Parity_t USART_GetParity(USART_t* Device)
+ static inline const USART_Parity_t USART_GetParity(void) __attribute__ ((always_inline));
+ static inline const USART_Parity_t USART_GetParity(void)
  {
-     return (Device->CTRLC >> 0x04) & 0x03;
+     return (USART0.CTRLC >> 0x04) & 0x03;
  }
  
  /** @brief			Set the stop bits for USART interface.
-  *  @param Device	Pointer to USART object
   *  @param Stop	Stop bit
   */
- static inline void USART_SetStopbits(USART_t* Device, const USART_Stop_t Stop) __attribute__ ((always_inline));
- static inline void USART_SetStopbits(USART_t* Device, const USART_Stop_t Stop)
+ static inline void USART_SetStopbits(const USART_Stop_t Stop) __attribute__ ((always_inline));
+ static inline void USART_SetStopbits(const USART_Stop_t Stop)
  {
-     Device->CTRLC = (Device->CTRLC & (~(0x01 << 0x03))) | (Stop << 0x03);
+     USART0.CTRLC = (USART0.CTRLC & (~(0x01 << 0x03))) | (Stop << 0x03);
  }
  
- /** @brief			Get the stop bits for USART interface.
-  *  @param Device	Pointer to USART object
-  *  @return		Stop bit
+ /** @brief		Get the stop bits for USART interface.
+  *  @return	Stop bit
   */
- static inline const USART_Stop_t USART_GetStopbits(USART_t* Device) __attribute__ ((always_inline));
- static inline const USART_Stop_t USART_GetStopbits(USART_t* Device)
+ static inline const USART_Stop_t USART_GetStopbits(void) __attribute__ ((always_inline));
+ static inline const USART_Stop_t USART_GetStopbits(void)
  {
-     return (Device->CTRLC >> 0x03) & 0x01;
+     return (USART0.CTRLC >> 0x03) & 0x01;
  }
 
  /** @brief				Set the direction of the USART interface.
-  *  @param Device		Pointer to USART object
   *  @param Direction	USART direction
   */
- static inline void USART_SetDirection(USART_t* Device, const USART_Direction_t Direction) __attribute__ ((always_inline));
- static inline void USART_SetDirection(USART_t* Device, const USART_Direction_t Direction)
+ static inline void USART_SetDirection(const USART_Direction_t Direction) __attribute__ ((always_inline));
+ static inline void USART_SetDirection(const USART_Direction_t Direction)
  {
-	 Device->CTRLB = (Device->CTRLB & (~(0x03 << 0x06))) | (Direction << 0x06);
+	 USART0.CTRLB = (USART0.CTRLB & (~(0x03 << 0x06))) | (Direction << 0x06);
  }
 
- /** @brief			Get the direction of the USART interface.
-  *  @param Device	Pointer to USART object
-  *  @return		USART direction
+ /** @brief		Get the direction of the USART interface.
+  *  @return	USART direction
   */
- static inline const USART_Direction_t USART_GetDirection(USART_t* Device) __attribute__ ((always_inline));
- static inline const USART_Direction_t USART_GetDirection(USART_t* Device)
+ static inline const USART_Direction_t USART_GetDirection(void) __attribute__ ((always_inline));
+ static inline const USART_Direction_t USART_GetDirection(void)
  {
-	 return (Device->CTRLB >> 0x06) & 0x03;
+	 return (USART0.CTRLB >> 0x06) & 0x03;
  }
 
  /** @brief			Enable/Disable open drain mode for the Tx pin.
-  *  @param Device	Pointer to USART object
   *  @param Enable	Enable/Disable
   */
- static inline void USART_SwitchOpenDrain(USART_t* Device, const Bool_t Enable) __attribute__ ((always_inline));
- static inline void USART_SwitchOpenDrain(USART_t* Device, const Bool_t Enable)
+ static inline void USART_SwitchOpenDrain(const Bool_t Enable) __attribute__ ((always_inline));
+ static inline void USART_SwitchOpenDrain(const Bool_t Enable)
  {
-	 Device->CTRLB = (Device->CTRLB & ~(0x01 << 0x03)) | ((Enable & 0x01) << 0x03);
+	 USART0.CTRLB = (USART0.CTRLB & ~(0x01 << 0x03)) | ((Enable & 0x01) << 0x03);
  }
 
-
- /** @brief			Get a single byte from the USART interface.
-  *  @param Device	Pointer to USART object
-  *  @return		Data byte
+ /** @brief		Get a single byte from the USART interface.
+  *  @return	Data byte
   */
- static inline unsigned char USART_GetChar(USART_t* Device) __attribute__ ((always_inline));
- static inline unsigned char USART_GetChar(USART_t* Device)
+ static inline unsigned char USART_GetChar(void) __attribute__ ((always_inline));
+ static inline unsigned char USART_GetChar(void)
  {
-	 return Device->RXDATAL;
+	 return USART0.RXDATAL;
  }
 
  /** @brief			Transmit a single byte with the USART interface.
-  *  @param Device	Pointer to USART object
   *  @param Data	Data byte
   */
- static inline void USART_SendChar(USART_t* Device, const unsigned char Data) __attribute__ ((always_inline));
- static inline void USART_SendChar(USART_t* Device, const unsigned char Data)
+ static inline void USART_SendChar(const unsigned char Data) __attribute__ ((always_inline));
+ static inline void USART_SendChar(const unsigned char Data)
  {
-	 if(((Device->CTRLC & 0x07) != USART_CHSIZE_9BITH_gc) || ((Device->CTRLC & 0x07) != USART_CHSIZE_9BITL_gc))
+	 if(((USART0.CTRLC & 0x07) != USART_CHSIZE_9BITH_gc) || ((USART0.CTRLC & 0x07) != USART_CHSIZE_9BITL_gc))
 	 {
-		 Device->TXDATAL = Data;
-		 while(!(Device->STATUS & USART_DREIF_bm));
+		 USART0.TXDATAL = Data;
+		 while(!(USART0.STATUS & USART_DREIF_bm));
 	 }
 	 else
 	 {
@@ -315,42 +301,36 @@
  void USART_InstallCallback(const USART_InterruptConfig_t* Config);
  
  /** @brief				Remove an installed callback.
-  *  @param Device		Pointer to USART object
   *  @param Callback	Callback which should be removed
   */
- void USART_RemoveCallback(USART_t* Device, const USART_CallbackType_t Callback);
+ void USART_RemoveCallback(const USART_CallbackType_t Callback);
 
  /** @brief			Enable/Disable the USART echo.
-  *  @param Device	Pointer to USART object
   *  @param Enable	Enable/Disable the echo
   */
- void USART_SwitchEcho(USART_t* Device, const Bool_t Enable);
+ void USART_SwitchEcho(const Bool_t Enable);
 
  /** @brief				Set the baud rate of a USART interface.
-  *  @param Device		Pointer to USART object
   *  @param Baudrate	Baudrate for the interface
   *  @param Clock		USART module clock
   *  @param DoubleSpeed	Enabled/Disable double speed
   */
- void USART_SetBaudrate(USART_t* Device, const uint32_t Baudrate, const uint32_t Clock, const Bool_t DoubleSpeed);
+ void USART_SetBaudrate(const uint32_t Baudrate, const uint32_t Clock, const Bool_t DoubleSpeed);
 
  /** @brief			Transmit a char array with the USART interface.
-  *  @param Device	Pointer to USART object
   *  @param Data	Pointer to data array
   */
- void USART_Write(USART_t* Device, const char* data);
+ void USART_Write(const char* data);
 
  /** @brief			Transmit a decimal number with the USART interface.
-  *  @param Device	Pointer to USART object
   *  @param Value	Decimal value
   */
- void USART_WriteDecimal(USART_t* Device, const uint32_t Value);
+ void USART_WriteDecimal(const uint32_t Value);
  
  /** @brief			Transmit a complete line (including CR + LF) with the USART interface.
-  *  @param Device	Pointer to USART object
   *  @param Data	Pointer to data array
   */
- void USART_WriteLine(USART_t* Device, const char* data);
+ void USART_WriteLine(const char* data);
 
  /*
 	1-Wire functions
@@ -359,5 +339,20 @@
  /** @brief	Initialize a USART-OneWire interface.
   */
  void USART_OneWire_Init(void);
+
+ /** @brief		Transmit a reset signal and wait for a presence pulse.
+  *  @return	TRUE when presence pulse was detected
+  */
+ Bool_t USART_OneWire_Reset(void);
+
+ /** @brief		Transmit a bit over the USART 1-Wire interface.
+  *  @param Bit	Data bit
+  */
+ void USART_OneWire_WriteBit(const Bool_t Bit);
+
+ /** @brief		Read a bit from the USART 1-Wire interface.
+  *  @return	Data bit
+  */
+ Bool_t USART_OneWire_ReadBit(void);
 
 #endif /* USART_H_ */

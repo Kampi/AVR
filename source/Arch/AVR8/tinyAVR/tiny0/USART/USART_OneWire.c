@@ -1,9 +1,9 @@
 /*
- * USART.c
+ * USART_OneWire.c
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for Atmel AVR8 tinyAVR USART module.
+ *  File info: Driver for Atmel AVR8 tinyAVR USART module in 1-Wire mode.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,194 +22,101 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Arch/AVR8/tinyAVR/USART/USART.c
- *  @brief Driver for Atmel AVR8 tiny0 USART module.
+/** @file Arch/AVR8/tinyAVR/tiny0/USART/USART.c
+ *  @brief 1-Wire driver for Atmel AVR8 tiny0 USART module.
  *
- *  This contains the implementation of the tiny0 USART driver.
+ *  This contains the implementation of the tiny0 USART 1-Wire driver.
  *
  *  @author Daniel Kampert
  */
 
-#include "Arch/AVR8/tinyAVR/USART/USART.h"
+#include "Arch/AVR8/tinyAVR/tiny0/USART/USART.h"
 
-/** @brief Tx ring buffer for each USART interface.
+/** @brief 1-Wire logical zero pattern @ 115200 baud.
  */
-static RingBuffer_t __USART_TxRingBuffer[USART_DEVICES];
+#define USART_ONEWIRE_WRITE_0			0x00
 
-/** @brief Data buffer for Tx ring buffer.
+/** @brief 1-Wire logical one pattern @ 115200 baud.
  */
-static uint8_t __TxData[USART_DEVICES][USART_BUFFER_SIZE];
+#define USART_ONEWIRE_WRITE_1			0xFF
 
-#ifndef DOXYGEN
-	/*
-		Object declaration
-	*/
-	USART_Message_t __USART_Messages[USART_DEVICES];
-	Bool_t __USART_Echo[USART_DEVICES];
-	struct
-	{
-		USART_Callback_t RxCallback;
-		USART_Callback_t TxCallback;
-		USART_Callback_t EmptyCallback;
-		USART_Callback_t StartCallback;
-		USART_Callback_t SyncFieldCallback;
-	} __USART_Callbacks[USART_DEVICES];
-#endif
+/** @brief 1-Wire read bit pattern @ 115200 baud.
+ */
+#define USART_ONEWIRE_READ				0xFF
 
-void USART_Init(USART_Config_t* Config)
+/** @brief 1-Wire read reset pattern @ 9600 baud.
+ */
+#define USART_ONEWIRE_RESET				0xF0
+
+/** @brief Baudrate value for 115200 baud.
+ */
+static uint32_t _Baud115200 = 93;
+
+/** @brief Baudrate value for 9600 baud.
+ */
+static uint16_t _Baud9600 = 1111;
+
+/** @brief		Transmit a data package over the USART 1-Wire interface and receive the answer.
+ *  @param Data	Data byte
+ *  @return		Answer from device
+ */
+static Bool_t USART_OneWire_ReadWrite(const uint8_t Data)
 {
-    PORT_t* Port = 0x00;
-    uint8_t RxPin = 0x00;
-    uint8_t TxPin = 0x00;
+	USART0.TXDATAL = Data;
+	while(!(USART0.STATUS & USART_RXCIF_bm));
 	
-	Port = &PORTB;
-	RxPin = USART_RX0_PIN;
-	TxPin = USART_TX0_PIN;
-
-	USART_SwitchEcho(Config->Device, Config->EnableEcho);
-
-    USART_SetBaudrate(Config->Device, Config->Baudrate, 16000000UL, Config->EnableDoubleSpeed);
-    USART_SetDirection(Config->Device, Config->Direction);
-    USART_SetDeviceMode(Config->Device, Config->DeviceMode);
-    USART_SetDataSize(Config->Device, Config->Size);
-    USART_SetStopbits(Config->Device, Config->Stop);
-    USART_SetParity(Config->Device, Config->Parity);
-	USART_SwitchOpenDrain(Config->Device, Config->EnableOpenDrain);
-
-    if(Config->Direction == USART_DIRECTION_BOTH)
-    {
-	    GPIO_SetDirection(Port, RxPin, GPIO_DIRECTION_IN);
-	    GPIO_SetDirection(Port, TxPin, GPIO_DIRECTION_OUT);
-    }
-    else if(Config->Direction == USART_DIRECTION_RX)
-    {
-	    GPIO_SetDirection(Port, RxPin, GPIO_DIRECTION_IN);
-    }
-    else if(Config->Direction == USART_DIRECTION_TX)
-    {
-	    GPIO_SetDirection(Port, TxPin, GPIO_DIRECTION_OUT);
-    }
+	return (Bool_t)USART0.RXDATAL;
 }
 
-void USART_InstallCallback(const USART_InterruptConfig_t* Config)
-{	
-	if(Config->Source & USART_DRE_INTERRUPT)
-	{
-		Config->Device->CTRLA = USART_DREIE_bm;
-		__USART_Callbacks[0].EmptyCallback = Config->Callback;
-	}
-	
-	if(Config->Source & USART_TXC_INTERRUPT)
-	{
-		Config->Device->CTRLA = USART_TXEN_bm;
-		__USART_Callbacks[0].TxCallback = Config->Callback;
-	}
-	
-	if(Config->Source & USART_RXC_INTERRUPT)
-	{
-		Config->Device->CTRLA = USART_RXCIE_bm;
-		__USART_Callbacks[0].RxCallback = Config->Callback;
-	}
-	
-	if(Config->Source & USART_RXS_INTERRUPT)
-	{
-		Config->Device->CTRLA = USART_RXSIE_bm;
-		__USART_Callbacks[0].EmptyCallback = Config->Callback;
-	}
-	
-	if(Config->Source & USART_ISF_INTERRUPT)
-	{
-		__USART_Callbacks[0].SyncFieldCallback = Config->Callback;
-	}
+void USART_OneWire_Init(void)
+{
+	PORTB.DIRSET = (0x01 << 0x02);
+	PORTB.PIN2CTRL = PORT_PULLUPEN_bm;
+
+	USART0.CTRLA = USART_LBME_bm;
+	USART0.CTRLB = USART_ODME_bm | USART_RXEN_bm | USART_TXEN_bm;
+	USART0.CTRLC = USART_CHSIZE_8BIT_gc | USART_SBMODE_1BIT_gc;
+
+	// Check if the main clock prescaler is enabled and get the prescaler
+	uint32_t Clock = SysClock_GetClockPer();
+
+	// Get the values for the necessary baudrates
+	_Baud115200 = (Clock << 0x02) / 115200;
+	_Baud9600 = (Clock << 0x02) / 9600;
+	USART0.BAUD = _Baud115200;
 }
 
-void USART_RemoveCallback(USART_t* Device, const USART_CallbackType_t Callback)
+void USART_OneWire_WriteBit(const Bool_t Bit)
 {
-	if(Callback & USART_DRE_INTERRUPT)
+	if(Bit)
 	{
-		__USART_Callbacks[0].EmptyCallback = NULL;
-	}
-	
-	if(Callback & USART_TXC_INTERRUPT)
-	{
-		__USART_Callbacks[0].TxCallback = NULL;
-	}
-	
-	if(Callback & USART_RXC_INTERRUPT)
-	{
-		__USART_Callbacks[0].RxCallback = NULL;
-	}
-	
-	if(Callback & USART_RXS_INTERRUPT)
-	{
-		__USART_Callbacks[0].StartCallback = NULL;
-	}
-
-	if(Callback & USART_ISF_INTERRUPT)
-	{
-		__USART_Callbacks[0].SyncFieldCallback = NULL;
-	}
-}
-
-void USART_SwitchEcho(USART_t* Device, const Bool_t Enable)
-{
-	uint8_t USART = 0x00;
-	
-	if(Device == &USART0)
-	{
-		USART = 0;
-	}
-
-	if(Enable == TRUE)
-	{
-		__USART_Echo[USART] = TRUE;
+		USART_OneWire_ReadWrite(USART_ONEWIRE_WRITE_1);
 	}
 	else
 	{
-		__USART_Echo[USART] = FALSE;
+		USART_OneWire_ReadWrite(USART_ONEWIRE_WRITE_0);
 	}
 }
 
-void USART_SetBaudrate(USART_t* Device, const uint32_t Baudrate, const uint32_t Clock, const Bool_t DoubleSpeed)
+uint8_t USART_OneWire_ReadBit(void)
 {
-	uint8_t S = 0x10 >> (DoubleSpeed & 0x01);
-	uint16_t Baud = (Clock << 0x06) / (S * Baudrate);
-
-	Device->CTRLB = (Device->CTRLB & ~(0x03 << 0x01)) | ((DoubleSpeed & 0x01) << 0x01);
-	Device->BAUD = Baud;
+	return (USART_OneWire_ReadWrite(USART_ONEWIRE_READ) == USART_ONEWIRE_READ);
 }
 
-void USART_Write(USART_t* Device, const char* Data)
+Bool_t USART_OneWire_Reset(void)
 {
-	while(*Data)
-	{
-		USART_SendChar(Device, *Data++);
-	}
-}
+	Bool_t Presence = FALSE;
 
-void USART_WriteDecimal(USART_t* Device, const uint32_t Value)
-{
-	uint32_t Temp = Value / 10;
-	char Buffer[2];
-	
-	if(Temp)
-	{
-		USART_WriteDecimal(Device, Temp);
-	}
-	
-	Buffer[0] = 0x30 + (Value % 10);
-	Buffer[1] = '\0';
-	
-	USART_Write(Device, Buffer);
-}
+	USART0.CTRLB &= ~(USART_RXEN_bm);
+	USART0.CTRLB |= (USART_RXEN_bm);
 
-void USART_WriteLine(USART_t* Device, const char* Data)
-{
-	while(*Data)
-	{
-		USART_SendChar(Device, *Data++);
-	}
+	// Switch baudrate to 9600
+	USART0.BAUD = _Baud9600;
+
+	Presence = USART_OneWire_ReadWrite(USART_ONEWIRE_RESET);
+
+	// Switch baudrate back to 115200
+	USART0.BAUD = _Baud115200;
 	
-	USART_SendChar(Device, LF);
-	USART_SendChar(Device, CR);
+	return Presence;
 }
