@@ -37,19 +37,6 @@
 
  #include "Common/Common.h"
 
- /*
-	Architecture specific definitions
- */
- #if(MCU_ARCH == MCU_ARCH_XMEGA)
-	 #include "Arch/XMega/CPU/CPU.h"
-	 #include "Arch/XMega/GPIO/GPIO.h"
- #elif(MCU_ARCH == MCU_ARCH_AVR8)
-	 #include "Arch/AVR8/CPU/CPU.h"
-	 #include "Arch/AVR8/GPIO/GPIO.h"
- #else
-	 #error "Architecture not supported for 1-Wire!"
- #endif
-
  /** @defgroup OneWire
   *  @{
   */
@@ -91,11 +78,6 @@
   *  @return	1-Wire error
   */
  OneWire_Error_t OneWire_Init(void);
-
- /** @brief		Perform a 1-Wire reset and check if a device is present.
-  *  @return	1-Wire error
-  */
- OneWire_Error_t OneWire_Reset(void);
 
  /** @brief			Initialize a new ROM search and search the first device.
   *  @param ROM		Pointer to #OneWire_ROM_t object
@@ -144,24 +126,29 @@
   */
  OneWire_Error_t OneWire_SelectDevice(const OneWire_ROM_t* ROM);
 
- /** @brief		Transmit one bit with the 1-Wire bus.
-  *  @param Bit	Data bit
-  */
- void OneWire_WriteBit(const uint8_t Bit);
- 
  /** @brief			Transmit one data byte with the 1-Wire bus.
   *  @param Data	Data byte
   */
  void OneWire_WriteByte(const uint8_t Data);
 
- /** @brief		Receive one bit from the 1-Wire bus.
-  *  @return	Received bit
-  */
- uint8_t OneWire_ReadBit(void);
-
  /** @brief		Read one byte from the 1-Wire bus.
   *  @return	Received data byte
   */
  uint8_t OneWire_ReadByte(void);
+
+ /** @brief		Perform a 1-Wire reset and check if a device is present.
+  *  @return	1-Wire error
+  */
+ OneWire_Error_t OneWire_Reset(void);
+
+ /** @brief		Transmit one bit with the 1-Wire bus.
+  *  @param Bit	Data bit
+  */
+ void OneWire_WriteBit(const uint8_t Bit);
+
+ /** @brief		Receive one bit from the 1-Wire bus.
+  *  @return	Received bit
+  */
+ uint8_t OneWire_ReadBit(void);
 
 #endif /* ONEWIRE_H_ */
