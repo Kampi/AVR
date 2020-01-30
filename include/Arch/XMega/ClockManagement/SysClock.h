@@ -247,7 +247,7 @@
 		 SysClock_EnableClock(CLOCK_SOURCE_INT2MHZ);
 		 SysClock_SetClockSource(CLOCK_SOURCE_INT2MHZ);
 	 #else
-	 #warning "F_CPU not valid! Use default 2 MHz clock."
+		#warning "F_CPU not valid! Use default 2 MHz clock."
 		 SysClock_EnableClock(CLOCK_SOURCE_INT2MHZ);
 		 SysClock_SetClockSource(CLOCK_SOURCE_INT2MHZ);
 	 #endif
