@@ -268,7 +268,7 @@
 	 return 2000000;
  }
 
-  /** @brief		Get the current clock from the clk_Per4 domain.
+  /** @brief	Get the current clock from the clk_Per4 domain.
   *  @return	CPU clock frequency
   */
  static inline uint32_t SysClock_GetClockPer4(void) __attribute__ ((always_inline));
