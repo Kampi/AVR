@@ -14,6 +14,8 @@ Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "LibTester", "LibTester\LibT
 EndProject
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "XMega384C3", "XMega384C3\XMega384C3.cproj", "{DCE6C7E3-EE26-4D79-826B-08594B9AD897}"
 EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "XMega256A3BU", "XMega256A3BU\XMega256A3BU.cproj", "{0A10BDDF-7F33-40EA-AE7C-44B9D50BC75C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AVR = Debug|AVR
@@ -28,6 +30,10 @@ Global
 		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Debug|AVR.Build.0 = Debug|AVR
 		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Release|AVR.ActiveCfg = Release|AVR
 		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Release|AVR.Build.0 = Release|AVR
+		{0A10BDDF-7F33-40EA-AE7C-44B9D50BC75C}.Debug|AVR.ActiveCfg = Debug|AVR
+		{0A10BDDF-7F33-40EA-AE7C-44B9D50BC75C}.Debug|AVR.Build.0 = Debug|AVR
+		{0A10BDDF-7F33-40EA-AE7C-44B9D50BC75C}.Release|AVR.ActiveCfg = Release|AVR
+		{0A10BDDF-7F33-40EA-AE7C-44B9D50BC75C}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
