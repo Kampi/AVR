@@ -39,7 +39,7 @@ uint32_t SysClock_GetClockPer(void)
 
 	if(CLKCTRL.MCLKCTRLB & CLKCTRL_PEN_bm)
 	{
-		uint8_t Prescaler = ((CLKCTRL.MCLKCTRLB >> 0x01) & 0x0F) + 0x01;
+		uint8_t Prescaler = CLKCTRL.MCLKCTRLB & 0x1E;
 		if(Prescaler > 0x06)
 		{
 			switch(Prescaler)
@@ -73,7 +73,7 @@ uint32_t SysClock_GetClockPer(void)
 		}
 		else
 		{
-			return SysClock >> Prescaler;
+			return SysClock >> (Prescaler + 0x01);
 		}
 	}
 
