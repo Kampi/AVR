@@ -3,60 +3,64 @@ ATtiny0.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00803f00  00803f00  000000a8  2**0
+  0 .data         00000006  00803f00  000008e0  00000994  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000054  00000000  00000000  00000054  2**1
+  1 .text         000007e0  00000000  00000000  000000b4  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      00000030  00000000  00000000  000000a8  2**0
+  2 .rodata       00000100  000087e0  000007e0  00000894  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  3 .bss          00000046  00803f06  00803f06  0000099a  2**0
+                  ALLOC
+  4 .comment      00000030  00000000  00000000  0000099a  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000000d8  2**2
+  5 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000009cc  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000020  00000000  00000000  00000114  2**0
+  6 .debug_aranges 00000180  00000000  00000000  00000a08  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00001537  00000000  00000000  00000134  2**0
+  7 .debug_info   0000304d  00000000  00000000  00000b88  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 000013d4  00000000  00000000  0000166b  2**0
+  8 .debug_abbrev 00001b40  00000000  00000000  00003bd5  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000001a0  00000000  00000000  00002a3f  2**0
+  9 .debug_line   000011db  00000000  00000000  00005715  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000034  00000000  00000000  00002be0  2**2
+ 10 .debug_frame  00000454  00000000  00000000  000068f0  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00000a2e  00000000  00000000  00002c14  2**0
+ 11 .debug_str    00001756  00000000  00000000  00006d44  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    0000003b  00000000  00000000  00003642  2**0
+ 12 .debug_loc    00000fef  00000000  00000000  0000849a  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000010  00000000  00000000  0000367d  2**0
+ 13 .debug_ranges 00000178  00000000  00000000  00009489  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
 
 00000000 <__vectors>:
    0:	19 c0       	rjmp	.+50     	; 0x34 <__ctors_end>
-   2:	20 c0       	rjmp	.+64     	; 0x44 <__bad_interrupt>
-   4:	1f c0       	rjmp	.+62     	; 0x44 <__bad_interrupt>
-   6:	1e c0       	rjmp	.+60     	; 0x44 <__bad_interrupt>
-   8:	1d c0       	rjmp	.+58     	; 0x44 <__bad_interrupt>
-   a:	1c c0       	rjmp	.+56     	; 0x44 <__bad_interrupt>
-   c:	1b c0       	rjmp	.+54     	; 0x44 <__bad_interrupt>
-   e:	1a c0       	rjmp	.+52     	; 0x44 <__bad_interrupt>
-  10:	19 c0       	rjmp	.+50     	; 0x44 <__bad_interrupt>
-  12:	18 c0       	rjmp	.+48     	; 0x44 <__bad_interrupt>
-  14:	17 c0       	rjmp	.+46     	; 0x44 <__bad_interrupt>
-  16:	16 c0       	rjmp	.+44     	; 0x44 <__bad_interrupt>
-  18:	15 c0       	rjmp	.+42     	; 0x44 <__bad_interrupt>
-  1a:	14 c0       	rjmp	.+40     	; 0x44 <__bad_interrupt>
-  1c:	13 c0       	rjmp	.+38     	; 0x44 <__bad_interrupt>
-  1e:	12 c0       	rjmp	.+36     	; 0x44 <__bad_interrupt>
-  20:	11 c0       	rjmp	.+34     	; 0x44 <__bad_interrupt>
-  22:	10 c0       	rjmp	.+32     	; 0x44 <__bad_interrupt>
-  24:	0f c0       	rjmp	.+30     	; 0x44 <__bad_interrupt>
-  26:	0e c0       	rjmp	.+28     	; 0x44 <__bad_interrupt>
-  28:	0d c0       	rjmp	.+26     	; 0x44 <__bad_interrupt>
-  2a:	0c c0       	rjmp	.+24     	; 0x44 <__bad_interrupt>
-  2c:	0b c0       	rjmp	.+22     	; 0x44 <__bad_interrupt>
-  2e:	0a c0       	rjmp	.+20     	; 0x44 <__bad_interrupt>
-  30:	09 c0       	rjmp	.+18     	; 0x44 <__bad_interrupt>
-  32:	08 c0       	rjmp	.+16     	; 0x44 <__bad_interrupt>
+   2:	33 c0       	rjmp	.+102    	; 0x6a <__bad_interrupt>
+   4:	32 c0       	rjmp	.+100    	; 0x6a <__bad_interrupt>
+   6:	31 c0       	rjmp	.+98     	; 0x6a <__bad_interrupt>
+   8:	30 c0       	rjmp	.+96     	; 0x6a <__bad_interrupt>
+   a:	2f c0       	rjmp	.+94     	; 0x6a <__bad_interrupt>
+   c:	2e c0       	rjmp	.+92     	; 0x6a <__bad_interrupt>
+   e:	2d c0       	rjmp	.+90     	; 0x6a <__bad_interrupt>
+  10:	2c c0       	rjmp	.+88     	; 0x6a <__bad_interrupt>
+  12:	2b c0       	rjmp	.+86     	; 0x6a <__bad_interrupt>
+  14:	2a c0       	rjmp	.+84     	; 0x6a <__bad_interrupt>
+  16:	29 c0       	rjmp	.+82     	; 0x6a <__bad_interrupt>
+  18:	28 c0       	rjmp	.+80     	; 0x6a <__bad_interrupt>
+  1a:	27 c0       	rjmp	.+78     	; 0x6a <__bad_interrupt>
+  1c:	26 c0       	rjmp	.+76     	; 0x6a <__bad_interrupt>
+  1e:	25 c0       	rjmp	.+74     	; 0x6a <__bad_interrupt>
+  20:	24 c0       	rjmp	.+72     	; 0x6a <__bad_interrupt>
+  22:	23 c0       	rjmp	.+70     	; 0x6a <__bad_interrupt>
+  24:	22 c0       	rjmp	.+68     	; 0x6a <__bad_interrupt>
+  26:	21 c0       	rjmp	.+66     	; 0x6a <__bad_interrupt>
+  28:	20 c0       	rjmp	.+64     	; 0x6a <__bad_interrupt>
+  2a:	1f c0       	rjmp	.+62     	; 0x6a <__bad_interrupt>
+  2c:	1e c0       	rjmp	.+60     	; 0x6a <__bad_interrupt>
+  2e:	1d c0       	rjmp	.+58     	; 0x6a <__bad_interrupt>
+  30:	1c c0       	rjmp	.+56     	; 0x6a <__bad_interrupt>
+  32:	1b c0       	rjmp	.+54     	; 0x6a <__bad_interrupt>
 
 00000034 <__ctors_end>:
   34:	11 24       	eor	r1, r1
@@ -65,28 +69,1430 @@ Disassembly of section .text:
   3a:	cd bf       	out	0x3d, r28	; 61
   3c:	df e3       	ldi	r29, 0x3F	; 63
   3e:	de bf       	out	0x3e, r29	; 62
-  40:	02 d0       	rcall	.+4      	; 0x46 <main>
-  42:	06 c0       	rjmp	.+12     	; 0x50 <_exit>
 
-00000044 <__bad_interrupt>:
-  44:	dd cf       	rjmp	.-70     	; 0x0 <__vectors>
+00000040 <__do_copy_data>:
+  40:	1f e3       	ldi	r17, 0x3F	; 63
+  42:	a0 e0       	ldi	r26, 0x00	; 0
+  44:	bf e3       	ldi	r27, 0x3F	; 63
+  46:	e0 ee       	ldi	r30, 0xE0	; 224
+  48:	f8 e0       	ldi	r31, 0x08	; 8
+  4a:	02 c0       	rjmp	.+4      	; 0x50 <__do_copy_data+0x10>
+  4c:	05 90       	lpm	r0, Z+
+  4e:	0d 92       	st	X+, r0
+  50:	a6 30       	cpi	r26, 0x06	; 6
+  52:	b1 07       	cpc	r27, r17
+  54:	d9 f7       	brne	.-10     	; 0x4c <__do_copy_data+0xc>
 
-00000046 <main>:
-#include "Peripheral/DS18B20/DS18B20.h"
+00000056 <__do_clear_bss>:
+  56:	2f e3       	ldi	r18, 0x3F	; 63
+  58:	a6 e0       	ldi	r26, 0x06	; 6
+  5a:	bf e3       	ldi	r27, 0x3F	; 63
+  5c:	01 c0       	rjmp	.+2      	; 0x60 <.do_clear_bss_start>
+
+0000005e <.do_clear_bss_loop>:
+  5e:	1d 92       	st	X+, r1
+
+00000060 <.do_clear_bss_start>:
+  60:	ac 34       	cpi	r26, 0x4C	; 76
+  62:	b2 07       	cpc	r27, r18
+  64:	e1 f7       	brne	.-8      	; 0x5e <.do_clear_bss_loop>
+  66:	02 d0       	rcall	.+4      	; 0x6c <main>
+  68:	b9 c3       	rjmp	.+1906   	; 0x7dc <_exit>
+
+0000006a <__bad_interrupt>:
+  6a:	ca cf       	rjmp	.-108    	; 0x0 <__vectors>
+
+0000006c <main>:
+OneWire_ROM_t DS18B20_AlarmROM[DS18B20_BUS_DEVICES];
+
+volatile uint8_t A;
 
 int main(void)
 {
-  46:	cf 93       	push	r28
-  48:	df 93       	push	r29
-  4a:	cd b7       	in	r28, 0x3d	; 61
-  4c:	de b7       	in	r29, 0x3e	; 62
-    while (1) 
+  6c:	cf 93       	push	r28
+  6e:	df 93       	push	r29
+  70:	cd b7       	in	r28, 0x3d	; 61
+  72:	de b7       	in	r29, 0x3e	; 62
+	if(DS18B20_Init() == ONEWIRE_NO_ERROR)
+  74:	40 d2       	rcall	.+1152   	; 0x4f6 <DS18B20_Init>
+  76:	88 23       	and	r24, r24
+  78:	71 f4       	brne	.+28     	; 0x96 <main+0x2a>
+	{
+		if(DS18B20_GetDevices(&Devices, DS18B20_BUS_DEVICES, DS18B20_ROM) == ONEWIRE_NO_ERROR)
+  7a:	4f e0       	ldi	r20, 0x0F	; 15
+  7c:	5f e3       	ldi	r21, 0x3F	; 63
+  7e:	63 e0       	ldi	r22, 0x03	; 3
+  80:	88 e2       	ldi	r24, 0x28	; 40
+  82:	9f e3       	ldi	r25, 0x3F	; 63
+  84:	40 d2       	rcall	.+1152   	; 0x506 <DS18B20_GetDevices>
+  86:	88 23       	and	r24, r24
+  88:	59 f0       	breq	.+22     	; 0xa0 <main+0x34>
+		{
+		}
+		else
+		{
+			A++;
+  8a:	80 91 0e 3f 	lds	r24, 0x3F0E	; 0x803f0e <A>
+  8e:	8f 5f       	subi	r24, 0xFF	; 255
+  90:	80 93 0e 3f 	sts	0x3F0E, r24	; 0x803f0e <A>
+  94:	05 c0       	rjmp	.+10     	; 0xa0 <main+0x34>
+		}
+	}
+	else
+	{
+		A++;
+  96:	80 91 0e 3f 	lds	r24, 0x3F0E	; 0x803f0e <A>
+  9a:	8f 5f       	subi	r24, 0xFF	; 255
+  9c:	80 93 0e 3f 	sts	0x3F0E, r24	; 0x803f0e <A>
+	}
+	
+    while(1) 
     {
+		A++;
+  a0:	80 91 0e 3f 	lds	r24, 0x3F0E	; 0x803f0e <A>
+  a4:	8f 5f       	subi	r24, 0xFF	; 255
+  a6:	80 93 0e 3f 	sts	0x3F0E, r24	; 0x803f0e <A>
     }
-  4e:	ff cf       	rjmp	.-2      	; 0x4e <main+0x8>
+  aa:	fa cf       	rjmp	.-12     	; 0xa0 <main+0x34>
 
-00000050 <_exit>:
-  50:	f8 94       	cli
+000000ac <SysClock_GetClockPer>:
+ */
 
-00000052 <__stop_program>:
-  52:	ff cf       	rjmp	.-2      	; 0x52 <__stop_program>
+#include "Arch/AVR8/tinyAVR/tiny0/ClockManagement/SysClock.h"
+
+uint32_t SysClock_GetClockPer(void)
+{
+  ac:	af 92       	push	r10
+  ae:	bf 92       	push	r11
+  b0:	cf 92       	push	r12
+  b2:	df 92       	push	r13
+  b4:	ef 92       	push	r14
+  b6:	ff 92       	push	r15
+  b8:	0f 93       	push	r16
+  ba:	1f 93       	push	r17
+  bc:	cf 93       	push	r28
+  be:	df 93       	push	r29
+  c0:	cd b7       	in	r28, 0x3d	; 61
+  c2:	de b7       	in	r29, 0x3e	; 62
+  c4:	25 97       	sbiw	r28, 0x05	; 5
+  c6:	cd bf       	out	0x3d, r28	; 61
+  c8:	de bf       	out	0x3e, r29	; 62
+  *  @return	Clock frequency
+  */
+ static inline const uint32_t SysClock_GetClock(void) __attribute__ ((always_inline));
+ static inline const uint32_t SysClock_GetClock(void)
+ {
+	 if(CLKCTRL.MCLKCTRLA & CLKCTRL_CLKSEL_OSCULP32K_gc)
+  ca:	80 e6       	ldi	r24, 0x60	; 96
+  cc:	90 e0       	ldi	r25, 0x00	; 0
+  ce:	fc 01       	movw	r30, r24
+  d0:	80 81       	ld	r24, Z
+  d2:	88 2f       	mov	r24, r24
+  d4:	90 e0       	ldi	r25, 0x00	; 0
+  d6:	81 70       	andi	r24, 0x01	; 1
+  d8:	99 27       	eor	r25, r25
+  da:	89 2b       	or	r24, r25
+  dc:	29 f0       	breq	.+10     	; 0xe8 <SysClock_GetClockPer+0x3c>
+	 {
+		 return 32000;
+  de:	80 e0       	ldi	r24, 0x00	; 0
+  e0:	9d e7       	ldi	r25, 0x7D	; 125
+  e2:	a0 e0       	ldi	r26, 0x00	; 0
+  e4:	b0 e0       	ldi	r27, 0x00	; 0
+  e6:	13 c0       	rjmp	.+38     	; 0x10e <SysClock_GetClockPer+0x62>
+	 }
+	 else if(CLKCTRL.MCLKCTRLA & CLKCTRL_CLKSEL_EXTCLK_gc)
+  e8:	80 e6       	ldi	r24, 0x60	; 96
+  ea:	90 e0       	ldi	r25, 0x00	; 0
+  ec:	fc 01       	movw	r30, r24
+  ee:	80 81       	ld	r24, Z
+  f0:	88 2f       	mov	r24, r24
+  f2:	90 e0       	ldi	r25, 0x00	; 0
+  f4:	83 70       	andi	r24, 0x03	; 3
+  f6:	99 27       	eor	r25, r25
+  f8:	89 2b       	or	r24, r25
+  fa:	29 f0       	breq	.+10     	; 0x106 <SysClock_GetClockPer+0x5a>
+	 {
+		 return F_CPU;
+  fc:	80 e0       	ldi	r24, 0x00	; 0
+  fe:	94 e2       	ldi	r25, 0x24	; 36
+ 100:	a4 ef       	ldi	r26, 0xF4	; 244
+ 102:	b0 e0       	ldi	r27, 0x00	; 0
+ 104:	04 c0       	rjmp	.+8      	; 0x10e <SysClock_GetClockPer+0x62>
+	 }
+
+	 return F_CPU;
+ 106:	80 e0       	ldi	r24, 0x00	; 0
+ 108:	94 e2       	ldi	r25, 0x24	; 36
+ 10a:	a4 ef       	ldi	r26, 0xF4	; 244
+ 10c:	b0 e0       	ldi	r27, 0x00	; 0
+	uint32_t SysClock = SysClock_GetClock();
+ 10e:	89 83       	std	Y+1, r24	; 0x01
+ 110:	9a 83       	std	Y+2, r25	; 0x02
+ 112:	ab 83       	std	Y+3, r26	; 0x03
+ 114:	bc 83       	std	Y+4, r27	; 0x04
+
+	if(CLKCTRL.MCLKCTRLB & CLKCTRL_PEN_bm)
+ 116:	80 e6       	ldi	r24, 0x60	; 96
+ 118:	90 e0       	ldi	r25, 0x00	; 0
+ 11a:	fc 01       	movw	r30, r24
+ 11c:	81 81       	ldd	r24, Z+1	; 0x01
+ 11e:	88 2f       	mov	r24, r24
+ 120:	90 e0       	ldi	r25, 0x00	; 0
+ 122:	81 70       	andi	r24, 0x01	; 1
+ 124:	99 27       	eor	r25, r25
+ 126:	89 2b       	or	r24, r25
+ 128:	09 f4       	brne	.+2      	; 0x12c <SysClock_GetClockPer+0x80>
+ 12a:	9b c0       	rjmp	.+310    	; 0x262 <SysClock_GetClockPer+0x1b6>
+	{
+		uint8_t Prescaler = ((CLKCTRL.MCLKCTRLB >> 0x01) & 0x0F) + 0x01;
+ 12c:	80 e6       	ldi	r24, 0x60	; 96
+ 12e:	90 e0       	ldi	r25, 0x00	; 0
+ 130:	fc 01       	movw	r30, r24
+ 132:	81 81       	ldd	r24, Z+1	; 0x01
+ 134:	86 95       	lsr	r24
+ 136:	8f 70       	andi	r24, 0x0F	; 15
+ 138:	8f 5f       	subi	r24, 0xFF	; 255
+ 13a:	8d 83       	std	Y+5, r24	; 0x05
+		if(Prescaler > 0x06)
+ 13c:	8d 81       	ldd	r24, Y+5	; 0x05
+ 13e:	87 30       	cpi	r24, 0x07	; 7
+ 140:	08 f4       	brcc	.+2      	; 0x144 <SysClock_GetClockPer+0x98>
+ 142:	80 c0       	rjmp	.+256    	; 0x244 <SysClock_GetClockPer+0x198>
+		{
+			switch(Prescaler)
+ 144:	8d 81       	ldd	r24, Y+5	; 0x05
+ 146:	88 2f       	mov	r24, r24
+ 148:	90 e0       	ldi	r25, 0x00	; 0
+ 14a:	84 31       	cpi	r24, 0x14	; 20
+ 14c:	91 05       	cpc	r25, r1
+ 14e:	09 f4       	brne	.+2      	; 0x152 <SysClock_GetClockPer+0xa6>
+ 150:	4f c0       	rjmp	.+158    	; 0x1f0 <SysClock_GetClockPer+0x144>
+ 152:	85 31       	cpi	r24, 0x15	; 21
+ 154:	91 05       	cpc	r25, r1
+ 156:	34 f4       	brge	.+12     	; 0x164 <SysClock_GetClockPer+0xb8>
+ 158:	80 31       	cpi	r24, 0x10	; 16
+ 15a:	91 05       	cpc	r25, r1
+ 15c:	59 f0       	breq	.+22     	; 0x174 <SysClock_GetClockPer+0xc8>
+ 15e:	42 97       	sbiw	r24, 0x12	; 18
+ 160:	c9 f1       	breq	.+114    	; 0x1d4 <SysClock_GetClockPer+0x128>
+ 162:	7f c0       	rjmp	.+254    	; 0x262 <SysClock_GetClockPer+0x1b6>
+ 164:	86 31       	cpi	r24, 0x16	; 22
+ 166:	91 05       	cpc	r25, r1
+ 168:	09 f4       	brne	.+2      	; 0x16c <SysClock_GetClockPer+0xc0>
+ 16a:	50 c0       	rjmp	.+160    	; 0x20c <SysClock_GetClockPer+0x160>
+ 16c:	48 97       	sbiw	r24, 0x18	; 24
+ 16e:	09 f4       	brne	.+2      	; 0x172 <SysClock_GetClockPer+0xc6>
+ 170:	5b c0       	rjmp	.+182    	; 0x228 <SysClock_GetClockPer+0x17c>
+ 172:	77 c0       	rjmp	.+238    	; 0x262 <SysClock_GetClockPer+0x1b6>
+			{
+				case(CLKCTRL_PDIV_6X_gc):
+				{
+					return SysClock / 0x06;
+ 174:	89 81       	ldd	r24, Y+1	; 0x01
+ 176:	9a 81       	ldd	r25, Y+2	; 0x02
+ 178:	ab 81       	ldd	r26, Y+3	; 0x03
+ 17a:	bc 81       	ldd	r27, Y+4	; 0x04
+ 17c:	bc 01       	movw	r22, r24
+ 17e:	cd 01       	movw	r24, r26
+ 180:	2b ea       	ldi	r18, 0xAB	; 171
+ 182:	3a ea       	ldi	r19, 0xAA	; 170
+ 184:	4a ea       	ldi	r20, 0xAA	; 170
+ 186:	5a ea       	ldi	r21, 0xAA	; 170
+ 188:	d0 d2       	rcall	.+1440   	; 0x72a <__umulsidi3>
+ 18a:	a2 2e       	mov	r10, r18
+ 18c:	b3 2e       	mov	r11, r19
+ 18e:	c4 2e       	mov	r12, r20
+ 190:	d5 2e       	mov	r13, r21
+ 192:	e6 2e       	mov	r14, r22
+ 194:	f7 2e       	mov	r15, r23
+ 196:	08 2f       	mov	r16, r24
+ 198:	19 2f       	mov	r17, r25
+ 19a:	2a 2d       	mov	r18, r10
+ 19c:	3b 2d       	mov	r19, r11
+ 19e:	4c 2d       	mov	r20, r12
+ 1a0:	5d 2d       	mov	r21, r13
+ 1a2:	6e 2d       	mov	r22, r14
+ 1a4:	7f 2d       	mov	r23, r15
+ 1a6:	80 2f       	mov	r24, r16
+ 1a8:	91 2f       	mov	r25, r17
+ 1aa:	00 e2       	ldi	r16, 0x20	; 32
+ 1ac:	e7 d2       	rcall	.+1486   	; 0x77c <__lshrdi3>
+ 1ae:	a2 2e       	mov	r10, r18
+ 1b0:	b3 2e       	mov	r11, r19
+ 1b2:	c4 2e       	mov	r12, r20
+ 1b4:	d5 2e       	mov	r13, r21
+ 1b6:	e6 2e       	mov	r14, r22
+ 1b8:	f7 2e       	mov	r15, r23
+ 1ba:	08 2f       	mov	r16, r24
+ 1bc:	19 2f       	mov	r17, r25
+ 1be:	d6 01       	movw	r26, r12
+ 1c0:	c5 01       	movw	r24, r10
+ 1c2:	b6 95       	lsr	r27
+ 1c4:	a7 95       	ror	r26
+ 1c6:	97 95       	ror	r25
+ 1c8:	87 95       	ror	r24
+ 1ca:	b6 95       	lsr	r27
+ 1cc:	a7 95       	ror	r26
+ 1ce:	97 95       	ror	r25
+ 1d0:	87 95       	ror	r24
+ 1d2:	4b c0       	rjmp	.+150    	; 0x26a <SysClock_GetClockPer+0x1be>
+					break;
+				}
+				case(CLKCTRL_PDIV_10X_gc):
+				{
+					return SysClock / 0xA;
+ 1d4:	89 81       	ldd	r24, Y+1	; 0x01
+ 1d6:	9a 81       	ldd	r25, Y+2	; 0x02
+ 1d8:	ab 81       	ldd	r26, Y+3	; 0x03
+ 1da:	bc 81       	ldd	r27, Y+4	; 0x04
+ 1dc:	2a e0       	ldi	r18, 0x0A	; 10
+ 1de:	30 e0       	ldi	r19, 0x00	; 0
+ 1e0:	40 e0       	ldi	r20, 0x00	; 0
+ 1e2:	50 e0       	ldi	r21, 0x00	; 0
+ 1e4:	bc 01       	movw	r22, r24
+ 1e6:	cd 01       	movw	r24, r26
+ 1e8:	7e d2       	rcall	.+1276   	; 0x6e6 <__udivmodsi4>
+ 1ea:	da 01       	movw	r26, r20
+ 1ec:	c9 01       	movw	r24, r18
+ 1ee:	3d c0       	rjmp	.+122    	; 0x26a <SysClock_GetClockPer+0x1be>
+					break;
+				}
+				case(CLKCTRL_PDIV_12X_gc):
+				{
+					return SysClock / 0x0C;
+ 1f0:	89 81       	ldd	r24, Y+1	; 0x01
+ 1f2:	9a 81       	ldd	r25, Y+2	; 0x02
+ 1f4:	ab 81       	ldd	r26, Y+3	; 0x03
+ 1f6:	bc 81       	ldd	r27, Y+4	; 0x04
+ 1f8:	2c e0       	ldi	r18, 0x0C	; 12
+ 1fa:	30 e0       	ldi	r19, 0x00	; 0
+ 1fc:	40 e0       	ldi	r20, 0x00	; 0
+ 1fe:	50 e0       	ldi	r21, 0x00	; 0
+ 200:	bc 01       	movw	r22, r24
+ 202:	cd 01       	movw	r24, r26
+ 204:	70 d2       	rcall	.+1248   	; 0x6e6 <__udivmodsi4>
+ 206:	da 01       	movw	r26, r20
+ 208:	c9 01       	movw	r24, r18
+ 20a:	2f c0       	rjmp	.+94     	; 0x26a <SysClock_GetClockPer+0x1be>
+					break;
+				}
+				case(CLKCTRL_PDIV_24X_gc):
+				{
+					return SysClock / 0x18;
+ 20c:	89 81       	ldd	r24, Y+1	; 0x01
+ 20e:	9a 81       	ldd	r25, Y+2	; 0x02
+ 210:	ab 81       	ldd	r26, Y+3	; 0x03
+ 212:	bc 81       	ldd	r27, Y+4	; 0x04
+ 214:	28 e1       	ldi	r18, 0x18	; 24
+ 216:	30 e0       	ldi	r19, 0x00	; 0
+ 218:	40 e0       	ldi	r20, 0x00	; 0
+ 21a:	50 e0       	ldi	r21, 0x00	; 0
+ 21c:	bc 01       	movw	r22, r24
+ 21e:	cd 01       	movw	r24, r26
+ 220:	62 d2       	rcall	.+1220   	; 0x6e6 <__udivmodsi4>
+ 222:	da 01       	movw	r26, r20
+ 224:	c9 01       	movw	r24, r18
+ 226:	21 c0       	rjmp	.+66     	; 0x26a <SysClock_GetClockPer+0x1be>
+					break;
+				}
+				case(CLKCTRL_PDIV_48X_gc):
+				{
+					return SysClock / 0x30;
+ 228:	89 81       	ldd	r24, Y+1	; 0x01
+ 22a:	9a 81       	ldd	r25, Y+2	; 0x02
+ 22c:	ab 81       	ldd	r26, Y+3	; 0x03
+ 22e:	bc 81       	ldd	r27, Y+4	; 0x04
+ 230:	20 e3       	ldi	r18, 0x30	; 48
+ 232:	30 e0       	ldi	r19, 0x00	; 0
+ 234:	40 e0       	ldi	r20, 0x00	; 0
+ 236:	50 e0       	ldi	r21, 0x00	; 0
+ 238:	bc 01       	movw	r22, r24
+ 23a:	cd 01       	movw	r24, r26
+ 23c:	54 d2       	rcall	.+1192   	; 0x6e6 <__udivmodsi4>
+ 23e:	da 01       	movw	r26, r20
+ 240:	c9 01       	movw	r24, r18
+ 242:	13 c0       	rjmp	.+38     	; 0x26a <SysClock_GetClockPer+0x1be>
+				}
+			}
+		}
+		else
+		{
+			return SysClock >> Prescaler;
+ 244:	8d 81       	ldd	r24, Y+5	; 0x05
+ 246:	28 2f       	mov	r18, r24
+ 248:	30 e0       	ldi	r19, 0x00	; 0
+ 24a:	89 81       	ldd	r24, Y+1	; 0x01
+ 24c:	9a 81       	ldd	r25, Y+2	; 0x02
+ 24e:	ab 81       	ldd	r26, Y+3	; 0x03
+ 250:	bc 81       	ldd	r27, Y+4	; 0x04
+ 252:	04 c0       	rjmp	.+8      	; 0x25c <SysClock_GetClockPer+0x1b0>
+ 254:	b6 95       	lsr	r27
+ 256:	a7 95       	ror	r26
+ 258:	97 95       	ror	r25
+ 25a:	87 95       	ror	r24
+ 25c:	2a 95       	dec	r18
+ 25e:	d2 f7       	brpl	.-12     	; 0x254 <SysClock_GetClockPer+0x1a8>
+ 260:	04 c0       	rjmp	.+8      	; 0x26a <SysClock_GetClockPer+0x1be>
+		}
+	}
+
+	return SysClock;
+ 262:	89 81       	ldd	r24, Y+1	; 0x01
+ 264:	9a 81       	ldd	r25, Y+2	; 0x02
+ 266:	ab 81       	ldd	r26, Y+3	; 0x03
+ 268:	bc 81       	ldd	r27, Y+4	; 0x04
+ 26a:	bc 01       	movw	r22, r24
+ 26c:	cd 01       	movw	r24, r26
+ 26e:	25 96       	adiw	r28, 0x05	; 5
+ 270:	cd bf       	out	0x3d, r28	; 61
+ 272:	de bf       	out	0x3e, r29	; 62
+ 274:	df 91       	pop	r29
+ 276:	cf 91       	pop	r28
+ 278:	1f 91       	pop	r17
+ 27a:	0f 91       	pop	r16
+ 27c:	ff 90       	pop	r15
+ 27e:	ef 90       	pop	r14
+ 280:	df 90       	pop	r13
+ 282:	cf 90       	pop	r12
+ 284:	bf 90       	pop	r11
+ 286:	af 90       	pop	r10
+ 288:	08 95       	ret
+
+0000028a <USART_OneWire_ReadWrite>:
+/** @brief		Transmit a data package over the USART 1-Wire interface and receive the answer.
+ *  @param Data	Data byte
+ *  @return		Answer from device
+ */
+static Bool_t USART_OneWire_ReadWrite(const uint8_t Data)
+{
+ 28a:	cf 93       	push	r28
+ 28c:	df 93       	push	r29
+ 28e:	1f 92       	push	r1
+ 290:	cd b7       	in	r28, 0x3d	; 61
+ 292:	de b7       	in	r29, 0x3e	; 62
+ 294:	89 83       	std	Y+1, r24	; 0x01
+	USART0.TXDATAL = Data;
+ 296:	80 e0       	ldi	r24, 0x00	; 0
+ 298:	98 e0       	ldi	r25, 0x08	; 8
+ 29a:	29 81       	ldd	r18, Y+1	; 0x01
+ 29c:	fc 01       	movw	r30, r24
+ 29e:	22 83       	std	Z+2, r18	; 0x02
+	while(!(USART0.STATUS & USART_RXCIF_bm));
+ 2a0:	00 00       	nop
+ 2a2:	80 e0       	ldi	r24, 0x00	; 0
+ 2a4:	98 e0       	ldi	r25, 0x08	; 8
+ 2a6:	fc 01       	movw	r30, r24
+ 2a8:	84 81       	ldd	r24, Z+4	; 0x04
+ 2aa:	88 23       	and	r24, r24
+ 2ac:	d4 f7       	brge	.-12     	; 0x2a2 <USART_OneWire_ReadWrite+0x18>
+	
+	return (Bool_t)USART0.RXDATAL;
+ 2ae:	80 e0       	ldi	r24, 0x00	; 0
+ 2b0:	98 e0       	ldi	r25, 0x08	; 8
+ 2b2:	fc 01       	movw	r30, r24
+ 2b4:	80 81       	ld	r24, Z
+}
+ 2b6:	0f 90       	pop	r0
+ 2b8:	df 91       	pop	r29
+ 2ba:	cf 91       	pop	r28
+ 2bc:	08 95       	ret
+
+000002be <USART_OneWire_Init>:
+
+void USART_OneWire_Init(void)
+{
+ 2be:	cf 93       	push	r28
+ 2c0:	df 93       	push	r29
+ 2c2:	00 d0       	rcall	.+0      	; 0x2c4 <USART_OneWire_Init+0x6>
+ 2c4:	00 d0       	rcall	.+0      	; 0x2c6 <USART_OneWire_Init+0x8>
+ 2c6:	cd b7       	in	r28, 0x3d	; 61
+ 2c8:	de b7       	in	r29, 0x3e	; 62
+	PORTB.DIRSET = (0x01 << 0x02);
+ 2ca:	80 e2       	ldi	r24, 0x20	; 32
+ 2cc:	94 e0       	ldi	r25, 0x04	; 4
+ 2ce:	24 e0       	ldi	r18, 0x04	; 4
+ 2d0:	fc 01       	movw	r30, r24
+ 2d2:	21 83       	std	Z+1, r18	; 0x01
+	PORTB.PIN2CTRL = PORT_PULLUPEN_bm;
+ 2d4:	80 e2       	ldi	r24, 0x20	; 32
+ 2d6:	94 e0       	ldi	r25, 0x04	; 4
+ 2d8:	28 e0       	ldi	r18, 0x08	; 8
+ 2da:	fc 01       	movw	r30, r24
+ 2dc:	22 8b       	std	Z+18, r18	; 0x12
+
+	USART0.CTRLA = USART_LBME_bm;
+ 2de:	80 e0       	ldi	r24, 0x00	; 0
+ 2e0:	98 e0       	ldi	r25, 0x08	; 8
+ 2e2:	28 e0       	ldi	r18, 0x08	; 8
+ 2e4:	fc 01       	movw	r30, r24
+ 2e6:	25 83       	std	Z+5, r18	; 0x05
+	USART0.CTRLB = USART_ODME_bm | USART_RXEN_bm | USART_TXEN_bm;
+ 2e8:	80 e0       	ldi	r24, 0x00	; 0
+ 2ea:	98 e0       	ldi	r25, 0x08	; 8
+ 2ec:	28 ec       	ldi	r18, 0xC8	; 200
+ 2ee:	fc 01       	movw	r30, r24
+ 2f0:	26 83       	std	Z+6, r18	; 0x06
+	USART0.CTRLC = USART_CHSIZE_8BIT_gc | USART_SBMODE_1BIT_gc;
+ 2f2:	80 e0       	ldi	r24, 0x00	; 0
+ 2f4:	98 e0       	ldi	r25, 0x08	; 8
+ 2f6:	23 e0       	ldi	r18, 0x03	; 3
+ 2f8:	fc 01       	movw	r30, r24
+ 2fa:	27 83       	std	Z+7, r18	; 0x07
+
+	// Check if the main clock prescaler is enabled and get the prescaler
+	uint32_t Clock = SysClock_GetClockPer();
+ 2fc:	d7 de       	rcall	.-594    	; 0xac <SysClock_GetClockPer>
+ 2fe:	dc 01       	movw	r26, r24
+ 300:	cb 01       	movw	r24, r22
+ 302:	89 83       	std	Y+1, r24	; 0x01
+ 304:	9a 83       	std	Y+2, r25	; 0x02
+ 306:	ab 83       	std	Y+3, r26	; 0x03
+ 308:	bc 83       	std	Y+4, r27	; 0x04
+
+	// Get the values for the necessary baudrates
+	_Baud115200 = (Clock << 0x02) / 115200;
+ 30a:	89 81       	ldd	r24, Y+1	; 0x01
+ 30c:	9a 81       	ldd	r25, Y+2	; 0x02
+ 30e:	ab 81       	ldd	r26, Y+3	; 0x03
+ 310:	bc 81       	ldd	r27, Y+4	; 0x04
+ 312:	88 0f       	add	r24, r24
+ 314:	99 1f       	adc	r25, r25
+ 316:	aa 1f       	adc	r26, r26
+ 318:	bb 1f       	adc	r27, r27
+ 31a:	88 0f       	add	r24, r24
+ 31c:	99 1f       	adc	r25, r25
+ 31e:	aa 1f       	adc	r26, r26
+ 320:	bb 1f       	adc	r27, r27
+ 322:	20 e0       	ldi	r18, 0x00	; 0
+ 324:	32 ec       	ldi	r19, 0xC2	; 194
+ 326:	41 e0       	ldi	r20, 0x01	; 1
+ 328:	50 e0       	ldi	r21, 0x00	; 0
+ 32a:	bc 01       	movw	r22, r24
+ 32c:	cd 01       	movw	r24, r26
+ 32e:	db d1       	rcall	.+950    	; 0x6e6 <__udivmodsi4>
+ 330:	da 01       	movw	r26, r20
+ 332:	c9 01       	movw	r24, r18
+ 334:	80 93 00 3f 	sts	0x3F00, r24	; 0x803f00 <__data_start>
+ 338:	90 93 01 3f 	sts	0x3F01, r25	; 0x803f01 <__data_start+0x1>
+ 33c:	a0 93 02 3f 	sts	0x3F02, r26	; 0x803f02 <__data_start+0x2>
+ 340:	b0 93 03 3f 	sts	0x3F03, r27	; 0x803f03 <__data_start+0x3>
+	_Baud9600 = (Clock << 0x02) / 9600;
+ 344:	89 81       	ldd	r24, Y+1	; 0x01
+ 346:	9a 81       	ldd	r25, Y+2	; 0x02
+ 348:	ab 81       	ldd	r26, Y+3	; 0x03
+ 34a:	bc 81       	ldd	r27, Y+4	; 0x04
+ 34c:	88 0f       	add	r24, r24
+ 34e:	99 1f       	adc	r25, r25
+ 350:	aa 1f       	adc	r26, r26
+ 352:	bb 1f       	adc	r27, r27
+ 354:	88 0f       	add	r24, r24
+ 356:	99 1f       	adc	r25, r25
+ 358:	aa 1f       	adc	r26, r26
+ 35a:	bb 1f       	adc	r27, r27
+ 35c:	20 e8       	ldi	r18, 0x80	; 128
+ 35e:	35 e2       	ldi	r19, 0x25	; 37
+ 360:	40 e0       	ldi	r20, 0x00	; 0
+ 362:	50 e0       	ldi	r21, 0x00	; 0
+ 364:	bc 01       	movw	r22, r24
+ 366:	cd 01       	movw	r24, r26
+ 368:	be d1       	rcall	.+892    	; 0x6e6 <__udivmodsi4>
+ 36a:	da 01       	movw	r26, r20
+ 36c:	c9 01       	movw	r24, r18
+ 36e:	80 93 04 3f 	sts	0x3F04, r24	; 0x803f04 <_Baud9600>
+ 372:	90 93 05 3f 	sts	0x3F05, r25	; 0x803f05 <_Baud9600+0x1>
+	USART0.BAUD = _Baud115200;
+ 376:	20 e0       	ldi	r18, 0x00	; 0
+ 378:	38 e0       	ldi	r19, 0x08	; 8
+ 37a:	80 91 00 3f 	lds	r24, 0x3F00	; 0x803f00 <__data_start>
+ 37e:	90 91 01 3f 	lds	r25, 0x3F01	; 0x803f01 <__data_start+0x1>
+ 382:	a0 91 02 3f 	lds	r26, 0x3F02	; 0x803f02 <__data_start+0x2>
+ 386:	b0 91 03 3f 	lds	r27, 0x3F03	; 0x803f03 <__data_start+0x3>
+ 38a:	f9 01       	movw	r30, r18
+ 38c:	80 87       	std	Z+8, r24	; 0x08
+ 38e:	91 87       	std	Z+9, r25	; 0x09
+}
+ 390:	00 00       	nop
+ 392:	24 96       	adiw	r28, 0x04	; 4
+ 394:	cd bf       	out	0x3d, r28	; 61
+ 396:	de bf       	out	0x3e, r29	; 62
+ 398:	df 91       	pop	r29
+ 39a:	cf 91       	pop	r28
+ 39c:	08 95       	ret
+
+0000039e <USART_OneWire_WriteBit>:
+
+void USART_OneWire_WriteBit(const Bool_t Bit)
+{
+ 39e:	cf 93       	push	r28
+ 3a0:	df 93       	push	r29
+ 3a2:	1f 92       	push	r1
+ 3a4:	cd b7       	in	r28, 0x3d	; 61
+ 3a6:	de b7       	in	r29, 0x3e	; 62
+ 3a8:	89 83       	std	Y+1, r24	; 0x01
+	if(Bit)
+ 3aa:	89 81       	ldd	r24, Y+1	; 0x01
+ 3ac:	88 23       	and	r24, r24
+ 3ae:	19 f0       	breq	.+6      	; 0x3b6 <USART_OneWire_WriteBit+0x18>
+	{
+		USART_OneWire_ReadWrite(USART_ONEWIRE_WRITE_1);
+ 3b0:	8f ef       	ldi	r24, 0xFF	; 255
+ 3b2:	6b df       	rcall	.-298    	; 0x28a <USART_OneWire_ReadWrite>
+	}
+	else
+	{
+		USART_OneWire_ReadWrite(USART_ONEWIRE_WRITE_0);
+	}
+}
+ 3b4:	02 c0       	rjmp	.+4      	; 0x3ba <USART_OneWire_WriteBit+0x1c>
+	{
+		USART_OneWire_ReadWrite(USART_ONEWIRE_WRITE_1);
+	}
+	else
+	{
+		USART_OneWire_ReadWrite(USART_ONEWIRE_WRITE_0);
+ 3b6:	80 e0       	ldi	r24, 0x00	; 0
+ 3b8:	68 df       	rcall	.-304    	; 0x28a <USART_OneWire_ReadWrite>
+	}
+}
+ 3ba:	00 00       	nop
+ 3bc:	0f 90       	pop	r0
+ 3be:	df 91       	pop	r29
+ 3c0:	cf 91       	pop	r28
+ 3c2:	08 95       	ret
+
+000003c4 <USART_OneWire_ReadBit>:
+
+uint8_t USART_OneWire_ReadBit(void)
+{
+ 3c4:	cf 93       	push	r28
+ 3c6:	df 93       	push	r29
+ 3c8:	cd b7       	in	r28, 0x3d	; 61
+ 3ca:	de b7       	in	r29, 0x3e	; 62
+	return (USART_OneWire_ReadWrite(USART_ONEWIRE_READ) == USART_ONEWIRE_READ);
+ 3cc:	8f ef       	ldi	r24, 0xFF	; 255
+ 3ce:	5d df       	rcall	.-326    	; 0x28a <USART_OneWire_ReadWrite>
+ 3d0:	98 2f       	mov	r25, r24
+ 3d2:	81 e0       	ldi	r24, 0x01	; 1
+ 3d4:	9f 3f       	cpi	r25, 0xFF	; 255
+ 3d6:	09 f0       	breq	.+2      	; 0x3da <USART_OneWire_ReadBit+0x16>
+ 3d8:	80 e0       	ldi	r24, 0x00	; 0
+}
+ 3da:	df 91       	pop	r29
+ 3dc:	cf 91       	pop	r28
+ 3de:	08 95       	ret
+
+000003e0 <USART_OneWire_Reset>:
+
+Bool_t USART_OneWire_Reset(void)
+{
+ 3e0:	cf 93       	push	r28
+ 3e2:	df 93       	push	r29
+ 3e4:	1f 92       	push	r1
+ 3e6:	cd b7       	in	r28, 0x3d	; 61
+ 3e8:	de b7       	in	r29, 0x3e	; 62
+	Bool_t Presence = FALSE;
+ 3ea:	19 82       	std	Y+1, r1	; 0x01
+
+	USART0.CTRLB &= ~(USART_RXEN_bm);
+ 3ec:	80 e0       	ldi	r24, 0x00	; 0
+ 3ee:	98 e0       	ldi	r25, 0x08	; 8
+ 3f0:	20 e0       	ldi	r18, 0x00	; 0
+ 3f2:	38 e0       	ldi	r19, 0x08	; 8
+ 3f4:	f9 01       	movw	r30, r18
+ 3f6:	26 81       	ldd	r18, Z+6	; 0x06
+ 3f8:	2f 77       	andi	r18, 0x7F	; 127
+ 3fa:	fc 01       	movw	r30, r24
+ 3fc:	26 83       	std	Z+6, r18	; 0x06
+	USART0.CTRLB |= (USART_RXEN_bm);
+ 3fe:	80 e0       	ldi	r24, 0x00	; 0
+ 400:	98 e0       	ldi	r25, 0x08	; 8
+ 402:	20 e0       	ldi	r18, 0x00	; 0
+ 404:	38 e0       	ldi	r19, 0x08	; 8
+ 406:	f9 01       	movw	r30, r18
+ 408:	26 81       	ldd	r18, Z+6	; 0x06
+ 40a:	20 68       	ori	r18, 0x80	; 128
+ 40c:	fc 01       	movw	r30, r24
+ 40e:	26 83       	std	Z+6, r18	; 0x06
+
+	// Switch baudrate to 9600
+	USART0.BAUD = _Baud9600;
+ 410:	80 e0       	ldi	r24, 0x00	; 0
+ 412:	98 e0       	ldi	r25, 0x08	; 8
+ 414:	20 91 04 3f 	lds	r18, 0x3F04	; 0x803f04 <_Baud9600>
+ 418:	30 91 05 3f 	lds	r19, 0x3F05	; 0x803f05 <_Baud9600+0x1>
+ 41c:	fc 01       	movw	r30, r24
+ 41e:	20 87       	std	Z+8, r18	; 0x08
+ 420:	31 87       	std	Z+9, r19	; 0x09
+
+	Presence = USART_OneWire_ReadWrite(USART_ONEWIRE_RESET);
+ 422:	80 ef       	ldi	r24, 0xF0	; 240
+ 424:	32 df       	rcall	.-412    	; 0x28a <USART_OneWire_ReadWrite>
+ 426:	89 83       	std	Y+1, r24	; 0x01
+
+	// Switch baudrate back to 115200
+	USART0.BAUD = _Baud115200;
+ 428:	20 e0       	ldi	r18, 0x00	; 0
+ 42a:	38 e0       	ldi	r19, 0x08	; 8
+ 42c:	80 91 00 3f 	lds	r24, 0x3F00	; 0x803f00 <__data_start>
+ 430:	90 91 01 3f 	lds	r25, 0x3F01	; 0x803f01 <__data_start+0x1>
+ 434:	a0 91 02 3f 	lds	r26, 0x3F02	; 0x803f02 <__data_start+0x2>
+ 438:	b0 91 03 3f 	lds	r27, 0x3F03	; 0x803f03 <__data_start+0x3>
+ 43c:	f9 01       	movw	r30, r18
+ 43e:	80 87       	std	Z+8, r24	; 0x08
+ 440:	91 87       	std	Z+9, r25	; 0x09
+	
+	return Presence;
+ 442:	89 81       	ldd	r24, Y+1	; 0x01
+ 444:	0f 90       	pop	r0
+ 446:	df 91       	pop	r29
+ 448:	cf 91       	pop	r28
+ 44a:	08 95       	ret
+
+0000044c <DS18B20_SearchDevices>:
+ *  @param ROM		Pointer to #OneWire_ROM_t array
+ *  @param isAlarm	#TRUE when a alarm search should be done
+ *  @return			1-Wire error
+ */
+static OneWire_Error_t DS18B20_SearchDevices(uint8_t* Found, uint8_t Search, OneWire_ROM_t* ROM, const Bool_t isAlarm)
+{
+ 44c:	cf 93       	push	r28
+ 44e:	df 93       	push	r29
+ 450:	cd b7       	in	r28, 0x3d	; 61
+ 452:	de b7       	in	r29, 0x3e	; 62
+ 454:	28 97       	sbiw	r28, 0x08	; 8
+ 456:	cd bf       	out	0x3d, r28	; 61
+ 458:	de bf       	out	0x3e, r29	; 62
+ 45a:	8b 83       	std	Y+3, r24	; 0x03
+ 45c:	9c 83       	std	Y+4, r25	; 0x04
+ 45e:	6d 83       	std	Y+5, r22	; 0x05
+ 460:	4e 83       	std	Y+6, r20	; 0x06
+ 462:	5f 83       	std	Y+7, r21	; 0x07
+ 464:	28 87       	std	Y+8, r18	; 0x08
+	uint8_t DevicesFound = 0x00;
+ 466:	19 82       	std	Y+1, r1	; 0x01
+
+	if(Found == NULL)
+ 468:	8b 81       	ldd	r24, Y+3	; 0x03
+ 46a:	9c 81       	ldd	r25, Y+4	; 0x04
+ 46c:	89 2b       	or	r24, r25
+ 46e:	11 f4       	brne	.+4      	; 0x474 <DS18B20_SearchDevices+0x28>
+	{
+		return ONEWIRE_PARAMETER_ERROR;
+ 470:	84 e0       	ldi	r24, 0x04	; 4
+ 472:	3b c0       	rjmp	.+118    	; 0x4ea <DS18B20_SearchDevices+0x9e>
+	}
+
+	OneWire_Error_t ErrorCode = OneWire_StartSearch(ROM, isAlarm);
+ 474:	8e 81       	ldd	r24, Y+6	; 0x06
+ 476:	9f 81       	ldd	r25, Y+7	; 0x07
+ 478:	68 85       	ldd	r22, Y+8	; 0x08
+ 47a:	1a d1       	rcall	.+564    	; 0x6b0 <OneWire_StartSearch>
+ 47c:	8a 83       	std	Y+2, r24	; 0x02
+	if(ErrorCode == ONEWIRE_NO_ERROR)
+ 47e:	8a 81       	ldd	r24, Y+2	; 0x02
+ 480:	88 23       	and	r24, r24
+ 482:	69 f5       	brne	.+90     	; 0x4de <DS18B20_SearchDevices+0x92>
+	{
+		if(ROM->FamilyCode == DS18B20_ID)
+ 484:	8e 81       	ldd	r24, Y+6	; 0x06
+ 486:	9f 81       	ldd	r25, Y+7	; 0x07
+ 488:	fc 01       	movw	r30, r24
+ 48a:	80 81       	ld	r24, Z
+ 48c:	88 32       	cpi	r24, 0x28	; 40
+ 48e:	01 f5       	brne	.+64     	; 0x4d0 <DS18B20_SearchDevices+0x84>
+		{
+			DevicesFound++;
+ 490:	89 81       	ldd	r24, Y+1	; 0x01
+ 492:	8f 5f       	subi	r24, 0xFF	; 255
+ 494:	89 83       	std	Y+1, r24	; 0x01
+			ROM++;
+ 496:	8e 81       	ldd	r24, Y+6	; 0x06
+ 498:	9f 81       	ldd	r25, Y+7	; 0x07
+ 49a:	08 96       	adiw	r24, 0x08	; 8
+ 49c:	8e 83       	std	Y+6, r24	; 0x06
+ 49e:	9f 83       	std	Y+7, r25	; 0x07
+		}
+
+		// Search additional devices
+		while((!OneWire_IsLast()) && (DevicesFound < Search))
+ 4a0:	17 c0       	rjmp	.+46     	; 0x4d0 <DS18B20_SearchDevices+0x84>
+		{
+			ErrorCode = OneWire_SearchNext(ROM);
+ 4a2:	8e 81       	ldd	r24, Y+6	; 0x06
+ 4a4:	9f 81       	ldd	r25, Y+7	; 0x07
+ 4a6:	13 d1       	rcall	.+550    	; 0x6ce <OneWire_SearchNext>
+ 4a8:	8a 83       	std	Y+2, r24	; 0x02
+			if(ErrorCode != ONEWIRE_NO_ERROR)
+ 4aa:	8a 81       	ldd	r24, Y+2	; 0x02
+ 4ac:	88 23       	and	r24, r24
+ 4ae:	11 f0       	breq	.+4      	; 0x4b4 <DS18B20_SearchDevices+0x68>
+			{
+				OneWire_StopSearch();
+ 4b0:	6c d0       	rcall	.+216    	; 0x58a <OneWire_StopSearch>
+				break;
+ 4b2:	15 c0       	rjmp	.+42     	; 0x4de <DS18B20_SearchDevices+0x92>
+			}
+			
+			if(ROM->FamilyCode == DS18B20_ID)
+ 4b4:	8e 81       	ldd	r24, Y+6	; 0x06
+ 4b6:	9f 81       	ldd	r25, Y+7	; 0x07
+ 4b8:	fc 01       	movw	r30, r24
+ 4ba:	80 81       	ld	r24, Z
+ 4bc:	88 32       	cpi	r24, 0x28	; 40
+ 4be:	41 f4       	brne	.+16     	; 0x4d0 <DS18B20_SearchDevices+0x84>
+			{
+				DevicesFound++;
+ 4c0:	89 81       	ldd	r24, Y+1	; 0x01
+ 4c2:	8f 5f       	subi	r24, 0xFF	; 255
+ 4c4:	89 83       	std	Y+1, r24	; 0x01
+				ROM++;
+ 4c6:	8e 81       	ldd	r24, Y+6	; 0x06
+ 4c8:	9f 81       	ldd	r25, Y+7	; 0x07
+ 4ca:	08 96       	adiw	r24, 0x08	; 8
+ 4cc:	8e 83       	std	Y+6, r24	; 0x06
+ 4ce:	9f 83       	std	Y+7, r25	; 0x07
+			DevicesFound++;
+			ROM++;
+		}
+
+		// Search additional devices
+		while((!OneWire_IsLast()) && (DevicesFound < Search))
+ 4d0:	33 d0       	rcall	.+102    	; 0x538 <OneWire_IsLast>
+ 4d2:	88 23       	and	r24, r24
+ 4d4:	21 f4       	brne	.+8      	; 0x4de <DS18B20_SearchDevices+0x92>
+ 4d6:	99 81       	ldd	r25, Y+1	; 0x01
+ 4d8:	8d 81       	ldd	r24, Y+5	; 0x05
+ 4da:	98 17       	cp	r25, r24
+ 4dc:	10 f3       	brcs	.-60     	; 0x4a2 <DS18B20_SearchDevices+0x56>
+				ROM++;
+			}
+		}
+	}
+
+	*Found = DevicesFound;
+ 4de:	8b 81       	ldd	r24, Y+3	; 0x03
+ 4e0:	9c 81       	ldd	r25, Y+4	; 0x04
+ 4e2:	29 81       	ldd	r18, Y+1	; 0x01
+ 4e4:	fc 01       	movw	r30, r24
+ 4e6:	20 83       	st	Z, r18
+
+	return ErrorCode;
+ 4e8:	8a 81       	ldd	r24, Y+2	; 0x02
+}
+ 4ea:	28 96       	adiw	r28, 0x08	; 8
+ 4ec:	cd bf       	out	0x3d, r28	; 61
+ 4ee:	de bf       	out	0x3e, r29	; 62
+ 4f0:	df 91       	pop	r29
+ 4f2:	cf 91       	pop	r28
+ 4f4:	08 95       	ret
+
+000004f6 <DS18B20_Init>:
+
+OneWire_Error_t DS18B20_Init(void)
+{
+ 4f6:	cf 93       	push	r28
+ 4f8:	df 93       	push	r29
+ 4fa:	cd b7       	in	r28, 0x3d	; 61
+ 4fc:	de b7       	in	r29, 0x3e	; 62
+	#if(defined(ONEWIRE_USE_EXT_PULL))
+		// Configure the switching output for the external pull-up as output
+		GPIO_SetDirection(GET_PERIPHERAL(ONEWIRE_EXT_PULL), GET_INDEX(ONEWIRE_EXT_PULL), GPIO_DIRECTION_OUT);
+	#endif
+
+	return OneWire_Init();
+ 4fe:	3a d0       	rcall	.+116    	; 0x574 <OneWire_Init>
+}
+ 500:	df 91       	pop	r29
+ 502:	cf 91       	pop	r28
+ 504:	08 95       	ret
+
+00000506 <DS18B20_GetDevices>:
+
+OneWire_Error_t DS18B20_GetDevices(uint8_t* Found, uint8_t Search, OneWire_ROM_t* ROM)
+{
+ 506:	cf 93       	push	r28
+ 508:	df 93       	push	r29
+ 50a:	cd b7       	in	r28, 0x3d	; 61
+ 50c:	de b7       	in	r29, 0x3e	; 62
+ 50e:	25 97       	sbiw	r28, 0x05	; 5
+ 510:	cd bf       	out	0x3d, r28	; 61
+ 512:	de bf       	out	0x3e, r29	; 62
+ 514:	89 83       	std	Y+1, r24	; 0x01
+ 516:	9a 83       	std	Y+2, r25	; 0x02
+ 518:	6b 83       	std	Y+3, r22	; 0x03
+ 51a:	4c 83       	std	Y+4, r20	; 0x04
+ 51c:	5d 83       	std	Y+5, r21	; 0x05
+	return DS18B20_SearchDevices(Found, Search, ROM, FALSE);
+ 51e:	4c 81       	ldd	r20, Y+4	; 0x04
+ 520:	5d 81       	ldd	r21, Y+5	; 0x05
+ 522:	89 81       	ldd	r24, Y+1	; 0x01
+ 524:	9a 81       	ldd	r25, Y+2	; 0x02
+ 526:	20 e0       	ldi	r18, 0x00	; 0
+ 528:	6b 81       	ldd	r22, Y+3	; 0x03
+ 52a:	90 df       	rcall	.-224    	; 0x44c <DS18B20_SearchDevices>
+}
+ 52c:	25 96       	adiw	r28, 0x05	; 5
+ 52e:	cd bf       	out	0x3d, r28	; 61
+ 530:	de bf       	out	0x3e, r29	; 62
+ 532:	df 91       	pop	r29
+ 534:	cf 91       	pop	r28
+ 536:	08 95       	ret
+
+00000538 <OneWire_IsLast>:
+			OneWire_WriteByte(*(ROM_Temp++));
+		}
+	}
+
+	return ONEWIRE_NO_ERROR;
+}
+ 538:	80 91 08 3f 	lds	r24, 0x3F08	; 0x803f08 <__LastDevice>
+ 53c:	08 95       	ret
+
+0000053e <OneWire_WriteByte>:
+ 53e:	0f 93       	push	r16
+ 540:	1f 93       	push	r17
+ 542:	cf 93       	push	r28
+ 544:	df 93       	push	r29
+ 546:	d8 2f       	mov	r29, r24
+ 548:	08 e0       	ldi	r16, 0x08	; 8
+ 54a:	10 e0       	ldi	r17, 0x00	; 0
+ 54c:	c1 e0       	ldi	r28, 0x01	; 1
+ 54e:	8d 2f       	mov	r24, r29
+ 550:	8c 23       	and	r24, r28
+ 552:	25 df       	rcall	.-438    	; 0x39e <USART_OneWire_WriteBit>
+ 554:	cc 0f       	add	r28, r28
+ 556:	01 50       	subi	r16, 0x01	; 1
+ 558:	11 09       	sbc	r17, r1
+ 55a:	c9 f7       	brne	.-14     	; 0x54e <OneWire_WriteByte+0x10>
+ 55c:	df 91       	pop	r29
+ 55e:	cf 91       	pop	r28
+ 560:	1f 91       	pop	r17
+ 562:	0f 91       	pop	r16
+ 564:	08 95       	ret
+
+00000566 <OneWire_Reset>:
+ 566:	3c df       	rcall	.-392    	; 0x3e0 <USART_OneWire_Reset>
+ 568:	88 23       	and	r24, r24
+ 56a:	11 f0       	breq	.+4      	; 0x570 <OneWire_Reset+0xa>
+ 56c:	80 e0       	ldi	r24, 0x00	; 0
+ 56e:	08 95       	ret
+ 570:	86 e0       	ldi	r24, 0x06	; 6
+ 572:	08 95       	ret
+
+00000574 <OneWire_Init>:
+ 574:	10 92 07 3f 	sts	0x3F07, r1	; 0x803f07 <__SearchActive>
+ 578:	a2 de       	rcall	.-700    	; 0x2be <USART_OneWire_Init>
+ 57a:	8f e8       	ldi	r24, 0x8F	; 143
+ 57c:	91 e0       	ldi	r25, 0x01	; 1
+ 57e:	01 97       	sbiw	r24, 0x01	; 1
+ 580:	f1 f7       	brne	.-4      	; 0x57e <OneWire_Init+0xa>
+ 582:	00 c0       	rjmp	.+0      	; 0x584 <OneWire_Init+0x10>
+ 584:	00 00       	nop
+ 586:	ef df       	rcall	.-34     	; 0x566 <OneWire_Reset>
+ 588:	08 95       	ret
+
+0000058a <OneWire_StopSearch>:
+ 58a:	10 92 07 3f 	sts	0x3F07, r1	; 0x803f07 <__SearchActive>
+ 58e:	eb df       	rcall	.-42     	; 0x566 <OneWire_Reset>
+ 590:	08 95       	ret
+
+00000592 <OneWire_SearchROM>:
+ *  @param ROM		Pointer to array of #OneWire_ROM_t objects
+ *  @param isAlarm	#TRUE when a alarm search should be done
+ *  @return			1-Wire error
+ */
+static OneWire_Error_t OneWire_SearchROM(const OneWire_ROM_t* ROM, const Bool_t isAlarm)
+{
+ 592:	cf 92       	push	r12
+ 594:	df 92       	push	r13
+ 596:	ef 92       	push	r14
+ 598:	ff 92       	push	r15
+ 59a:	0f 93       	push	r16
+ 59c:	1f 93       	push	r17
+ 59e:	cf 93       	push	r28
+ 5a0:	df 93       	push	r29
+	uint8_t search_direction = 0x00;
+	uint8_t last_zero = 0x00;
+	uint8_t ROM_Mask = 0x01;
+	uint8_t id_bit_number = 0x01;
+
+	if(ROM == NULL)
+ 5a2:	00 97       	sbiw	r24, 0x00	; 0
+ 5a4:	09 f4       	brne	.+2      	; 0x5a8 <OneWire_SearchROM+0x16>
+ 5a6:	62 c0       	rjmp	.+196    	; 0x66c <OneWire_SearchROM+0xda>
+ 5a8:	c6 2f       	mov	r28, r22
+ 5aa:	8c 01       	movw	r16, r24
+	{
+		return ONEWIRE_PARAMETER_ERROR;
+	}
+
+	// Last device detected?
+	if(!__LastDevice)
+ 5ac:	80 91 08 3f 	lds	r24, 0x3F08	; 0x803f08 <__LastDevice>
+ 5b0:	81 11       	cpse	r24, r1
+ 5b2:	63 c0       	rjmp	.+198    	; 0x67a <OneWire_SearchROM+0xe8>
+	{
+		// Reset the devices
+		ErrorCode = OneWire_Reset();
+ 5b4:	d8 df       	rcall	.-80     	; 0x566 <OneWire_Reset>
+		if(ErrorCode != ONEWIRE_NO_ERROR)
+ 5b6:	88 23       	and	r24, r24
+ 5b8:	29 f0       	breq	.+10     	; 0x5c4 <OneWire_SearchROM+0x32>
+		{
+			__LastDiscrepancy = 0x00;
+ 5ba:	10 92 09 3f 	sts	0x3F09, r1	; 0x803f09 <__LastDiscrepancy>
+			__LastDevice = FALSE;
+ 5be:	10 92 08 3f 	sts	0x3F08, r1	; 0x803f08 <__LastDevice>
+			__LastDiscrepancy = 0x00;
+
+			return ErrorCode;
+ 5c2:	6d c0       	rjmp	.+218    	; 0x69e <OneWire_SearchROM+0x10c>
+		}
+
+		// Transmit the search command
+		if(isAlarm == TRUE)
+ 5c4:	c1 30       	cpi	r28, 0x01	; 1
+ 5c6:	19 f4       	brne	.+6      	; 0x5ce <OneWire_SearchROM+0x3c>
+		{
+			OneWire_WriteByte(ONEWIRE_ALARM_SEARCH);
+ 5c8:	8c ee       	ldi	r24, 0xEC	; 236
+ 5ca:	b9 df       	rcall	.-142    	; 0x53e <OneWire_WriteByte>
+ 5cc:	02 c0       	rjmp	.+4      	; 0x5d2 <OneWire_SearchROM+0x40>
+		}
+		else
+		{
+			OneWire_WriteByte(ONEWIRE_SEARCH_ROM);
+ 5ce:	80 ef       	ldi	r24, 0xF0	; 240
+ 5d0:	b6 df       	rcall	.-148    	; 0x53e <OneWire_WriteByte>
+ *  @param ROM		Pointer to array of #OneWire_ROM_t objects
+ *  @param isAlarm	#TRUE when a alarm search should be done
+ *  @return			1-Wire error
+ */
+static OneWire_Error_t OneWire_SearchROM(const OneWire_ROM_t* ROM, const Bool_t isAlarm)
+{
+ 5d2:	ee 24       	eor	r14, r14
+ 5d4:	e3 94       	inc	r14
+ 5d6:	c1 e0       	ldi	r28, 0x01	; 1
+ 5d8:	d1 2c       	mov	r13, r1
+ 5da:	c1 2c       	mov	r12, r1
+ 5dc:	f1 2c       	mov	r15, r1
+		GPIO_SetDirection(GET_PERIPHERAL(ONEWIRE_DQ), GET_INDEX(ONEWIRE_DQ), GPIO_DIRECTION_OUT);
+
+		// Restore SREG
+		CPU_IRQRestore(Reg);
+	#elif(ONEWIRE_INTERFACE == INTERFACE_USART)
+		return USART_OneWire_ReadBit();
+ 5de:	f2 de       	rcall	.-540    	; 0x3c4 <USART_OneWire_ReadBit>
+ 5e0:	d8 2f       	mov	r29, r24
+ 5e2:	f0 de       	rcall	.-544    	; 0x3c4 <USART_OneWire_ReadBit>
+			// Read the true value and the complement value of the answer bit
+			id_bit = OneWire_ReadBit();
+			cmp_id_bit = OneWire_ReadBit();
+
+			// Check the values of the bits (see Table 1 of the algorithm)
+			if((id_bit == 0x01) && (cmp_id_bit == 0x01))
+ 5e4:	d1 30       	cpi	r29, 0x01	; 1
+ 5e6:	09 f0       	breq	.+2      	; 0x5ea <OneWire_SearchROM+0x58>
+ 5e8:	45 c0       	rjmp	.+138    	; 0x674 <OneWire_SearchROM+0xe2>
+ 5ea:	81 30       	cpi	r24, 0x01	; 1
+ 5ec:	09 f0       	breq	.+2      	; 0x5f0 <OneWire_SearchROM+0x5e>
+ 5ee:	4f c0       	rjmp	.+158    	; 0x68e <OneWire_SearchROM+0xfc>
+ 5f0:	2e c0       	rjmp	.+92     	; 0x64e <OneWire_SearchROM+0xbc>
+			}
+			else
+			{
+				if(id_bit == cmp_id_bit)
+				{
+					if(id_bit_number == __LastDiscrepancy)
+ 5f2:	80 91 09 3f 	lds	r24, 0x3F09	; 0x803f09 <__LastDiscrepancy>
+ 5f6:	e8 16       	cp	r14, r24
+ 5f8:	09 f4       	brne	.+2      	; 0x5fc <OneWire_SearchROM+0x6a>
+ 5fa:	49 c0       	rjmp	.+146    	; 0x68e <OneWire_SearchROM+0xfc>
+					{
+						search_direction = 0x01;
+					}
+					else
+					{
+						if(id_bit_number > __LastDiscrepancy)
+ 5fc:	8e 15       	cp	r24, r14
+ 5fe:	50 f0       	brcs	.+20     	; 0x614 <OneWire_SearchROM+0x82>
+							search_direction = 0x00;
+						}
+						else
+						{
+							// Set 'search_direction' to 'id_bit_number' from the current ROM byte
+							search_direction = (((*(pROM + ROM_Byte)) & ROM_Mask) > 0);
+ 600:	f8 01       	movw	r30, r16
+ 602:	ef 0d       	add	r30, r15
+ 604:	f1 1d       	adc	r31, r1
+						}
+					}
+					
+					// If 0 was picked then record its position in LastZero
+					if(search_direction == 0x00)
+ 606:	80 81       	ld	r24, Z
+ 608:	8c 23       	and	r24, r28
+ 60a:	09 f0       	breq	.+2      	; 0x60e <OneWire_SearchROM+0x7c>
+ 60c:	40 c0       	rjmp	.+128    	; 0x68e <OneWire_SearchROM+0xfc>
+ 60e:	de 2c       	mov	r13, r14
+ 610:	d0 e0       	ldi	r29, 0x00	; 0
+ 612:	02 c0       	rjmp	.+4      	; 0x618 <OneWire_SearchROM+0x86>
+ 614:	de 2c       	mov	r13, r14
+ 616:	d0 e0       	ldi	r29, 0x00	; 0
+				{
+					*(pROM + ROM_Byte) |= ROM_Mask;
+				}
+				else
+				{
+					*(pROM + ROM_Byte) &= ~ROM_Mask;
+ 618:	f8 01       	movw	r30, r16
+ 61a:	ef 0d       	add	r30, r15
+ 61c:	f1 1d       	adc	r31, r1
+ 61e:	80 81       	ld	r24, Z
+ 620:	9c 2f       	mov	r25, r28
+ 622:	90 95       	com	r25
+ 624:	98 23       	and	r25, r24
+ 626:	90 83       	st	Z, r25
+		else _delay_us(ONEWIRE_DELAY_D);
+
+		// Restore SREG
+		CPU_IRQRestore(Reg);
+	#elif(ONEWIRE_INTERFACE == INTERFACE_USART)
+		USART_OneWire_WriteBit(Bit);
+ 628:	8d 2f       	mov	r24, r29
+ 62a:	b9 de       	rcall	.-654    	; 0x39e <USART_OneWire_WriteBit>
+					*(pROM + ROM_Byte) &= ~ROM_Mask;
+				}
+
+				OneWire_WriteBit(search_direction);
+
+				id_bit_number++;
+ 62c:	e3 94       	inc	r14
+
+				// Increase the byte counter when the mask is 0 and reset mask
+				ROM_Mask <<= 0x01;
+ 62e:	cc 0f       	add	r28, r28
+				if(ROM_Mask == 0x00)
+ 630:	59 f4       	brne	.+22     	; 0x648 <OneWire_SearchROM+0xb6>
+				{
+					CRC8 = __OneWire_CRCTable[CRC8 ^ *(pROM + ROM_Byte)];
+ 632:	f8 01       	movw	r30, r16
+ 634:	ef 0d       	add	r30, r15
+ 636:	f1 1d       	adc	r31, r1
+ 638:	e0 81       	ld	r30, Z
+ 63a:	ec 25       	eor	r30, r12
+ 63c:	f0 e0       	ldi	r31, 0x00	; 0
+ 63e:	e0 52       	subi	r30, 0x20	; 32
+ 640:	f8 47       	sbci	r31, 0x78	; 120
+ 642:	c0 80       	ld	r12, Z
+					ROM_Byte++;
+ 644:	f3 94       	inc	r15
+					ROM_Mask = 0x01;
+ 646:	c1 e0       	ldi	r28, 0x01	; 1
+				}
+			}
+		}while(ROM_Byte < 0x08);
+ 648:	87 e0       	ldi	r24, 0x07	; 7
+ 64a:	8f 15       	cp	r24, r15
+ 64c:	40 f6       	brcc	.-112    	; 0x5de <OneWire_SearchROM+0x4c>
+
+		if(!((id_bit_number < 65) || (CRC8 != 0x00)))
+ 64e:	e0 e4       	ldi	r30, 0x40	; 64
+ 650:	ee 15       	cp	r30, r14
+ 652:	98 f4       	brcc	.+38     	; 0x67a <OneWire_SearchROM+0xe8>
+ 654:	c1 10       	cpse	r12, r1
+ 656:	11 c0       	rjmp	.+34     	; 0x67a <OneWire_SearchROM+0xe8>
+		{
+			__LastDiscrepancy = last_zero;
+ 658:	d0 92 09 3f 	sts	0x3F09, r13	; 0x803f09 <__LastDiscrepancy>
+
+			// Check for last device
+			if(__LastDiscrepancy == 0x00)
+ 65c:	d1 10       	cpse	r13, r1
+ 65e:	0d c0       	rjmp	.+26     	; 0x67a <OneWire_SearchROM+0xe8>
+			{
+				__LastDevice = TRUE;
+ 660:	81 e0       	ldi	r24, 0x01	; 1
+ 662:	80 93 08 3f 	sts	0x3F08, r24	; 0x803f08 <__LastDevice>
+				__SearchActive = FALSE;
+ 666:	10 92 07 3f 	sts	0x3F07, r1	; 0x803f07 <__SearchActive>
+ 66a:	07 c0       	rjmp	.+14     	; 0x67a <OneWire_SearchROM+0xe8>
+	uint8_t ROM_Mask = 0x01;
+	uint8_t id_bit_number = 0x01;
+
+	if(ROM == NULL)
+	{
+		return ONEWIRE_PARAMETER_ERROR;
+ 66c:	84 e0       	ldi	r24, 0x04	; 4
+ 66e:	17 c0       	rjmp	.+46     	; 0x69e <OneWire_SearchROM+0x10c>
+ 670:	80 e0       	ldi	r24, 0x00	; 0
+ 672:	15 c0       	rjmp	.+42     	; 0x69e <OneWire_SearchROM+0x10c>
+				// No devices participating in search
+				break;
+			}
+			else
+			{
+				if(id_bit == cmp_id_bit)
+ 674:	d8 13       	cpse	r29, r24
+ 676:	d0 cf       	rjmp	.-96     	; 0x618 <OneWire_SearchROM+0x86>
+ 678:	bc cf       	rjmp	.-136    	; 0x5f2 <OneWire_SearchROM+0x60>
+			}
+		}
+	}
+
+	// No device found
+	if((ErrorCode != ONEWIRE_NO_ERROR) || !(*pROM))
+ 67a:	f8 01       	movw	r30, r16
+ 67c:	80 81       	ld	r24, Z
+ 67e:	81 11       	cpse	r24, r1
+ 680:	f7 cf       	rjmp	.-18     	; 0x670 <OneWire_SearchROM+0xde>
+	{
+		__LastDiscrepancy = 0x00;
+ 682:	10 92 09 3f 	sts	0x3F09, r1	; 0x803f09 <__LastDiscrepancy>
+		__LastDevice = FALSE;
+ 686:	10 92 08 3f 	sts	0x3F08, r1	; 0x803f08 <__LastDevice>
+		__LastFamilyDiscrepancy = 0x00;
+	
+		if(!(*pROM))
+		{
+			ErrorCode = ONEWIRE_CRC_ERROR;
+ 68a:	82 e0       	ldi	r24, 0x02	; 2
+ 68c:	08 c0       	rjmp	.+16     	; 0x69e <OneWire_SearchROM+0x10c>
+				}
+
+				// Set the bit in the ROM byte according to the ROM mask
+				if(search_direction == 0x01)
+				{
+					*(pROM + ROM_Byte) |= ROM_Mask;
+ 68e:	f8 01       	movw	r30, r16
+ 690:	ef 0d       	add	r30, r15
+ 692:	f1 1d       	adc	r31, r1
+ 694:	80 81       	ld	r24, Z
+ 696:	8c 2b       	or	r24, r28
+ 698:	80 83       	st	Z, r24
+ 69a:	d1 e0       	ldi	r29, 0x01	; 1
+ 69c:	c5 cf       	rjmp	.-118    	; 0x628 <OneWire_SearchROM+0x96>
+			ErrorCode = ONEWIRE_CRC_ERROR;
+		}
+	}
+
+	return ErrorCode;
+}
+ 69e:	df 91       	pop	r29
+ 6a0:	cf 91       	pop	r28
+ 6a2:	1f 91       	pop	r17
+ 6a4:	0f 91       	pop	r16
+ 6a6:	ff 90       	pop	r15
+ 6a8:	ef 90       	pop	r14
+ 6aa:	df 90       	pop	r13
+ 6ac:	cf 90       	pop	r12
+ 6ae:	08 95       	ret
+
+000006b0 <OneWire_StartSearch>:
+}
+
+OneWire_Error_t OneWire_StartSearch(const OneWire_ROM_t* ROM, const Bool_t isAlarm)
+{
+	__LastFamilyDiscrepancy = 0x00;
+	__LastDiscrepancy = 0;
+ 6b0:	10 92 09 3f 	sts	0x3F09, r1	; 0x803f09 <__LastDiscrepancy>
+	__LastDevice = FALSE;
+ 6b4:	10 92 08 3f 	sts	0x3F08, r1	; 0x803f08 <__LastDevice>
+	__SearchActive = TRUE;
+ 6b8:	21 e0       	ldi	r18, 0x01	; 1
+ 6ba:	20 93 07 3f 	sts	0x3F07, r18	; 0x803f07 <__SearchActive>
+	__isAlarm = isAlarm;
+ 6be:	60 93 06 3f 	sts	0x3F06, r22	; 0x803f06 <__data_end>
+
+	if(ROM == NULL)
+ 6c2:	00 97       	sbiw	r24, 0x00	; 0
+ 6c4:	11 f0       	breq	.+4      	; 0x6ca <OneWire_StartSearch+0x1a>
+	{
+		return ONEWIRE_PARAMETER_ERROR;
+	}
+
+	return OneWire_SearchROM(ROM, __isAlarm);
+ 6c6:	65 df       	rcall	.-310    	; 0x592 <OneWire_SearchROM>
+ 6c8:	08 95       	ret
+	__SearchActive = TRUE;
+	__isAlarm = isAlarm;
+
+	if(ROM == NULL)
+	{
+		return ONEWIRE_PARAMETER_ERROR;
+ 6ca:	84 e0       	ldi	r24, 0x04	; 4
+	}
+
+	return OneWire_SearchROM(ROM, __isAlarm);
+}
+ 6cc:	08 95       	ret
+
+000006ce <OneWire_SearchNext>:
+
+OneWire_Error_t OneWire_SearchNext(const OneWire_ROM_t* ROM)
+{
+ 6ce:	9c 01       	movw	r18, r24
+	if(__SearchActive == TRUE)
+ 6d0:	90 91 07 3f 	lds	r25, 0x3F07	; 0x803f07 <__SearchActive>
+ 6d4:	91 30       	cpi	r25, 0x01	; 1
+ 6d6:	29 f4       	brne	.+10     	; 0x6e2 <OneWire_SearchNext+0x14>
+ 6d8:	c9 01       	movw	r24, r18
+	{
+		return OneWire_SearchROM(ROM, __isAlarm);
+ 6da:	60 91 06 3f 	lds	r22, 0x3F06	; 0x803f06 <__data_end>
+ 6de:	59 df       	rcall	.-334    	; 0x592 <OneWire_SearchROM>
+ 6e0:	08 95       	ret
+	}
+
+	return ONEWIRE_INACTIVE_SEARCH;
+ 6e2:	85 e0       	ldi	r24, 0x05	; 5
+}
+ 6e4:	08 95       	ret
+
+000006e6 <__udivmodsi4>:
+ 6e6:	a1 e2       	ldi	r26, 0x21	; 33
+ 6e8:	1a 2e       	mov	r1, r26
+ 6ea:	aa 1b       	sub	r26, r26
+ 6ec:	bb 1b       	sub	r27, r27
+ 6ee:	fd 01       	movw	r30, r26
+ 6f0:	0d c0       	rjmp	.+26     	; 0x70c <__udivmodsi4_ep>
+
+000006f2 <__udivmodsi4_loop>:
+ 6f2:	aa 1f       	adc	r26, r26
+ 6f4:	bb 1f       	adc	r27, r27
+ 6f6:	ee 1f       	adc	r30, r30
+ 6f8:	ff 1f       	adc	r31, r31
+ 6fa:	a2 17       	cp	r26, r18
+ 6fc:	b3 07       	cpc	r27, r19
+ 6fe:	e4 07       	cpc	r30, r20
+ 700:	f5 07       	cpc	r31, r21
+ 702:	20 f0       	brcs	.+8      	; 0x70c <__udivmodsi4_ep>
+ 704:	a2 1b       	sub	r26, r18
+ 706:	b3 0b       	sbc	r27, r19
+ 708:	e4 0b       	sbc	r30, r20
+ 70a:	f5 0b       	sbc	r31, r21
+
+0000070c <__udivmodsi4_ep>:
+ 70c:	66 1f       	adc	r22, r22
+ 70e:	77 1f       	adc	r23, r23
+ 710:	88 1f       	adc	r24, r24
+ 712:	99 1f       	adc	r25, r25
+ 714:	1a 94       	dec	r1
+ 716:	69 f7       	brne	.-38     	; 0x6f2 <__udivmodsi4_loop>
+ 718:	60 95       	com	r22
+ 71a:	70 95       	com	r23
+ 71c:	80 95       	com	r24
+ 71e:	90 95       	com	r25
+ 720:	9b 01       	movw	r18, r22
+ 722:	ac 01       	movw	r20, r24
+ 724:	bd 01       	movw	r22, r26
+ 726:	cf 01       	movw	r24, r30
+ 728:	08 95       	ret
+
+0000072a <__umulsidi3>:
+ 72a:	e8 94       	clt
+
+0000072c <__umulsidi3_helper>:
+ 72c:	df 93       	push	r29
+ 72e:	cf 93       	push	r28
+ 730:	fc 01       	movw	r30, r24
+ 732:	db 01       	movw	r26, r22
+ 734:	3f d0       	rcall	.+126    	; 0x7b4 <__umulhisi3>
+ 736:	7f 93       	push	r23
+ 738:	6f 93       	push	r22
+ 73a:	e9 01       	movw	r28, r18
+ 73c:	9a 01       	movw	r18, r20
+ 73e:	ac 01       	movw	r20, r24
+ 740:	bf 93       	push	r27
+ 742:	af 93       	push	r26
+ 744:	3f 93       	push	r19
+ 746:	2f 93       	push	r18
+ 748:	df 01       	movw	r26, r30
+ 74a:	34 d0       	rcall	.+104    	; 0x7b4 <__umulhisi3>
+ 74c:	26 f4       	brtc	.+8      	; 0x756 <__umulsidi3_helper+0x2a>
+ 74e:	6c 1b       	sub	r22, r28
+ 750:	7d 0b       	sbc	r23, r29
+ 752:	82 0b       	sbc	r24, r18
+ 754:	93 0b       	sbc	r25, r19
+ 756:	9e 01       	movw	r18, r28
+ 758:	eb 01       	movw	r28, r22
+ 75a:	fc 01       	movw	r30, r24
+ 75c:	37 d0       	rcall	.+110    	; 0x7cc <__muldi3_6>
+ 75e:	af 91       	pop	r26
+ 760:	bf 91       	pop	r27
+ 762:	2f 91       	pop	r18
+ 764:	3f 91       	pop	r19
+ 766:	32 d0       	rcall	.+100    	; 0x7cc <__muldi3_6>
+ 768:	be 01       	movw	r22, r28
+ 76a:	cf 01       	movw	r24, r30
+ 76c:	f9 01       	movw	r30, r18
+ 76e:	2f 91       	pop	r18
+ 770:	3f 91       	pop	r19
+ 772:	cf 91       	pop	r28
+ 774:	df 91       	pop	r29
+ 776:	08 95       	ret
+
+00000778 <__ashrdi3>:
+ 778:	97 fb       	bst	r25, 7
+ 77a:	10 f8       	bld	r1, 0
+
+0000077c <__lshrdi3>:
+ 77c:	16 94       	lsr	r1
+ 77e:	00 08       	sbc	r0, r0
+ 780:	0f 93       	push	r16
+ 782:	08 30       	cpi	r16, 0x08	; 8
+ 784:	98 f0       	brcs	.+38     	; 0x7ac <__lshrdi3+0x30>
+ 786:	08 50       	subi	r16, 0x08	; 8
+ 788:	23 2f       	mov	r18, r19
+ 78a:	34 2f       	mov	r19, r20
+ 78c:	45 2f       	mov	r20, r21
+ 78e:	56 2f       	mov	r21, r22
+ 790:	67 2f       	mov	r22, r23
+ 792:	78 2f       	mov	r23, r24
+ 794:	89 2f       	mov	r24, r25
+ 796:	90 2d       	mov	r25, r0
+ 798:	f4 cf       	rjmp	.-24     	; 0x782 <__lshrdi3+0x6>
+ 79a:	05 94       	asr	r0
+ 79c:	97 95       	ror	r25
+ 79e:	87 95       	ror	r24
+ 7a0:	77 95       	ror	r23
+ 7a2:	67 95       	ror	r22
+ 7a4:	57 95       	ror	r21
+ 7a6:	47 95       	ror	r20
+ 7a8:	37 95       	ror	r19
+ 7aa:	27 95       	ror	r18
+ 7ac:	0a 95       	dec	r16
+ 7ae:	aa f7       	brpl	.-22     	; 0x79a <__lshrdi3+0x1e>
+ 7b0:	0f 91       	pop	r16
+ 7b2:	08 95       	ret
+
+000007b4 <__umulhisi3>:
+ 7b4:	a2 9f       	mul	r26, r18
+ 7b6:	b0 01       	movw	r22, r0
+ 7b8:	b3 9f       	mul	r27, r19
+ 7ba:	c0 01       	movw	r24, r0
+ 7bc:	a3 9f       	mul	r26, r19
+ 7be:	01 d0       	rcall	.+2      	; 0x7c2 <__umulhisi3+0xe>
+ 7c0:	b2 9f       	mul	r27, r18
+ 7c2:	70 0d       	add	r23, r0
+ 7c4:	81 1d       	adc	r24, r1
+ 7c6:	11 24       	eor	r1, r1
+ 7c8:	91 1d       	adc	r25, r1
+ 7ca:	08 95       	ret
+
+000007cc <__muldi3_6>:
+ 7cc:	f3 df       	rcall	.-26     	; 0x7b4 <__umulhisi3>
+ 7ce:	46 0f       	add	r20, r22
+ 7d0:	57 1f       	adc	r21, r23
+ 7d2:	c8 1f       	adc	r28, r24
+ 7d4:	d9 1f       	adc	r29, r25
+ 7d6:	08 f4       	brcc	.+2      	; 0x7da <__muldi3_6+0xe>
+ 7d8:	31 96       	adiw	r30, 0x01	; 1
+ 7da:	08 95       	ret
+
+000007dc <_exit>:
+ 7dc:	f8 94       	cli
+
+000007de <__stop_program>:
+ 7de:	ff cf       	rjmp	.-2      	; 0x7de <__stop_program>

@@ -31,6 +31,8 @@
 #ifndef CONFIG_1WIRE_H_
 #define CONFIG_1WIRE_H_
 
+ #define F_CPU										16000000UL				/**< Oscillator frequency. */
+
  /*
 	 Console service configuration
  */
@@ -39,14 +41,16 @@
  /*
 	 1-Wire configuration
  */
- #define ONEWIRE_INTERFACE							INTERFACE_GPIO			/**< Use GPIO as 1-Wire interface. */
+ #define ONEWIRE_INTERFACE							INTERFACE_USART			/**< Use USART as 1-Wire interface. */
  #undef ONEWIRE_USE_EXT_PULL												/**< Use the DS18B20 in parasite mode. */
  #undef ONEWIRE_EXT_PULL													/**< Port where switchable external pull-up resistor is connected to. \n
 																				 NOTE: You only need this when you define the symbol #ONEWIRE_USE_EXT_PULL. */
  #undef ONEWIRE_EXT_PULL_ACTIVE_LOW											/**< Define this when the external pull-up is active low. \n
 																				 NOTE: You only need this when you define the symbol #ONEWIRE_USE_EXT_PULL. */
  #undef ONEWIRE_USE_OVERDRIVE												/**< Use the overdrive mode. */
- #define ONEWIRE_DQ									PORTE, 0				/**< DQ pin for the 1-Wire driver. */
- #define F_CPU										2000000UL				/**< CPU frequency. */
+ 
+ #if(ONEWIRE_INTERFACE == INTERFACE_GPIO)
+	 #define ONEWIRE_DQ								PORTB, 2				/**< DQ pin for the 1-Wire driver. Only needed when you set #INTERFACE_GPIO for the GPIO as 1-Wire interface. */
+ #endif
 
 #endif /* CONFIG_1WIRE_H_ */

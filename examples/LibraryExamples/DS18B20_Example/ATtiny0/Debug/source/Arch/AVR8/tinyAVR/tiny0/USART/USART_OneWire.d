@@ -27,7 +27,8 @@ source/Arch/AVR8/tinyAVR/tiny0/USART/USART_OneWire.d \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\atomic.h \
  ../../../../../include/Common/Board/MCU/ATtiny406.h \
- ../../../../../include/Common/Ringbuffer/RingBuffer.h
+ ../../../../../include/Common/Ringbuffer/RingBuffer.h \
+ ../../../../../include/Arch/AVR8/tinyAVR/tiny0/ClockManagement/SysClock.h
 
 ../../../../../include/Arch/AVR8/tinyAVR/tiny0/USART/USART.h:
 
@@ -86,3 +87,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 ../../../../../include/Common/Board/MCU/ATtiny406.h:
 
 ../../../../../include/Common/Ringbuffer/RingBuffer.h:
+
+../../../../../include/Arch/AVR8/tinyAVR/tiny0/ClockManagement/SysClock.h:
