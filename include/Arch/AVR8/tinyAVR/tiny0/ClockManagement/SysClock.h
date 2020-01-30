@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for Atmel AVR tinyAVR system clock.
+ *  File info: Driver for Atmel AVR tiny0 system clock.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,13 +22,13 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Arch/AVR8/tinyAVR/ClockManagement/SysClock.h
- *  @brief Driver for Atmel AVR tinyAVR clock system. 
+/** @file Arch/AVR8/tinyAVR/tiny0/ClockManagement/SysClock.h
+ *  @brief Driver for Atmel AVR tiny0 clock system. 
  *
- *  This file contains the prototypes and definitions for the Atmel AVR tinyAVR clock system.
+ *  This file contains the prototypes and definitions for the Atmel AVR tiny0 clock system.
  *
  *  @author Daniel Kampert
- *  @bug No known bugs.
+ *  @bug - Check if NVM can read fuses to detect the right clock
  */
 
 #ifndef SYSCLOCK_H_
@@ -68,7 +68,7 @@
  static inline void SysClock_SetClockSource(const ClockSource_t Source) __attribute__((always_inline));
  static inline void SysClock_SetClockSource(const ClockSource_t Source)
  {
-	 /* 
+	 /*
 	  * Use inline assembler, because otherwise the code will only run with at least
 	  * optimization level -O1. This level is bad for debugging purposes. You can avoid
 	  * this issue by using inline assembler.
@@ -120,9 +120,6 @@
  static inline void SysClock_SetClockPrescaler(const ClockPrescaler_t Prescaler) __attribute__((always_inline));
  static inline void SysClock_SetClockPrescaler(const ClockPrescaler_t Prescaler)
  {
-	 // Enable the clock prescaler
-	 SysClock_SwitchPrescaler(TRUE);
-	 
 	 asm volatile(	"movw r30,  %0"		"\n\t"
 					"ldi  r16,  %2"     "\n\t"
 					"out   %3, r16"     "\n\t"
@@ -135,11 +132,34 @@
 				);
  }
 
+ /** @brief		Get the current main system clock.
+  *  @return	Clock frequency
+  */
+ static inline const uint32_t SysClock_GetClock(void) __attribute__ ((always_inline));
+ static inline const uint32_t SysClock_GetClock(void)
+ {
+	 if(CLKCTRL.MCLKCTRLA & CLKCTRL_CLKSEL_OSCULP32K_gc)
+	 {
+		 return 32000;
+	 }
+	 else if(CLKCTRL.MCLKCTRLA & CLKCTRL_CLKSEL_EXTCLK_gc)
+	 {
+		 return F_CPU;
+	 }
+
+	 return F_CPU;
+ }
+
  /** @brief	Initialize the CPU clock.
   */
  static inline void SysClock_Init(void) __attribute__ ((always_inline));
  static inline void SysClock_Init(void)
  {
  }
+
+ /** @brief		Get the current clock from the clk_Per domain.
+  *  @return	Clock frequency
+  */
+ uint32_t SysClock_GetClockPer(void);
 
 #endif /* SYSCLOCK_H_ */
