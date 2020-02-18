@@ -36,7 +36,7 @@
  /*
 	 Console service configuration
  */
- #define CONSOLE_STDIO								USARTE, 0				/**< USART interface for the console service. */
+ #undef CONSOLE_STDIO														/**< USART interface for the console service. */
 
  /*
 	 1-Wire configuration
