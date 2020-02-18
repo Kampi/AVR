@@ -52,7 +52,7 @@ uint8_t AlarmDevices;
 OneWire_ROM_t DS18B20_AlarmROM[DS18B20_BUS_DEVICES];
 
 int main(void)
-{	
+{
 	/*
 		Initialize the console service.
 	*/
@@ -71,16 +71,16 @@ int main(void)
 			// Loop through each sensor
 			for(uint8_t i = 0x00; i < Devices; i++)
 			{
+				// Print the serial number
 				printf("[INFO] Sensor: %d\n\r", i + 1);
 				printf("	Serial: 0x");
-				
 				for(uint8_t j = 0x00; j < 0x06; j++)
 				{
 					printf("%x", DS18B20_ROM[i].SerialNumber[j]);
 				}
-				
+
 				printf("\n\r");
-	
+
 				// Set the alarm limit and start a new measurement
 				if((DS18B20_SetAlarm(&DS18B20_ROM[i], DS18B20_ALARM_UPPER_LIMIT, DS18B20_ALARM_LOWER_LIMIT) | DS18B20_Measure(&DS18B20_ROM[i], DS18B20_RESOLUTION_11, &Temperature)) == ONEWIRE_NO_ERROR)
 				{
@@ -95,21 +95,21 @@ int main(void)
 			if(DS18B20_GetAlarmDevices(&AlarmDevices, DS18B20_BUS_DEVICES, DS18B20_AlarmROM) == ONEWIRE_NO_ERROR)
 			{
 				printf(" %d alarm devices found!\n\r", AlarmDevices);
-				
+
 				for(uint8_t i = 0x00; i < Devices; i++)
 				{
+					// Print the serial number
 					printf("[INFO] Sensor: %d\n\r", i + 1);
 					printf("	Serial: 0x");
-					
 					for(uint8_t j = 0x00; j < 0x06; j++)
 					{
 						printf("%x", DS18B20_ROM[i].SerialNumber[j]);
 					}
-					
+
 					printf("\n\r");
 				}
 			}
-			
+
 			if(AlarmDevices == 0x00)
 			{
 				printf(" no alarm devices found!\n\r");

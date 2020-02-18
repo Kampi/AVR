@@ -50,11 +50,11 @@
 
 /** @brief Baudrate value for 115200 baud.
  */
-static uint32_t _Baud115200 = 93;
+static uint32_t _Baud115200 = 0x00;
 
 /** @brief Baudrate value for 9600 baud.
  */
-static uint16_t _Baud9600 = 1111;
+static uint16_t _Baud9600 = 0x00;
 
 /** @brief		Transmit a data package over the USART 1-Wire interface and receive the answer.
  *  @param Data	Data byte

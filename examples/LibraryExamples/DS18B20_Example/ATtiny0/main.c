@@ -15,27 +15,30 @@ double Temperature;
 uint8_t AlarmDevices;
 OneWire_ROM_t DS18B20_AlarmROM[DS18B20_BUS_DEVICES];
 
-volatile uint8_t A;
-
 int main(void)
 {
 	if(DS18B20_Init() == ONEWIRE_NO_ERROR)
 	{
 		if(DS18B20_GetDevices(&Devices, DS18B20_BUS_DEVICES, DS18B20_ROM) == ONEWIRE_NO_ERROR)
 		{
+			// Loop through each sensor
+			for(uint8_t i = 0x00; i < Devices; i++)
+			{
+				// Set the alarm limit and start a new measurement
+				if((DS18B20_SetAlarm(&DS18B20_ROM[i], DS18B20_ALARM_UPPER_LIMIT, DS18B20_ALARM_LOWER_LIMIT) | DS18B20_Measure(&DS18B20_ROM[i], DS18B20_RESOLUTION_11, &Temperature)) == ONEWIRE_NO_ERROR)
+				{
+				}
+			}
 		}
 		else
 		{
-			A++;
 		}
 	}
 	else
 	{
-		A++;
 	}
-	
+
     while(1) 
     {
-		A++;
     }
 }
