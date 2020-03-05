@@ -47,19 +47,19 @@ typedef enum
 
 /** @brief	Line buffer for the parsing state machine.
  */
-static uint8_t __ParserBuffer[PARSER_LENGTH_BYTES + PARSER_ADDRESS_BYTES + PARSER_TYPE_BYTES + (PARSER_MAX_DATA_BYTES * PARSER_DATA_BYTES) + PARSER_CHECK_BYTES];
+static uint8_t _ParserBuffer[PARSER_LENGTH_BYTES + PARSER_ADDRESS_BYTES + PARSER_TYPE_BYTES + (PARSER_MAX_DATA_BYTES * PARSER_DATA_BYTES) + PARSER_CHECK_BYTES];
 
 /** @brief	Current state for the parsing state machine.
  */
-static StateMachine_t __ParserState;
+static StateMachine_t _ParserState;
 
-static Bool_t __Active;
+static Bool_t _Active;
 
-static uint8_t __Index;
+static uint8_t _Index;
 
 /** @brief	
  */
-static Parser_State_t __ParserEngineState;
+static Parser_State_t _ParserEngineState;
 
 /** @brief			Convert a hexadecimal string number into an integer value.
  *  @param ASCII	Number as a string
@@ -72,7 +72,7 @@ static uint16_t Hex2Num(const uint8_t Length)
 	
 	for(uint8_t i = 0x00; i < Length; i++)
 	{
-		uint8_t c = __ParserBuffer[__Index++];
+		uint8_t c = _ParserBuffer[_Index++];
 		
 		if(c >= '0' && c <= '9')
 		{
@@ -95,30 +95,30 @@ static uint16_t Hex2Num(const uint8_t Length)
 
 void Parser_Init(void)
 {
-	__ParserState = PARSER_INIT;
-	__Active = FALSE;
+	_ParserState = PARSER_INIT;
+	_Active = FALSE;
 }
 
 Parser_State_t Parser_GetLine(const uint8_t Received)
 {
-	if(__Active)
+	if(_Active)
 	{
 		if(Received == PARSER_LINE_END)
 		{
-			__Index = 0x00;
-			__Active = FALSE;
-			__ParserState = PARSER_INIT;
+			_Index = 0x00;
+			_Active = FALSE;
+			_ParserState = PARSER_INIT;
 
 			return PARSER_STATE_SUCCESSFULL;
 		}
 
-		if(__Index < sizeof(__ParserBuffer))
+		if(_Index < sizeof(_ParserBuffer))
 		{
-			__ParserBuffer[__Index++] = Received;
+			_ParserBuffer[_Index++] = Received;
 		}
 		else
 		{
-			__Index = 0x00;
+			_Index = 0x00;
 
 			return PARSER_STATE_OVERFLOW;
 		}
@@ -126,8 +126,8 @@ Parser_State_t Parser_GetLine(const uint8_t Received)
 
 	if(Received == ':')
 	{
-		__Index = 0x00;
-		__Active = TRUE;
+		_Index = 0x00;
+		_Active = TRUE;
 	}
 	
 	return PARSER_STATE_BUSY;
@@ -135,18 +135,18 @@ Parser_State_t Parser_GetLine(const uint8_t Received)
 
 Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
 {	
-	__ParserEngineState = PARSER_STATE_BUSY;
+	_ParserEngineState = PARSER_STATE_BUSY;
 	
 	do
 	{
-		switch(__ParserState)
+		switch(_ParserState)
 		{
 			case PARSER_INIT:
 			{
 				Line->Checksum = 0x00;
 				Line->Bytes = 0x00;
 
-				__ParserState = PARSER_GET_SIZE;
+				_ParserState = PARSER_GET_SIZE;
 
 				break;
 			}
@@ -156,7 +156,7 @@ Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
 				Line->Bytes = Length;
 				Line->Checksum += Length;
 
-				__ParserState = PARSER_GET_ADDRESS;
+				_ParserState = PARSER_GET_ADDRESS;
 
 				break;
 			}
@@ -166,7 +166,7 @@ Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
 				Line->Address = Address;
 				Line->Checksum += (Address >> 0x08) + (Address & 0xFF);
 
-				__ParserState = PARSER_GET_TYPE;
+				_ParserState = PARSER_GET_TYPE;
 
 				break;
 			}
@@ -180,19 +180,19 @@ Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
 				{
 					case PARSER_TYPE_DATA:
 					{
-						__ParserState = PARSER_GET_DATA;
+						_ParserState = PARSER_GET_DATA;
 					
 						break;
 					}
 					case PARSER_TYPE_EOF:
 					{
-						__ParserState = PARSER_GET_CHECK;
+						_ParserState = PARSER_GET_CHECK;
 					
 						break;
 					}
 					default:
 					{
-						__ParserState = PARSER_HANDLE_ERROR;
+						_ParserState = PARSER_HANDLE_ERROR;
 
 						break;
 					}
@@ -209,7 +209,7 @@ Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
 					Line->Checksum += Data;
 				}
 
-				__ParserState = PARSER_GET_CHECK;
+				_ParserState = PARSER_GET_CHECK;
 			
 				break;
 			}
@@ -221,25 +221,25 @@ Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
 				if(Line->Checksum == Checksum_Temp)
 				{
 					Line->Valid = TRUE;
-					__ParserEngineState = PARSER_STATE_SUCCESSFULL;
+					_ParserEngineState = PARSER_STATE_SUCCESSFULL;
 				}
 				else
 				{
 					Line->Valid = FALSE;
-					__ParserEngineState = PARSER_STATE_ERROR;
+					_ParserEngineState = PARSER_STATE_ERROR;
 				}
 
 				break;
 			}
 			case PARSER_HANDLE_ERROR:
 			{
-				__ParserEngineState = PARSER_STATE_ERROR;
+				_ParserEngineState = PARSER_STATE_ERROR;
 				
 				break;
 			}
 		}
 	}
-	while (__ParserEngineState == PARSER_STATE_BUSY);
+	while (_ParserEngineState == PARSER_STATE_BUSY);
 
-	return __ParserEngineState;
+	return _ParserEngineState;
 }

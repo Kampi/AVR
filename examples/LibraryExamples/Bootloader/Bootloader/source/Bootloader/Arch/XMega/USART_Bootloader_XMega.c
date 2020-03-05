@@ -34,12 +34,12 @@
 
 /** @brief	Data buffer for the current line.
  */
-static unsigned char __LineBuffer[PARSER_MAX_DATA_BYTES];
+static unsigned char _LineBuffer[PARSER_MAX_DATA_BYTES];
 
 /** @brief	Intel hex parser line object.
  */
-static Parser_Line_t __Line = {
-		.pBuffer = __LineBuffer,
+static Parser_Line_t _Line = {
+		.pBuffer = _LineBuffer,
 	};
 
 /** @brief	Receive a single character with the USART.
@@ -116,18 +116,18 @@ Bool_t Bootloader_Enter(void)
 		{
 			Bootloader_PutChar(XOFF);
 
-			Parser_State_t State = IntelParser_ParseLine(&__Line);
+			Parser_State_t State = IntelParser_ParseLine(&_Line);
 			if(State == PARSER_STATE_SUCCESSFULL)
 			{
-				if(__Line.Type == PARSER_TYPE_DATA)
+				if(_Line.Type == PARSER_TYPE_DATA)
 				{
-					for(uint8_t i = 0x00; i < __Line.Bytes; i = i + 0x02)
+					for(uint8_t i = 0x00; i < _Line.Bytes; i = i + 0x02)
 					{
-						uint16_t CodeWord = (__LineBuffer[i + 1] << 0x08) | __LineBuffer[i];
-						NVM_LoadFlashBuffer((__Line.Address + i) >> 0x01, CodeWord);
+						uint16_t CodeWord = (_LineBuffer[i + 1] << 0x08) | _LineBuffer[i];
+						NVM_LoadFlashBuffer((_Line.Address + i) >> 0x01, CodeWord);
 					}
 
-					Word += __Line.Bytes;
+					Word += _Line.Bytes;
 
 					if(Word == APP_SECTION_PAGE_SIZE)
 					{
@@ -145,7 +145,7 @@ Bool_t Bootloader_Enter(void)
 
 			Bootloader_PutChar(XON);
 		}
-	} while(__Line.Type != PARSER_TYPE_EOF);
+	} while(_Line.Type != PARSER_TYPE_EOF);
 	
 	NVM_FlushFlash(Page);
 	

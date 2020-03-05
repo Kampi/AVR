@@ -101,16 +101,16 @@ NVM_ExecuteSPM:
 NVM_LockSPM:
 
 	; Load the signature register
-	ldi	r18, CCP_IOREG_gc
+	ldi		r18, CCP_IOREG_gc
 
 	; Load the SPM lock bit
-	ldi	r19, NVM_SPMLOCK_bm
+	ldi		r19, NVM_SPMLOCK_bm
 
 	; Unlock SPM lock bit
-	sts	CCP, r18
+	sts		CCP, r18
 
 	; Set the bit
-	sts	NVM_CTRLB, r19
+	sts		NVM_CTRLB, r19
 
 	ret
 
