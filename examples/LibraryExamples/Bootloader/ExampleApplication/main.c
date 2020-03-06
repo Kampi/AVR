@@ -24,9 +24,10 @@
 
 /** @file main.c
  *  @brief Example application for the bootloader application.
+ *		   NOTE: This application gets mapped at start address 0x1FFFE.
  *
  *  Software for the XMega bootloader example from
- *  <>
+ *  https://www.kampis-elektroecke.de/2020/03/bootloader-fuer-avr-xmega/
  *
  *  @author Daniel Kampert
  */
@@ -42,7 +43,7 @@ int main(void)
 	*/
 	GPIO_SetDirection(&PORTR, 0, GPIO_DIRECTION_OUT);
 	
-    while (1) 
+    while(1) 
     {
 		GPIO_Toggle(&PORTR, 0);
 		for(uint16_t i = 0x00; i < 0xFFFF; i++);

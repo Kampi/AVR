@@ -74,6 +74,7 @@
  {
 	 uint8_t Bytes;												/**< Byte count */
 	 uint16_t Address;											/**< Address */
+	 uint32_t Offset;											/**< Offset address */
 	 Parser_Type_t Type;										/**< Record type */
 	 unsigned char* pBuffer;									/**< Pointer to data buffer */
 	 uint16_t Checksum;											/**< Checksum */
@@ -84,7 +85,7 @@
   */
  void Parser_Init(void);
 
- /** @brief				Receive a byte, store it into the line buffer and wait for a line.
+ /** @brief				Receive a byte, store it into the line buffer and wait for a complete line.
   *  @param Received	Received byte
   *  @return			#PARSER_STATE_SUCCESSFULL when line end
   */

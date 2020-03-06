@@ -49,11 +49,9 @@
 ;		-
 ;--
 NVM_WaitBusy:
-
-	NVM_Busy_Loop:
-		lds		r20, NVM_STATUS
-		sbrc	r20, NVM_NVMBUSY_bp
-		rjmp	NVM_Busy_Loop
+	lds		r20, NVM_STATUS
+	sbrc	r20, NVM_NVMBUSY_bp
+	rjmp	NVM_WaitBusy
 
 	ret
 
@@ -71,7 +69,6 @@ NVM_WaitBusy:
 ;		-
 ;--
 NVM_ExecuteSPM:
-
 	; Load the NVM command
 	sts		NVM_CMD, r26
 
@@ -99,7 +96,6 @@ NVM_ExecuteSPM:
 .section .text
 .global NVM_LockSPM
 NVM_LockSPM:
-
 	; Load the signature register
 	ldi		r18, CCP_IOREG_gc
 
@@ -124,7 +120,6 @@ NVM_LockSPM:
 .section .text
 .global NVM_EraseApplication
 NVM_EraseApplication:
-
 	; Save RAMPZ
 	in		r18, RAMPZ
 
@@ -138,36 +133,10 @@ NVM_EraseApplication:
 
 	; Execute SPM command
 	call	NVM_ExecuteSPM
-
-	; Busy - wait
 	call	NVM_WaitBusy
 
 	; Restore RAMPZ
 	out		RAMPZ, r18
-
-	ret
-
-;--
-;	Input:
-;		-
-;
-;	Return:
-;		-
-;--
-.section .text
-.global NVM_ClearFlashBuffer
-NVM_ClearFlashBuffer:
-
-	; Load NVM command
-	ldi		r26, NVM_CMD_ERASE_FLASH_BUFFER_gc
-	sts		NVM_CTRLA, r26
-
-	; Execute command
-	ldi		r26, NVM_CMDEX_bp
-	sts		NVM_CTRLA, r26
-
-	; Busy - wait
-	call	NVM_WaitBusy
 
 	ret
 
@@ -182,7 +151,6 @@ NVM_ClearFlashBuffer:
 .section .text
 .global NVM_LoadFlashBuffer
 NVM_LoadFlashBuffer:
-
 	; Clear the Z pointer
 	clr		ZH
 	clr		ZL
@@ -218,7 +186,6 @@ NVM_LoadFlashBuffer:
 .section .text
 .global NVM_FlushFlash
 NVM_FlushFlash:
-
 	; Save RAMPZ
 	in		r18, RAMPZ
 
@@ -236,8 +203,6 @@ NVM_FlushFlash:
 	; Load NVM command
 	ldi		r26, NVM_CMD_ERASE_WRITE_FLASH_PAGE_gc
 	call	NVM_ExecuteSPM
-
-	; Busy - wait
 	call	NVM_WaitBusy
 
 	; Restore RAMPZ

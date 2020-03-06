@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: AVR USART bootloader for XMega architecture.
+ *  File info: USART bootloader for XMega architecture.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,9 +23,9 @@
  */
 
 /** @file Common/Bootloader/Arch/XMega/USART_Bootloader_XMega.c
- *  @brief AVR USART bootloader for XMega architecture.
+ *  @brief USART bootloader for XMega architecture.
  *
- *  This file contains the implementation for the AVR USART bootloader for XMega architecture.
+ *  This file contains the implementation for the USART bootloader for XMega architecture.
  *
  *  @author Daniel Kampert
  */
@@ -88,9 +88,11 @@ void Bootloader_Init(void)
 					: "r16", "r30"
 				);
 
-	// Enable the USART interface
+	// Configure the I/O for the USART interface
 	((PORT_t*)(&PORT_NAME(BOOTLOADER_INTERFACE)))->DIRSET = (0x01 << BOOTLOADER_TX);
 	((PORT_t*)(&PORT_NAME(BOOTLOADER_INTERFACE)))->DIRCLR = (0x01 << BOOTLOADER_RX);
+
+	// Enable and configure the USART interface
 	((USART_t*)(&USART_NAME(BOOTLOADER_INTERFACE)))->BAUDCTRLA = BOOTLOADER_BRREG_VALUE;
 	((USART_t*)(&USART_NAME(BOOTLOADER_INTERFACE)))->BAUDCTRLB = (BOOTLOADER_SCALE_VALUE << USART_BSCALE_gp) & USART_BSCALE_gm;
 	((USART_t*)(&USART_NAME(BOOTLOADER_INTERFACE)))->CTRLB = USART_RXEN_bm | USART_TXEN_bm;
@@ -98,7 +100,7 @@ void Bootloader_Init(void)
 	// Initialize the hex file parser
 	Parser_Init();
 
-	// Disable the targets flow control
+	// Enable the transmitter by disabling the flow control
 	Bootloader_PutChar(XON);
 }
 
@@ -114,14 +116,18 @@ Bool_t Bootloader_Enter(void)
 		Parser_State_t LineRead = Parser_GetLine(Bootloader_GetChar());
 		if(LineRead == PARSER_STATE_SUCCESSFULL)
 		{
+			// Disable the transmitter
 			Bootloader_PutChar(XOFF);
 
+			// Parse a new line
 			Parser_State_t State = IntelParser_ParseLine(&_Line);
+
+			//
 			if(State == PARSER_STATE_SUCCESSFULL)
 			{
 				if(_Line.Type == PARSER_TYPE_DATA)
 				{
-					for(uint8_t i = 0x00; i < _Line.Bytes; i = i + 0x02)
+					for(uint8_t i = 0x00; i < _Line.Bytes; i += 0x02)
 					{
 						uint16_t CodeWord = (_LineBuffer[i + 1] << 0x08) | _LineBuffer[i];
 						NVM_LoadFlashBuffer((_Line.Address + i) >> 0x01, CodeWord);
@@ -143,21 +149,22 @@ Bool_t Bootloader_Enter(void)
 				return FALSE;
 			}
 
+			// Enable the transmitter
 			Bootloader_PutChar(XON);
 		}
 	} while(_Line.Type != PARSER_TYPE_EOF);
-	
+
 	NVM_FlushFlash(Page);
-	
+
 	return TRUE;
 }
 
 void Bootloader_Exit(void)
 {
 	void (*Main)(void) = 0x0000;
-	
+
 	Bootloader_PutString("Leave bootloader...");
-	
+
 	// Wait until last transmission finish
 	while(!(((USART_t*)(&USART_NAME(BOOTLOADER_INTERFACE)))->STATUS & USART_DREIF_bm));
 
@@ -167,11 +174,11 @@ void Bootloader_Exit(void)
 	// Reset the I/O
 	((PORT_t*)(&PORT_NAME(BOOTLOADER_INTERFACE)))->DIRCLR = (0x01 << BOOTLOADER_TX);
 	((PORT_t*)(&PORT_NAME(BOOTLOADER_INTERFACE)))->DIRCLR = (0x01 << BOOTLOADER_RX);
-	
-	// Disable the USART
+
+	// Disable the USART interface
 	((USART_t*)(&USART_NAME(BOOTLOADER_INTERFACE)))->CTRLB &= ~(USART_RXEN_bm | USART_TXEN_bm);
 
-	// Jump to application
+	// Clear the extended indirect register and jump to the main application
 	EIND = 0x00;
 	Main();
 }

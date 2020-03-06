@@ -39,8 +39,7 @@ typedef enum
 	PARSER_INIT = 0x00,										/**< Initial state */
 	PARSER_GET_SIZE = 0x01,									/**< Get the size from the line */
 	PARSER_GET_ADDRESS = 0x02,								/**< Get the address from the line */
-	PARSER_GET_TYPE = 0x03,									/**< Get the type from the line */
-	PARSER_GET_DATA = 0x04,									/**< Get the data from the line */
+	PARSER_GET_TYPE = 0x03,									/**< Get the type and the data from the line */
 	PARSER_GET_CHECK = 0x05,								/**< Get the checksum from the line */
 	PARSER_HANDLE_ERROR = 0x06,								/**< Error handler */
 } StateMachine_t;
@@ -49,7 +48,7 @@ typedef enum
  */
 static uint8_t _ParserBuffer[PARSER_LENGTH_BYTES + PARSER_ADDRESS_BYTES + PARSER_TYPE_BYTES + (PARSER_MAX_DATA_BYTES * PARSER_DATA_BYTES) + PARSER_CHECK_BYTES];
 
-/** @brief	Current state for the parsing state machine.
+/** @brief	Current state for the parser state machine.
  */
 static StateMachine_t _ParserState;
 
@@ -129,14 +128,14 @@ Parser_State_t Parser_GetLine(const uint8_t Received)
 		_Index = 0x00;
 		_Active = TRUE;
 	}
-	
+
 	return PARSER_STATE_BUSY;
 }
 
 Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
-{	
+{
 	_ParserEngineState = PARSER_STATE_BUSY;
-	
+
 	do
 	{
 		switch(_ParserState)
@@ -180,14 +179,37 @@ Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
 				{
 					case PARSER_TYPE_DATA:
 					{
-						_ParserState = PARSER_GET_DATA;
-					
+						for(uint8_t i = 0x00; i < Line->Bytes; i++)
+						{
+							uint8_t Data = Hex2Num(PARSER_DATA_BYTES);
+							*(Line->pBuffer + i) = Data;
+							Line->Checksum += Data;
+						}
+
+						_ParserState = PARSER_GET_CHECK;
+
 						break;
 					}
 					case PARSER_TYPE_EOF:
 					{
 						_ParserState = PARSER_GET_CHECK;
-					
+
+						break;
+					}
+					case PARSER_TYPE_ESA:
+					{
+						break;
+					}
+					case PARSER_TYPE_SSA:
+					{
+						break;
+					}
+					case PARSER_TYPE_ELA:
+					{
+						break;
+					}
+					case PARSER_TYPE_SLA:
+					{
 						break;
 					}
 					default:
@@ -200,24 +222,11 @@ Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
 
 				break;
 			}
-			case PARSER_GET_DATA:
-			{
-				for(uint8_t i = 0x00; i < Line->Bytes; i++)
-				{
-					uint8_t Data = Hex2Num(PARSER_DATA_BYTES);
-					*(Line->pBuffer + i) = Data;
-					Line->Checksum += Data;
-				}
-
-				_ParserState = PARSER_GET_CHECK;
-			
-				break;
-			}
 			case PARSER_GET_CHECK:
 			{
 				uint8_t Checksum_Temp = ~(Line->Checksum & 0xFF) + 0x01;
 				Line->Checksum = Hex2Num(PARSER_CHECK_BYTES);
-				
+
 				if(Line->Checksum == Checksum_Temp)
 				{
 					Line->Valid = TRUE;
@@ -234,7 +243,7 @@ Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
 			case PARSER_HANDLE_ERROR:
 			{
 				_ParserEngineState = PARSER_STATE_ERROR;
-				
+
 				break;
 			}
 		}
