@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Parser for the Intel-Hex file.
+ *  File info: Bootloader parser for the Intel-Hex file.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Common/Parser/IntelHexParser.c
- *  @brief Parser for the Intel-Hex file format.
+ *  @brief Bootloader parser for the Intel-Hex file format.
  *
  *  This file contains the implementation for the Intel-Hex file format parser.
  *
@@ -54,6 +54,8 @@ static StateMachine_t _ParserState;
 
 static Bool_t _Active;
 
+/** @brief	Current line buffer index.
+ */
 static uint8_t _Index;
 
 /** @brief	
@@ -98,7 +100,7 @@ void Parser_Init(void)
 	_Active = FALSE;
 }
 
-Parser_State_t Parser_GetLine(const uint8_t Received)
+Parser_State_t Parser_GetByte(const uint8_t Received)
 {
 	if(_Active)
 	{
@@ -123,6 +125,7 @@ Parser_State_t Parser_GetLine(const uint8_t Received)
 		}
 	}
 
+	// Wait for the beginning of a new line
 	if(Received == ':')
 	{
 		_Index = 0x00;
@@ -132,7 +135,7 @@ Parser_State_t Parser_GetLine(const uint8_t Received)
 	return PARSER_STATE_BUSY;
 }
 
-Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
+Parser_State_t Parser_Parse(Parser_Block_t* Line)
 {
 	_ParserEngineState = PARSER_STATE_BUSY;
 
@@ -198,10 +201,37 @@ Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
 					}
 					case PARSER_TYPE_ESA:
 					{
+						Line->Offset = 0x00;
+
+						for(uint8_t i = 0x00; i < 0x02; i++)
+						{
+							uint8_t Data = Hex2Num(PARSER_DATA_BYTES);
+							Line->Offset |= Data;
+							Line->Offset <<= 0x04;
+							Line->Checksum += Data;
+						}
+
+						// Multiply the address with 4 (according to the specification)
+						Line->Offset <<= 0x04;
+
+						_ParserState = PARSER_GET_CHECK;
+						
 						break;
 					}
 					case PARSER_TYPE_SSA:
 					{
+						Line->StartAddress = 0x00;
+
+						for(uint8_t i = 0x00; i < 0x04; i++)
+						{
+							uint8_t Data = Hex2Num(PARSER_DATA_BYTES);
+							Line->StartAddress |= Data;
+							Line->StartAddress <<= 0x04;
+							Line->Checksum += Data;
+						}
+
+						_ParserState = PARSER_GET_CHECK;
+
 						break;
 					}
 					case PARSER_TYPE_ELA:
