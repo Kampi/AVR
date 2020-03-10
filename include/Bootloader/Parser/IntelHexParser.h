@@ -52,7 +52,7 @@
  typedef enum
  {
 	 PARSER_STATE_BUSY = 0x00,									/**< Busy */
-	 PARSER_STATE_SUCCESSFULL = 0x01,							/**< Valid record line */
+	 PARSER_STATE_SUCCESSFUL = 0x01,							/**< Parsing successful */
 	 PARSER_STATE_ERROR = 0x02,									/**< Error while parsing the line */
 	 PARSER_STATE_OVERFLOW = 0x03,								/**< Buffer overflow during line receive */
  } Parser_State_t;
@@ -73,8 +73,8 @@
   */
  typedef struct
  {
-	 uint16_t Bytes;											/**< Byte count */
-	 uint16_t Address;											/**< Address */
+	 uint16_t Length;											/**< Data byte count */
+	 uint16_t Address;											/**< Memory address */
 	 uint32_t Offset;											/**< Offset address */
 	 uint32_t StartAddress;										/**< Start address */
 	 Parser_Type_t Type;										/**< Record type */
@@ -92,7 +92,7 @@
   *  @return			#PARSER_STATE_SUCCESSFULL when line end
   */
  Parser_State_t Parser_GetByte(const uint8_t Received);
- 
+
  /** @brief			Parse the line buffer into a #IntelHexParser_Line_t object. Must be called after #IntelHexParser_GetLine.
   *  @param Line	Pointer to line object
   *  @return		Parser state. Must be polled until #PARSER_STATE_SUCCESSFULL or #PARSER_STATE_ERROR is returned
