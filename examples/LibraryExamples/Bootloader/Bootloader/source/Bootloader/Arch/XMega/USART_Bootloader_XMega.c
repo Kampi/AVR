@@ -161,17 +161,16 @@ Bool_t Bootloader_Enter(void)
 
 void Bootloader_Exit(void)
 {
-	Bootloader_PutString("Leave bootloader...");
+	Bootloader_PutString("Leave bootloader...\n\r");
 
-	// Wait until last transmission finish
-	//while(!(((USART_t*)(&USART_NAME(BOOTLOADER_INTERFACE)))->STATUS & USART_DREIF_bm));
+	// Wait until last transmission has finished
+	for(uint16_t i = 0x00; i < 0xFFFF; i++);	
 
 	// Disable the SPM command
 	NVM_LockSPM();
 
 	// Reset the I/O
-	((PORT_t*)(&PORT_NAME(BOOTLOADER_INTERFACE)))->DIRCLR = (0x01 << BOOTLOADER_TX);
-	((PORT_t*)(&PORT_NAME(BOOTLOADER_INTERFACE)))->DIRCLR = (0x01 << BOOTLOADER_RX);
+	((PORT_t*)(&PORT_NAME(BOOTLOADER_INTERFACE)))->DIRCLR = (0x01 << BOOTLOADER_TX) | (0x01 << BOOTLOADER_RX);
 
 	// Disable the USART interface
 	((USART_t*)(&USART_NAME(BOOTLOADER_INTERFACE)))->CTRLB &= ~(USART_RXEN_bm | USART_TXEN_bm);
