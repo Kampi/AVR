@@ -26,7 +26,7 @@
  *  @brief Bootloader example for XMega.
  *
  *  Software for the XMega bootloader example from
- *  https://www.kampis-elektroecke.de/2020/03/bootloader-fuer-avr-xmega/
+ *  https://www.kampis-elektroecke.de/2020/03/xmega-bootloader
  *
  *  @author Daniel Kampert
  */
@@ -47,9 +47,9 @@ int main(void)
 	{
 	}
 	
-    while(1)
-    {
-    }
+	while(1)
+	{
+	}
 
 	return 0;
 }

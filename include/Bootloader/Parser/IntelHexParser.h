@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Parser for the Intel-Hex file.
+ *  File info: Bootloader parser for the Intel-Hex file.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,8 @@
  */ 
 
 /** @file Common/Parser/IntelHexParser.h
- *  @brief Parser for the Intel-Hex file format.
+ *  @brief Bootloader parser for the Intel-Hex file format.
+ *		   NOTE: Please check https://en.wikipedia.org/wiki/Intel_HEX for additional information.
  *
  *  This contains the prototypes and definitions for the Intel-Hex file format parser.
  *
@@ -51,7 +52,7 @@
  typedef enum
  {
 	 PARSER_STATE_BUSY = 0x00,									/**< Busy */
-	 PARSER_STATE_SUCCESSFULL = 0x01,							/**< Valid record line */
+	 PARSER_STATE_SUCCESSFUL = 0x01,							/**< Parsing successful */
 	 PARSER_STATE_ERROR = 0x02,									/**< Error while parsing the line */
 	 PARSER_STATE_OVERFLOW = 0x03,								/**< Buffer overflow during line receive */
  } Parser_State_t;
@@ -68,33 +69,34 @@
 	 PARSER_TYPE_SLA = 0x05,									/**< Start linear address record */
  } Parser_Type_t;
 
- /** @brief Intel-Hex file line object
+ /** @brief Code block object for Intel-Hex file
   */
  typedef struct
  {
-	 uint8_t Bytes;												/**< Byte count */
-	 uint16_t Address;											/**< Address */
+	 uint16_t Length;											/**< Data byte count */
+	 uint16_t Address;											/**< Memory address */
 	 uint32_t Offset;											/**< Offset address */
+	 uint32_t StartAddress;										/**< Start address */
 	 Parser_Type_t Type;										/**< Record type */
 	 unsigned char* pBuffer;									/**< Pointer to data buffer */
 	 uint16_t Checksum;											/**< Checksum */
 	 Bool_t Valid;												/**< Valid flag */
- } Parser_Line_t;
+ } Parser_Block_t;
 
  /** @brief	Initialize the parser.
   */
  void Parser_Init(void);
 
- /** @brief				Receive a byte, store it into the line buffer and wait for a complete line.
+ /** @brief				Receive a byte, store it in the line buffer and wait for a complete block.
   *  @param Received	Received byte
   *  @return			#PARSER_STATE_SUCCESSFULL when line end
   */
- Parser_State_t Parser_GetLine(const uint8_t Received);
- 
+ Parser_State_t Parser_GetByte(const uint8_t Received);
+
  /** @brief			Parse the line buffer into a #IntelHexParser_Line_t object. Must be called after #IntelHexParser_GetLine.
   *  @param Line	Pointer to line object
   *  @return		Parser state. Must be polled until #PARSER_STATE_SUCCESSFULL or #PARSER_STATE_ERROR is returned
   */
- Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line);
+ Parser_State_t Parser_Parse(Parser_Block_t* Line);
 
 #endif /* INTELHEXPARSER_H_ */

@@ -142,7 +142,7 @@ NVM_EraseApplication:
 
 ;--
 ;	Input:
-;		r24					Word address
+;		r25:r24				Word address
 ;		r23:r22				Data byte
 ;
 ;	Return:
@@ -157,6 +157,7 @@ NVM_LoadFlashBuffer:
 
 	; Save the word address
 	mov		ZL, r24
+	mov		ZH, r25
 
 	; Perform the address calculation
 	lsl		ZL

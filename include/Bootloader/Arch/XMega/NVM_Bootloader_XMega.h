@@ -51,7 +51,7 @@
   *  @param Offset	Word address
   *  @param Data	Data word
   */
- void NVM_LoadFlashBuffer(const uint8_t Offset, const uint16_t Data);
+ void NVM_LoadFlashBuffer(const uint16_t Offset, const uint16_t Data);
  
  /** @brief			Flush the page buffer and write the content into the flash memory.
   *  @param Page	Page address

@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Parser for the Intel-Hex file.
+ *  File info: Bootloader parser for the Intel-Hex file.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Common/Parser/IntelHexParser.c
- *  @brief Parser for the Intel-Hex file format.
+ *  @brief Bootloader parser for the Intel-Hex file format.
  *
  *  This file contains the implementation for the Intel-Hex file format parser.
  *
@@ -48,15 +48,19 @@ typedef enum
  */
 static uint8_t _ParserBuffer[PARSER_LENGTH_BYTES + PARSER_ADDRESS_BYTES + PARSER_TYPE_BYTES + (PARSER_MAX_DATA_BYTES * PARSER_DATA_BYTES) + PARSER_CHECK_BYTES];
 
+/** @brief	Boolean value to flag the parser as active.
+ */
+static Bool_t _IsActive;
+
+/** @brief	Current line buffer index.
+ */
+static uint8_t _Index;
+
 /** @brief	Current state for the parser state machine.
  */
 static StateMachine_t _ParserState;
 
-static Bool_t _Active;
-
-static uint8_t _Index;
-
-/** @brief	
+/** @brief	Current state of the parsing engine.
  */
 static Parser_State_t _ParserEngineState;
 
@@ -68,11 +72,11 @@ static Parser_State_t _ParserEngineState;
 static uint16_t Hex2Num(const uint8_t Length)
 {
 	uint16_t Temp = 0x00;
-	
+
 	for(uint8_t i = 0x00; i < Length; i++)
 	{
 		uint8_t c = _ParserBuffer[_Index++];
-		
+
 		if(c >= '0' && c <= '9')
 		{
 			c -= '0';
@@ -85,7 +89,7 @@ static uint16_t Hex2Num(const uint8_t Length)
 		{
 			c -= 'a' - 10;
 		}
-		
+
 		Temp = (Temp << 0x04) + c;
 	}
 
@@ -95,20 +99,20 @@ static uint16_t Hex2Num(const uint8_t Length)
 void Parser_Init(void)
 {
 	_ParserState = PARSER_INIT;
-	_Active = FALSE;
+	_IsActive = FALSE;
 }
 
-Parser_State_t Parser_GetLine(const uint8_t Received)
+Parser_State_t Parser_GetByte(const uint8_t Received)
 {
-	if(_Active)
+	if(_IsActive)
 	{
 		if(Received == PARSER_LINE_END)
 		{
 			_Index = 0x00;
-			_Active = FALSE;
+			_IsActive = FALSE;
 			_ParserState = PARSER_INIT;
 
-			return PARSER_STATE_SUCCESSFULL;
+			return PARSER_STATE_SUCCESSFUL;
 		}
 
 		if(_Index < sizeof(_ParserBuffer))
@@ -123,16 +127,17 @@ Parser_State_t Parser_GetLine(const uint8_t Received)
 		}
 	}
 
+	// Wait for the beginning of a new line
 	if(Received == ':')
 	{
 		_Index = 0x00;
-		_Active = TRUE;
+		_IsActive = TRUE;
 	}
 
 	return PARSER_STATE_BUSY;
 }
 
-Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
+Parser_State_t Parser_Parse(Parser_Block_t* Line)
 {
 	_ParserEngineState = PARSER_STATE_BUSY;
 
@@ -143,7 +148,7 @@ Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
 			case PARSER_INIT:
 			{
 				Line->Checksum = 0x00;
-				Line->Bytes = 0x00;
+				Line->Length = 0x00;
 
 				_ParserState = PARSER_GET_SIZE;
 
@@ -152,7 +157,7 @@ Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
 			case PARSER_GET_SIZE:
 			{
 				uint8_t Length = Hex2Num(PARSER_LENGTH_BYTES);
-				Line->Bytes = Length;
+				Line->Length = Length;
 				Line->Checksum += Length;
 
 				_ParserState = PARSER_GET_ADDRESS;
@@ -179,7 +184,7 @@ Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
 				{
 					case PARSER_TYPE_DATA:
 					{
-						for(uint8_t i = 0x00; i < Line->Bytes; i++)
+						for(uint8_t i = 0x00; i < Line->Length; i++)
 						{
 							uint8_t Data = Hex2Num(PARSER_DATA_BYTES);
 							*(Line->pBuffer + i) = Data;
@@ -198,10 +203,37 @@ Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
 					}
 					case PARSER_TYPE_ESA:
 					{
+						Line->Offset = 0x00;
+
+						for(uint8_t i = 0x00; i < 0x02; i++)
+						{
+							uint8_t Data = Hex2Num(PARSER_DATA_BYTES);
+							Line->Offset |= Data;
+							Line->Offset <<= 0x04;
+							Line->Checksum += Data;
+						}
+
+						// Multiply the address with 4 (according to the specification)
+						Line->Offset <<= 0x04;
+
+						_ParserState = PARSER_GET_CHECK;
+
 						break;
 					}
 					case PARSER_TYPE_SSA:
 					{
+						Line->StartAddress = 0x00;
+
+						for(uint8_t i = 0x00; i < 0x04; i++)
+						{
+							uint8_t Data = Hex2Num(PARSER_DATA_BYTES);
+							Line->StartAddress |= Data;
+							Line->StartAddress <<= 0x04;
+							Line->Checksum += Data;
+						}
+
+						_ParserState = PARSER_GET_CHECK;
+
 						break;
 					}
 					case PARSER_TYPE_ELA:
@@ -230,7 +262,7 @@ Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
 				if(Line->Checksum == Checksum_Temp)
 				{
 					Line->Valid = TRUE;
-					_ParserEngineState = PARSER_STATE_SUCCESSFULL;
+					_ParserEngineState = PARSER_STATE_SUCCESSFUL;
 				}
 				else
 				{
@@ -248,7 +280,7 @@ Parser_State_t IntelParser_ParseLine(Parser_Line_t* Line)
 			}
 		}
 	}
-	while (_ParserEngineState == PARSER_STATE_BUSY);
+	while(_ParserEngineState == PARSER_STATE_BUSY);
 
 	return _ParserEngineState;
 }
