@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: AVR USART bootloader for XMega architecture.
+ *  File info: USART bootloader for XMega architecture.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,9 +23,9 @@
  */
 
 /** @file Common/Bootloader/Arch/XMega/USART_Bootloader_XMega.c
- *  @brief AVR USART bootloader for XMega architecture.
+ *  @brief USART bootloader for XMega architecture.
  *
- *  This file contains the implementation for the AVR USART bootloader for XMega architecture.
+ *  This file contains the implementation for the USART bootloader for XMega architecture.
  *
  *  @author Daniel Kampert
  */
@@ -36,9 +36,9 @@
  */
 static unsigned char _LineBuffer[PARSER_MAX_DATA_BYTES];
 
-/** @brief	Intel hex parser line object.
+/** @brief	Data block object for the parsing engine.
  */
-static Parser_Line_t _Line = {
+static Parser_Block_t _Line = {
 		.pBuffer = _LineBuffer,
 	};
 
@@ -88,90 +88,98 @@ void Bootloader_Init(void)
 					: "r16", "r30"
 				);
 
-	// Enable the USART interface
+	// Configure the I/O for the USART interface
 	((PORT_t*)(&PORT_NAME(BOOTLOADER_INTERFACE)))->DIRSET = (0x01 << BOOTLOADER_TX);
 	((PORT_t*)(&PORT_NAME(BOOTLOADER_INTERFACE)))->DIRCLR = (0x01 << BOOTLOADER_RX);
-	((USART_t*)(&USART_NAME(BOOTLOADER_INTERFACE)))->BAUDCTRLA = BOOTLOADER_BRREG_VALUE;
+
+	// Enable and configure the USART interface
+	((USART_t*)(&USART_NAME(BOOTLOADER_INTERFACE)))->BAUDCTRLA = (BOOTLOADER_BRREG_VALUE & 0xFF) << USART_BSEL_gp;
 	((USART_t*)(&USART_NAME(BOOTLOADER_INTERFACE)))->BAUDCTRLB = (BOOTLOADER_SCALE_VALUE << USART_BSCALE_gp) & USART_BSCALE_gm;
 	((USART_t*)(&USART_NAME(BOOTLOADER_INTERFACE)))->CTRLB = USART_RXEN_bm | USART_TXEN_bm;
 
 	// Initialize the hex file parser
 	Parser_Init();
 
-	// Disable the targets flow control
+	// Enable the transmitter by disabling the flow control
 	Bootloader_PutChar(XON);
 }
 
 Bool_t Bootloader_Enter(void)
 {
-	Bootloader_PutString("Enter bootloader...\n\r");
-
-	uint16_t Word = 0x00;
 	uint16_t Page = 0x00;
+	uint8_t Offset = 0x00;
+	uint16_t Words = 0x00;
+
+	Bootloader_PutString("Enter bootloader...\n\r");
 
 	do
 	{
-		Parser_State_t LineRead = Parser_GetLine(Bootloader_GetChar());
-		if(LineRead == PARSER_STATE_SUCCESSFULL)
+		if(Parser_GetByte(Bootloader_GetChar()) == PARSER_STATE_SUCCESSFUL)
 		{
+			// Disable the transmitter
 			Bootloader_PutChar(XOFF);
 
-			Parser_State_t State = IntelParser_ParseLine(&_Line);
-			if(State == PARSER_STATE_SUCCESSFULL)
+			// Parsing successfully?
+			if((Parser_Parse(&_Line) == PARSER_STATE_SUCCESSFUL) && _Line.Valid)
 			{
 				if(_Line.Type == PARSER_TYPE_DATA)
 				{
-					for(uint8_t i = 0x00; i < _Line.Bytes; i = i + 0x02)
+					uint32_t Address = (_Line.Offset + _Line.Address) >> 0x01;
+					Offset = Address & 0xFF;
+					Page = (Address & 0x3FF00) >> 0x08;
+
+					for(uint8_t i = 0x00; i < _Line.Length; i += 0x02)
 					{
 						uint16_t CodeWord = (_LineBuffer[i + 1] << 0x08) | _LineBuffer[i];
-						NVM_LoadFlashBuffer((_Line.Address + i) >> 0x01, CodeWord);
-					}
+						NVM_LoadFlashBuffer(Offset + (i >> 0x01), CodeWord);
 
-					Word += _Line.Bytes;
-
-					if(Word == APP_SECTION_PAGE_SIZE)
-					{
-						Word = 0x00;
-						NVM_FlushFlash(Page++);
+						// Write the page when the buffer is full
+						if(Words++ == (APP_SECTION_PAGE_SIZE / 2))
+						{
+							NVM_FlushFlash(Page);
+							Words = 0x00;
+						}
 					}
 				}
 			}
-			else if(State == PARSER_STATE_ERROR)
+			else
 			{
 				// Error handling
 
 				return FALSE;
 			}
 
+			// Enable the transmitter
 			Bootloader_PutChar(XON);
 		}
 	} while(_Line.Type != PARSER_TYPE_EOF);
-	
+
 	NVM_FlushFlash(Page);
-	
+
 	return TRUE;
 }
 
 void Bootloader_Exit(void)
 {
-	void (*Main)(void) = 0x0000;
-	
-	Bootloader_PutString("Leave bootloader...");
-	
-	// Wait until last transmission finish
-	while(!(((USART_t*)(&USART_NAME(BOOTLOADER_INTERFACE)))->STATUS & USART_DREIF_bm));
+	Bootloader_PutString("Leave bootloader...\n\r");
+
+	// Wait until last transmission has finished
+	for(uint16_t i = 0x00; i < 0xFFFF; i++);	
 
 	// Disable the SPM command
 	NVM_LockSPM();
 
 	// Reset the I/O
-	((PORT_t*)(&PORT_NAME(BOOTLOADER_INTERFACE)))->DIRCLR = (0x01 << BOOTLOADER_TX);
-	((PORT_t*)(&PORT_NAME(BOOTLOADER_INTERFACE)))->DIRCLR = (0x01 << BOOTLOADER_RX);
-	
-	// Disable the USART
+	((PORT_t*)(&PORT_NAME(BOOTLOADER_INTERFACE)))->DIRCLR = (0x01 << BOOTLOADER_TX) | (0x01 << BOOTLOADER_RX);
+
+	// Disable the USART interface
 	((USART_t*)(&USART_NAME(BOOTLOADER_INTERFACE)))->CTRLB &= ~(USART_RXEN_bm | USART_TXEN_bm);
 
-	// Jump to application
+	// Clear the extended indirect register and jump to the main application
 	EIND = 0x00;
-	Main();
+	asm volatile("ld   %0, Z" "\n\t"
+				 "ijmp"		  "\n\t"
+			::	 "r" (_Line.StartAddress)
+			:    "r30", "r31"
+		);
 }
