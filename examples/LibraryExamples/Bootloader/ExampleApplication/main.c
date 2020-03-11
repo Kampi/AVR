@@ -27,7 +27,7 @@
  *		   NOTE: This application gets mapped at start address 0x10000.
  *
  *  Software for the XMega bootloader example from
- *  https://www.kampis-elektroecke.de/2020/03/bootloader-fuer-avr-xmega/
+ *  https://www.kampis-elektroecke.de/2020/03/xmega-bootloader
  *
  *  @author Daniel Kampert
  */
