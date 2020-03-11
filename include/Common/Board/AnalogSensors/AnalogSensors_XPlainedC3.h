@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Peripheral/AnalogSensors/AnalogSensors_XPlainedC3.h
+/** @file Common/Board/AnalogSensors/AnalogSensors_XPlainedC3.h
  *  @brief Analog sensors for the XPlained C3 development board.
  *
  *  This contains the prototypes and definitions for the XPlained C3 driver for analog sensors.
@@ -34,13 +34,11 @@
 #ifndef ANALOGSENSORS_XPLAINEDC3_H_
 #define ANALOGSENSORS_XPLAINEDC3_H_
 
- #include "Board.h"
  #include "Common/Common.h"
 
  extern const uint16_t TEMT6000X01_ICA;
  extern const uint16_t TEMT6000X01_R;
  extern const uint16_t TemperatureCodes[];
- extern const uint16_t AmbientCodes[];
  extern const uint16_t Size_TemperatureCodes;
 
  /** @brief			Convert an ADC result into a temperature [°C].
@@ -66,7 +64,7 @@
 	 
 	 return -10;
  }
- 
+
  /** @brief			Convert an ADC result into a ambient light value [lux].
   *  @param Result	ADC result
   *  @return		Ambient light in lux

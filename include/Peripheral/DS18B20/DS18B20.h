@@ -34,7 +34,7 @@
 #ifndef DS18B20_H_
 #define DS18B20_H_
 
- #include "OneWire/OneWire.h"
+ #include "Interfaces/OneWire/OneWire.h"
 
  /** @ingroup OneWire-FamilyCodes */
  /*\@{*/

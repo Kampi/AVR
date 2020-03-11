@@ -131,6 +131,11 @@
       <Value>libm</Value>
     </ListValues>
   </avrgcc.linker.libraries.Libraries>
+  <avrgcc.linker.memorysettings.Flash>
+    <ListValues>
+      <Value>.text=0x10000</Value>
+    </ListValues>
+  </avrgcc.linker.memorysettings.Flash>
   <avrgcc.assembler.general.IncludePaths>
     <ListValues>
       <Value>%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\include</Value>

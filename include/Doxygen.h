@@ -41,11 +41,20 @@
 	 /*@}*/
  /*@}*/
 
- /** @defgroup OneWire
+ /** @defgroup Interfaces
   *  @{
   */
-	 /** @defgroup OneWire-FamilyCodes
-	  *  1-Wire device family codes.
+	 /** @defgroup OneWire
+	  *  @{
+	  */
+		 /** @defgroup OneWire-FamilyCodes
+		  *  1-Wire device family codes.
+		  *  @{
+		  */
+		 /*@}*/
+	 /*@}*/
+	 
+	 /** @defgroup SCSI
 	  *  @{
 	  */
 	 /*@}*/
@@ -58,6 +67,17 @@
 	  *  USB HID class definitions.
 	  *  @{
 	  */
+		 /** @defgroup USB-HID-Keyboard
+		  *  USB HID keyboard definitions
+		  *  @{
+		  */
+		 /*@}*/
+		 
+		 /** @defgroup USB-HID-Mouse
+		  *  USB HID mouse definitions
+		  *  @{
+		  */
+		 /*@}*/
 	 /*@}*/
 	 
 	 /** @defgroup USB-MassStorage

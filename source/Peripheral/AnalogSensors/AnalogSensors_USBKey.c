@@ -29,3 +29,11 @@
  */
 
 #include "Peripheral/AnalogSensors/AnalogSensors_USBKey.h"
+
+/** @brief	NTC temperature codes. The temperature is calculated by the formula
+			Temperature = Index - 10
+			Configure the ADC for single ended measurement with Vcc / 1.6 V reference
+ */
+const uint16_t TemperatureCodes[] = {
+
+};

@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Joystick driver for AT90USBKey.
+ *  File info: Joystick driver for the AT90USBKey.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,8 +22,8 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Peripheral/Joystick/Joystick_USBKey.h
- *  @brief Joystick driver for AT90USBKey.
+/** @file Common/Board/Joystick/Joystick_USBKey.h
+ *  @brief Joystick driver for the AT90USBKey.
  *
  *  This contains the prototypes and definitions for the AT90USBKey joystick driver.
  *
@@ -71,5 +71,5 @@
 	 return (((uint8_t)~PORTB.IN & ((0x01 << 0x05) | (0x01 << 0x06) | (0x01 << 0x07))) | 
 			(((uint8_t)~PORTE.IN & ((0x01 << 0x04) | (0x01 << 0x05))) >> 0x01));
  }
- 
+
 #endif /* JOYSTICK_USBKEY_H_ */

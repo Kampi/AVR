@@ -34,15 +34,15 @@
 
 #include "USB/Core/USB_DeviceStdRequest.h"
 
-static uint8_t __Configuration;
-volatile USB_State_t __DeviceState;
+uint8_t _Configuration;
+volatile USB_State_t _DeviceState;
 
-USB_DeviceCallbacks_t __USBEvents;
-static USB_SetupPacket_t __ControlRequest;
+USB_DeviceCallbacks_t _USBEvents;
+static USB_SetupPacket_t _ControlRequest;
 
 void USBDevice_ControlRequest(void)
 {	
-	uint8_t* RequestHeader = (uint8_t*)&__ControlRequest;
+	uint8_t* RequestHeader = (uint8_t*)&_ControlRequest;
 	
 	// Get the SETUP packet
 	for(uint8_t i = 0x00; i < sizeof(USB_SetupPacket_t); i++)
@@ -54,7 +54,7 @@ void USBDevice_ControlRequest(void)
 	Endpoint_ClearSETUP();
 
 	// Handle the request
-	switch(__ControlRequest.bRequest)
+	switch(_ControlRequest.bRequest)
 	{
 		case REQUEST_GET_STATUS:
 		{
@@ -70,20 +70,20 @@ void USBDevice_ControlRequest(void)
 			uint16_t Status = 0x00;
 			
 			// Get the device status
-			if(__ControlRequest.bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE))
+			if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE))
 			{
 				// Check if remote wakeup and self powered is enabled
 			}
 			// Get the interface status
-			else if(__ControlRequest.bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_INTERFACE))
+			else if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_INTERFACE))
 			{
 				// Set status to zero
 			}
 			// Get the endpoint status
-			else if(__ControlRequest.bmRequestType & (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_ENDPOINT))
+			else if(_ControlRequest.bmRequestType & (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_ENDPOINT))
 			{
 				// Get the endpoint address
-				uint8_t Endpoint = ((uint8_t)__ControlRequest.wIndex & 0x0F);
+				uint8_t Endpoint = ((uint8_t)_ControlRequest.wIndex & 0x0F);
 
 				if(Endpoint >= MAX_ENDPOINTS)
 				{
@@ -103,7 +103,7 @@ void USBDevice_ControlRequest(void)
 			Endpoint_FlushIN();
 
 			// Process the STATUS stage
-			Endpoint_HandleSTATUS(__ControlRequest.bmRequestType);
+			Endpoint_HandleSTATUS(_ControlRequest.bmRequestType);
 
 			break;
 		}
@@ -123,7 +123,7 @@ void USBDevice_ControlRequest(void)
 			Endpoint_FlushIN();
 
 			// Process the STATUS stage
-			Endpoint_HandleSTATUS(__ControlRequest.bmRequestType);
+			Endpoint_HandleSTATUS(_ControlRequest.bmRequestType);
 			
 			break;
 		}
@@ -139,18 +139,18 @@ void USBDevice_ControlRequest(void)
 					- STATUS stage
 			*/
 
-			if(__ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE))
+			if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE))
 			{
 			}
-			else if(__ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_INTERFACE))
+			else if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_INTERFACE))
 			{
 			}
-			else if(__ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_ENDPOINT))
+			else if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_ENDPOINT))
 			{
-				if(__ControlRequest.wValue == REQUEST_FEATURE_ENDPOINT_HALT)
+				if(_ControlRequest.wValue == REQUEST_FEATURE_ENDPOINT_HALT)
 				{
 					// Select the endpoint and clear HALT
-					Endpoint_Select(__ControlRequest.wIndex);
+					Endpoint_Select(_ControlRequest.wIndex);
 					Endpoint_ClearSTALL();
 				}
 			}
@@ -159,7 +159,7 @@ void USBDevice_ControlRequest(void)
 			Endpoint_Select(ENDPOINT_CONTROL_ADDRESS);
 
 			// Process the STATUS stage
-			Endpoint_HandleSTATUS(__ControlRequest.bmRequestType);
+			Endpoint_HandleSTATUS(_ControlRequest.bmRequestType);
 
 			break;
 		}
@@ -171,19 +171,19 @@ void USBDevice_ControlRequest(void)
 					- STATUS stage
 			*/
 
-			if(__ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE))
+			if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE))
 			{
-				if(__ControlRequest.wValue == REQUEST_FEATURE_DEVICE_TEST)
+				if(_ControlRequest.wValue == REQUEST_FEATURE_DEVICE_TEST)
 				{
 					// Select test with __ControlRequest.wIndex
 				}
 			}
-			else if(__ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_INTERFACE))
+			else if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_INTERFACE))
 			{
 			}
-			else if(__ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_ENDPOINT))
+			else if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_ENDPOINT))
 			{
-				if(__ControlRequest.wValue == REQUEST_FEATURE_ENDPOINT_HALT)
+				if(_ControlRequest.wValue == REQUEST_FEATURE_ENDPOINT_HALT)
 				{
 					// Select the endpoint and set HALT
 				}
@@ -193,7 +193,7 @@ void USBDevice_ControlRequest(void)
 			Endpoint_Select(ENDPOINT_CONTROL_ADDRESS);
 
 			// Process the STATUS stage
-			Endpoint_HandleSTATUS(__ControlRequest.bmRequestType);
+			Endpoint_HandleSTATUS(_ControlRequest.bmRequestType);
 
 			break;
 		}
@@ -205,21 +205,21 @@ void USBDevice_ControlRequest(void)
 					- STATUS stage
 			*/
 
-			if(__ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE))
+			if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE))
 			{
 				// Get the new address from the host request (USB supports up to 127 devices)
-				uint8_t Address = (__ControlRequest.wValue & 0x7F);
+				uint8_t Address = (_ControlRequest.wValue & 0x7F);
 
 				// Save the address
 				USB_Device_SetAddress(Address);
 
 				// Process the STATUS stage
-				Endpoint_HandleSTATUS(__ControlRequest.bmRequestType);
+				Endpoint_HandleSTATUS(_ControlRequest.bmRequestType);
 
 				// Enable the new device address
 				USB_Device_EnableAddress();
 
-				__DeviceState = USB_STATE_ADDRESSED;
+				_DeviceState = USB_STATE_ADDRESSED;
 			}
 
 			break;
@@ -235,25 +235,25 @@ void USBDevice_ControlRequest(void)
 				The request has a data length of n byte with the descriptor data.
 			*/
 			
-			if(__ControlRequest.bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE))
+			if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE))
 			{
 				const void* Descriptor;
 				uint16_t DescriptorSize;
 
 				// Get the memory address of the requested descriptor
-				Descriptor = USB_GetDescriptor(__ControlRequest.wValue, __ControlRequest.wIndex, &DescriptorSize);
+				Descriptor = USB_GetDescriptor(_ControlRequest.wValue, _ControlRequest.wIndex, &DescriptorSize);
 				if((DescriptorSize == 0x00) || (Descriptor == NULL))
 				{
-					if(__USBEvents.Error != NULL)
+					if(_USBEvents.Error != NULL)
 					{
-						__USBEvents.Error();
+						_USBEvents.Error();
 					}
 
 					break;
 				}
 
 				// Transmit the descriptor
-				USB_DeviceStream_ControlIN(Descriptor, DescriptorSize, __ControlRequest.wLength);
+				USB_DeviceStream_ControlIN(Descriptor, DescriptorSize, _ControlRequest.wLength);
 			}
 
 			break;
@@ -266,15 +266,15 @@ void USBDevice_ControlRequest(void)
 					- STATUS stage
 			*/
 	
-			if(__ControlRequest.bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE))
+			if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE))
 			{
-				Endpoint_WriteByte(__Configuration);
+				Endpoint_WriteByte(_Configuration);
 
 				// Process the DATA stage
 				Endpoint_FlushIN();
 
 				// Process the STATUS stage
-				Endpoint_HandleSTATUS(__ControlRequest.bmRequestType);
+				Endpoint_HandleSTATUS(_ControlRequest.bmRequestType);
 			}
 
 			break;
@@ -287,36 +287,36 @@ void USBDevice_ControlRequest(void)
 					- STATUS stage
 			*/
 
-			if(__ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE))
+			if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE))
 			{
-				__Configuration = (uint8_t)__ControlRequest.wValue & 0xFF;
-				if(__Configuration > 0x00)
+				_Configuration = (uint8_t)_ControlRequest.wValue & 0xFF;
+				if(_Configuration > 0x00)
 				{
 					USB_DeviceDescriptor_t* Descriptor;
 
 					// Process the STATUS stage
-					Endpoint_HandleSTATUS(__ControlRequest.bmRequestType);
+					Endpoint_HandleSTATUS(_ControlRequest.bmRequestType);
 
 					// Check if the desired configuration exist
 					// NOTE: The configurations start with 1! Please check chapter 9.4.7 for additional information.
-					if((USB_GetDescriptor((DESCRIPTOR_TYPE_CONFIGURATION << 0x08) | (__Configuration - 0x01), __ControlRequest.wIndex, (void*)&Descriptor) == 0x00) && (__USBEvents.Error != NULL))
+					if((USB_GetDescriptor((DESCRIPTOR_TYPE_CONFIGURATION << 0x08) | (_Configuration - 0x01), _ControlRequest.wIndex, (void*)&Descriptor) == 0x00) && (_USBEvents.Error != NULL))
 					{
-						__USBEvents.Error();
+						_USBEvents.Error();
 					}
 					else
 					{
-						__DeviceState = USB_STATE_CONFIGURED;
+						_DeviceState = USB_STATE_CONFIGURED;
 
-						if(__USBEvents.ConfigurationChanged != NULL)
+						if(_USBEvents.ConfigurationChanged != NULL)
 						{
-							__USBEvents.ConfigurationChanged(__Configuration);
+							_USBEvents.ConfigurationChanged(_Configuration);
 						}
 					}
 				}
 				// Put the device back into addressed state when the configuration index is zero
 				else
 				{
-					__DeviceState = USB_STATE_ADDRESSED;
+					_DeviceState = USB_STATE_ADDRESSED;
 				}
 			}
 
@@ -324,8 +324,8 @@ void USBDevice_ControlRequest(void)
 		}
 	}
 
-	if(__USBEvents.ControlRequest != NULL)
+	if(_USBEvents.ControlRequest != NULL)
 	{
-		__USBEvents.ControlRequest(__ControlRequest.bRequest, __ControlRequest.bmRequestType, __ControlRequest.wValue);
+		_USBEvents.ControlRequest(_ControlRequest.bRequest, _ControlRequest.bmRequestType, _ControlRequest.wValue);
 	}
 }
