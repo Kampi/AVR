@@ -51,7 +51,7 @@
   */
  typedef struct
  {
-	 char ChunkID[4];					/**< Contains the letters chunk name in ASCII. */
+	 char ChunkID[4];					/**< Contains the chunk name in ASCII characters. */
 	 uint32_t ChunkSize;				/**< Size of the current chunk or the file size in the RIFF header. */
  } __attribute__((packed)) Wave_Header_t;
 
