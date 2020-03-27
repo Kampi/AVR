@@ -31,7 +31,7 @@
 #ifndef RINGBUFFER_H_
 #define RINGBUFFER_H_
 
- #include "Common/Common.h"
+ #include <stdint.h>
 
  /** @brief Ring buffer object definition.
   */
