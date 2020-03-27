@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for simple joysticks.
+ *  File info: Driver for simple four axis joysticks.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Peripheral/Joystick.h
- *  @brief Driver for simple joysticks.
+ *  @brief Driver for simple four axis joysticks.
  *
  *  This contains the prototypes and definitions for the joystick driver.
  *
@@ -34,14 +34,13 @@
 #ifndef JOYSTICK_H_
 #define JOYSTICK_H_
 
- #include "Definitions.h"
  #include "Common/Common.h"
 
  #if(BOARD == BOARD_NONE)
 	 typedef Joystick_Action_t uint8_t;
-	 
+
 	 static inline void Joystick_Init(void) {}
-	 static inline Joystick_Action_t Joystick_GetStatus(void) { return 0; }
+	 static inline Joystick_Action_t Joystick_GetStatus(void) { return 0x00; }
 
  #elif(BOARD == BOARD_AT90USBKEY)
 	 #include "Common/Board/Joystick/Joystick_USBKey.h"

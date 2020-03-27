@@ -26,7 +26,7 @@
  *  @brief Bootloader example for XMega.
  *
  *  Software for the XMega bootloader example from
- *  <>
+ *  https://www.kampis-elektroecke.de/2020/03/xmega-bootloader
  *
  *  @author Daniel Kampert
  */
@@ -38,19 +38,18 @@ int main(void)
 	// Initialize the bootloader
 	Bootloader_Init();
 
-	// Enter the bootloader mode and wait for a programm
+	// Enter the bootloader mode and wait for a program
 	if(Bootloader_Enter() == TRUE)
 	{
 		Bootloader_Exit();
 	}
 	else
 	{
-		
 	}
 	
-    while(1)
-    {
-    }
-	
+	while(1)
+	{
+	}
+
 	return 0;
 }

@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for the VL53L0XV2 Time-of-Flight Range Sensor.
+ *  File info: Sensor data for XPlainedA3BU development board.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Peripheral/AnalogSensors/AnalogSensors_XPlainedA3.c
- *  @brief Sensor data for XPlainedA3 development board.
+ *  @brief Sensor data for XPlainedA3BU development board.
  *
  *  @author Daniel Kampert
  */

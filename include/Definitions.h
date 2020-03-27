@@ -41,6 +41,8 @@
 	#define INTERFACE_SPI										2		/**< SPI interface */
 	#define INTERFACE_I2C										3		/**< I2C interface */
 	#define INTERFACE_USART										4		/**< USART interface */
+	#define INTERFACE_USB										5		/**< USB interface */
+	#define INTERFACE_GPIO										6		/**< GPIO interface */
  /** @} */ // end of Interfaces
 
  /** @defgroup Board
@@ -82,6 +84,16 @@
 	#define MCU_ARCH_UC3										3		/**< AVR UC3 architecture */
  /** @} */ // end of Architecture
 
+ /** @defgroup Family
+  *  @ingroup Configuration
+  *  AVR8 family definitions for the AVR library.
+  *  @{
+  */
+	#define MCU_FAMILY_UNKNOWN									0		/**< Unknown MCU family */
+	#define MCU_FAMILY_MEGA										1		/**< AVR Mega MCU family */
+	#define MCU_FAMILY_TINY0									2		/**< AVR Tiny0 MCU family */
+ /** @} */ // end of Family
+
  /** @defgroup Flashmemory
   *  @ingroup Configuration
   *  Flash memory definitions for the AVR library.
@@ -89,7 +101,16 @@
   */
 	#define FLASH_UNKNOWN										0		/**< Unknown flash */
 	#define FLASH_AT45DB642D									1		/**< Atmel AT45DB642D flash memory */ 
- /** @} */ // end of Architecture
+ /** @} */ // end of Flashmemory
+
+ /** @defgroup HexFormats
+  *  @ingroup Configuration
+  *  Hex-File format definitions for the AVR bootloader.
+  *  @{
+  */
+	#define HEX_FORMAT_UNKNOWN									0		/**< Unknown Hex-File format */
+	#define HEX_FORMAT_INTEL									1		/**< Intel Hex-File format */ 
+ /** @} */ // end of HexFormats
 
  #include "Doxygen.h"
  #include "Macros.h"

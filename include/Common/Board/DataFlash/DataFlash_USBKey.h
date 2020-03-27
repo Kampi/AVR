@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Data flash memory definitions for the AT90USBKey development board.
+ *  File info: Data flash driver for the AT90USBKey.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Common/Board/DataFlash/DataFlash_USBKey.h
- *  @brief Data flash memory definitions for the AT90USBKey development board.
+ *  @brief Data flash driver for the AT90USBKey.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs
@@ -31,17 +31,6 @@
 
 #ifndef DATAFLASH_USBKEY_H_
 #define DATAFLASH_USBKEY_H_
-
- /*
-	Architecture specific definitions
- */
- #if(MCU_ARCH == MCU_ARCH_XMEGA)
-	#include "Arch/XMega/GPIO/GPIO.h"
- #elif(MCU_ARCH == MCU_ARCH_AVR8)
-	#include "Arch/AVR8/GPIO/GPIO.h"
- #else
-	 #error "Architecture not supported"
- #endif
 
  #define DATAFLASH_COUNT						2
  

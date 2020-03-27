@@ -41,8 +41,12 @@
  #else
 	 #error "Bootloader interface not supported!"
  #endif 
- 
- #include "Parser/IntelHexParser.h"
+
+ #if(BOOTLOADER_FILE_FORMAT == HEX_FORMAT_INTEL)
+	 #include "Parser/IntelHexParser.h"
+ #else
+	 #error "File format not supported by bootloader!"
+ #endif
 
  /*
 	Function prototypes used by the bootloader.
