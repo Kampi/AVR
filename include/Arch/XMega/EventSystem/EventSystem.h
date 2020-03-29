@@ -132,8 +132,8 @@
  /** @brief			Lock the event system.
   *  @param Lock	Enable/Disable the lock
   */
- static inline void Event_SwitchLock(const Bool_t Lock) __attribute__ ((always_inline));
- static inline void Event_SwitchLock(const Bool_t Lock)
+ static inline void Event_SwitchLock(const bool Lock) __attribute__ ((always_inline));
+ static inline void Event_SwitchLock(const bool Lock)
  {
 	 uint8_t Flags = CPU_IRQSave();
 

@@ -106,17 +106,17 @@
  }
 
  /** @brief		Return the state of the USB connection.
-  *  @return	#TRUE if the device is connected with VBUS.
+  *  @return	#true if the device is connected with VBUS.
   */
- static inline Bool_t USB_Controller_CheckVBUS(void) __attribute__ ((always_inline));
- static inline Bool_t USB_Controller_CheckVBUS(void)
+ static inline bool USB_Controller_CheckVBUS(void) __attribute__ ((always_inline));
+ static inline bool USB_Controller_CheckVBUS(void)
  {
 	 if(USBSTA & (0x01 << VBUS))
 	 {
-		 return TRUE;
+		 return true;
 	 }
 	 
-	 return FALSE;
+	 return false;
  }
 
  /** @brief	Reset the USB controller.

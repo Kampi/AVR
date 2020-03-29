@@ -43,7 +43,7 @@ static RingBuffer_t USART_RxBuffer[USART_DEVICES];
 static RingBuffer_t USART_TxBuffer[USART_DEVICES];
 
 #ifndef DOXYGEN
-	static Bool_t USART_Echo;
+	static bool USART_Echo;
 
 	struct
 	{
@@ -93,7 +93,7 @@ static inline void USART_InterruptHandler(const uint8_t Device, const USART_Call
 		uint8_t ReceivedByte = UDR;
 
 		// Echo message if enabled
-		if(USART_Echo == TRUE)
+		if(USART_Echo == true)
 		{
 			UDR = ReceivedByte;
 		}
@@ -243,19 +243,19 @@ void USART_WriteDecimal(const uint32_t Number)
 	USART_Write(Buffer);
 }
 
-void USART_SwitchEcho(const Bool_t Enable)
+void USART_SwitchEcho(const bool Enable)
 {
-	if(Enable == TRUE)
+	if(Enable == true)
 	{
-		USART_Echo = TRUE;
+		USART_Echo = true;
 	}
 	else
 	{
-		USART_Echo = FALSE;
+		USART_Echo = false;
 	}
 }
 
-void USART_SetBaudrate(const uint32_t Baudrate, const uint32_t Clock, const Bool_t DoubleSpeed)
+void USART_SetBaudrate(const uint32_t Baudrate, const uint32_t Clock, const bool DoubleSpeed)
 {
 	uint16_t BaudValue = ((Clock << DoubleSpeed) / (Baudrate << 0x04)) - 0x01;
 

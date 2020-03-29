@@ -157,9 +157,9 @@
 	 USART_Stop_t Stop;							/**< Stop bit settings */
 	 USART_Size_t Size;							/**< Data bit settings */
 	 int8_t BSCALE;								/**< BSCALE value for baud rate */
-	 Bool_t EnableDoubleSpeed;					/**< Set #TRUE to enable double speed */
-	 Bool_t EnableInterruptSupport;				/**< Set to #TRUE to enable interrupt support */
-	 Bool_t EnableEcho;							/**< Set to #TRUE to enable the USART echo \n
+	 bool EnableDoubleSpeed;					/**< Set #true to enable double speed */
+	 bool EnableInterruptSupport;				/**< Set to #true to enable interrupt support */
+	 bool EnableEcho;							/**< Set to #true to enable the USART echo \n
 													 NOTE: You have to call #USART_EnableInterruptSupport first! */
 	 Interrupt_Level_t InterruptLevel;			/**< Interrupt level for interrupt support \n
 													 NOTE: Only needed if you use interrupt driven transmissions. */
@@ -363,7 +363,7 @@
   *  @param Device	Pointer to USART object
   *  @param Enable	Enable/Disable the echo
   */
- void USART_SwitchEcho(USART_t* Device, const Bool_t Enable);
+ void USART_SwitchEcho(USART_t* Device, const bool Enable);
  
  /** @brief				Set the baud rate of a USART interface.
   *  @param Device		Pointer to USART object
@@ -372,7 +372,7 @@
   *  @param BSCALE		BSCALE value
   *  @param DoubleSpeed	Enabled/Disable double speed
   */
- void USART_SetBaudrate(USART_t* Device, const uint32_t Baudrate, const uint32_t Clock, const int8_t BSCALE, const Bool_t DoubleSpeed);
+ void USART_SetBaudrate(USART_t* Device, const uint32_t Baudrate, const uint32_t Clock, const int8_t BSCALE, const bool DoubleSpeed);
 
  /** @brief			Enable interrupt support for USART operations.
   *  @param Device	Pointer to USART object
@@ -459,9 +459,9 @@
   *  @param Device		Pointer to USART object
   *  @param Baudrate	Clock rate
   *  @param Clock		Clock frequency for USART-SPI module
-  *  @param DoubleSpeed	Set to #TRUE to enable double speed
+  *  @param DoubleSpeed	Set to #true to enable double speed
   */
- void USART_SPI_SetClockRate(USART_t* Device, const uint32_t Baudrate, const uint32_t Clock, const Bool_t DoubleSpeed);
+ void USART_SPI_SetClockRate(USART_t* Device, const uint32_t Baudrate, const uint32_t Clock, const bool DoubleSpeed);
  
  /** @brief				Get the clock rate for the USART-SPI interface.
   *  @param Device		Pointer to USART object

@@ -103,7 +103,7 @@ const I2C_Error_t BMP180_Init(I2CM_Config_t* Config)
 	}
 
 	// Read the ID register
-	ErrorCode = BMP180_I2CM_WRITEBYTE(Data[0], FALSE) | BMP180_I2CM_READBYTE(&Data[1], TRUE);
+	ErrorCode = BMP180_I2CM_WRITEBYTE(Data[0], false) | BMP180_I2CM_READBYTE(&Data[1], true);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -127,7 +127,7 @@ const I2C_Error_t BMP180_Init(I2CM_Config_t* Config)
 const I2C_Error_t BMP180_Reset(void)
 {
 	uint8_t Data[2] = {BMP180_REGISTER_RESET, BMP180_CMD_RESET};
-	I2C_Error_t ErrorCode = BMP180_I2CM_WRITEBYTES(sizeof(Data), Data, TRUE);
+	I2C_Error_t ErrorCode = BMP180_I2CM_WRITEBYTES(sizeof(Data), Data, true);
 
 	// Wait some time
 	for(uint8_t i = 0x00; i < 0xFF; i++);
@@ -144,7 +144,7 @@ const I2C_Error_t BMP180_ReadCalibration(BMP180_CalibCoef_t* CalibCoef)
 		return I2C_INVALID_PARAM;
 	}
 
-	ErrorCode = BMP180_I2CM_WRITEBYTE(BMP180_REGISTER_AC1, FALSE) | BMP180_I2CM_READBYTES(22, (uint8_t*)CalibCoef, TRUE);
+	ErrorCode = BMP180_I2CM_WRITEBYTE(BMP180_REGISTER_AC1, false) | BMP180_I2CM_READBYTES(22, (uint8_t*)CalibCoef, true);
 
 	#if(defined(MCU_LITTLE_ENDIAN))
 		// Flip the bytes, because the sensor stores the data in big endian format
@@ -171,7 +171,7 @@ const I2C_Error_t BMP180_MeasureTemperature(BMP180_DataPoint_t* DataPoint)
 
 	// Start the temperature measurement
 	Data[1] = BMP180_CMD_TEMP_MEAS;
-	ErrorCode = BMP180_I2CM_WRITEBYTES(2, Data, TRUE);
+	ErrorCode = BMP180_I2CM_WRITEBYTES(2, Data, true);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -180,7 +180,7 @@ const I2C_Error_t BMP180_MeasureTemperature(BMP180_DataPoint_t* DataPoint)
 	// Wait for measurement end
 	do 
 	{
-		ErrorCode = BMP180_I2CM_WRITEBYTE(Data[0], FALSE) | BMP180_I2CM_READBYTE(&Data[1], TRUE);
+		ErrorCode = BMP180_I2CM_WRITEBYTE(Data[0], false) | BMP180_I2CM_READBYTE(&Data[1], true);
 		if(ErrorCode != I2C_NO_ERROR)
 		{
 			return ErrorCode;
@@ -188,7 +188,7 @@ const I2C_Error_t BMP180_MeasureTemperature(BMP180_DataPoint_t* DataPoint)
 	} while(Data[1] & (0x01 << BMP180_START_CONV));
 	
 	// Read the temperature
-	ErrorCode = BMP180_I2CM_WRITEBYTE(BMP180_REGISTER_OUT_MSB, FALSE) | BMP180_I2CM_READBYTES(sizeof(Data), Data, TRUE);
+	ErrorCode = BMP180_I2CM_WRITEBYTE(BMP180_REGISTER_OUT_MSB, false) | BMP180_I2CM_READBYTES(sizeof(Data), Data, true);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -211,7 +211,7 @@ const I2C_Error_t BMP180_MeasurePressure(const BMP180_OSS_t OSS, BMP180_DataPoin
 
 	// Start the temperature measurement
 	Data[1] = BMP180_CMD_PRES_MEAS + (OSS << 0x06);
-	ErrorCode = BMP180_I2CM_WRITEBYTES(2, Data, TRUE);
+	ErrorCode = BMP180_I2CM_WRITEBYTES(2, Data, true);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -220,7 +220,7 @@ const I2C_Error_t BMP180_MeasurePressure(const BMP180_OSS_t OSS, BMP180_DataPoin
 	// Wait for measurement end
 	do 
 	{
-		ErrorCode = BMP180_I2CM_WRITEBYTE(Data[0], FALSE) | BMP180_I2CM_READBYTE(&Data[1], TRUE);
+		ErrorCode = BMP180_I2CM_WRITEBYTE(Data[0], false) | BMP180_I2CM_READBYTE(&Data[1], true);
 		if(ErrorCode != I2C_NO_ERROR)
 		{
 			return ErrorCode;
@@ -228,7 +228,7 @@ const I2C_Error_t BMP180_MeasurePressure(const BMP180_OSS_t OSS, BMP180_DataPoin
 	} while(Data[1] & (0x01 << BMP180_START_CONV));
 	
 	// Read the temperature
-	ErrorCode = BMP180_I2CM_WRITEBYTE(BMP180_REGISTER_OUT_MSB, FALSE) | BMP180_I2CM_READBYTES(sizeof(Data), Data, TRUE);
+	ErrorCode = BMP180_I2CM_WRITEBYTE(BMP180_REGISTER_OUT_MSB, false) | BMP180_I2CM_READBYTES(sizeof(Data), Data, true);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;

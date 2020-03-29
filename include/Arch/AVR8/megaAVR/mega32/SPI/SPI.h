@@ -132,7 +132,7 @@
  {
 	 SPI_Mode_t Mode;												/**< SPI mode */
 	 SPI_DataOrder_t DataOrder;										/**< Data order */
-	 Bool_t EnableDoubleSpeed;										/**< Set #TRUE to enable double speed */
+	 bool EnableDoubleSpeed;										/**< Set #true to enable double speed */
 	 SPI_ClockPrescaler_t Prescaler;								/**< Clock prescaler for SPI module 
 																		 NOTE: You only need this when you use the SPI interface. */
  } SPIM_Config_t;

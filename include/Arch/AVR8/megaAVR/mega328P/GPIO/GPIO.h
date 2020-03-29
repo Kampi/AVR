@@ -176,8 +176,8 @@
   *  @param Pin		Pin number
   *  @return		I/O state
   */
- static inline Bool_t GPIO_Read(PORT_t* Port, const uint8_t Pin) __attribute__ ((always_inline));
- static inline Bool_t GPIO_Read(PORT_t* Port, const uint8_t Pin)
+ static inline bool GPIO_Read(PORT_t* Port, const uint8_t Pin) __attribute__ ((always_inline));
+ static inline bool GPIO_Read(PORT_t* Port, const uint8_t Pin)
  {
 	 return (Port->IN & (0x01 << Pin)) >> Pin;
  }

@@ -57,9 +57,9 @@
  void Bootloader_Init(void);
  
  /** @brief		Enter the bootloader mode and process the input.
-  *  @return	#TRUE when successfully
+  *  @return	#true when successfully
   */
- Bool_t Bootloader_Enter(void);
+ bool Bootloader_Enter(void);
  
  /** @brief	Leave the bootloader and jump to the main application.
   */

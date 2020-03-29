@@ -244,10 +244,10 @@
  typedef void (*SD_Callback_t)(const SD_State_t State);
 
  /** @brief		Check if a card is available.
-  *  @return	#TRUE if a card is available
+  *  @return	#true if a card is available
   */
- static inline Bool_t SD_CheckForCard(void) __attribute__ ((always_inline));
- static inline Bool_t SD_CheckForCard(void)
+ static inline bool SD_CheckForCard(void) __attribute__ ((always_inline));
+ static inline bool SD_CheckForCard(void)
  {
 	 return GPIO_Read(&FIRST_ARG(SD_SWA), SECOND_ARG(SD_SWA));
  }

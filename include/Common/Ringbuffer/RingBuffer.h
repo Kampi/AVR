@@ -99,20 +99,20 @@
 
  /** @brief			Check if the buffer is empty.
   *  @param Buffer	Pointer to ring buffer object
-  *  @return		#TRUE if the buffer is full
+  *  @return		#true if the buffer is full
   */
- static inline Bool_t RingBuffer_IsEmpty(const RingBuffer_t* Buffer) __attribute__ ((always_inline));
- static inline Bool_t RingBuffer_IsEmpty(const RingBuffer_t* Buffer)
+ static inline bool RingBuffer_IsEmpty(const RingBuffer_t* Buffer) __attribute__ ((always_inline));
+ static inline bool RingBuffer_IsEmpty(const RingBuffer_t* Buffer)
  {
 	 return (Buffer->ByteCount == 0);
  }
 
  /** @brief			Check if the buffer is full.
   *  @param Buffer	Pointer to ring buffer object
-  *  @return		#TRUE if the buffer is full
+  *  @return		#true if the buffer is full
   */
- static inline Bool_t RingBuffer_IsFull(const RingBuffer_t* Buffer) __attribute__ ((always_inline));
- static inline Bool_t RingBuffer_IsFull(const RingBuffer_t* Buffer)
+ static inline bool RingBuffer_IsFull(const RingBuffer_t* Buffer) __attribute__ ((always_inline));
+ static inline bool RingBuffer_IsFull(const RingBuffer_t* Buffer)
  {
 	 return (Buffer->ByteCount == Buffer->Size);
  }

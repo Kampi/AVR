@@ -60,12 +60,12 @@ static uint16_t _Baud9600 = 1111;
  *  @param Data	Data byte
  *  @return		Answer from device
  */
-static Bool_t USART_OneWire_ReadWrite(const uint8_t Data)
+static bool USART_OneWire_ReadWrite(const uint8_t Data)
 {
 	USART0.TXDATAL = Data;
 	while(!(USART0.STATUS & USART_RXCIF_bm));
 	
-	return (Bool_t)USART0.RXDATAL;
+	return (bool)USART0.RXDATAL;
 }
 
 void USART_OneWire_Init(void)
@@ -86,7 +86,7 @@ void USART_OneWire_Init(void)
 	USART0.BAUD = _Baud115200;
 }
 
-void USART_OneWire_WriteBit(const Bool_t Bit)
+void USART_OneWire_WriteBit(const bool Bit)
 {
 	if(Bit)
 	{
@@ -103,9 +103,9 @@ uint8_t USART_OneWire_ReadBit(void)
 	return (USART_OneWire_ReadWrite(USART_ONEWIRE_READ) == USART_ONEWIRE_READ);
 }
 
-Bool_t USART_OneWire_Reset(void)
+bool USART_OneWire_Reset(void)
 {
-	Bool_t Presence = FALSE;
+	bool Presence = false;
 
 	USART0.CTRLB &= ~(USART_RXEN_bm);
 	USART0.CTRLB |= (USART_RXEN_bm);

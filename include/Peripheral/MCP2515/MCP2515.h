@@ -208,8 +208,8 @@
  {
 	 MCP2515_SJW_t SJW;									/**< Synchronization jump width length */
 	 uint8_t Prescaler;									/**< Baud rate prescaler */
-	 Bool_t EnableTrippeSample;							/**< Set to #TRUE to sample the bus line three times at the same point */
-	 Bool_t PS2UseCNF3;									/**< Set to #TRUE to use #PHSEG2 for the length of PS2. Otherwise use PS1 and IPT */
+	 bool EnableTrippeSample;							/**< Set to #true to sample the bus line three times at the same point */
+	 bool PS2UseCNF3;									/**< Set to #true to use #PHSEG2 for the length of PS2. Otherwise use PS1 and IPT */
 	 uint8_t PHSEG1;									/**< PS1 Length */
 	 uint8_t PHSEG2;									/**< PS2 Length */
 	 uint8_t PRSEG;										/**< Propagation Segment Length */
@@ -224,7 +224,7 @@
 	uint16_t Mask;										/**< Filter mask */
 	uint16_t ID;										/**< Filter ID \n
 															  NOTE: Set it to zero when you only want to set the mask. */
-	Bool_t UseExtended;									/**< Set this to #TRUE if you want to use extended frames */ 
+	bool UseExtended;									/**< Set this to #true if you want to use extended frames */ 
  } MCP2515_FilterConfig_t;
 
  /**
@@ -243,10 +243,10 @@
 
 	 MCP2515_TimingConfig_t* pTiming;					/**< Pointer to optional CAN timing configuration \n
 															 NOTE: Set to #NULL when you don´t want to use it. */
-	 Bool_t EnableOneShot;								/**< Set to #TRUE to enable one shot mode */
-	 Bool_t EnableLoopBack;								/**< Set to #TRUE to enable loop back mode */
-	 Bool_t EnableRollover;								/**< Set to #TRUE to enable rollover mode for receive buffer 0 */
-	 Bool_t EnableWakeUpFilter;							/**< Set to #TRUE to enable the Wake-up filter */
+	 bool EnableOneShot;								/**< Set to #true to enable one shot mode */
+	 bool EnableLoopBack;								/**< Set to #true to enable loop back mode */
+	 bool EnableRollover;								/**< Set to #true to enable rollover mode for receive buffer 0 */
+	 bool EnableWakeUpFilter;							/**< Set to #true to enable the Wake-up filter */
 	 MCP2515_ErrorCallback_t ErrorCallback;				/**< Function pointer to MCP2515 error callback \n
 															 NOTE: Set it to #NULL if you do not want to use it. */
 	 MCP2515_Callback_t RxCallback;						/**< Function pointer to MCP2515 message received callback \n

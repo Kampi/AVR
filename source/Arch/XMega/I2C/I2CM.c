@@ -62,10 +62,10 @@ static inline void I2CM_SendData(TWI_t* Device, const uint8_t Data)
 
 /** @brief			Write a stop condition in master mode.
  *  @param Device	Pointer to TWI device object
- *  @param NACK		#TRUE if NACK should generated
+ *  @param NACK		#true if NACK should generated
  */
-static inline void I2CM_SendStop(TWI_t* Device, const Bool_t NACK) __attribute__((always_inline));
-static inline void I2CM_SendStop(TWI_t* Device, const Bool_t NACK)
+static inline void I2CM_SendStop(TWI_t* Device, const bool NACK) __attribute__((always_inline));
+static inline void I2CM_SendStop(TWI_t* Device, const bool NACK)
 {
 	if(NACK)
 	{
@@ -79,10 +79,10 @@ static inline void I2CM_SendStop(TWI_t* Device, const Bool_t NACK)
 
 /** @brief			Get a data byte in master mode from the bus.
  *  @param Device	Pointer to TWI object
- *  @param NACK		#TRUE if NACK should generated
+ *  @param NACK		#true if NACK should generated
  *  @return			Data byte
  */
-static uint8_t I2CM_ReadData(TWI_t* Device, const Bool_t NACK)
+static uint8_t I2CM_ReadData(TWI_t* Device, const bool NACK)
 {
 	uint8_t Data = 0x00;
 	
@@ -109,7 +109,7 @@ void I2CM_Init(I2CM_Config_t* Config)
 	
 	I2CM_Reset(Config->Device);
 	
-	if(Config->EnableInterruptSupport == TRUE)
+	if(Config->EnableInterruptSupport == true)
 	{
 		I2CM_EnableInterruptSupport(Config->Device, Config->InterruptLevel);
 	}
@@ -131,7 +131,7 @@ const I2C_MasterStatus_t I2CM_Status(const TWI_t* Device)
 	return _I2CM_Messages[ID].Status;
 }
 
-I2C_Error_t I2CM_WriteByte(TWI_t* Device, const uint8_t Address, const uint8_t Data, const Bool_t Stop)
+I2C_Error_t I2CM_WriteByte(TWI_t* Device, const uint8_t Address, const uint8_t Data, const bool Stop)
 {
 	I2CM_SendAddress(Device, I2C_WRITE(Address));
 	if(I2CM_ReadStatus(Device) & TWI_MASTER_BUSERR_bm)
@@ -142,20 +142,20 @@ I2C_Error_t I2CM_WriteByte(TWI_t* Device, const uint8_t Address, const uint8_t D
 	I2CM_SendData(Device, Data);
 	if(I2CM_ReadStatus(Device) & (TWI_MASTER_BUSERR_bm | TWI_MASTER_RXACK_bm | TWI_MASTER_ARBLOST_bm))
 	{
-		I2CM_SendStop(Device, FALSE);
+		I2CM_SendStop(Device, false);
 
 		return I2C_BUS_ERROR;
 	}
 	
-	if(Stop == TRUE)
+	if(Stop == true)
 	{
-		I2CM_SendStop(Device, FALSE);
+		I2CM_SendStop(Device, false);
 	}
 	
 	return I2C_NO_ERROR;
 }
 
-I2C_Error_t I2CM_WriteBytes(TWI_t* Device, const uint8_t Address, const uint8_t Length, const uint8_t* Data, const Bool_t Stop)
+I2C_Error_t I2CM_WriteBytes(TWI_t* Device, const uint8_t Address, const uint8_t Length, const uint8_t* Data, const bool Stop)
 {
 	I2CM_SendAddress(Device, I2C_WRITE(Address));
 	if(I2CM_ReadStatus(Device) & TWI_MASTER_BUSERR_bm)
@@ -168,21 +168,21 @@ I2C_Error_t I2CM_WriteBytes(TWI_t* Device, const uint8_t Address, const uint8_t 
 		I2CM_SendData(Device, *Data++);
 		if(I2CM_ReadStatus(Device) & (TWI_MASTER_BUSERR_bm | TWI_MASTER_RXACK_bm | TWI_MASTER_ARBLOST_bm))
 		{
-			I2CM_SendStop(Device, FALSE);
+			I2CM_SendStop(Device, false);
 
 			return I2C_BUS_ERROR;
 		}
 	}
 
-	if(Stop == TRUE)
+	if(Stop == true)
 	{
-		I2CM_SendStop(Device, FALSE);
+		I2CM_SendStop(Device, false);
 	}
 
 	return I2C_NO_ERROR;
 }
 
-I2C_Error_t I2CM_ReadByte(TWI_t* Device, const uint8_t Address, uint8_t* Data, const Bool_t Stop)
+I2C_Error_t I2CM_ReadByte(TWI_t* Device, const uint8_t Address, uint8_t* Data, const bool Stop)
 {
 	I2CM_SendAddress(Device, I2C_READ(Address));
 	if(I2CM_ReadStatus(Device) & TWI_MASTER_BUSERR_bm)
@@ -190,17 +190,17 @@ I2C_Error_t I2CM_ReadByte(TWI_t* Device, const uint8_t Address, uint8_t* Data, c
 		return I2C_READ_ADDR_ERROR;
 	}
 	
-	*Data = I2CM_ReadData(Device, TRUE);
+	*Data = I2CM_ReadData(Device, true);
 	
-	if(Stop == TRUE)
+	if(Stop == true)
 	{
-		I2CM_SendStop(Device, TRUE);
+		I2CM_SendStop(Device, true);
 	}
 	
 	return I2C_NO_ERROR;
 }
 
-I2C_Error_t I2CM_ReadBytes(TWI_t* Device, const uint8_t Address, const uint8_t Length, uint8_t* Data, const Bool_t Stop)
+I2C_Error_t I2CM_ReadBytes(TWI_t* Device, const uint8_t Address, const uint8_t Length, uint8_t* Data, const bool Stop)
 {
 	I2CM_SendAddress(Device, I2C_READ(Address));
 	if(I2CM_ReadStatus(Device) & TWI_MASTER_BUSERR_bm)
@@ -210,20 +210,20 @@ I2C_Error_t I2CM_ReadBytes(TWI_t* Device, const uint8_t Address, const uint8_t L
 	
 	for(uint8_t i = 0x00; i < (Length - 1); i++)
 	{
-		*Data++ = I2CM_ReadData(Device, FALSE);
+		*Data++ = I2CM_ReadData(Device, false);
 		if(I2CM_ReadStatus(Device) & TWI_MASTER_BUSERR_bm)
 		{
-			I2CM_SendStop(Device, TRUE);
+			I2CM_SendStop(Device, true);
 
 			return I2C_BUS_ERROR;
 		}
 	}
 	
-	*Data++ = I2CM_ReadData(Device, TRUE);
+	*Data++ = I2CM_ReadData(Device, true);
 	
-	if(Stop == TRUE)
+	if(Stop == true)
 	{
-		I2CM_SendStop(Device, TRUE);
+		I2CM_SendStop(Device, true);
 	}
 	
 	return I2C_NO_ERROR;

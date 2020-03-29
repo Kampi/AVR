@@ -109,12 +109,12 @@
  /** @brief			Enable/Disable the display controller.
   *  @param Enable	Enable/Disable
   */
- void Display_SwitchDisplay(const Bool_t Enable);
+ void Display_SwitchDisplay(const bool Enable);
 
  /** @brief			Enable/Disable the invert mode of the display controller.
   *  @param Enable	Enable/Disable
   */
- void Display_SwitchInvert(const Bool_t Enable);
+ void Display_SwitchInvert(const bool Enable);
 
  /** @brief				Set the contrast of the display controller.
   *  @param Contrast	Contrast value

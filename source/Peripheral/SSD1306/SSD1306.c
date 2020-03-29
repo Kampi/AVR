@@ -203,9 +203,9 @@ void Display_Reset(void)
 	GPIO_Set(GET_PERIPHERAL(SSD1306_DATA), GET_INDEX(SSD1306_DATA));
 }
 
-void Display_SwitchDisplay(const Bool_t Enable)
+void Display_SwitchDisplay(const bool Enable)
 {
-	if(Enable == TRUE)
+	if(Enable == true)
 	{
 		SSD1306_WriteCommand(SSD1306_CMD_DISPLAY_ON);
 	}
@@ -215,9 +215,9 @@ void Display_SwitchDisplay(const Bool_t Enable)
 	}
 }
 
-void Display_SwitchInvert(const Bool_t Enable)
+void Display_SwitchInvert(const bool Enable)
 {
-	if(Enable == TRUE)
+	if(Enable == true)
 	{
 		SSD1306_WriteCommand(SSD1306_CMD_INVERT_ON);
 	}

@@ -142,9 +142,9 @@
 	USART_Stop_t Stop;							/**< Stop bit settings */
 	USART_Size_t Size;							/**< Data bit settings */
 	USART_Polarity_t ClockPolarity;				/**< Clock polarity. Only needed in synchronous mode */
-	Bool_t EnableDoubleSpeed;					/**< Set #TRUE to enable double speed */
-	Bool_t EnableInterruptSupport;				/**< Set to #TRUE to enable interrupt support */
-	Bool_t EnableEcho;							/**< Set to #TRUE to enable the USART echo */
+	bool EnableDoubleSpeed;					/**< Set #true to enable double speed */
+	bool EnableInterruptSupport;				/**< Set to #true to enable interrupt support */
+	bool EnableEcho;							/**< Set to #true to enable the USART echo */
  } USART_Config_t;
 
  /** @brief				Set the direction of the USART interface.
@@ -234,13 +234,13 @@
  /** @brief			Enable/Disable the USART echo.
   *  @param Enable	Enable/Disable the echo
   */
- void USART_SwitchEcho(const Bool_t Enable);
+ void USART_SwitchEcho(const bool Enable);
  
  /** @brief				Set the baud rate of a USART interface.
   *  @param Baudrate	Baudrate for the interface
   *  @param Clock		USART module clock
   *  @param DoubleSpeed	Double speed enabled/disabled
   */
- void USART_SetBaudrate(const uint32_t BaudRate, const uint32_t Clock, const Bool_t DoubleSpeed);
+ void USART_SetBaudrate(const uint32_t BaudRate, const uint32_t Clock, const bool DoubleSpeed);
 
 #endif /* USART_H_ */

@@ -143,7 +143,7 @@
 																	 NOTE: You only need this when you use the USART-SPI interface. */
 	 SPI_Mode_t Mode;											/**< SPI mode */
 	 SPI_DataOrder_t DataOrder;									/**< Data order */
-	 Bool_t EnableDoubleSpeed;									/**< Set #TRUE to enable double speed */
+	 bool EnableDoubleSpeed;									/**< Set #true to enable double speed */
 	 SPI_ClockPrescaler_t Prescaler;							/**< Clock prescaler for SPI module 
 																	 NOTE: You only need this when you use the SPI interface. */
  } SPIM_Config_t;
@@ -279,8 +279,8 @@
   *  @param Device	Pointer to SPI device object
   *  @param Enable	Enable/Disable double speed
   */
- static inline void SPIM_SwitchDoubleSpeed(SPI_t* Device, const Bool_t Enable) __attribute__((always_inline));
- static inline void SPIM_SwitchDoubleSpeed(SPI_t* Device, const Bool_t Enable)
+ static inline void SPIM_SwitchDoubleSpeed(SPI_t* Device, const bool Enable) __attribute__((always_inline));
+ static inline void SPIM_SwitchDoubleSpeed(SPI_t* Device, const bool Enable)
  {
 	 if(Enable)
 	 {
@@ -302,7 +302,7 @@
  {
 	 if((Prescaler == SPI_PRESCALER_2) || (Prescaler == SPI_PRESCALER_8) || (Prescaler == SPI_PRESCALER_32))
 	 {
-		 SPIM_SwitchDoubleSpeed(Device, TRUE);
+		 SPIM_SwitchDoubleSpeed(Device, true);
 	 }
 	
 	 Device->CTRL = (Device->CTRL & (~(0x01 << 0x01))) | (Prescaler & 0x03);

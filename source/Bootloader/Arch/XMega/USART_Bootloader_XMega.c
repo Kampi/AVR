@@ -104,7 +104,7 @@ void Bootloader_Init(void)
 	Bootloader_PutChar(XON);
 }
 
-Bool_t Bootloader_Enter(void)
+bool Bootloader_Enter(void)
 {
 	uint16_t Page = 0x00;
 	uint8_t Offset = 0x00;
@@ -146,7 +146,7 @@ Bool_t Bootloader_Enter(void)
 			{
 				// Error handling
 
-				return FALSE;
+				return false;
 			}
 
 			// Enable the transmitter
@@ -156,7 +156,7 @@ Bool_t Bootloader_Enter(void)
 
 	NVM_FlushFlash(Page);
 
-	return TRUE;
+	return true;
 }
 
 void Bootloader_Exit(void)

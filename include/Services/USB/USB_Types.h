@@ -110,7 +110,7 @@
  {
 	 USB_Mode_t Mode;													/**< USB device mode */
 	 USB_Speed_t Speed;													/**< USB bus speed */
-	 Bool_t EnableSOFCallbacks;											/**< Set to #TRUE to enable start of frame events */
+	 bool EnableSOFCallbacks;											/**< Set to #true to enable start of frame events */
 	 const USB_DeviceCallbacks_t* Callbacks;							/**< Pointer to USB device callbacks */
  } USB_Config_t;
 

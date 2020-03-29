@@ -134,7 +134,7 @@
 	 AC_Hysteresis_t Hysteresis;			/**< Hysteresis settings */
 	 AC_MuxP_t Positive;					/**< Positive input pin */
 	 AC_MuxN_t Negative;					/**< Negative input pin */
-	 Bool_t EnableHighSpeed;				/**< Set to #TRUE to enable the high speed option */
+	 bool EnableHighSpeed;				/**< Set to #true to enable the high speed option */
  } AC_Config_t;
 
  /** @brief	AC interrupt configuration object.
@@ -220,8 +220,8 @@
   */
  void AC_DisableOutput(AC_t* Device, AC_Comparator_t Comparator);
  
- void AC_SetSpeed(AC_t* Device, AC_Comparator_t Comparator, Bool_t Speed);
- Bool_t AC_GetSpeed(AC_t* Device, AC_Comparator_t Comparator);
+ void AC_SetSpeed(AC_t* Device, AC_Comparator_t Comparator, bool Speed);
+ bool AC_GetSpeed(AC_t* Device, AC_Comparator_t Comparator);
  void AC_SetHysteresis(AC_t* Device, AC_Comparator_t Comparator, AC_Hysteresis_t Hysteresis);
  AC_Hysteresis_t AC_GetHysteresis(AC_t* Device, AC_Comparator_t Comparator);
  void AC_SetMux(AC_t* Device, AC_Comparator_t Comparator, AC_MuxP_t Positive, AC_MuxN_t Negative);

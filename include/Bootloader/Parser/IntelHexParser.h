@@ -80,7 +80,7 @@
 	 Parser_Type_t Type;										/**< Record type */
 	 unsigned char* pBuffer;									/**< Pointer to data buffer */
 	 uint16_t Checksum;											/**< Checksum */
-	 Bool_t Valid;												/**< Valid flag */
+	 bool Valid;												/**< Valid flag */
  } Parser_Block_t;
 
  /** @brief	Initialize the parser.

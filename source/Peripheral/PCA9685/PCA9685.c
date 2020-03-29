@@ -143,14 +143,14 @@
 	#define PCA9685_I2CM_READBYTE(Data, Stop)												I2CM_ReadByte(&PCA9685_INTERFACE, PCA9685_ADDRESS, Data, Stop)
 	#define PCA9685_I2CM_WRITEBYTES(Length, Data, Stop)										I2CM_WriteBytes(&PCA9685_INTERFACE, PCA9685_ADDRESS, Length, Data, Stop)
 	#define PCA9685_I2CM_READBYTES(Length, Data, Stop)										I2CM_ReadBytes(&PCA9685_INTERFACE, PCA9685_ADDRESS, Length, Data, Stop)
-	#define PCA9685_RESET()																	I2CM_WriteByte(&PCA9685_INTERFACE, 0x00, 0x06, TRUE)
+	#define PCA9685_RESET()																	I2CM_WriteByte(&PCA9685_INTERFACE, 0x00, 0x06, true)
 #elif(MCU_ARCH == MCU_ARCH_AVR8)
 	#define PCA9685_I2CM_INIT(Config)														I2CM_Init(Config)
 	#define PCA9685_I2CM_WRITEBYTE(Data, Stop)												I2CM_WriteByte(PCA9685_ADDRESS, Data, Stop)
 	#define PCA9685_I2CM_READBYTE(Data, Stop)												I2CM_ReadByte(PCA9685_ADDRESS, Data, Stop)
 	#define PCA9685_I2CM_WRITEBYTES(Length, Data, Stop)										I2CM_WriteBytes(PCA9685_ADDRESS, Length, Data, Stop)
 	#define PCA9685_I2CM_READBYTES(Length, Data, Stop)										I2CM_ReadBytes(PCA9685_ADDRESS, Length, Data, Stop)
-	#define PCA9685_RESET()																	I2CM_WriteByte(0x00, 0x06, TRUE)
+	#define PCA9685_RESET()																	I2CM_WriteByte(0x00, 0x06, true)
 #else
 	#error "Architecture not supported for PCA9685!"
 #endif
@@ -158,21 +158,21 @@
 /** @brief			Switch a single bit in a register.
  *  @param Register	Register address
  *  @param Mask		Bit mask
- *  @param Set		Set to #TRUE to set the bits. Otherwise the bits will get cleared
+ *  @param Set		Set to #true to set the bits. Otherwise the bits will get cleared
  *  @return			I2C error code
  */
-static const I2C_Error_t PCA9685_SwitchBit(const uint8_t Register, const uint8_t Mask, const Bool_t Set)
+static const I2C_Error_t PCA9685_SwitchBit(const uint8_t Register, const uint8_t Mask, const bool Set)
 {
 	uint8_t Data[2] = {Register, 0x00};
 	I2C_Error_t ErrorCode = I2C_NO_ERROR;
 
-	ErrorCode = PCA9685_I2CM_WRITEBYTE(Data[0], FALSE) | PCA9685_I2CM_READBYTE(&Data[1], TRUE);
+	ErrorCode = PCA9685_I2CM_WRITEBYTE(Data[0], false) | PCA9685_I2CM_READBYTE(&Data[1], true);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
 	}
 
-	if(Set == TRUE)
+	if(Set == true)
 	{
 		Data[1] |= Mask;
 	}
@@ -181,14 +181,14 @@ static const I2C_Error_t PCA9685_SwitchBit(const uint8_t Register, const uint8_t
 		Data[1] &= ~Mask;
 	}
 
-	return PCA9685_I2CM_WRITEBYTES(sizeof(Data), Data, TRUE);
+	return PCA9685_I2CM_WRITEBYTES(sizeof(Data), Data, true);
 }
 
 /** @brief			Enable/Disable the auto increment mode.
  *  @param Enable	Enable/Disable
  *  @return			I2C error code
  */
-static const I2C_Error_t PCA9685_SwitchAutoIncrement(const Bool_t Enable)
+static const I2C_Error_t PCA9685_SwitchAutoIncrement(const bool Enable)
 {
 	return PCA9685_SwitchBit(PCA9685_REGISTER_MODE1, (0x01 << PCA9685_AI), Enable);
 }
@@ -212,16 +212,16 @@ const I2C_Error_t PCA9685_Init(I2CM_Config_t* Config, const PCA9685_ClockSource_
 		return ErrorCode;
 	}
 
-	return PCA9685_SwitchAutoIncrement(TRUE) | PCA9685_SetClockSource(Source) | PCA9685_SwitchSleep(FALSE);
+	return PCA9685_SwitchAutoIncrement(true) | PCA9685_SetClockSource(Source) | PCA9685_SwitchSleep(false);
 }
 
 const I2C_Error_t PCA9685_SetOutputChange(const PCA9685_OutputChange_t Mode)
 {
-	Bool_t Flag = FALSE;
+	bool Flag = false;
 
 	if(Mode == PCA9685_OCH_ACK)
 	{
-		Flag = TRUE;
+		Flag = true;
 	}
 
 	return PCA9685_SwitchBit(PCA9685_REGISTER_MODE2, (0x01 << PCA9685_OCH), Flag); 
@@ -229,11 +229,11 @@ const I2C_Error_t PCA9685_SetOutputChange(const PCA9685_OutputChange_t Mode)
 
 const I2C_Error_t PCA9685_SetOutputDrive(const PCA9685_OutputDrive_t Drive)
 {
-	Bool_t Flag = TRUE;
+	bool Flag = true;
 
 	if(Drive == PCA9685_OUTDRV_OD)
 	{
-		Flag = FALSE;
+		Flag = false;
 	}
 
 	return PCA9685_SwitchBit(PCA9685_REGISTER_MODE2, (0x01 << PCA9685_OUTDRV), Flag); 
@@ -244,7 +244,7 @@ const I2C_Error_t PCA9685_SetOutputEnable(const PCA9685_OutputEnable_t Mode)
 	uint8_t Data[2] = {PCA9685_REGISTER_MODE2, 0x00};
 	I2C_Error_t ErrorCode = I2C_NO_ERROR;
 
-	ErrorCode = PCA9685_I2CM_WRITEBYTE(Data[0], FALSE) | PCA9685_I2CM_READBYTE(&Data[1], TRUE);
+	ErrorCode = PCA9685_I2CM_WRITEBYTE(Data[0], false) | PCA9685_I2CM_READBYTE(&Data[1], true);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -265,7 +265,7 @@ const I2C_Error_t PCA9685_SetOutputEnable(const PCA9685_OutputEnable_t Mode)
 		Data[1] |= (0x01 << PCA9685_OUTNE1) | (0x01 << PCA9685_OUTNE0);
 	}
 
-	return PCA9685_I2CM_WRITEBYTES(sizeof(Data), Data, TRUE);
+	return PCA9685_I2CM_WRITEBYTES(sizeof(Data), Data, true);
 }
 
 const I2C_Error_t PCA9685_Reset(void)
@@ -275,10 +275,10 @@ const I2C_Error_t PCA9685_Reset(void)
 
 const I2C_Error_t PCA9685_SetClockSource(const PCA9685_ClockSource_t Source)
 {
-	Bool_t Flag = TRUE;
+	bool Flag = true;
 
 	// Set the sleep bit
-	I2C_Error_t ErrorCode = PCA9685_SwitchSleep(TRUE);
+	I2C_Error_t ErrorCode = PCA9685_SwitchSleep(true);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -286,7 +286,7 @@ const I2C_Error_t PCA9685_SetClockSource(const PCA9685_ClockSource_t Source)
 	
 	if(Source == PCA9685_CLOCK_INT)
 	{
-		Flag = FALSE;
+		Flag = false;
 	}
 
 	return PCA9685_SwitchBit(PCA9685_REGISTER_MODE1, (0x01 << PCA9685_EXTCLOCK), Flag);
@@ -294,7 +294,7 @@ const I2C_Error_t PCA9685_SetClockSource(const PCA9685_ClockSource_t Source)
 
 const I2C_Error_t PCA9685_Restart(void)
 {
-	I2C_Error_t ErrorCode = PCA9685_SwitchSleep(FALSE);
+	I2C_Error_t ErrorCode = PCA9685_SwitchSleep(false);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -303,47 +303,47 @@ const I2C_Error_t PCA9685_Restart(void)
 	// Wait a bit
 	for(uint16_t i; i < 0xFFFF; i++);
 
-	return PCA9685_SwitchBit(PCA9685_REGISTER_MODE1, (0x01 << PCA9685_RESTART), TRUE);
+	return PCA9685_SwitchBit(PCA9685_REGISTER_MODE1, (0x01 << PCA9685_RESTART), true);
 }
 
-const I2C_Error_t PCA9685_SwitchSleep(const Bool_t Enable)
+const I2C_Error_t PCA9685_SwitchSleep(const bool Enable)
 {
 	return PCA9685_SwitchBit(PCA9685_REGISTER_MODE1, (0x01 << PCA9685_SLEEP), Enable);
 }
 
-const I2C_Error_t PCA9685_SwitchSub1(const Bool_t Enable)
+const I2C_Error_t PCA9685_SwitchSub1(const bool Enable)
 {
 	return PCA9685_SwitchBit(PCA9685_REGISTER_MODE1, (0x01 << PCA9685_SUB1), Enable);
 }
 
-const I2C_Error_t PCA9685_SwitchSub2(const Bool_t Enable)
+const I2C_Error_t PCA9685_SwitchSub2(const bool Enable)
 {
 	return PCA9685_SwitchBit(PCA9685_REGISTER_MODE1, (0x01 << PCA9685_SUB2), Enable);
 }
 
-const I2C_Error_t PCA9685_SwitchSub3(const Bool_t Enable)
+const I2C_Error_t PCA9685_SwitchSub3(const bool Enable)
 {
 	return PCA9685_SwitchBit(PCA9685_REGISTER_MODE1, (0x01 << PCA9685_SUB3), Enable);
 }
 
-const I2C_Error_t PCA9685_SwitchAllCall(const Bool_t Enable)
+const I2C_Error_t PCA9685_SwitchAllCall(const bool Enable)
 {
 	return PCA9685_SwitchBit(PCA9685_REGISTER_MODE1, (0x01 << PCA9685_ALLCALL), Enable);
 }
 
-const I2C_Error_t PCA9685_SwitchInvert(const Bool_t Enable)
+const I2C_Error_t PCA9685_SwitchInvert(const bool Enable)
 {
 	return PCA9685_SwitchBit(PCA9685_REGISTER_MODE2, (0x01 << PCA9685_INVRT), Enable);
 }
 
 const I2C_Error_t PCA9685_SetPrescaler(const uint8_t Prescaler)
 {
-	return PCA9685_I2CM_WRITEBYTE(PCA9685_REGISTER_PRESCALER, FALSE) | PCA9685_I2CM_WRITEBYTE(Prescaler, TRUE);
+	return PCA9685_I2CM_WRITEBYTE(PCA9685_REGISTER_PRESCALER, false) | PCA9685_I2CM_WRITEBYTE(Prescaler, true);
 }
 
 const I2C_Error_t PCA9685_GetPrescaler(uint8_t* Prescaler)
 {
-	return PCA9685_I2CM_WRITEBYTE(PCA9685_REGISTER_PRESCALER, FALSE) | PCA9685_I2CM_READBYTE(Prescaler, TRUE);
+	return PCA9685_I2CM_WRITEBYTE(PCA9685_REGISTER_PRESCALER, false) | PCA9685_I2CM_READBYTE(Prescaler, true);
 }
 
 const I2C_Error_t PCA9685_SetChannel(const PCA9685_Channel_t Channel, const uint16_t On, const uint16_t Off)
@@ -374,7 +374,7 @@ const I2C_Error_t PCA9685_SetChannel(const PCA9685_Channel_t Channel, const uint
 	Data[3] = Off & 0xFF;
 	Data[4] = Off >> 0x08;
 	
-	return PCA9685_I2CM_WRITEBYTES(sizeof(Data), Data, TRUE);
+	return PCA9685_I2CM_WRITEBYTES(sizeof(Data), Data, true);
 }
 
 const I2C_Error_t PCA9685_SetDuty(const PCA9685_Channel_t Channel, const float Duty)
@@ -393,9 +393,9 @@ const I2C_Error_t PCA9685_SetDuty(const PCA9685_Channel_t Channel, const float D
 }
 
 #if(defined PCA9685_OE)
-	void PCA9685_SwitchOutputEnable(const Bool_t Enable)
+	void PCA9685_SwitchOutputEnable(const bool Enable)
 	{
-		if(Enable == TRUE)
+		if(Enable == true)
 		{
 			GPIO_Clear(GET_PERIPHERAL(PCA9685_OE), GET_INDEX(PCA9685_OE));
 		}

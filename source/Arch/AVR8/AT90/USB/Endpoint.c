@@ -33,13 +33,13 @@
 #include "Arch/AVR8/AT90/USB/Endpoint.h"
 #include "Services/USB/Core/StandardRequest.h"
 
-Bool_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, const Endpoint_Size_t Size, const Bool_t DoubleBank)
+bool Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, const Endpoint_Size_t Size, const bool DoubleBank)
 {
 	uint8_t Address_Temp = Address & 0x0F;
 
 	if((Address_Temp & 0x07) > USB_MAX_ENDPOINTS)
 	{
-		return FALSE;
+		return false;
 	}
 
 	// Allocate the memory for the endpoints
@@ -111,14 +111,14 @@ Bool_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, con
 		// Check the configuration
 		if(!(UESTA0X & (0x01 << CFGOK)))
 		{
-			return FALSE;
+			return false;
 		}
 	}
 
 	// Select the configured endpoint
 	Endpoint_Select(Address_Temp);
 
-	return TRUE;
+	return true;
 }
 
 void Endpoint_HandleSTATUS(const USB_RequestDirection_t Direction)

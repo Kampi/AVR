@@ -55,14 +55,14 @@
 	#define BH1750VI_I2CM_READBYTE(Data, Stop)												I2CM_ReadByte(&BH1750VI_INTERFACE, BH1750VI_ADDRESS, Data, Stop)
 	#define BH1750VI_I2CM_WRITEBYTES(Length, Data, Stop)									I2CM_WriteBytes(&BH1750VI_INTERFACE, BH1750VI_ADDRESS, Length, Data, Stop)
 	#define BH1750VI_I2CM_READBYTES(Length, Data, Stop)										I2CM_ReadBytes(&BH1750VI_INTERFACE, BH1750VI_ADDRESS, Length, Data, Stop)
-	#define BH1750VI_RESET()																I2CM_WriteByte(&BH1750VI_INTERFACE, 0x00, 0x03, TRUE)
+	#define BH1750VI_RESET()																I2CM_WriteByte(&BH1750VI_INTERFACE, 0x00, 0x03, true)
 #elif(MCU_ARCH == MCU_ARCH_AVR8)
 	#define BH1750VI_I2CM_INIT(Config)														I2CM_Init(Config)
 	#define BH1750VI_I2CM_WRITEBYTE(Data, Stop)												I2CM_WriteByte(BH1750VI_ADDRESS, Data, Stop)
 	#define BH1750VI_I2CM_READBYTE(Data, Stop)												I2CM_ReadByte(BH1750VI_ADDRESS, Data, Stop)
 	#define BH1750VI_I2CM_WRITEBYTES(Length, Data, Stop)									I2CM_WriteBytes(BH1750VI_ADDRESS, Length, Data, Stop)
 	#define BH1750VI_I2CM_READBYTES(Length, Data, Stop)										I2CM_ReadBytes(BH1750VI_ADDRESS, Length, Data, Stop)
-	#define BH1750VI_RESET()																I2CM_WriteByte(0x00, 0x06, TRUE)
+	#define BH1750VI_RESET()																I2CM_WriteByte(0x00, 0x06, true)
 #else
 	#error "Architecture not supported for BH1750VI!"
 #endif
@@ -90,13 +90,13 @@ const I2C_Error_t BH1750VI_Init(I2CM_Config_t* Config)
 
 const I2C_Error_t BH1750VI_Reset(void)
 {
-	return BH1750VI_I2CM_WRITEBYTE(BH1750VI_CMD_RESET, TRUE);
+	return BH1750VI_I2CM_WRITEBYTE(BH1750VI_CMD_RESET, true);
 	for(uint16_t i = 0x00; i < 0xFFFF; i++);
 }
 
 const I2C_Error_t BH1750VI_SetMode(const BH1750VI_DeviceMode_t Mode)
 {
-	I2C_Error_t ErrorCode = BH1750VI_I2CM_WRITEBYTE(Mode & 0x01, TRUE);
+	I2C_Error_t ErrorCode = BH1750VI_I2CM_WRITEBYTE(Mode & 0x01, true);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -121,7 +121,7 @@ const I2C_Error_t BH1750VI_SingleMeasurement(const BH1750VI_Resolution_t Resolut
 {
 	uint8_t Data[2] = {0x00, 0x00};
 
-	I2C_Error_t ErrorCode = BH1750VI_I2CM_WRITEBYTE(BH1750VI_CMD_MEASURE(Resolution), TRUE);
+	I2C_Error_t ErrorCode = BH1750VI_I2CM_WRITEBYTE(BH1750VI_CMD_MEASURE(Resolution), true);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -130,7 +130,7 @@ const I2C_Error_t BH1750VI_SingleMeasurement(const BH1750VI_Resolution_t Resolut
 	// Wait for end of conversion
 	_delay_ms(120);
 	
-	ErrorCode = BH1750VI_I2CM_READBYTES(sizeof(Data), &Data[0], TRUE);
+	ErrorCode = BH1750VI_I2CM_READBYTES(sizeof(Data), &Data[0], true);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -144,14 +144,14 @@ const I2C_Error_t BH1750VI_SingleMeasurement(const BH1750VI_Resolution_t Resolut
 
 const I2C_Error_t BH1750VI_StartMeasurement(const BH1750VI_Resolution_t Resolution)
 {
-	return BH1750VI_SetMode(BH1750VI_MODE_NORMAL) | BH1750VI_I2CM_WRITEBYTE(BH1750VI_CMD_CONT_MEASURE(Resolution), TRUE);
+	return BH1750VI_SetMode(BH1750VI_MODE_NORMAL) | BH1750VI_I2CM_WRITEBYTE(BH1750VI_CMD_CONT_MEASURE(Resolution), true);
 }
 
 const I2C_Error_t BH1750VI_GetResult(uint16_t* Result)
 {
 	uint8_t Data[2] = {0x00, 0x00};
 
-	I2C_Error_t ErrorCode = BH1750VI_I2CM_READBYTES(sizeof(Data), &Data[0], TRUE);
+	I2C_Error_t ErrorCode = BH1750VI_I2CM_READBYTES(sizeof(Data), &Data[0], true);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;

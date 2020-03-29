@@ -45,7 +45,7 @@ static USART_Config_t _Config_USART = {
 	.Stop = USART_STOP_1,
 	.Size = USART_SIZE_8,
 	.BSCALE = -7,
-	.EnableDoubleSpeed = FALSE,
+	.EnableDoubleSpeed = false,
 };
 
 static int USART_Put(char c, FILE* stream)

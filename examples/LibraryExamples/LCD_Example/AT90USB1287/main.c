@@ -35,8 +35,8 @@ int main(void)
 	volatile uint16_t Counter = 0x00;
 
 	HD44780_Init();
-	HD44780_SwitchCursor(TRUE);
-	HD44780_SwitchBlink(TRUE);
+	HD44780_SwitchCursor(true);
+	HD44780_SwitchBlink(true);
 
     while(1) 
     {

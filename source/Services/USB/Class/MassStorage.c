@@ -31,7 +31,7 @@
 
 #include "Services/USB/Class/MassStorage/MassStorage.h"
 
-Bool_t USB_MassStorage_ReadCommandBlock(USB_MassStorage_CommandBlockWrapper_t* CBW)
+bool USB_MassStorage_ReadCommandBlock(USB_MassStorage_CommandBlockWrapper_t* CBW)
 {
-	return TRUE;
+	return true;
 }

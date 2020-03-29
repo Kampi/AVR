@@ -7,7 +7,7 @@ void Callback(Time_t Time);
 */
 I2CM_Config_t Config_I2CM = {
 	.Bitrate = DS1307_CLOCK,
-	.EnableInterruptSupport = FALSE,
+	.EnableInterruptSupport = false,
 };
 
 /*

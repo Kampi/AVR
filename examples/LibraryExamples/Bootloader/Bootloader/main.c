@@ -39,7 +39,7 @@ int main(void)
 	Bootloader_Init();
 
 	// Enter the bootloader mode and wait for a program
-	if(Bootloader_Enter() == TRUE)
+	if(Bootloader_Enter() == true)
 	{
 		Bootloader_Exit();
 	}

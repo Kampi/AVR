@@ -39,8 +39,8 @@
  /** @brief		Read the command block from the host from the data OUT endpoint.
   *				NOTE: You have so use #Endpoint_Select first to select the right endpoint!
   *  @param CBW	Pointer to #USB_MassStorage_CommandBlockWrapper_t object
-  *  @return	#TRUE when a valid command block has been read
+  *  @return	#true when a valid command block has been read
   */
- Bool_t USB_MassStorage_ReadCommandBlock(USB_MassStorage_CommandBlockWrapper_t* CBW);
+ bool USB_MassStorage_ReadCommandBlock(USB_MassStorage_CommandBlockWrapper_t* CBW);
 
 #endif /* MASSSTORAGE_H_  */

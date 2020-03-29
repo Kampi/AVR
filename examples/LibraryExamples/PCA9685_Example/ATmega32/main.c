@@ -39,7 +39,7 @@
 I2CM_Config_t Config_I2CM = {
 	.Prescaler = I2C_PRESCALER_16,
 	.Bitrate = PCA9685_CLOCK,
-	.EnableInterruptSupport = FALSE,
+	.EnableInterruptSupport = false,
 };
 
 int main(void)

@@ -62,17 +62,17 @@
  }
 
  /** @brief			Check if the USB device address is enabled.
-  *  @param return	#TRUE when the address is enabled
+  *  @param return	#true when the address is enabled
   */
- static inline Bool_t USB_Device_IsAddressEnabled(void) __attribute__ ((always_inline));
- static inline Bool_t USB_Device_IsAddressEnabled(void)
+ static inline bool USB_Device_IsAddressEnabled(void) __attribute__ ((always_inline));
+ static inline bool USB_Device_IsAddressEnabled(void)
  {
 	 if(UDADDR & (0x01 << ADDEN))
 	 {
-		 return TRUE;
+		 return true;
 	 }
 	 
-	 return FALSE;
+	 return false;
  }
 
  /** @brief	Enable the USB address of the device.

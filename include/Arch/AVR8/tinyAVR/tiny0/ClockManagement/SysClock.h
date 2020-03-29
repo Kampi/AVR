@@ -88,8 +88,8 @@
  /** @brief			Enable/Disable the clock prescaler.
   *  @param Enable	Enable/Disable
   */
- static inline void SysClock_SwitchPrescaler(const Bool_t Enable) __attribute__((always_inline));
- static inline void SysClock_SwitchPrescaler(const Bool_t Enable)
+ static inline void SysClock_SwitchPrescaler(const bool Enable) __attribute__((always_inline));
+ static inline void SysClock_SwitchPrescaler(const bool Enable)
  {
 	 uint8_t Temp = CLKCTRL.MCLKCTRLB;
 

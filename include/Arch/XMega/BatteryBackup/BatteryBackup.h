@@ -93,7 +93,7 @@
   *  @param Clock	RTC clock frequency
   *  @param HighESR	Enable/Disable high ESR mode
   */
- void BatteryBackup_ConfigXOSC(const BatteryBackup_Clock_t Clock, const Bool_t HighESR);
+ void BatteryBackup_ConfigXOSC(const BatteryBackup_Clock_t Clock, const bool HighESR);
  
  /** @brief				Write data to a backup register
   *  @param Register	Backup register
@@ -108,9 +108,9 @@
  const uint8_t BatteryBackup_ReadBackup(const BatteryBackupBackupRegister_t Register);
 
  /** @brief				Check the battery backup module
-  *  @param FirstStart	#TRUE if the microcontroller has his first start
+  *  @param FirstStart	#true if the microcontroller has his first start
   *  @return			Status of the battery backup
   */
- const BatteryBackupStatus_t BatteryBackup_Check(const Bool_t FirstStart);
+ const BatteryBackupStatus_t BatteryBackup_Check(const bool FirstStart);
 
 #endif /* BATTERYBACKUP_H_ */
