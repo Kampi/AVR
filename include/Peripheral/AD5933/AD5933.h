@@ -1,7 +1,7 @@
 ﻿/*
  * AD5933.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for AD5933 I2C impedance converter.
 

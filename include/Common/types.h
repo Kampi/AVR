@@ -1,7 +1,7 @@
 /*
  * types.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Common type definitions for AVR microcontroller.
 

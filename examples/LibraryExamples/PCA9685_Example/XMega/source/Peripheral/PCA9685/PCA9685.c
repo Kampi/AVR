@@ -1,7 +1,7 @@
 /*
  * PCA9685.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for PCA9685 PWM controller.
 

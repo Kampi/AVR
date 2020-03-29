@@ -1,7 +1,7 @@
 /*
  * USART_OneWire.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for Atmel AVR8 tinyAVR USART module in 1-Wire mode.
 

@@ -1,7 +1,7 @@
 /*
  * Config.h
  * 
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Configuration file for the AT90USB1287 USB example.
 

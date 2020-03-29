@@ -1,7 +1,7 @@
 /*
  * BH1750VI.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for the BH1750FVI I2C ambient light sensor.
 

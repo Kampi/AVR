@@ -1,7 +1,7 @@
 /*
  * main.c
  * 
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: SD card example for XMega.
 
@@ -26,7 +26,7 @@
  *  @brief SD card example for XMega.
  *
  *  Software for the XMega SD card example from
- *  https://www.kampis-elektroecke.de/2018/11/avr-mit-einer-sd-karte-erweitern-teil-1/
+ *  https://www.kampis-elektroecke.de/2020/11/avr-mit-einer-sd-karte-erweitern-teil-1/
  *  https://www.kampis-elektroecke.de/2019/04/avr-mit-einer-sd-karte-erweitern-teil-2/
  * 	https://www.kampis-elektroecke.de/2019/05/avr-mit-einer-sd-karte-erweitern-teil-3/
  *

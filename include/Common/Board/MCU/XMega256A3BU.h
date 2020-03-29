@@ -1,7 +1,7 @@
 /*
  * XMega256A3BU.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: MCU specific definitions and constants for the Atmel XMega256A3BU.
 

@@ -1,7 +1,7 @@
 /*
  * LogoUSB.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: USB logo as bitmap file.
 

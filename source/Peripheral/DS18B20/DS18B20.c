@@ -1,7 +1,7 @@
 /*
  * DS18B20.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for the DS18B20 1-Wire temperature sensor.
 

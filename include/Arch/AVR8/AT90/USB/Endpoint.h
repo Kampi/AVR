@@ -1,7 +1,7 @@
 /*
  * Endpoint.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Endpoint definition for the Atmel AVR8 AT90 USB interface.
 

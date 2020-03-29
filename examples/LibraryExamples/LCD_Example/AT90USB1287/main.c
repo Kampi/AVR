@@ -1,7 +1,7 @@
 /*
  * main.c
  * 
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: HD44780 LCD controller example for the AT90USB1287.
 

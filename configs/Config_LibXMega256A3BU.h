@@ -1,7 +1,7 @@
 /*
  * Config_LibXMega256A3BU.h
  * 
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: XMega256A3BU configuration file for library builder.
 
