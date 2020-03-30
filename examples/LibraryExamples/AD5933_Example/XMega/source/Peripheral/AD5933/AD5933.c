@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for AD5933 I2C Impedance converter.
+ *  File info: Driver for AD5933 I2C impedance converter.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -50,7 +50,7 @@
 		#define AD5933_REGISTER_REAL			0x94
 		#define AD5933_REGISTER_IMAG			0x96
 	/** @} */ // end of AD5933-Register
-	 
+
  	/** @defgroup AD5933-Size
 	 *  Register sizes.
 	 *  @{
@@ -64,9 +64,9 @@
 		#define AD5933_SIZE_REAL				2
 		#define AD5933_SIZE_IMAG				2
 	/** @} */ // end of AD5933-Size
-	 
+
  	/** @defgroup AD5933-Commands
-	 *  AD5933 commands.
+	 *  AD5933 command codes.
 	 *  @{
 	 */
 		#define AD5933_CMD_BLOCK_WRITE			0xA0
@@ -82,7 +82,7 @@
 		#define AD5933_STATUS_VALID_DATA		0x02
 		#define AD5933_STATUS_SWEEP_COMPLETE	0x04
 	/** @} */ // end of AD5933-Status
-	 
+ 
  	/** @defgroup AD5933-Control
 	 *  AD5933 control bits.
 	 *  @{
@@ -104,7 +104,7 @@
 	 #define AD5933_I2CM_WRITEBYTES(Bytes, Data, Stop)										I2CM_WriteBytes(AD5933_ADDRESS, Bytes, Data, Stop)
 	 #define AD5933_I2CM_READBYTES(Bytes, Data, Stop)										I2CM_ReadBytes(AD5933_ADDRESS, Bytes, Data, Stop)
 #else
-	 #error "Architecture not supported for AD5933!"
+	 #error "Architecture not supported fpr AD5933!"
 #endif
 
 static Bool_t UseDegree = FALSE;

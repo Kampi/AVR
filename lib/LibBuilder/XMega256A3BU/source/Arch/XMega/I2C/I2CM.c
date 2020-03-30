@@ -4,7 +4,7 @@
  * Created: 11.05.2017 21:28:03
  *  Author: Daniel Kampert
  *	Website: www.kampis-elektroecke.de
- *  File info: I2C master driver for XMega TWI
+ *  File info: I2C master driver for XMega TWI.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
  */
 
 /** @file Arch/XMega/I2C/I2CM.c
- *  @brief Driver for XMega I2C master mode.
+ *  @brief I2C master driver for XMega TWI.
  *
  *  This file contains the implementation of the XMega I2C master driver.
  *
