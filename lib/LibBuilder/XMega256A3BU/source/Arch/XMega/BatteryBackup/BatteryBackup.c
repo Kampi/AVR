@@ -54,7 +54,7 @@ void BatteryBackup_Reset(void)
 	}
 }
 
-void BatteryBackup_ConfigXOSC(const BatteryBackup_Clock_t Clock, const Bool_t HighESR)
+void BatteryBackup_ConfigXOSC(const BatteryBackup_Clock_t Clock, const bool HighESR)
 {	
 	BatteryBackup_Reset();
 	ExtClock_32kLowPowerEnable();
@@ -106,7 +106,7 @@ const uint8_t BatteryBackup_ReadBackup(const BatteryBackupBackupRegister_t Regis
 	return 0;
 }
 
-const BatteryBackupStatus_t BatteryBackup_Check(const Bool_t FirstStart)
+const BatteryBackupStatus_t BatteryBackup_Check(const bool FirstStart)
 {
 	if(VBAT.STATUS & VBAT_BBPWR_bm)
 	{

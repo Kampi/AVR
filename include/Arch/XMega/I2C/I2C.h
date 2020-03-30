@@ -1,7 +1,7 @@
 /*
  * I2C.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for XMega TWI module.
 
@@ -172,9 +172,9 @@
 	 I2C_DeviceMode_t DeviceMode;				/**< Device mode */
 	 I2C_Timeout_t Timeout;						/**< Bus inactive timeout */
 	 uint32_t Bitrate;							/**< I2C bus frequency */
-	 Bool_t EnableQuickCommand;					/**< Set to #TRUE to enable quick commands */
-	 Bool_t EnableSmartMode;					/**< Set to #TRUE to enable smart mode */
-	 Bool_t EnableInterruptSupport;				/**< Set to #TRUE to enable interrupt support in master mode */
+	 bool EnableQuickCommand;					/**< Set to #true to enable quick commands */
+	 bool EnableSmartMode;					/**< Set to #true to enable smart mode */
+	 bool EnableInterruptSupport;				/**< Set to #true to enable interrupt support in master mode */
  } I2CM_Config_t;
 
  /** 
@@ -184,11 +184,11 @@
  {
 	 TWI_t* Device;								/**< Target TWI */
 	 Interrupt_Level_t InterruptLevel;			/**< Interrupt level for interrupt support */	 
-	 Bool_t EnableSmartMode;					/**< Set to #TRUE to enable smart mode */
+	 bool EnableSmartMode;					/**< Set to #true to enable smart mode */
 	 uint8_t Address;							/**< Device address */
 	 uint8_t Mask;								/**< Device address mask */
 	 uint8_t* Buffer;							/**< Pointer to data buffer */
-	 Bool_t EnablePromiscuousMode;				/**< Enable promiscuous mode */
+	 bool EnablePromiscuousMode;				/**< Enable promiscuous mode */
  } I2CS_Config_t;
 
  /** @brief I2C interrupt configuration object.
@@ -258,10 +258,10 @@
   *  @param Device	Pointer to TWI device object
   *  @param Enable	Enable/Disable
   */
- static inline void I2C_SwitchExternalInterface(TWI_t* Device, const Bool_t Enable) __attribute__((always_inline));
- static inline void I2C_SwitchExternalInterface(TWI_t* Device, const Bool_t Enable)
+ static inline void I2C_SwitchExternalInterface(TWI_t* Device, const bool Enable) __attribute__((always_inline));
+ static inline void I2C_SwitchExternalInterface(TWI_t* Device, const bool Enable)
  {
-	 if(Enable == TRUE)
+	 if(Enable == true)
 	 {
 		 Device->CTRL |= TWI_EDIEN_bm;
 	 }
@@ -354,8 +354,8 @@
   *  @param Device	Pointer to TWI device object
   *  @param Enable	Enable/Disable
   */
- static inline void I2CM_SwitchQuickCommand(TWI_t* Device, const Bool_t Enable) __attribute__((always_inline));
- static inline void I2CM_SwitchQuickCommand(TWI_t* Device, const Bool_t Enable)
+ static inline void I2CM_SwitchQuickCommand(TWI_t* Device, const bool Enable) __attribute__((always_inline));
+ static inline void I2CM_SwitchQuickCommand(TWI_t* Device, const bool Enable)
  {
 	 Device->MASTER.CTRLB = (Device->MASTER.CTRLB & (~(0x01 << 0x01))) | (Enable << 0x01);
  }
@@ -364,8 +364,8 @@
   *  @param Device	Pointer to TWI device object
   *  @param Enable	Enable/Disable
   */
- static inline void I2CM_SwitchSmartMode(TWI_t* Device, const Bool_t Enable) __attribute__((always_inline));
- static inline void I2CM_SwitchSmartMode(TWI_t* Device, const Bool_t Enable)
+ static inline void I2CM_SwitchSmartMode(TWI_t* Device, const bool Enable) __attribute__((always_inline));
+ static inline void I2CM_SwitchSmartMode(TWI_t* Device, const bool Enable)
  {
 	 Device->MASTER.CTRLB = (Device->MASTER.CTRLB & (~0x01)) | Enable;
  }
@@ -441,39 +441,39 @@
   *  @param Device		Pointer to TWI object
   *  @param Address		Slave address
   *  @param Data		Pointer to data
-  *  @param Stop		Set to #FALSE to send a repeated start instead of stop
+  *  @param Stop		Set to #false to send a repeated start instead of stop
   *  @return			I2C error
   */
- I2C_Error_t I2CM_WriteByte(TWI_t* Device, const uint8_t Address, const uint8_t Data, const Bool_t Stop);
+ I2C_Error_t I2CM_WriteByte(TWI_t* Device, const uint8_t Address, const uint8_t Data, const bool Stop);
 
  /** @brief				Write n bytes with the TWI.
   *  @param Device		Pointer to TWI object
   *  @param Address		Slave address
   *  @param Length		Byte count
   *  @param Data		Pointer to data
-  *  @param Stop		Set to #FALSE to send a repeated start instead of stop
+  *  @param Stop		Set to #false to send a repeated start instead of stop
   *  @return			I2C error
   */
- I2C_Error_t I2CM_WriteBytes(TWI_t* Device, const uint8_t Address, const uint8_t Length, const uint8_t* Data, const Bool_t Stop);
+ I2C_Error_t I2CM_WriteBytes(TWI_t* Device, const uint8_t Address, const uint8_t Length, const uint8_t* Data, const bool Stop);
 
  /** @brief				Read a single byte from the TWI.
   *  @param Device		Pointer to TWI object
   *  @param Address		Slave address
   *  @param Data		Pointer to data
-  *  @param Stop		Set to #FALSE to send a repeated start instead of stop
+  *  @param Stop		Set to #false to send a repeated start instead of stop
   *  @return			I2C error
   */
- I2C_Error_t I2CM_ReadByte(TWI_t* Device, const uint8_t Address, uint8_t* Data, const Bool_t Stop);
+ I2C_Error_t I2CM_ReadByte(TWI_t* Device, const uint8_t Address, uint8_t* Data, const bool Stop);
 
  /** @brief				Read n bytes from the TWI.
   *  @param Device		Pointer to TWI object
   *  @param Address		Slave address
   *  @param Length		Byte count
   *  @param Data		Pointer to data
-  *  @param Stop		Set to #FALSE to send a repeated start instead of stop
+  *  @param Stop		Set to #false to send a repeated start instead of stop
   *  @return			I2C error
   */
- I2C_Error_t I2CM_ReadBytes(TWI_t* Device, const uint8_t Address, const uint8_t Length, uint8_t* Data, const Bool_t Stop);
+ I2C_Error_t I2CM_ReadBytes(TWI_t* Device, const uint8_t Address, const uint8_t Length, uint8_t* Data, const bool Stop);
 
  /*
 	Slave functions
@@ -511,8 +511,8 @@
   *  @param Device	Pointer to TWI device object
   *  @param Enable	Enable/Disable
   */
- static inline void I2CS_SwitchSmartMode(TWI_t* Device, const Bool_t Enable) __attribute__((always_inline));
- static inline void I2CS_SwitchSmartMode(TWI_t* Device, const Bool_t Enable)
+ static inline void I2CS_SwitchSmartMode(TWI_t* Device, const bool Enable) __attribute__((always_inline));
+ static inline void I2CS_SwitchSmartMode(TWI_t* Device, const bool Enable)
  {
 	 Device->MASTER.CTRLB = (Device->MASTER.CTRLB & (~0x01)) | Enable;
  }
@@ -521,8 +521,8 @@
   *  @param Device	Pointer to TWI device object
   *  @param Enable	Enable/Disable
   */
- static inline void I2CS_SwitchPromiscuousMode(TWI_t* Device, const Bool_t Enable) __attribute__((always_inline));
- static inline void I2CS_SwitchPromiscuousMode(TWI_t* Device, const Bool_t Enable)
+ static inline void I2CS_SwitchPromiscuousMode(TWI_t* Device, const bool Enable) __attribute__((always_inline));
+ static inline void I2CS_SwitchPromiscuousMode(TWI_t* Device, const bool Enable)
  {
 	 Device->SLAVE.CTRLA |= (Device->SLAVE.CTRLB & (~(0x01 << 0x01))) | (Enable << 0x01);
  }
@@ -531,8 +531,8 @@
   *  @param Device	Pointer to TWI device object
   *  @param Enable	Enable/Disable
   */
- static inline void I2CS_SwitchSecondAddress(TWI_t* Device, const Bool_t Enable) __attribute__((always_inline));
- static inline void I2CS_SwitchSecondAddress(TWI_t* Device, const Bool_t Enable)
+ static inline void I2CS_SwitchSecondAddress(TWI_t* Device, const bool Enable) __attribute__((always_inline));
+ static inline void I2CS_SwitchSecondAddress(TWI_t* Device, const bool Enable)
  {
 	 Device->SLAVE.ADDRMASK |= (Device->SLAVE.CTRLB & (~0x01)) | Enable;
  }
@@ -541,8 +541,8 @@
   *  @param Device	Pointer to TWI device object
   *  @param Enable	Enable/Disable
   */
- static inline void I2CS_SwitchGeneralCall(TWI_t* Device, const Bool_t Enable) __attribute__((always_inline));
- static inline void I2CS_SwitchGeneralCall(TWI_t* Device, const Bool_t Enable)
+ static inline void I2CS_SwitchGeneralCall(TWI_t* Device, const bool Enable) __attribute__((always_inline));
+ static inline void I2CS_SwitchGeneralCall(TWI_t* Device, const bool Enable)
  {
 	 Device->SLAVE.ADDR |= (Device->SLAVE.ADDR & (~0x01)) | Enable;
  }

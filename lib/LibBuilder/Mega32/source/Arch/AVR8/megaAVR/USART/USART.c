@@ -49,7 +49,7 @@ static char __Representation[]= "0123456789ABCDEF";
 		Object declaration
 	*/
 	USART_Message_t __USART_Messages[USART_DEVICES][USART_CHANNEL];
-	Bool_t __USART_Echo[USART_DEVICES][USART_CHANNEL];
+	bool __USART_Echo[USART_DEVICES][USART_CHANNEL];
 	struct
 	{
 		USART_Callback_t RxCallback;
@@ -225,7 +225,7 @@ void USART_Init(USART_Config_t* Config)
     USART_SetStopbits(Config->Device, Config->Stop);
     USART_SetParity(Config->Device, Config->Parity);
  
-	if(Config->EnableInterruptSupport == TRUE)
+	if(Config->EnableInterruptSupport == true)
 	{
 		USART_EnableInterruptSupport(Config->Device, Config->InterruptLevel);
 	}
@@ -458,7 +458,7 @@ void USART_Flush(USART_t* Device)
 	Device->CTRLA |= 0x03;
 }
 
-void USART_SwitchEcho(USART_t* Device, const Bool_t Enable)
+void USART_SwitchEcho(USART_t* Device, const bool Enable)
 {
 	uint8_t ID = 0x00;
 	uint8_t Channel = 0x00;
@@ -503,23 +503,23 @@ void USART_SwitchEcho(USART_t* Device, const Bool_t Enable)
 		}
 	#endif
 	
-	if(Enable == TRUE)
+	if(Enable == true)
 	{
-		__USART_Echo[ID][Channel] = TRUE;
+		__USART_Echo[ID][Channel] = true;
 	}
 	else
 	{
-		__USART_Echo[ID][Channel] = FALSE;
+		__USART_Echo[ID][Channel] = false;
 	}
 }
  
-void USART_SetBaudrate(USART_t* Device, const uint32_t Baudrate, const uint32_t Clock, const int8_t BSCALE, const Bool_t DoubleSpeed)
+void USART_SetBaudrate(USART_t* Device, const uint32_t Baudrate, const uint32_t Clock, const int8_t BSCALE, const bool DoubleSpeed)
 {
 	uint16_t BSEL = 0x00;
 	int8_t BSCALE_Temp = 0x00;
 
 	// Calculate ClockRatio = f_Per / (8/16 * f_Baud)
-	if(DoubleSpeed == TRUE)
+	if(DoubleSpeed == true)
 	{
 		BSEL = Clock / (Baudrate << 0x03);
 	}

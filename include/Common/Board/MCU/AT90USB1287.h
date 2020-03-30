@@ -1,7 +1,7 @@
 /*
  * AT90USB1287.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: MCU definitions for Atmel AT90USB1287.
 

@@ -1,7 +1,7 @@
 /*
  * FrameBuffer.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Generic frame buffer for displays without readable display memory.
 

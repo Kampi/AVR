@@ -1,7 +1,7 @@
 /*
  * Endpoint.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: USB endpoint for AVR8 devices.
 
@@ -80,7 +80,7 @@ uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, co
 			UECFG1X_Temp |= (EPSIZE << EPSIZE0);
 
 			// Set the ALLOC bit
-			UECFG1X_Temp = (0x01 << ALLOC);
+			UECFG1X_Temp |= (0x01 << ALLOC);
 
 			// Configure UEIENX-register
 			UEIENX_Temp = (0x01 << RXSTPE);

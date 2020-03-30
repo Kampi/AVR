@@ -39,7 +39,7 @@
 		Object declaration
 	*/
 	extern SPI_Message_t _SPI_Messages[USART_DEVICES][USART_CHANNEL];
-	extern Bool_t _USART_IsSPI[USART_DEVICES][USART_CHANNEL];
+	extern bool _USART_IsSPI[USART_DEVICES][USART_CHANNEL];
 
 	struct
 	{
@@ -94,7 +94,7 @@ void USART_SPI_Init(SPIM_Config_t* Config)
 		}
 	#endif
 
-	_USART_IsSPI[ID][Channel] = TRUE;
+	_USART_IsSPI[ID][Channel] = true;
 	
 	if(Config->Device == &USARTD0)
 	{
@@ -107,11 +107,11 @@ void USART_SPI_Init(SPIM_Config_t* Config)
 		// Setup INVEN
 		if((Config->Mode == SPI_MODE_2) || (Config->Mode == SPI_MODE_3))
 		{
-			GPIO_SwitchInvert(&PORTD, (0x01 << SPI_SCK_PIN), TRUE);
+			GPIO_SwitchInvert(&PORTD, (0x01 << SPI_SCK_PIN), true);
 		}
 		else
 		{
-			GPIO_SwitchInvert(&PORTD, (0x01 << SPI_SCK_PIN), FALSE);
+			GPIO_SwitchInvert(&PORTD, (0x01 << SPI_SCK_PIN), false);
 		}
 	}
 	
@@ -423,7 +423,7 @@ void USART_SPI_DeselectDevice(PORT_t* Port, const uint8_t Pin)
 	GPIO_Set(Port, Pin);
 }
 
-void USART_SPI_SetClockRate(USART_t* Device, const uint32_t Baudrate, const uint32_t Clock, const Bool_t DoubleSpeed)
+void USART_SPI_SetClockRate(USART_t* Device, const uint32_t Baudrate, const uint32_t Clock, const bool DoubleSpeed)
 {
 	uint16_t BaudValue = 0x00;
 	

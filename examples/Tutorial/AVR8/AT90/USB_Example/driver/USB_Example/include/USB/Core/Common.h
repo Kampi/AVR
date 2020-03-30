@@ -1,7 +1,7 @@
 /*
  * USB_DeviceController.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Common includes for the USB driver.
 

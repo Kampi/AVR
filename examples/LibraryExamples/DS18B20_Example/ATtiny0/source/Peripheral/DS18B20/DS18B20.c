@@ -1,7 +1,7 @@
 /*
  * DS18B20.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for the DS18B20 1-Wire temperature sensor.
 
@@ -52,10 +52,10 @@
  *  @param Found	Pointer to devices found
  *  @param Search	Maximum devices to search
  *  @param ROM		Pointer to #OneWire_ROM_t array
- *  @param isAlarm	#TRUE when a alarm search should be done
+ *  @param isAlarm	#true when a alarm search should be done
  *  @return			1-Wire error
  */
-static OneWire_Error_t DS18B20_SearchDevices(uint8_t* Found, uint8_t Search, OneWire_ROM_t* ROM, const Bool_t isAlarm)
+static OneWire_Error_t DS18B20_SearchDevices(uint8_t* Found, uint8_t Search, OneWire_ROM_t* ROM, const bool isAlarm)
 {
 	uint8_t DevicesFound = 0x00;
 
@@ -108,12 +108,12 @@ OneWire_Error_t DS18B20_Init(void)
 
 OneWire_Error_t DS18B20_GetDevices(uint8_t* Found, uint8_t Search, OneWire_ROM_t* ROM)
 {
-	return DS18B20_SearchDevices(Found, Search, ROM, FALSE);
+	return DS18B20_SearchDevices(Found, Search, ROM, false);
 }
 
 OneWire_Error_t DS18B20_GetAlarmDevices(uint8_t* Found, uint8_t Search, OneWire_ROM_t* ROM)
 {
-	return DS18B20_SearchDevices(Found, Search, ROM, TRUE);
+	return DS18B20_SearchDevices(Found, Search, ROM, true);
 }
 
 OneWire_Error_t DS18B20_GetROM(const OneWire_ROM_t* ROM)

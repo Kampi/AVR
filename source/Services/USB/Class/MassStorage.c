@@ -1,7 +1,7 @@
 /*
  * MassStorage.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: USB mass storage class device driver functions.
 
@@ -31,7 +31,7 @@
 
 #include "Services/USB/Class/MassStorage/MassStorage.h"
 
-Bool_t USB_MassStorage_ReadCommandBlock(USB_MassStorage_CommandBlockWrapper_t* CBW)
+bool USB_MassStorage_ReadCommandBlock(USB_MassStorage_CommandBlockWrapper_t* CBW)
 {
-	return TRUE;
+	return true;
 }

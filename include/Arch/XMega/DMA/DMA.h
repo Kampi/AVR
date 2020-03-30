@@ -1,7 +1,7 @@
 /*
  * DMA.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for Atmel AVR XMega DMA controller.
 
@@ -223,8 +223,8 @@
  typedef struct
  {
 	 DMA_CH_t* Channel;						/**< Pointer to DMA channel object */ 
-	 Bool_t EnableSingleShot;				/**< Set to #TRUE  to enable single shot */
-	 Bool_t EnableRepeatMode;				/**< Set to #TRUE to enable repeat */ 
+	 bool EnableSingleShot;				/**< Set to #true  to enable single shot */
+	 bool EnableRepeatMode;				/**< Set to #true to enable repeat */ 
 	 DMA_BurstLength_t BurstLength;			/**< Burst length */ 
 	 DMA_AddressReload_t SrcReload;			/**< Reload mode for source address */ 
 	 DMA_AddressReload_t DstReload;			/**< Reload mode for destination address */ 
@@ -232,7 +232,7 @@
 	 DMA_AddressMode_t DstAddrMode;			/**< Address mode for destination address */ 
 	 DMA_TriggerSource_t TriggerSource;		/**< Trigger source */ 
 	 uint16_t TransferCount;				/**< Bytes to transfer */ 
-	 uint8_t RepeatCount;					/**< Repeat count. Only needed if #EnableRepeatMode is #TRUE */ 
+	 uint8_t RepeatCount;					/**< Repeat count. Only needed if #EnableRepeatMode is #true */ 
 	 uintptr_t SrcAddress;					/**< Source address */ 
 	 uintptr_t DstAddress;					/**< Destination address */ 
  } DMA_TransferConfig_t;
@@ -355,7 +355,7 @@
  /** @brief			Get the configuration of the DMA controller.
   *  param Config	Pointer to configuration struct
   */
- void DMA_Channel_SwitchRepeatMode(DMA_CH_t* Channel, Bool_t RepeatMode);
+ void DMA_Channel_SwitchRepeatMode(DMA_CH_t* Channel, bool RepeatMode);
  
  /** @brief			Get the configuration of the DMA controller.
   *  param Config	Pointer to configuration object
@@ -407,7 +407,7 @@
   *  param Channel		Pointer to DMA channel object
   *  param SingleShot	Enable/disable
   */
- void DMA_Channel_SwitchSingleShot(DMA_CH_t* Channel, Bool_t SingleShot);
+ void DMA_Channel_SwitchSingleShot(DMA_CH_t* Channel, bool SingleShot);
 
  /** @brief			Set the source reload mode of a channel.
   *  param Channel	Pointer to DMA channel object

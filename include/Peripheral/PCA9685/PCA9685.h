@@ -1,7 +1,7 @@
 /*
  * PCA9685.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for the PCA9685 PWM controller.
 
@@ -172,37 +172,37 @@
   *  @param	Enable	Enable/Disable
   *  @return		I2C error code
   */
- const I2C_Error_t PCA9685_SwitchSleep(const Bool_t Enable);
+ const I2C_Error_t PCA9685_SwitchSleep(const bool Enable);
 
  /** @brief			Enable/Disable sub 1 address call mode for the PWM controller.
   *  @param	Enable	Enable/Disable
   *  @return		I2C error code
   */
- const I2C_Error_t PCA9685_SwitchSub1(const Bool_t Enable);
+ const I2C_Error_t PCA9685_SwitchSub1(const bool Enable);
  
  /** @brief			Enable/Disable sub 2 address call mode for the PWM controller.
   *  @param	Enable	Enable/Disable
   *  @return		I2C error code
   */
- const I2C_Error_t PCA9685_SwitchSub2(const Bool_t Enable);
+ const I2C_Error_t PCA9685_SwitchSub2(const bool Enable);
  
  /** @brief			Enable/Disable sub 3 address call mode for the PWM controller.
   *  @param	Enable	Enable/Disable
   *  @return		I2C error code
   */
- const I2C_Error_t PCA9685_SwitchSub3(const Bool_t Enable);
+ const I2C_Error_t PCA9685_SwitchSub3(const bool Enable);
 
  /** @brief			Enable/Disable all call mode for the PWM controller.
   *  @param	Enable	Enable/Disable
   *  @return		I2C error code
   */
- const I2C_Error_t PCA9685_SwitchAllCall(const Bool_t Enable);
+ const I2C_Error_t PCA9685_SwitchAllCall(const bool Enable);
 
  /** @brief			Enable/Disable invert mode for the PWM controller.
   *  @param	Enable	Enable/Disable
   *  @return		I2C error code
   */
- const I2C_Error_t PCA9685_SwitchInvert(const Bool_t Enable);
+ const I2C_Error_t PCA9685_SwitchInvert(const bool Enable);
 
  /** @brief				Set the prescaler for the PWM controller.
   *  @param	Prescaler	Prescaler
@@ -235,7 +235,7 @@
 	 /** @brief			Enable/Disable the outputs of the PWM controller.
 	  *  @param	Enable	Enable/Disable
 	  */
-	 void PCA9685_SwitchOutputEnable(const Bool_t Enable);
+	 void PCA9685_SwitchOutputEnable(const bool Enable);
  #else
 	 #warning "No OE support for PCA9685"
  #endif

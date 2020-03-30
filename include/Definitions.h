@@ -1,7 +1,7 @@
 /*
  * Definitions.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Board and MCU definitions for the AVR library.
 
@@ -92,7 +92,7 @@
 	#define MCU_FAMILY_UNKNOWN									0		/**< Unknown MCU family */
 	#define MCU_FAMILY_MEGA										1		/**< AVR Mega MCU family */
 	#define MCU_FAMILY_TINY0									2		/**< AVR Tiny0 MCU family */
- /** @} */ // end of Architecture
+ /** @} */ // end of Family
 
  /** @defgroup Flashmemory
   *  @ingroup Configuration
@@ -101,7 +101,16 @@
   */
 	#define FLASH_UNKNOWN										0		/**< Unknown flash */
 	#define FLASH_AT45DB642D									1		/**< Atmel AT45DB642D flash memory */ 
- /** @} */ // end of Architecture
+ /** @} */ // end of Flashmemory
+
+ /** @defgroup HexFormats
+  *  @ingroup Configuration
+  *  Hex-File format definitions for the AVR bootloader.
+  *  @{
+  */
+	#define HEX_FORMAT_UNKNOWN									0		/**< Unknown Hex-File format */
+	#define HEX_FORMAT_INTEL									1		/**< Intel Hex-File format */ 
+ /** @} */ // end of HexFormats
 
  #include "Doxygen.h"
  #include "Macros.h"

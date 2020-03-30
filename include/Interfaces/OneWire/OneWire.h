@@ -1,7 +1,7 @@
 /*
  * OneWire.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: 1-Wire interface driver for AVR.
 
@@ -81,10 +81,10 @@
 
  /** @brief			Initialize a new ROM search and search the first device.
   *  @param ROM		Pointer to #OneWire_ROM_t object
-  *  @param isAlarm	#TRUE when a alarm search should be done
+  *  @param isAlarm	#true when a alarm search should be done
   *  @return		1-Wire error
   */
- OneWire_Error_t OneWire_StartSearch(const OneWire_ROM_t* ROM, const Bool_t isAlarm);
+ OneWire_Error_t OneWire_StartSearch(const OneWire_ROM_t* ROM, const bool isAlarm);
  
  /** @brief		Search the next 1-wire device.
   *				NOTE: You have to use #OneWire_StartSearch first!
@@ -94,9 +94,9 @@
  OneWire_Error_t OneWire_SearchNext(const OneWire_ROM_t* ROM);
  
  /** @brief		Check if the last device was found.
-  *  @return	#TRUE when last.
+  *  @return	#true when last.
   */
- Bool_t OneWire_IsLast(void);
+ bool OneWire_IsLast(void);
  
  /** @brief		Interrupt an active 1-wire search and perform a 1-wire reset.
   *  @return	1-Wire error

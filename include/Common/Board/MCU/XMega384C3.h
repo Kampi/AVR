@@ -1,7 +1,7 @@
 /*
  * XMega384C3.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: MCU specific definitions and constants for the Atmel XMega384C3.
 

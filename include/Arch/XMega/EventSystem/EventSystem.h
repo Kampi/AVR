@@ -1,7 +1,7 @@
 /*
  * EventSystem.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for XMega event System.
 
@@ -132,8 +132,8 @@
  /** @brief			Lock the event system.
   *  @param Lock	Enable/Disable the lock
   */
- static inline void Event_SwitchLock(const Bool_t Lock) __attribute__ ((always_inline));
- static inline void Event_SwitchLock(const Bool_t Lock)
+ static inline void Event_SwitchLock(const bool Lock) __attribute__ ((always_inline));
+ static inline void Event_SwitchLock(const bool Lock)
  {
 	 uint8_t Flags = CPU_IRQSave();
 

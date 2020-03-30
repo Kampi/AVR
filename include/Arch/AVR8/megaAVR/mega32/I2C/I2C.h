@@ -1,7 +1,7 @@
 /*
  * I2C.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for AVR8 I2C module.
 
@@ -149,7 +149,7 @@
  {
 	 I2C_ClockPrescaler_t Prescaler;				/**< Clock prescaler */ 
 	 uint32_t Bitrate;								/**< I2C bus frequency */
-	 Bool_t EnableInterruptSupport;					/**< Set to #TRUE to enable interrupt support */
+	 bool EnableInterruptSupport;					/**< Set to #true to enable interrupt support */
  } I2CM_Config_t;
 
  /** 
@@ -158,7 +158,7 @@
  typedef struct
  {
 	 uint8_t Address;								/**< Device address */
-	 Bool_t EnableInterruptSupport;					/**< Set to #TRUE to enable interrupt support in slave mode */
+	 bool EnableInterruptSupport;					/**< Set to #true to enable interrupt support in slave mode */
  } I2CS_Config_t;
 
  /** @brief I2C interrupt configuration object.
@@ -272,7 +272,7 @@
  /** @brief			Enable/Disable internal pull ups for the TWI.
   *  @param Enable	Enable/Disable
   */
- void I2C_SwitchPullUp(const Bool_t Enable);
+ void I2C_SwitchPullUp(const bool Enable);
 
  /*
 	Master functions
@@ -281,18 +281,18 @@
  /** @brief			Write a single byte with the TWI.
   *  @param Address	Slave address
   *  @param Data	Pointer to data
-  *  @param Stop	Set to #FALSE to send a repeated start instead of stop
+  *  @param Stop	Set to #false to send a repeated start instead of stop
   *  @return		I2C error
   */
- I2C_Error_t I2CM_WriteByte(const uint8_t Address, const uint8_t Data, const Bool_t Stop);
+ I2C_Error_t I2CM_WriteByte(const uint8_t Address, const uint8_t Data, const bool Stop);
 
  /** @brief			Read a single byte from the TWI.
   *  @param Address	Slave address
   *  @param Data	Pointer to data
-  *  @param Stop	Set to #FALSE to send a repeated start instead of stop
+  *  @param Stop	Set to #false to send a repeated start instead of stop
   *  @return		I2C error
   */
- I2C_Error_t I2CM_ReadByte(const uint8_t Address, uint8_t* Data, const Bool_t Stop);
+ I2C_Error_t I2CM_ReadByte(const uint8_t Address, uint8_t* Data, const bool Stop);
 
  /** @brief			Enable interrupt support for master mode.
   *  @param Device	Pointer to TWI object
@@ -310,20 +310,20 @@
   *  @param Address	Slave address
   *  @param Length	Byte count
   *  @param Data	Pointer to data
-  *  @param Stop	Set to #TRUE to send a repeated start instead of stop
+  *  @param Stop	Set to #true to send a repeated start instead of stop
   *  @return		I2C error
   */
- I2C_Error_t I2CM_WriteBytes(const uint8_t Address, const uint8_t Length, const uint8_t* Data, const Bool_t Stop);
+ I2C_Error_t I2CM_WriteBytes(const uint8_t Address, const uint8_t Length, const uint8_t* Data, const bool Stop);
 
  /** @brief			Read n bytes from the TWI.
   *  @param Device	Pointer to TWI object
   *  @param Address	Slave address
   *  @param Length	Byte count
   *  @param Data	Pointer to data
-  *  @param Stop	Set to #TRUE to send a repeated start instead of stop
+  *  @param Stop	Set to #true to send a repeated start instead of stop
   *  @return		I2C error
   */
- I2C_Error_t I2CM_ReadBytes(const uint8_t Address, const uint8_t Length, uint8_t* Data, const Bool_t Stop);
+ I2C_Error_t I2CM_ReadBytes(const uint8_t Address, const uint8_t Length, uint8_t* Data, const bool Stop);
 
  /*
 	Slave functions
@@ -347,8 +347,8 @@
  /** @brief			Enable/Disable general call recognition.
   *  @param Enable	Enable/Disable
   */
- static inline void I2CS_SwitchGeneralCall(const Bool_t Enable) __attribute__((always_inline));
- static inline void I2CS_SwitchGeneralCall(const Bool_t Enable)
+ static inline void I2CS_SwitchGeneralCall(const bool Enable) __attribute__((always_inline));
+ static inline void I2CS_SwitchGeneralCall(const bool Enable)
  {
 	 TWAR |= (TWAR & (~0x01)) | Enable;
  }

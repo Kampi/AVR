@@ -17,6 +17,6 @@ Global
 		{DAEB6578-CBE3-4D5B-B8BD-BB645CBC7213}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
+		HideSolutionNode = false
 	EndGlobalSection
 EndGlobal

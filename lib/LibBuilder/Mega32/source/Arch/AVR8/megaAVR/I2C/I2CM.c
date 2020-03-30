@@ -1,7 +1,7 @@
 /*
  * I2C.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for AVR8 I2C module master mode.
 
@@ -59,12 +59,12 @@ static I2C_Status_t I2CM_Send(const uint8_t Data)
 }
 
 /** @brief		Read a single byte.
- *  @param NACK	#TRUE if a NACK should be send instead of an ACK
+ *  @param NACK	#true if a NACK should be send instead of an ACK
  *  @return		Data byte
  */
-static uint8_t I2CM_Read(const Bool_t NACK)
+static uint8_t I2CM_Read(const bool NACK)
 {
-	if(NACK == TRUE)
+	if(NACK == true)
 	{
 		TWCR = (0x01 << TWINT) | (0x01 << TWEN);
 	}
@@ -112,9 +112,9 @@ void I2CM_SetBaudrate(const uint32_t Bitrate, const uint8_t Prescaler, const uin
 	TWBR = ((Clock / Bitrate) - 0x10) / (Exp << 0x01);
 }
 
-void I2C_EnablePullUp(const Bool_t Enable)
+void I2C_EnablePullUp(const bool Enable)
 {
-	if(Enable == TRUE)
+	if(Enable == true)
 	{
 		GPIO_Set(TWI_PORT, TWI_SCL);
 		GPIO_Set(TWI_PORT, TWI_SDA);
@@ -146,7 +146,7 @@ void I2CS_DisableInterruptSupport(void)
 	// ToDo
 }
 
-I2C_Error_t I2CM_WriteByte(const uint8_t Address, const uint8_t Data, const Bool_t Stop)
+I2C_Error_t I2CM_WriteByte(const uint8_t Address, const uint8_t Data, const bool Stop)
 {
 	I2C_Status_t Status = 0x00;
 	
@@ -166,7 +166,7 @@ I2C_Error_t I2CM_WriteByte(const uint8_t Address, const uint8_t Data, const Bool
 		return I2C_BUS_ERROR;
 	}
 
-	if(Stop == TRUE)
+	if(Stop == true)
 	{
 		I2CM_SendStop();
 	}
@@ -174,7 +174,7 @@ I2C_Error_t I2CM_WriteByte(const uint8_t Address, const uint8_t Data, const Bool
 	return I2C_NO_ERROR;
 }
 
-I2C_Error_t I2CM_ReadByte(const uint8_t Address, uint8_t* Data, const Bool_t Stop)
+I2C_Error_t I2CM_ReadByte(const uint8_t Address, uint8_t* Data, const bool Stop)
 {
 	I2C_Status_t Status = 0x00;
 	
@@ -189,9 +189,9 @@ I2C_Error_t I2CM_ReadByte(const uint8_t Address, uint8_t* Data, const Bool_t Sto
 		return I2C_READ_ADDR_ERROR;
 	}
 
-	*Data = I2CM_Read(TRUE);
+	*Data = I2CM_Read(true);
 
-	if(Stop == TRUE)
+	if(Stop == true)
 	{
 		I2CM_SendStop();
 	}
@@ -199,7 +199,7 @@ I2C_Error_t I2CM_ReadByte(const uint8_t Address, uint8_t* Data, const Bool_t Sto
 	return I2C_NO_ERROR;
 }
 
-I2C_Error_t I2CM_WriteBytes(const uint8_t Address, const uint8_t Length, const uint8_t* Data, const Bool_t Stop)
+I2C_Error_t I2CM_WriteBytes(const uint8_t Address, const uint8_t Length, const uint8_t* Data, const bool Stop)
 {	
 	I2C_Status_t Status = 0x00;
 	
@@ -222,7 +222,7 @@ I2C_Error_t I2CM_WriteBytes(const uint8_t Address, const uint8_t Length, const u
 		}
 	}
 
-	if(Stop == TRUE)
+	if(Stop == true)
 	{
 		I2CM_SendStop();
 	}
@@ -230,7 +230,7 @@ I2C_Error_t I2CM_WriteBytes(const uint8_t Address, const uint8_t Length, const u
 	return I2C_NO_ERROR;
 }
 
-I2C_Error_t I2CM_ReadBytes(const uint8_t Address, const uint8_t Length, uint8_t* Data, const Bool_t Stop)
+I2C_Error_t I2CM_ReadBytes(const uint8_t Address, const uint8_t Length, uint8_t* Data, const bool Stop)
 {
 	I2C_Status_t Status = 0x00;
 	
@@ -247,12 +247,12 @@ I2C_Error_t I2CM_ReadBytes(const uint8_t Address, const uint8_t Length, uint8_t*
 
 	for(uint8_t i = 0x00; i < (Length - 0x01); i++)
 	{
-		*Data++ = I2CM_Read(FALSE);
+		*Data++ = I2CM_Read(false);
 	}
 
-	*Data = I2CM_Read(TRUE);
+	*Data = I2CM_Read(true);
 
-	if(Stop == TRUE)
+	if(Stop == true)
 	{
 		I2CM_SendStop();
 	}

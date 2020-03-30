@@ -1,7 +1,7 @@
 /*
  * main.c
  * 
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Bootloader example for XMega.
 
@@ -39,7 +39,7 @@ int main(void)
 	Bootloader_Init();
 
 	// Enter the bootloader mode and wait for a program
-	if(Bootloader_Enter() == TRUE)
+	if(Bootloader_Enter() == true)
 	{
 		Bootloader_Exit();
 	}

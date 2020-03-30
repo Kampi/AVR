@@ -1,7 +1,7 @@
 /*
  * ST7565R.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for ST7565R Graphic LCD.
 
@@ -84,7 +84,7 @@
 	#if(ST7565R_INTERFACE_TYPE == INTERFACE_USART_SPI)
 		#define ST7565R_SPIM_INIT(Config)											USART_SPI_Init(Config)
 		#define ST7565R_SPIM_TRANSMIT(Data)											USART_SPI_SendData(&CONCAT(DISPLAY_INTERFACE), Data)
-		#define ST7565R_SPIM_SET_CLOCK(SPIClock, Clock)								USART_SPI_SetClockRate(&CONCAT(DISPLAY_INTERFACE), SPIClock, Clock, FALSE)
+		#define ST7565R_SPIM_SET_CLOCK(SPIClock, Clock)								USART_SPI_SetClockRate(&CONCAT(DISPLAY_INTERFACE), SPIClock, Clock, false)
 		#define ST7565R_SPIM_GET_CLOCK(Clock)										USART_SPI_GetClockRate(&CONCAT(DISPLAY_INTERFACE), Clock)
 		#define ST7565R_SPIM_CHIP_SELECT(Port, Pin)									USART_SPI_SelectDevice(Port, Pin)
 		#define ST7565R_SPIM_CHIP_DESELECT(Port, Pin)								USART_SPI_DeselectDevice(Port, Pin)
@@ -195,9 +195,9 @@ void Display_Reset(void)
 	ST7565R_SoftwareReset();
 }
 
-void Display_Switch(const Bool_t State)
+void Display_Switch(const bool State)
 {
-	if(State == TRUE)
+	if(State == true)
 	{
 		ST7565R_WriteCommand(ST7565R_CMD_DISPLAY_ON);
 	}
@@ -255,9 +255,9 @@ void ST7565R_SoftwareReset(void)
 	ST7565R_WriteCommand(ST7565R_CMD_RESET);
 }
 
-void ST7565R_SleepEnable(const Bool_t State)
+void ST7565R_SleepEnable(const bool State)
 {
-	if(State == TRUE)
+	if(State == true)
 	{
 		ST7565R_WriteCommand(ST7565R_CMD_SLEEP_MODE);
 	}
@@ -267,9 +267,9 @@ void ST7565R_SleepEnable(const Bool_t State)
 	}
 }
 
-void ST7565R_SwitchInvert(const Bool_t Invert)
+void ST7565R_SwitchInvert(const bool Invert)
 {
-	if(Invert == TRUE)
+	if(Invert == true)
 	{
 		ST7565R_WriteCommand(ST7565R_CMD_DISPLAY_REVERSE);
 	}
@@ -295,13 +295,13 @@ void ST7565R_SetContrast(const uint8_t Contrast)
 	ST7565R_WriteCommand(ST7565R_CMD_ELECTRONIC_VOLUME(ContrastTemp));
 }
 
-void ST7565R_SwitchBacklight(const Bool_t State)
+void ST7565R_SwitchBacklight(const bool State)
 {
-	if(State == FALSE)
+	if(State == false)
 	{
 		GPIO_Clear(GET_PERIPHERAL(ST7565R_BACKLIGHT), GET_INDEX(ST7565R_BACKLIGHT));
 	}
-	else if(State == TRUE)
+	else if(State == true)
 	{
 		GPIO_Set(GET_PERIPHERAL(ST7565R_BACKLIGHT), GET_INDEX(ST7565R_BACKLIGHT));
 	}

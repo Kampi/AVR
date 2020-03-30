@@ -149,7 +149,7 @@ void AC_DisableOutput(AC_t* Device, AC_Comparator_t Comparator)
 	Device->CTRLA &= ~Comparator;
 }
 
-void AC_SetSpeed(AC_t* Device, AC_Comparator_t Comparator, Bool_t Speed)
+void AC_SetSpeed(AC_t* Device, AC_Comparator_t Comparator, bool Speed)
 {	
 	if(Comparator & AC_COMPARATOR_0)
 	{
@@ -162,7 +162,7 @@ void AC_SetSpeed(AC_t* Device, AC_Comparator_t Comparator, Bool_t Speed)
 	}
 }
 
-Bool_t AC_GetSpeed(AC_t* Device, AC_Comparator_t Comparator)
+bool AC_GetSpeed(AC_t* Device, AC_Comparator_t Comparator)
 {
 	if(Comparator & AC_COMPARATOR_1)
 	{

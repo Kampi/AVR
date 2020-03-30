@@ -1,7 +1,7 @@
 /*
  * ADC.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for Atmel AVR8 megaAVR ADC module.
 

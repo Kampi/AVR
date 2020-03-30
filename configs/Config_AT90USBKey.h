@@ -1,7 +1,7 @@
 /*
  * Config_AT90USBKey.h
  * 
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Project configuration example for the AT90USBKey development board.
 

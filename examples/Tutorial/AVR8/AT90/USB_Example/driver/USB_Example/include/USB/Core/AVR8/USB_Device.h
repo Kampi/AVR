@@ -1,7 +1,7 @@
 /*
  * USB_Device.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: USB device controller definition for AT90USB1287.
 

@@ -1,7 +1,7 @@
 /*
  * USB_Interrupt.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Interrupt functions for Atmel AVR AT90 USB interface.
 
@@ -55,15 +55,15 @@
  
  /** @brief			Check if the given interrupt is enabled.
   *  @param Source	Interrupt source
-  *  @return		#TRUE if the interrupt source is enabled
+  *  @return		#true if the interrupt source is enabled
   */
- Bool_t USB_Controller_IsInterruptEnabled(const USB_InterruptType_t Interrupt);
+ bool USB_Controller_IsInterruptEnabled(const USB_InterruptType_t Interrupt);
 
  /** @brief			Check if the given interrupt is triggered.
   *  @param Source	Interrupt source
-  *  @return		#TRUE if the interrupt source is enabled
+  *  @return		#true if the interrupt source is enabled
   */
- Bool_t USB_Controller_CheckForInterrupt(const USB_InterruptType_t Interrupt);
+ bool USB_Controller_CheckForInterrupt(const USB_InterruptType_t Interrupt);
 
  /** @brief			Clear a given interrupt flag.
   *  @param Source	Interrupt source

@@ -82,7 +82,7 @@ void DMA_Channel_Enable(DMA_CH_t* Channel)
 	Channel->CTRLA |= DMA_CH_ENABLE_bm;
 }
 
-void DMA_Channel_SwitchRepeatMode(DMA_CH_t* Channel, Bool_t RepeatMode)
+void DMA_Channel_SwitchRepeatMode(DMA_CH_t* Channel, bool RepeatMode)
 {
 	if(RepeatMode)
 	{
@@ -186,13 +186,13 @@ void DMA_CHannel_SetRepeatCount(DMA_CH_t* Channel, uint8_t RepeatCount)
 	 Channel->REPCNT = RepeatCount;
 }
  
-void DMA_Channel_SwitchSingleShot(DMA_CH_t* Channel, Bool_t SingleShot)
+void DMA_Channel_SwitchSingleShot(DMA_CH_t* Channel, bool SingleShot)
 {
-	if(SingleShot == TRUE)
+	if(SingleShot == true)
 	{
 		Channel->CTRLA |= DMA_CH_SINGLE_bm;
 	}
-	else if(SingleShot == FALSE)
+	else if(SingleShot == false)
 	{
 		Channel->CTRLA &= ~DMA_CH_SINGLE_bm;
 	}

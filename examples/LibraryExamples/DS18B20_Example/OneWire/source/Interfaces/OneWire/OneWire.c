@@ -1,7 +1,7 @@
 /*
  * OneWire.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: 1-Wire interface driver for AVR.
 
@@ -102,9 +102,9 @@
 
 static uint8_t __LastFamilyDiscrepancy;
 static uint8_t __LastDiscrepancy;
-static Bool_t __LastDevice;
-static Bool_t __SearchActive;
-static Bool_t __isAlarm;
+static bool __LastDevice;
+static bool __SearchActive;
+static bool __isAlarm;
 
 static const uint8_t __OneWire_CRCTable[] = 
 {
@@ -130,10 +130,10 @@ static const uint8_t __OneWire_CRCTable[] =
  *					NOTE: Visit https://www.maximintegrated.com/en/design/technical-documents/app-notes/1/187.html
  *					for more detailed information.
  *  @param ROM		Pointer to array of #OneWire_ROM_t objects
- *  @param isAlarm	#TRUE when a alarm search should be done
+ *  @param isAlarm	#true when a alarm search should be done
  *  @return			1-Wire error
  */
-static OneWire_Error_t OneWire_SearchROM(const OneWire_ROM_t* ROM, const Bool_t isAlarm)
+static OneWire_Error_t OneWire_SearchROM(const OneWire_ROM_t* ROM, const bool isAlarm)
 {
 	OneWire_Error_t ErrorCode = ONEWIRE_NO_ERROR;
 	uint8_t* pROM = (uint8_t*)ROM;
@@ -159,14 +159,14 @@ static OneWire_Error_t OneWire_SearchROM(const OneWire_ROM_t* ROM, const Bool_t 
 		if(ErrorCode != ONEWIRE_NO_ERROR)
 		{
 			__LastDiscrepancy = 0x00;
-			__LastDevice = FALSE;
+			__LastDevice = false;
 			__LastDiscrepancy = 0x00;
 
 			return ErrorCode;
 		}
 
 		// Transmit the search command
-		if(isAlarm == TRUE)
+		if(isAlarm == true)
 		{
 			OneWire_WriteByte(ONEWIRE_ALARM_SEARCH);
 		}
@@ -258,8 +258,8 @@ static OneWire_Error_t OneWire_SearchROM(const OneWire_ROM_t* ROM, const Bool_t 
 			// Check for last device
 			if(__LastDiscrepancy == 0x00)
 			{
-				__LastDevice = TRUE;
-				__SearchActive = FALSE;
+				__LastDevice = true;
+				__SearchActive = false;
 			}
 		}
 	}
@@ -268,7 +268,7 @@ static OneWire_Error_t OneWire_SearchROM(const OneWire_ROM_t* ROM, const Bool_t 
 	if((ErrorCode != ONEWIRE_NO_ERROR) || !(*pROM))
 	{
 		__LastDiscrepancy = 0x00;
-		__LastDevice = FALSE;
+		__LastDevice = false;
 		__LastFamilyDiscrepancy = 0x00;
 	
 		if(!(*pROM))
@@ -282,7 +282,7 @@ static OneWire_Error_t OneWire_SearchROM(const OneWire_ROM_t* ROM, const Bool_t 
 
 OneWire_Error_t OneWire_Init(void)
 {
-	__SearchActive = FALSE;
+	__SearchActive = false;
 
 	#if(ONEWIRE_INTERFACE == INTERFACE_GPIO)
 		// Set DQ as output and enable the pull up resistor for the input state
@@ -316,12 +316,12 @@ uint8_t OneWire_CRC(const uint8_t Length, const uint8_t* Data)
 	return CRC_Temp;
 }
 
-OneWire_Error_t OneWire_StartSearch(const OneWire_ROM_t* ROM, const Bool_t isAlarm)
+OneWire_Error_t OneWire_StartSearch(const OneWire_ROM_t* ROM, const bool isAlarm)
 {
 	__LastFamilyDiscrepancy = 0x00;
 	__LastDiscrepancy = 0;
-	__LastDevice = FALSE;
-	__SearchActive = TRUE;
+	__LastDevice = false;
+	__SearchActive = true;
 	__isAlarm = isAlarm;
 
 	if(ROM == NULL)
@@ -334,7 +334,7 @@ OneWire_Error_t OneWire_StartSearch(const OneWire_ROM_t* ROM, const Bool_t isAla
 
 OneWire_Error_t OneWire_SearchNext(const OneWire_ROM_t* ROM)
 {
-	if(__SearchActive == TRUE)
+	if(__SearchActive == true)
 	{
 		return OneWire_SearchROM(ROM, __isAlarm);
 	}
@@ -342,14 +342,14 @@ OneWire_Error_t OneWire_SearchNext(const OneWire_ROM_t* ROM)
 	return ONEWIRE_INACTIVE_SEARCH;
 }
 
-Bool_t OneWire_IsLast(void)
+bool OneWire_IsLast(void)
 {
 	return __LastDevice;
 }
 
 OneWire_Error_t OneWire_StopSearch(void)
 {
-	__SearchActive = FALSE;
+	__SearchActive = false;
 
 	return OneWire_Reset();
 }

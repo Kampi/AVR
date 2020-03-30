@@ -1,7 +1,7 @@
 /*
  * USB_Interrupt.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Interrupt functions for Atmel AVR AT90 USB interface.
 
@@ -84,7 +84,7 @@ void USB_Controller_EnableInterrupt(const USB_InterruptType_t Source)
 	}
 }
 
-Bool_t USB_Controller_IsInterruptEnabled(const USB_InterruptType_t Interrupt)
+bool USB_Controller_IsInterruptEnabled(const USB_InterruptType_t Interrupt)
 {
 	switch(Interrupt)
 	{
@@ -125,10 +125,10 @@ Bool_t USB_Controller_IsInterruptEnabled(const USB_InterruptType_t Interrupt)
 		*/
 	}
 	 
-	return FALSE;
+	return false;
 }
 
-Bool_t USB_Controller_CheckForInterrupt(const USB_InterruptType_t Interrupt)
+bool USB_Controller_CheckForInterrupt(const USB_InterruptType_t Interrupt)
 {
 	switch(Interrupt)
 	{
@@ -169,7 +169,7 @@ Bool_t USB_Controller_CheckForInterrupt(const USB_InterruptType_t Interrupt)
 		*/
 	}
  
-	return FALSE;
+	return false;
 }
 
 void USB_Controller_ClearInterruptFlag(const USB_InterruptType_t Interrupt)
@@ -393,7 +393,7 @@ ISR(USB_GEN_vect)
 		USB_Controller_DisableInterrupt(USB_SUSPEND_INTERRUPT);
 		USB_Controller_EnableInterrupt(USB_WAKE_INTERRUPT);
 
-		if(!Endpoint_Configure(ENDPOINT_CONTROL_ADDRESS, ENDPOINT_TYPE_CONTROL, ENDPOINT_CONTROL_SIZE, FALSE))
+		if(!Endpoint_Configure(ENDPOINT_CONTROL_ADDRESS, ENDPOINT_TYPE_CONTROL, ENDPOINT_CONTROL_SIZE, false))
 		{
 			if(_USBEvents.Error != NULL)
 			{

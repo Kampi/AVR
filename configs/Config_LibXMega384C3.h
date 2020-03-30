@@ -1,7 +1,7 @@
 /*
  * Config_LibXMega384C3.h
  * 
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: XMega384C3 configuration file for library builder.
 

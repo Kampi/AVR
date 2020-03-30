@@ -17,9 +17,9 @@ SPIM_Config_t Config_SPI = {
 	MCP2515 configuration
 */
 MCP2515_Config_t Config = {
-	.EnableOneShot = FALSE,
-	.EnableLoopBack = FALSE,
-	.EnableRollover = FALSE,
+	.EnableOneShot = false,
+	.EnableLoopBack = false,
+	.EnableRollover = false,
 	.Channel = MCP2515_INT_CHANNEL,
 	.Port = GET_PERIPHERAL(MCP2515_INT),
 	.Pin = GET_INDEX(MCP2515_INT),

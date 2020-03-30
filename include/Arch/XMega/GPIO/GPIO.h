@@ -1,7 +1,7 @@
 /*
  * GPIO.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for Atmel AVR8 XMega GPIO interface.
 
@@ -186,8 +186,8 @@
   *  @param Pin		Pin number
   *  @return		I/O state
   */
- static inline const Bool_t GPIO_Read(PORT_t* Port, const uint8_t Pin) __attribute__((always_inline));
- static inline const Bool_t GPIO_Read(PORT_t* Port, const uint8_t Pin)
+ static inline const bool GPIO_Read(PORT_t* Port, const uint8_t Pin) __attribute__((always_inline));
+ static inline const bool GPIO_Read(PORT_t* Port, const uint8_t Pin)
  {
 	 return (Port->IN & (0x01 << Pin)) >> Pin;
  }
@@ -247,12 +247,12 @@
   *  @param Mask	I/O mask
   *  @param Enable	Enable/Disable
   */
- static inline void GPIO_SwitchInvert(PORT_t* Port, const uint8_t Mask, const Bool_t Enable) __attribute__((always_inline));
- static inline void GPIO_SwitchInvert(PORT_t* Port, const uint8_t Mask, const Bool_t Enable)
+ static inline void GPIO_SwitchInvert(PORT_t* Port, const uint8_t Mask, const bool Enable) __attribute__((always_inline));
+ static inline void GPIO_SwitchInvert(PORT_t* Port, const uint8_t Mask, const bool Enable)
  {
 	 PORTCFG.MPCMASK = Mask;
 
-	 if(Enable == TRUE)
+	 if(Enable == true)
 	 {
 		 Port->PIN0CTRL |= PORT_INVEN_bm;
 	 }
@@ -267,12 +267,12 @@
   *  @param Mask	I/O mask
   *  @param Enable	Enable/Disable
   */
- static inline void GPIO_SwitchSlewRate(PORT_t* Port, const uint8_t Mask, const Bool_t Enable) __attribute__((always_inline));
- static inline void GPIO_SwitchSlewRate(PORT_t* Port, const uint8_t Mask, const Bool_t Enable)
+ static inline void GPIO_SwitchSlewRate(PORT_t* Port, const uint8_t Mask, const bool Enable) __attribute__((always_inline));
+ static inline void GPIO_SwitchSlewRate(PORT_t* Port, const uint8_t Mask, const bool Enable)
  {
 	 PORTCFG.MPCMASK = Mask;
 	 
-	 if(Enable == TRUE)
+	 if(Enable == true)
 	 {
 		 Port->PIN0CTRL |= PORT_SRLEN_bm;
 	 }
@@ -285,10 +285,10 @@
  /** @brief			Switch the position for the clock and the event output from pin 7 to pin 4 or vice versa.
   *  @param Enable	Enable/Disable
   */
- static inline void GPIO_SwitchOutputLoc(const Bool_t Enable) __attribute__((always_inline));
- static inline void GPIO_SwitchOutputLoc(const Bool_t Enable)
+ static inline void GPIO_SwitchOutputLoc(const bool Enable) __attribute__((always_inline));
+ static inline void GPIO_SwitchOutputLoc(const bool Enable)
  {
-	 if(Enable == TRUE)
+	 if(Enable == true)
 	 {
 		 PORTCFG.CLKEVOUT |= PORTCFG_CLKEVPIN_bm;
 	 }

@@ -124,7 +124,6 @@ void SPI_RemoveCallback(SPI_t* Device, const SPI_CallbackType_t Callback)
 	}
 }
 
-
 void SPI_ChangeInterruptLevel(SPI_t* Device, const SPI_CallbackType_t Callback, const Interrupt_Level_t InterruptLevel)
 {
 	// ToDo

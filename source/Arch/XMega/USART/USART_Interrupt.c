@@ -47,10 +47,10 @@
 		SPI_Callback_t CompleteInterrupt;
 	} _USART_SPI_Callbacks[USART_DEVICES][USART_CHANNEL];
 
-	extern Bool_t _USART_Echo[USART_DEVICES][USART_CHANNEL];
+	extern bool _USART_Echo[USART_DEVICES][USART_CHANNEL];
 	extern USART_Message_t _USART_Messages[USART_DEVICES][USART_CHANNEL];
 
-	Bool_t _USART_IsSPI[USART_DEVICES][USART_CHANNEL];	
+	bool _USART_IsSPI[USART_DEVICES][USART_CHANNEL];	
 	SPI_Message_t _SPI_Messages[USART_DEVICES][USART_CHANNEL];
 #endif
 
@@ -61,7 +61,7 @@
  */
 static void _USART_InterruptHandler(const uint8_t Device, const uint8_t Channel, const USART_CallbackType_t Callback)
 {
-	if(_USART_IsSPI[Device][Channel] == TRUE)
+	if(_USART_IsSPI[Device][Channel] == true)
 	{
 		if(Callback == USART_TXC_INTERRUPT)
 		{
@@ -114,7 +114,7 @@ static void _USART_InterruptHandler(const uint8_t Device, const uint8_t Channel,
 		else if(Callback == USART_RXC_INTERRUPT)
 		{		
 			// Echo message when enabled
-			if(_USART_Echo[Device][Channel] == TRUE)
+			if(_USART_Echo[Device][Channel] == true)
 			{
 				_USART_Messages[Device][Channel].Device->DATA = _USART_Messages[Device][Channel].Device->DATA;
 			}
