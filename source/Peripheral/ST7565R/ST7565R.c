@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for ST7565R Graphic LCD.
+ *  File info: Driver for the ST7565R graphic LCD controller.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Peripheral/ST7565R/ST7565R.c
- *  @brief Driver for ST7565R Graphic LCD.
+ *  @brief Driver for the Sitronix ST7565R SPI graphic LCD controller.
  *
  *  This contains the implementation of the display driver.
  *
