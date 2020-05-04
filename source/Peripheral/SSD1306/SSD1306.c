@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for SSD1306 display controller.
+ *  File info: Driver for the SSD1306 display controller.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Peripheral/SSD1306/SSD1306.c
- *  @brief Driver for SSD1306 display controller.
+ *  @brief Driver for the Solomon Systech SSD1306 SPI display controller.
  *
  *  This contains the implementation of the display driver.
  *

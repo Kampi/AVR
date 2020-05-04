@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for BMP180 I2C pressure sensor.
+ *  File info: Driver for the BMP180 I2C pressure sensor.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
