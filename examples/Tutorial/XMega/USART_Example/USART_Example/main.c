@@ -81,11 +81,11 @@ int main(void)
 		Send a message
 	*/
 	char* Data = "Hello, World";
-    while(*Data)
-    {
+	while(*Data)
+	{
 		while(!(USARTC0.STATUS & USART_DREIF_bm));
 		USARTC0.DATA = *Data++;
-    }
+	}
 	
 	/*
 		Send CR + LF
@@ -102,9 +102,9 @@ int main(void)
 	PMIC.CTRL = PMIC_LOLVLEN_bm;
 	sei();
 	
-    while(1) 
-    {
-    }
+	while(1) 
+	{
+	}
 }
 
 ISR(USARTC0_RXC_vect)
