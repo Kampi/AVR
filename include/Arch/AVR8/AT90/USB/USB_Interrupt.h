@@ -52,12 +52,6 @@
   *  @param Source	Interrupt source
   */
  void USB_Controller_EnableInterrupt(const USB_InterruptType_t Source);
- 
- /** @brief			Check if the given interrupt is enabled.
-  *  @param Source	Interrupt source
-  *  @return		#true if the interrupt source is enabled
-  */
- bool USB_Controller_IsInterruptEnabled(const USB_InterruptType_t Interrupt);
 
  /** @brief			Check if the given interrupt is triggered.
   *  @param Source	Interrupt source

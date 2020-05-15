@@ -1,7 +1,7 @@
 /*
  * USB_Interrupt.h
  *
- *  Copyright (C) Daniel Kampert, 2020
+ *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
  *  File info: Interrupt functions for AT90USB1287 USB.
 
@@ -52,12 +52,6 @@
   *  @param Source	Interrupt source
   */
  void USB_Controller_EnableInterrupt(const USB_InterruptType_t Source);
-
- /** @brief			Check if the given interrupt is enabled.
-  *  @param Source	Interrupt source
-  *  @return		1 if the interrupt source is enabled
-  */
- uint8_t USB_Controller_IsInterruptEnabled(const USB_InterruptType_t Interrupt);
 
  /** @brief			Check if the given interrupt is triggered.
   *  @param Source	Interrupt source

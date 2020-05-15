@@ -1,7 +1,7 @@
 /*
  * Endpoints.h
  *
- *  Copyright (C) Daniel Kampert, 2020
+ *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
  *  File info: USB Endpoints for AT90USB1287.
 
@@ -191,7 +191,7 @@
 
  /** @brief		Test if the control endpoint received an setup packed.
   *				NOTE: You have so use #Endpoint_Select first!
-  *  @return	#true when a setup packed was received
+  *  @return	#TRUE when a setup packed was received
   */
  static inline uint8_t Endpoint_SETUPReceived(void) __attribute__ ((always_inline));
  static inline uint8_t Endpoint_SETUPReceived(void)
@@ -201,7 +201,7 @@
 
  /** @brief		Test if new OUT data is received.
   *				NOTE: You have so use #Endpoint_Select first!
-  *  @return	#true when OUT data received.
+  *  @return	#TRUE when OUT data received.
   */
  static inline uint8_t Endpoint_OUTReceived(void) __attribute__ ((always_inline));
  static inline uint8_t Endpoint_OUTReceived(void)
@@ -211,7 +211,7 @@
 
  /** @brief		Test if the bank can accept new IN data.
   *				NOTE: You have so use #Endpoint_Select first!
-  *  @return	#true when bank is ready
+  *  @return	#TRUE when bank is ready
   */
  static inline uint8_t Endpoint_INReady(void) __attribute__ ((always_inline));
  static inline uint8_t Endpoint_INReady(void)
@@ -239,7 +239,7 @@
 
  /** @brief		Test if the endpoint is stalled.
   *				NOTE: You have so use #Endpoint_Select first!
-  *  @return	#true when stalled
+  *  @return	#TRUE when stalled
   */
  static inline uint8_t Endpoint_IsSTALL(void) __attribute__ ((always_inline));
  static inline uint8_t Endpoint_IsSTALL(void)
@@ -249,7 +249,7 @@
 
  /** @brief		Test if the application can read data from the endpoint or can write data to the endpoint.
   *				NOTE: You have so use #Endpoint_Select first!
-  *  @return	#true when IN endpoint and write is allowed, #true when OUT endpoint and read is allowed
+  *  @return	#TRUE when IN endpoint and write is allowed, #TRUE when OUT endpoint and read is allowed
   */
  static inline uint8_t Endpoint_IsReadWriteAllowed(void) __attribute__ ((always_inline));
  static inline uint8_t Endpoint_IsReadWriteAllowed(void)
@@ -292,8 +292,8 @@
   *  @param Address		Endpoint address
   *  @param Type		Endpoint type
   *  @param Size		Endpoint size in bytes
-  *  @param DoubleBank	Set to #true to use a double bank for the endpoint
-  *  @return			#true when successfully
+  *  @param DoubleBank	Set to #TRUE to use a double bank for the endpoint
+  *  @return			#TRUE when successfully
   */
  uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, const uint8_t Size, const uint8_t DoubleBank);
 

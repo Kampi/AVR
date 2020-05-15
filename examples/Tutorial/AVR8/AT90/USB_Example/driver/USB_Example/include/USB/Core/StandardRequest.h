@@ -1,7 +1,7 @@
 /*
  * StandardRequest.h
  *
- *  Copyright (C) Daniel Kampert, 2020
+ *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
  *  File info: Standard requests for USB.
 
