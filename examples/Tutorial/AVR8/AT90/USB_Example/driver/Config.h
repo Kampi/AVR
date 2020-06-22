@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Configuration file for the AT90USB1287 USB example.
+ *  File info: Configuration file for the AT90USB1287 USB examples.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,13 +23,13 @@
  */
 
 /** @file config/Config.h
- *  @brief Configuration file for the AT90USB1287 USB example.
+ *  @brief Configuration file for the AT90USB1287 USB examples.
  *
  *  @author Daniel Kampert
  */
 
-#ifndef CONFIG_HD44780_H_
-#define CONFIG_HD44780_H_
+#ifndef CONFIG_USB_H_
+#define CONFIG_USB_H_
 
 
-#endif /* CONFIG_HD44780_H_ */
+#endif /* CONFIG_USB_H_ */
