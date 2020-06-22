@@ -247,7 +247,7 @@
 		 SysClock_EnableClock(CLOCK_SOURCE_INT2MHZ);
 		 SysClock_SetClockSource(CLOCK_SOURCE_INT2MHZ);
 	 #else
-	 #warning "F_CPU not valid! Use default 2 MHz clock."
+		#warning "F_CPU not valid! Use default 2 MHz clock."
 		 SysClock_EnableClock(CLOCK_SOURCE_INT2MHZ);
 		 SysClock_SetClockSource(CLOCK_SOURCE_INT2MHZ);
 	 #endif
@@ -268,114 +268,19 @@
 	 return 2000000;
  }
 
- 
- /** @brief		Get the current clock from the clk_Per4 domain.
+  /** @brief	Get the current clock from the clk_Per4 domain.
   *  @return	CPU clock frequency
   */
- static inline uint32_t SysClock_GetClockPer4(void) __attribute__ ((always_inline));
- static inline uint32_t SysClock_GetClockPer4(void)
- {
-	 uint32_t Clock = SysClock_GetClock();
-	 
-	 switch(CLK.PSCTRL >> 0x02)
-	 {
-		 case(0x00):
-		 {
-			 return Clock;
-		 }
-		 case(0x01):
-		 {
-			 return Clock >> 0x01;
-		 }
-		 case(0x03):
-		 {
-			 return Clock >> 0x02;
-		 }
-		 case(0x05):
-		 {
-			 return Clock >> 0x03;
-		 }
-		 case(0x07):
-		 {
-			 return Clock >> 0x04;
-		 }
-		 case(0x09):
-		 {
-			 return Clock >> 0x05;
-		 }
-		 case(0x0B):
-		 {
-			 return Clock >> 0x06;
-		 }
-		 case(0x0D):
-		 {
-			 return Clock >> 0x07;
-		 }
-		 case(0x0F):
-		 {
-			 return Clock >> 0x08;
-		 }
-		 case(0x11):
-		 {
-			 return Clock >> 0x09;
-		 }
-		default:
-		{
-			// Invalid case
-			return 0;
-		}
-	 }
- }
- 
+ uint32_t SysClock_GetClockPer4(void);
+
  /** @brief		Get the current clock from the clk_Per2 domain.
   *  @return	CPU clock frequency
   */
- static inline uint32_t SysClock_GetClockPer2(void) __attribute__ ((always_inline));
- static inline uint32_t SysClock_GetClockPer2(void)
- {
-	 uint32_t Clock = SysClock_GetClockPer4();
-	
-	 switch((CLK.PSCTRL & 0x03))
-	 {
-		 case(0x02):
-		 {
-			 return Clock >> 0x02;
-		 }
-		 case(0x03):
-		 {
-			 return Clock >> 0x01;
-		 }
-		 default:
-		 {
-			return Clock;
-		 }
-	 }
- }
+ uint32_t SysClock_GetClockPer2(void);
  
  /** @brief		Get the current clock from the clk_Per domain.
   *  @return	Clock frequency
   */
- static inline uint32_t SysClock_GetClockPer(void) __attribute__ ((always_inline));
- static inline uint32_t SysClock_GetClockPer(void)
- {
-	 uint32_t Clock = SysClock_GetClockPer2();
-	 
-	 switch(CLK.PSCTRL & 0x01)
-	 {
-		 case(0x00):
-		 {
-			 return Clock;
-		 }
-		 case(0x01):
-		 {
-			 return Clock >> 0x01;
-		 }
-		 // Invalid case
-		 default:
-		 {
-			 return 0;
-		 }
-	 }
- }
+ uint32_t SysClock_GetClockPer(void);
 
 #endif /* SYSCLOCK_H_ */

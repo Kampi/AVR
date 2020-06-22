@@ -37,4 +37,6 @@
  #define BOOTLOADER_INTERFACE					C, 0					/**< USART interface used by the bootloader. */
  #define BOOTLOADER_BAUD						19200					/**< USART baud rate used by the bootloader. */
 
+ #define BOOTLOADER_FILE_FORMAT					HEX_FORMAT_INTEL		/**< Use the Intel Hex-Format as input file. */
+
 #endif /* CONFIG_BOOTLOADER_H_ */
