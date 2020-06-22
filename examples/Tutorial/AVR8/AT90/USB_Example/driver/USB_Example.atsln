@@ -4,6 +4,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "USB_Example", "USB_Example\USB_Example.cproj", "{DCE6C7E3-EE26-4D79-826B-08594B9AD897}"
+	ProjectSection(ProjectDependencies) = postProject
+		{00801EB2-8D85-47EA-86C8-E93467FFB558} = {00801EB2-8D85-47EA-86C8-E93467FFB558}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{FCEAD3B2-9498-4F05-A83C-A2BB852DE836}"
+	ProjectSection(SolutionItems) = preProject
+		Config.h = Config.h
+	EndProjectSection
+EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "Driver", "Driver\Driver.cproj", "{00801EB2-8D85-47EA-86C8-E93467FFB558}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +25,10 @@ Global
 		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Debug|AVR.Build.0 = Debug|AVR
 		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Release|AVR.ActiveCfg = Release|AVR
 		{DCE6C7E3-EE26-4D79-826B-08594B9AD897}.Release|AVR.Build.0 = Release|AVR
+		{00801EB2-8D85-47EA-86C8-E93467FFB558}.Debug|AVR.ActiveCfg = Debug|AVR
+		{00801EB2-8D85-47EA-86C8-E93467FFB558}.Debug|AVR.Build.0 = Debug|AVR
+		{00801EB2-8D85-47EA-86C8-E93467FFB558}.Release|AVR.ActiveCfg = Release|AVR
+		{00801EB2-8D85-47EA-86C8-E93467FFB558}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
