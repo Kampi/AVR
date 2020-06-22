@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{FCEAD3
 EndProject
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "Driver", "Driver\Driver.cproj", "{00801EB2-8D85-47EA-86C8-E93467FFB558}"
 EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "USB_Mouse", "USB_Mouse\USB_Mouse.cproj", "{41E0889D-031D-4796-9B3F-11F5716A91F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AVR = Debug|AVR
@@ -29,6 +31,10 @@ Global
 		{00801EB2-8D85-47EA-86C8-E93467FFB558}.Debug|AVR.Build.0 = Debug|AVR
 		{00801EB2-8D85-47EA-86C8-E93467FFB558}.Release|AVR.ActiveCfg = Release|AVR
 		{00801EB2-8D85-47EA-86C8-E93467FFB558}.Release|AVR.Build.0 = Release|AVR
+		{41E0889D-031D-4796-9B3F-11F5716A91F8}.Debug|AVR.ActiveCfg = Debug|AVR
+		{41E0889D-031D-4796-9B3F-11F5716A91F8}.Debug|AVR.Build.0 = Debug|AVR
+		{41E0889D-031D-4796-9B3F-11F5716A91F8}.Release|AVR.ActiveCfg = Release|AVR
+		{41E0889D-031D-4796-9B3F-11F5716A91F8}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
