@@ -85,46 +85,6 @@ void USB_Controller_EnableInterrupt(const USB_InterruptType_t Source)
 	}
 }
 
-uint8_t USB_Controller_IsInterruptEnabled(const USB_InterruptType_t Interrupt)
-{
-	switch(Interrupt)
-	{
-		/*
-			Device & Host interrupts
-		*/
-		case USB_VBUS_INTERRUPT:
-		{
-			return (USBCON & (0x01 << VBUSTE));
-		}
-
-		/*
-			Device interrupts
-		*/
-		case USB_WAKE_INTERRUPT:
-		{
-			return ((UDIEN & (0x01 << WAKEUPE)) >> WAKEUPE);
-		}
-		case USB_SUSPEND_INTERRUPT:
-		{
-			return (UDIEN & (0x01 << SUSPE));
-		}
-		case USB_EOR_INTERRUPT:
-		{
-			return ((UDIEN & (0x01 << EORSTE)) >> EORSTE);
-		}
-		case USB_SOF_INTERRUPT:
-		{
-			return ((UDIEN & (0x01 << SOFE)) >> SOFE);
-		}
-		case USB_RXSTP_INTERRUPT:
-		{
-			return ((UEIENX & (0x01 << RXSTPE)) >> RXSTPE);
-		}
-	}
-	 
-	return 0x00;
-}
-
 uint8_t USB_Controller_CheckForInterrupt(const USB_InterruptType_t Interrupt)
 {
 	switch(Interrupt)
@@ -284,7 +244,7 @@ void USB_Controller_ClearInterrupts(void)
 
 ISR(USB_GEN_vect)
 {
-	if(USB_Controller_CheckForInterrupt(USB_VBUS_INTERRUPT) && USB_Controller_IsInterruptEnabled(USB_VBUS_INTERRUPT))
+	if(USB_Controller_CheckForInterrupt(USB_VBUS_INTERRUPT))
 	{
 		USB_Controller_ClearInterruptFlag(USB_VBUS_INTERRUPT);
 
@@ -310,7 +270,7 @@ ISR(USB_GEN_vect)
 		}
 	}
 
-	if(USB_Controller_CheckForInterrupt(USB_EOR_INTERRUPT) && USB_Controller_IsInterruptEnabled(USB_EOR_INTERRUPT))
+	if(USB_Controller_CheckForInterrupt(USB_EOR_INTERRUPT))
 	{
 		USB_Controller_ClearInterruptFlag(USB_EOR_INTERRUPT);
 
