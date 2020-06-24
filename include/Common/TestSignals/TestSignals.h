@@ -1,9 +1,9 @@
 /*
- * MassStorage.c
+ * TestSignals.h
  *
- *  Copyright (C) Daniel Kampert, 2018
- *	Website: www.kampis-elektroecke.de
- *  File info: USB mass storage class device driver functions.
+ *  Copyright (C) Daniel Kampert, 2020
+ *  Website: www.kampis-elektroecke.de
+ *  File info: Test patterns for analog signals.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,16 +22,23 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Services/USB/Class/MassStorage/MassStorage.c
- *  @brief USB mass storage class driver device functions.
+/** @file Common/TestSignals/TestSignals.h
+ *  @brief Test patterns for analog signals.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs
  */
 
-#include "Services/USB/Class/MassStorage/MassStorage.h"
+#ifndef TESTSIGNALS_H_
+#define TESTSIGNALS_H_
 
-Bool_t USB_MassStorage_ReadCommandBlock(USB_MassStorage_CommandBlockWrapper_t* CBW)
-{
-	return TRUE;
-}
+ #include <stdint.h>
+
+ /** @brief	Pattern length.
+  */
+ #define TESTSIGNAL_LENGTH							400
+
+ uint16_t Sine_120Hz[TESTSIGNAL_LENGTH];
+ uint16_t Sine_480Hz[TESTSIGNAL_LENGTH];
+
+#endif /* TESTSIGNALS_H_ */

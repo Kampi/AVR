@@ -1,7 +1,7 @@
 /*
  * Config_SD_MMC.h
  * 
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Configuration example for the SD/MMC interface.
 

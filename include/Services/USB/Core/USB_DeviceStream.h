@@ -1,7 +1,7 @@
 /*
  * USB_DeviceStream.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: USB device stream implementation for USB service.
 
@@ -72,5 +72,13 @@
   *  @return		Error code
   */
  Endpoint_DS_ErrorCode_t USB_DeviceStream_DataIN(const void* Buffer, const uint16_t Length, uint16_t* Offset);
+ 
+ /** @brief			Receive data from the host by using an OUT endpoint.
+  *  @param Buffer	Pointer to data buffer
+  *  @param Length	Length of data
+  *  @param Offset	Pointer for processed data bytes
+  *  @return		Error code
+  */
+ Endpoint_DS_ErrorCode_t USB_DeviceStream_DataOUT(const void* Buffer, const uint16_t Length, uint16_t* Offset);
 
 #endif /* USB_DEVICESTREAM_H_ */

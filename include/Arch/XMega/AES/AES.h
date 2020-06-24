@@ -1,7 +1,7 @@
 /*
  * AES.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for Atmel AVR XMega AES encryption module.
 
@@ -109,10 +109,10 @@
  }
 
  /** @brief		Check if the AES module is busy.
-  *  @return	#TRUE if the module is busy
+  *  @return	#true if the module is busy
   */
- static inline Bool_t AES_IsBusy(void) __attribute__((always_inline));
- static inline Bool_t AES_IsBusy(void)
+ static inline bool AES_IsBusy(void) __attribute__((always_inline));
+ static inline bool AES_IsBusy(void)
  {
 	 return (!(AES.STATUS & (AES_SRIF_bm | AES_ERROR_bm)));
  }

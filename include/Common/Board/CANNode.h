@@ -1,7 +1,7 @@
 /*
  * can_node.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Board definitions for can nodes from Kampis-Elektroecke
 

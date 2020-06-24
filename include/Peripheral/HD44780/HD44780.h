@@ -1,7 +1,7 @@
 /*
  * HD44780.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for HD44780 LCD controller.
 
@@ -92,23 +92,23 @@
  /** @brief			Enable/disable the display.
   *  @param Enable	Enable/Disable
   */
- void HD44780_SwitchDisplay(const Bool_t Enable);
+ void HD44780_SwitchDisplay(const bool Enable);
 
  /** @brief			Enable/disable the display cursor.
   *  @param Enable	Enable/Disable
   */
- void HD44780_SwitchCursor(const Bool_t Enable);
+ void HD44780_SwitchCursor(const bool Enable);
 
  /** @brief			Enable/disable the blinking of display cursor.
   *  @param Enable	Enable/Disable
   */
- void HD44780_SwitchBlink(const Bool_t Enable);
+ void HD44780_SwitchBlink(const bool Enable);
 
  #if(defined(HD44780_WITH_BACKLIGHT))
 	 /** @brief			Enable/disable the backlight of the display.
 	  *  @param Enable	Enable/Disable
 	 */
-	 void HD44780_SwitchBacklight(const Bool_t Enable);
+	 void HD44780_SwitchBacklight(const bool Enable);
  #endif
 
 #endif /* HD44780_H_ */

@@ -1,7 +1,7 @@
 /*
  * IntelHexParser.c
  * 
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Bootloader parser for the Intel-Hex file.
 
@@ -50,7 +50,7 @@ static uint8_t _ParserBuffer[PARSER_LENGTH_BYTES + PARSER_ADDRESS_BYTES + PARSER
 
 /** @brief	Boolean value to flag the parser as active.
  */
-static Bool_t _IsActive;
+static bool _IsActive;
 
 /** @brief	Current line buffer index.
  */
@@ -99,7 +99,7 @@ static uint16_t Hex2Num(const uint8_t Length)
 void Parser_Init(void)
 {
 	_ParserState = PARSER_INIT;
-	_IsActive = FALSE;
+	_IsActive = false;
 }
 
 Parser_State_t Parser_GetByte(const uint8_t Received)
@@ -109,7 +109,7 @@ Parser_State_t Parser_GetByte(const uint8_t Received)
 		if(Received == PARSER_LINE_END)
 		{
 			_Index = 0x00;
-			_IsActive = FALSE;
+			_IsActive = false;
 			_ParserState = PARSER_INIT;
 
 			return PARSER_STATE_SUCCESSFUL;
@@ -131,7 +131,7 @@ Parser_State_t Parser_GetByte(const uint8_t Received)
 	if(Received == ':')
 	{
 		_Index = 0x00;
-		_IsActive = TRUE;
+		_IsActive = true;
 	}
 
 	return PARSER_STATE_BUSY;
@@ -261,12 +261,12 @@ Parser_State_t Parser_Parse(Parser_Block_t* Line)
 
 				if(Line->Checksum == Checksum_Temp)
 				{
-					Line->Valid = TRUE;
+					Line->Valid = true;
 					_ParserEngineState = PARSER_STATE_SUCCESSFUL;
 				}
 				else
 				{
-					Line->Valid = FALSE;
+					Line->Valid = false;
 					_ParserEngineState = PARSER_STATE_ERROR;
 				}
 

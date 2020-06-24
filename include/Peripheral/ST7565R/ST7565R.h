@@ -1,7 +1,7 @@
 /*
  * ST7565R.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for ST7565R Graphic LCD.
 
@@ -94,7 +94,7 @@
  /** @brief			Enable/disable the display.
   *  @param State	Enable/disable
   */
- void Display_Switch(const Bool_t State);
+ void Display_Switch(const bool State);
  
  /** @brief			Write data to the display.
   *  @param Command	Display data
@@ -131,12 +131,12 @@
  /** @brief			Enable/disable the sleep mode of the display.
  *  @param State	Enable/disable
   */
- void ST7565R_SleepEnable(const Bool_t State);
+ void ST7565R_SleepEnable(const bool State);
  
  /** @brief			Enable/disable invert mode.
   *  @param Invert	Enable/disable
   */
- void ST7565R_SwitchInvert(const Bool_t Invert);
+ void ST7565R_SwitchInvert(const bool Invert);
  
  /** @brief				Set the contrast of the display.
   *  @param Contrast	Display contrast
@@ -146,7 +146,7 @@
  /** @brief			Enable/disable the display back light.
   *  @param Invert	Enable/disable
   */
- void ST7565R_SwitchBacklight(const Bool_t State);
+ void ST7565R_SwitchBacklight(const bool State);
  
  /** @brief			Clear the display.
   */

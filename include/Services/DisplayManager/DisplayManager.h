@@ -1,7 +1,7 @@
 /*
  * DisplayManager.h
  * 
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: AVR display manager service.
 
@@ -71,9 +71,9 @@
  extern void Display_Reset(void);
  
  /** @brief			Enable/Disable the display back light.
-  *  @param Enable	#TRUE to enable the back light.
+  *  @param Enable	#true to enable the back light.
   */
- extern void Display_SwitchDisplay(const Bool_t Enable);
+ extern void Display_SwitchDisplay(const bool Enable);
 
  /** @brief			Write a data byte to the display.
   *  @param Data	Data byte

@@ -1,7 +1,7 @@
 /*
  * Timer.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for XMega Timer.
 
@@ -186,7 +186,7 @@
 	 Timer_Mode_t Mode;								/**< Timer mode */ 
 	 uint16_t Period;								/**< Timer period */ 
 	 uint16_t DutyCycle;							/**< Timer duty cycle */ 
-	 Bool_t EnableInvert;							/**< Set to #TRUE to enable invert mode for the WGM pin */ 
+	 bool EnableInvert;							/**< Set to #true to enable invert mode for the WGM pin */ 
  } Timer0_WaveConfig_t;
  
  /** 
@@ -200,7 +200,7 @@
 	 Timer_Mode_t Mode;								/**< Timer mode */ 
 	 uint16_t Period;								/**< Timer period */ 
 	 uint16_t DutyCycle;							/**< Timer duty cycle */ 
-	 Bool_t Invert;									/**< Set to #TRUE to invert the WGM pin */ 
+	 bool Invert;									/**< Set to #true to invert the WGM pin */ 
  } Timer1_WaveConfig_t;
  
  /** 
@@ -248,10 +248,10 @@
   *  @param Device	Pointer to Timer0 object
   *  @param Enable	Enable/Disable
   */
- static inline void Timer0_SwitchSplit(TC0_t* Device, const Bool_t Enable) __attribute__((always_inline));
- static inline void Timer0_SwitchSplit(TC0_t* Device, const Bool_t Enable)
+ static inline void Timer0_SwitchSplit(TC0_t* Device, const bool Enable) __attribute__((always_inline));
+ static inline void Timer0_SwitchSplit(TC0_t* Device, const bool Enable)
  {
-	 if(Enable == TRUE)
+	 if(Enable == true)
 	 {
 		 Device->CTRLE = (Device->CTRLE & (~0x03)) | 0x02;
 	 }

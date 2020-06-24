@@ -1,7 +1,7 @@
 /*
  * Timer0.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for Atmel AVR8 megaAVR Timer0 module.
 

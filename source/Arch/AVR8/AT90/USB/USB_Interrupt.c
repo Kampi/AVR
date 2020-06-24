@@ -1,7 +1,7 @@
 /*
  * USB_Interrupt.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Interrupt functions for Atmel AVR AT90 USB interface.
 
@@ -84,51 +84,7 @@ void USB_Controller_EnableInterrupt(const USB_InterruptType_t Source)
 	}
 }
 
-Bool_t USB_Controller_IsInterruptEnabled(const USB_InterruptType_t Interrupt)
-{
-	switch(Interrupt)
-	{
-		/*
-			Device & Host interrupts
-		*/
-		case USB_VBUS_INTERRUPT:
-		{
-			return (USBCON & (0x01 << VBUSTE));
-		}
-
-		/*
-			Device interrupts
-		*/
-		case USB_WAKE_INTERRUPT:
-		{
-			return ((UDIEN & (0x01 << WAKEUPE)) >> WAKEUPE);
-		}
-		case USB_SUSPEND_INTERRUPT:
-		{
-			return (UDIEN & (0x01 << SUSPE));
-		}
-		case USB_EOR_INTERRUPT:
-		{
-			return ((UDIEN & (0x01 << EORSTE)) >> EORSTE);
-		}
-		case USB_SOF_INTERRUPT:
-		{
-			return ((UDIEN & (0x01 << SOFE)) >> SOFE);
-		}
-		case USB_RXSTP_INTERRUPT:
-		{
-			return ((UEIENX & (0x01 << RXSTPE)) >> RXSTPE);
-		}
-
-		/*
-			Host interrupts
-		*/
-	}
-	 
-	return FALSE;
-}
-
-Bool_t USB_Controller_CheckForInterrupt(const USB_InterruptType_t Interrupt)
+bool USB_Controller_CheckForInterrupt(const USB_InterruptType_t Interrupt)
 {
 	switch(Interrupt)
 	{
@@ -169,7 +125,7 @@ Bool_t USB_Controller_CheckForInterrupt(const USB_InterruptType_t Interrupt)
 		*/
 	}
  
-	return FALSE;
+	return false;
 }
 
 void USB_Controller_ClearInterruptFlag(const USB_InterruptType_t Interrupt)
@@ -299,7 +255,7 @@ void USB_Controller_ClearInterrupts(void)
 
 ISR(USB_GEN_vect)
 {
-	if(USB_Controller_CheckForInterrupt(USB_SOF_INTERRUPT) && USB_Controller_IsInterruptEnabled(USB_SOF_INTERRUPT))
+	if(USB_Controller_CheckForInterrupt(USB_SOF_INTERRUPT))
 	{
 		USB_Controller_ClearInterruptFlag(USB_SOF_INTERRUPT);
 
@@ -309,7 +265,7 @@ ISR(USB_GEN_vect)
 		}
 	}
 
-	if(USB_Controller_CheckForInterrupt(USB_VBUS_INTERRUPT) && USB_Controller_IsInterruptEnabled(USB_VBUS_INTERRUPT))
+	if(USB_Controller_CheckForInterrupt(USB_VBUS_INTERRUPT))
 	{
 		USB_Controller_ClearInterruptFlag(USB_VBUS_INTERRUPT);
 
@@ -337,7 +293,7 @@ ISR(USB_GEN_vect)
 		}
 	}
 
-	if(USB_Controller_CheckForInterrupt(USB_SUSPEND_INTERRUPT) && USB_Controller_IsInterruptEnabled(USB_SUSPEND_INTERRUPT))
+	if(USB_Controller_CheckForInterrupt(USB_SUSPEND_INTERRUPT))
 	{
 		USB_Controller_ClearInterruptFlag(USB_SUSPEND_INTERRUPT);
 
@@ -354,7 +310,7 @@ ISR(USB_GEN_vect)
 		}
 	}
 
-	if(USB_Controller_CheckForInterrupt(USB_WAKE_INTERRUPT) && USB_Controller_IsInterruptEnabled(USB_WAKE_INTERRUPT))
+	if(USB_Controller_CheckForInterrupt(USB_WAKE_INTERRUPT))
 	{
 		USB_Controller_ClearInterruptFlag(USB_WAKE_INTERRUPT);
 
@@ -385,7 +341,7 @@ ISR(USB_GEN_vect)
 		}
 	}
 
-	if(USB_Controller_CheckForInterrupt(USB_EOR_INTERRUPT) && USB_Controller_IsInterruptEnabled(USB_EOR_INTERRUPT))
+	if(USB_Controller_CheckForInterrupt(USB_EOR_INTERRUPT))
 	{
 		USB_Controller_ClearInterruptFlag(USB_EOR_INTERRUPT);
 		USB_Controller_ClearInterruptFlag(USB_SUSPEND_INTERRUPT);
@@ -393,7 +349,7 @@ ISR(USB_GEN_vect)
 		USB_Controller_DisableInterrupt(USB_SUSPEND_INTERRUPT);
 		USB_Controller_EnableInterrupt(USB_WAKE_INTERRUPT);
 
-		if(!Endpoint_Configure(ENDPOINT_CONTROL_ADDRESS, ENDPOINT_TYPE_CONTROL, ENDPOINT_CONTROL_SIZE, FALSE))
+		if(!Endpoint_Configure(ENDPOINT_CONTROL_ADDRESS, ENDPOINT_TYPE_CONTROL, ENDPOINT_CONTROL_SIZE, false))
 		{
 			if(_USBEvents.Error != NULL)
 			{

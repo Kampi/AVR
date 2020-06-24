@@ -1,7 +1,7 @@
 /*
  * Config_AD5933.h
  * 
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Configuration example for the Analog Devices AD5933 I2C impedance converter.
 

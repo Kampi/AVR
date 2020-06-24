@@ -1,7 +1,7 @@
 /*
  * FrameBuffer.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Generic frame buffer for displays without readable display memory.
 
@@ -31,7 +31,7 @@
 #ifndef FRAMEBUFFER_H_
 #define FRAMEBUFFER_H_
 
- #include "Common/Common.h"
+ #include <stdint.h>
 
  /** @brief			Initialize a new frame buffer.
   *  @param Width	Width of each page in pixel

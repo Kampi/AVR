@@ -1,7 +1,7 @@
 /*
  * IntelHexParser.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Bootloader parser for the Intel-Hex file.
 
@@ -80,7 +80,7 @@
 	 Parser_Type_t Type;										/**< Record type */
 	 unsigned char* pBuffer;									/**< Pointer to data buffer */
 	 uint16_t Checksum;											/**< Checksum */
-	 Bool_t Valid;												/**< Valid flag */
+	 bool Valid;												/**< Valid flag */
  } Parser_Block_t;
 
  /** @brief	Initialize the parser.

@@ -1,7 +1,7 @@
 /*
  * DS1307.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for DS1307 RTC.
 
@@ -157,7 +157,7 @@
 			__RTCCallbacks.DS1307_SQW_Callback = Config->Callback;
 		}
 	
-		ErrorCode = DS1307_I2CM_WRITEBYTE(Data[0], FALSE) | DS1307_I2CM_READBYTE(&Data[1], TRUE);
+		ErrorCode = DS1307_I2CM_WRITEBYTE(Data[0], false) | DS1307_I2CM_READBYTE(&Data[1], true);
 		if(ErrorCode != I2C_NO_ERROR)
 		{
 			return ErrorCode;
@@ -170,7 +170,7 @@
 		Data[1] &= ~0x03;
 		Data[1] |= Config->Freq & 0x03;
 
-		return DS1307_I2CM_WRITEBYTES(sizeof(Data), Data, TRUE);
+		return DS1307_I2CM_WRITEBYTES(sizeof(Data), Data, true);
 	}
 
 	const I2C_Error_t DS1307_DisableInterrupts(const DS1307_InterruptConfig_t* Config)
@@ -185,7 +185,7 @@
 			GPIO_RemoveCallback(Config->Channel);
 		#endif
 
-		ErrorCode = DS1307_I2CM_WRITEBYTE(Data[0], FALSE) | DS1307_I2CM_READBYTE(&Data[1], TRUE);
+		ErrorCode = DS1307_I2CM_WRITEBYTE(Data[0], false) | DS1307_I2CM_READBYTE(&Data[1], true);
 		if(ErrorCode != I2C_NO_ERROR)
 		{
 			return ErrorCode;
@@ -194,7 +194,7 @@
 		// Clear SQW enable bit
 		Data[1] &= ~(0x01 << DS1307_SQWE);
 
-		return DS1307_I2CM_WRITEBYTES(sizeof(Data), Data, TRUE);
+		return DS1307_I2CM_WRITEBYTES(sizeof(Data), Data, true);
 	}
 #endif
 
@@ -238,7 +238,7 @@ const I2C_Error_t DS1307_HoldClock(void)
 	uint8_t Data = 0x00;
 	I2C_Error_t ErrorCode = I2C_NO_ERROR; 
 
-	ErrorCode = DS1307_I2CM_WRITEBYTE(DS1307_REGISTER_SECONDS, FALSE) | DS1307_I2CM_READBYTE(&Data, TRUE);
+	ErrorCode = DS1307_I2CM_WRITEBYTE(DS1307_REGISTER_SECONDS, false) | DS1307_I2CM_READBYTE(&Data, true);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -247,7 +247,7 @@ const I2C_Error_t DS1307_HoldClock(void)
 	// Set CH-Bit
 	Data |= (0x01 << 0x07);
 
-	return DS1307_I2CM_WRITEBYTE(DS1307_REGISTER_SECONDS, TRUE) | DS1307_I2CM_WRITEBYTE(Data, TRUE);
+	return DS1307_I2CM_WRITEBYTE(DS1307_REGISTER_SECONDS, true) | DS1307_I2CM_WRITEBYTE(Data, true);
 }
 
 const I2C_Error_t DS1307_SetHourMode(const HourMode_t Mode)
@@ -255,7 +255,7 @@ const I2C_Error_t DS1307_SetHourMode(const HourMode_t Mode)
 	uint8_t Data = 0x00;
 	I2C_Error_t ErrorCode = I2C_NO_ERROR; 
 
-	ErrorCode = DS1307_I2CM_WRITEBYTE(DS1307_REGISTER_HOURS, FALSE) | DS1307_I2CM_READBYTE(&Data, TRUE);
+	ErrorCode = DS1307_I2CM_WRITEBYTE(DS1307_REGISTER_HOURS, false) | DS1307_I2CM_READBYTE(&Data, true);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
@@ -295,7 +295,7 @@ const I2C_Error_t DS1307_SetHourMode(const HourMode_t Mode)
 		}
 	}
 
-	return DS1307_I2CM_WRITEBYTE(DS1307_REGISTER_HOURS, TRUE) | DS1307_I2CM_WRITEBYTE(Data, TRUE);
+	return DS1307_I2CM_WRITEBYTE(DS1307_REGISTER_HOURS, true) | DS1307_I2CM_WRITEBYTE(Data, true);
 }
 
 #if(defined DS1307_USE_IRQ)
@@ -340,7 +340,7 @@ const I2C_Error_t DS1307_SetTime(const Time_t* Time)
 		Data[3] |= (0x01 << DS1307_12_24);
 	}
 
-	return DS1307_I2CM_WRITEBYTES(sizeof(Data), Data, TRUE);
+	return DS1307_I2CM_WRITEBYTES(sizeof(Data), Data, true);
 }
 
 const I2C_Error_t DS1307_GetTime(Time_t* Time)
@@ -348,7 +348,7 @@ const I2C_Error_t DS1307_GetTime(Time_t* Time)
 	uint8_t Buffer[7];
 	I2C_Error_t ErrorCode = I2C_NO_ERROR;
 
-	ErrorCode = DS1307_I2CM_WRITEBYTE(0x00, FALSE) | DS1307_I2CM_READBYTES(sizeof(Buffer), Buffer, TRUE);
+	ErrorCode = DS1307_I2CM_WRITEBYTE(0x00, false) | DS1307_I2CM_READBYTES(sizeof(Buffer), Buffer, true);
 	if(ErrorCode != I2C_NO_ERROR)
 	{
 		return ErrorCode;
