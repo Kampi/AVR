@@ -38,17 +38,22 @@
 #define LED0_RED						PORTD, 4
 #define LED0_GREEN						PORTD, 5
 
+uint8_t Idle = 0x00;
+uint8_t Protocol = 0x00;
+
 void Mouse_Task(void);
 
 void USB_Event_OnError(void);
 void USB_Event_EndOfReset(void);
 void USB_Event_ConfigurationChanged(const uint8_t Configuration);
+void USB_Event_ControlRequest(const uint8_t bRequest, const uint8_t bmRequestType, const uint16_t wValue);
 
 const USB_DeviceCallbacks_t Events_USB =
 {
 	.EndOfReset = USB_Event_EndOfReset,
 	.Error = USB_Event_OnError,
 	.ConfigurationChanged = USB_Event_ConfigurationChanged,
+	.ControlRequest = USB_Event_ControlRequest,
 };
 
 USB_Config_t ConfigUSB = {
@@ -120,5 +125,82 @@ void USB_Event_ConfigurationChanged(const uint8_t Configuration)
 	else
 	{
 		USB_Event_OnError();
+	}
+}
+
+void USB_Event_ControlRequest(const uint8_t bRequest, const uint8_t bmRequestType, const uint16_t wValue)
+{
+	switch(bRequest)
+	{
+		case HID_REQUEST_GET_REPORT:
+		{
+			if(bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_CLASS | REQUEST_RECIPIENT_INTERFACE))
+			{
+				// Allow the host to request a report through the control pipe
+			}
+
+			break;
+		}
+		case HID_REQUEST_SET_REPORT:
+		{
+			if(bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_CLASS | REQUEST_RECIPIENT_INTERFACE))
+			{
+				// Allow the host to send a report through the control pipe
+			}
+
+			break;
+		}
+		case HID_REQUEST_GET_IDLE:
+		{
+			if(bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_CLASS | REQUEST_RECIPIENT_INTERFACE))
+			{
+				Endpoint_ClearSETUP();
+
+				Endpoint_WriteByte(Idle >> 0x02);
+				Endpoint_FlushIN();
+
+				Endpoint_HandleSTATUS(bmRequestType);
+			}
+
+			break;
+		}
+		case HID_REQUEST_SET_IDLE:
+		{
+			if(bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_CLASS | REQUEST_RECIPIENT_INTERFACE))
+			{
+				Endpoint_ClearSETUP();
+				Endpoint_HandleSTATUS(bmRequestType);
+
+				Idle = ((wValue & 0xFF00) >> 0x06);
+			}
+
+			break;
+		}
+		case HID_REQUEST_GET_PROTOCOL:
+		{
+			if(bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_CLASS | REQUEST_RECIPIENT_INTERFACE))
+			{
+				Endpoint_ClearSETUP();
+
+				Endpoint_WriteByte(Protocol);
+				Endpoint_FlushIN();
+
+				Endpoint_HandleSTATUS(bmRequestType);
+			}
+
+			break;
+		}
+		case HID_REQUEST_SET_PROTOCOL:
+		{
+			if(bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_CLASS | REQUEST_RECIPIENT_INTERFACE))
+			{
+				Endpoint_ClearSETUP();
+				Endpoint_HandleSTATUS(bmRequestType);
+
+				Protocol = wValue;
+			}
+
+			break;
+		}
 	}
 }

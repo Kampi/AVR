@@ -38,6 +38,8 @@
  #include "USB/Core/AVR8/USB_Controller.h"
  #include "USB/Core/USB_DeviceStdRequest.h"
 
+ #include "USB/Class/Class.h"
+
  /** @brief			Initialize the USB service.
   *  @param Config	Pointer to USB configuration structure
   */

@@ -111,8 +111,8 @@ const USB_Configuration_t PROGMEM ConfigurationDescriptor[] =
 		.bAlternateSetting = 0x00,
 		.bNumEndpoints = 0x01,
 		.bInterfaceClass = USB_CLASS_HID,
-		.bInterfaceSubClass = HID_SUBCLASS_BOOT_INTERFACE,
-		.bInterfaceProtocol = HID_PROTOCOL_MOUSE,
+		.bInterfaceSubClass = HID_SUBCLASS_NONE,
+		.bInterfaceProtocol = HID_PROTOCOL_NONE,
 		.iInterface = 0x00,
 	},
 	[0].MouseHID =
