@@ -1,7 +1,7 @@
 /*
  * main.c
  * 
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: AD5933 example for XMega.
 
@@ -55,8 +55,8 @@ USART_Config_t Config_USART = {
 	.Stop = USART_STOP_1,
 	.Size = USART_SIZE_8, 
 	.BSCALE = -5, 
-	.EnableDoubleSpeed = FALSE,
-	.EnableInterruptSupport = TRUE,
+	.EnableDoubleSpeed = false,
+	.EnableInterruptSupport = true,
 	.InterruptLevel = INT_LVL_HI
 };
 

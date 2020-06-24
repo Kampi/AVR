@@ -1,7 +1,7 @@
 /*
  * main.c
  * 
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: PCA9685 example for ATmega32.
 
@@ -39,7 +39,7 @@
 I2CM_Config_t Config_I2CM = {
 	.Prescaler = I2C_PRESCALER_16,
 	.Bitrate = PCA9685_CLOCK,
-	.EnableInterruptSupport = FALSE,
+	.EnableInterruptSupport = false,
 };
 
 int main(void)

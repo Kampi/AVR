@@ -1,7 +1,7 @@
 /*
  * Config.h
  * 
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Empty configuration file for the AVR bootloader test application.
 

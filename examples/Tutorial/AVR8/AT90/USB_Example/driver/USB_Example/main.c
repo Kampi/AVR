@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: USB ADC example project for the AT90USB1287.
+ *  File info: USB example for AT90USB1287.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file main.c
- *  @brief USB ADC example project for the AT90USB1287.
+ *  @brief USB example for AT90USB1287.
  *
  *  Software for the AT90USB1287 USB tutorial from
  *  https://www.kampis-elektroecke.de/avr/avr8/at90usb1287-usb/

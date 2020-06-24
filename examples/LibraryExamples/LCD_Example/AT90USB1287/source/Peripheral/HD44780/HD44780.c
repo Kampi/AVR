@@ -1,7 +1,7 @@
 /*
  * HD44780.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for HD44780 LCD controller.
 
@@ -216,9 +216,9 @@ static void HD44780_Reset(void)
 
 #if(defined(HD44780_USE_BUSY))
 	/** @brief	Check if the BUSY flag is set.
-	 *  @return	#TRUE when BUSY is set
+	 *  @return	#true when BUSY is set
 	 */
-	static Bool_t HD44780_IsBusy(void)
+	static bool HD44780_IsBusy(void)
 	{
 		volatile uint8_t Status = 0x00;
 
@@ -409,9 +409,9 @@ void HD44780_WriteDecimal(const uint32_t Value)
 	HD44780_WriteString(Buffer);
 }
 
-void HD44780_SwitchDisplay(const Bool_t Enable)
+void HD44780_SwitchDisplay(const bool Enable)
 {
-	if(Enable == TRUE)
+	if(Enable == true)
 	{
 		__HD44780_Display |= HD44780_DISPLAY_ON;
 	}
@@ -423,9 +423,9 @@ void HD44780_SwitchDisplay(const Bool_t Enable)
 	HD44780_SendCommand(__HD44780_Display);
 }
 
-void HD44780_SwitchCursor(const Bool_t Enable)
+void HD44780_SwitchCursor(const bool Enable)
 {
-	if(Enable == TRUE)
+	if(Enable == true)
 	{
 		__HD44780_Display |= HD44780_DISPLAY_CURSOR_ON;
 	}
@@ -437,9 +437,9 @@ void HD44780_SwitchCursor(const Bool_t Enable)
 	HD44780_SendCommand(__HD44780_Display);
 }
 
-void HD44780_SwitchBlink(const Bool_t Enable)
+void HD44780_SwitchBlink(const bool Enable)
 {
-	if(Enable == TRUE)
+	if(Enable == true)
 	{
 		__HD44780_Display |= HD44780_DISPLAY_BLINK_ON;
 	}
@@ -452,9 +452,9 @@ void HD44780_SwitchBlink(const Bool_t Enable)
 }
 
 #if(defined(HD44780_WITH_BACKLIGHT))
-	void HD44780_SwitchBacklight(const Bool_t Enable)
+	void HD44780_SwitchBacklight(const bool Enable)
 	{
-		if(Enable == TRUE)
+		if(Enable == true)
 		{
 			#if(defined(HD44780_BACKLIGHT_ACTIVE_LOW))
 				GPIO_Clear(GET_PERIPHERAL(HD44780_BACKLIGHT), GET_INDEX(HD44780_BACKLIGHT));

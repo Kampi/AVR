@@ -55,7 +55,7 @@ int ff_cre_syncobj (	/* 1:Function succeeded, 0:Could not create the sync object
 )
 {
 	/* Win32 */
-	*sobj = CreateMutex(NULL, FALSE, NULL);
+	*sobj = CreateMutex(NULL, false, NULL);
 	return (int)(*sobj != INVALID_HANDLE_VALUE);
 
 	/* uITRON */
@@ -133,7 +133,7 @@ int ff_req_grant (	/* 1:Got a grant to access the volume, 0:Could not get a gran
 //	return (int)(err == OS_NO_ERR);
 
 	/* FreeRTOS */
-//	return (int)(xSemaphoreTake(sobj, FF_FS_TIMEOUT) == pdTRUE);
+//	return (int)(xSemaphoreTake(sobj, FF_FS_TIMEOUT) == pdtrue);
 
 	/* CMSIS-RTOS */
 //	return (int)(osMutexWait(sobj, FF_FS_TIMEOUT) == osOK);
