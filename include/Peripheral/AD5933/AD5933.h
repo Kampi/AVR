@@ -1,7 +1,7 @@
 ﻿/*
  * AD5933.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for AD5933 I2C impedance converter.
 
@@ -268,9 +268,9 @@
  const I2C_Error_t AD5933_ConfigSweep(const AD5933_SweepSetup_t* SweepSetup);
 
  /** @brief			Set the angle format to radians or degree.
-  *  @param Degree	#TRUE to set the angle format to degree.
+  *  @param Degree	#true to set the angle format to degree.
   */
- void AD5933_EnableDegree(const Bool_t Degree);
+ void AD5933_EnableDegree(const bool Degree);
 
  /** @brief						Calibrate the impedance converter with a single frequency.
 								The calibration error is +-0,5% in with a small range at the calibration point (~ +-3k ohms).

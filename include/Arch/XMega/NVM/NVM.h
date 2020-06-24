@@ -1,7 +1,7 @@
 /*
  * NVM.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for XMega NVM
 
@@ -103,10 +103,10 @@
  /** @brief			Enable/Disable the power reduction mode for the flash memory.
   *  @param Enable	Enable/Disable
   */
- static inline void NVM_SwitchFlashPowerReduction(const Bool_t Enable) __attribute__((always_inline));
- static inline void NVM_SwitchFlashPowerReduction(const Bool_t Enable)
+ static inline void NVM_SwitchFlashPowerReduction(const bool Enable) __attribute__((always_inline));
+ static inline void NVM_SwitchFlashPowerReduction(const bool Enable)
  {
-	 if(Enable == TRUE)
+	 if(Enable == true)
 	 {
 		 NVM.CTRLB |= NVM_FPRM_bm;
 	 }
@@ -119,10 +119,10 @@
  /** @brief			Enable/Disable the power reduction mode for the EEPROM.
   *  @param Enable	Enable/Disable
   */
- static inline void NVM_SwitchEEPROMPowerReduction(const Bool_t Enable) __attribute__((always_inline));
- static inline void NVM_SwitchEEPROMPowerReduction(const Bool_t Enable)
+ static inline void NVM_SwitchEEPROMPowerReduction(const bool Enable) __attribute__((always_inline));
+ static inline void NVM_SwitchEEPROMPowerReduction(const bool Enable)
  {
-	 if(Enable == TRUE)
+	 if(Enable == true)
 	 {
 		 NVM.CTRLB |= NVM_EPRM_bm;
 	 }
@@ -135,10 +135,10 @@
  /** @brief			Enable/Disable the EEPROM data mapping.
   *  @param Enable	Enable/Disable
   */
- static inline void NVM_SwitchEEPROMMapping(const Bool_t Enable) __attribute__((always_inline));
- static inline void NVM_SwitchEEPROMMapping(const Bool_t Enable)
+ static inline void NVM_SwitchEEPROMMapping(const bool Enable) __attribute__((always_inline));
+ static inline void NVM_SwitchEEPROMMapping(const bool Enable)
  {
-	 if(Enable == TRUE)
+	 if(Enable == true)
 	 {
 		 NVM.CTRLB |= NVM_EEMAPEN_bm;
 	 }

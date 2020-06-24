@@ -1,7 +1,7 @@
 /*
  * Timer1.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for AVR8 Timer1 module.
 

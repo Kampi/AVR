@@ -1,9 +1,9 @@
 /*
  * SSD1306.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for SSD1306 display controller.
+ *  File info: Driver for the SSD1306 display controller.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Peripheral/SSD1306/SSD1306.c
- *  @brief Driver for SSD1306 display controller.
+ *  @brief Driver for the Solomon Systech SSD1306 SPI display controller.
  *
  *  This contains the implementation of the display driver.
  *
@@ -203,9 +203,9 @@ void Display_Reset(void)
 	GPIO_Set(GET_PERIPHERAL(SSD1306_DATA), GET_INDEX(SSD1306_DATA));
 }
 
-void Display_SwitchDisplay(const Bool_t Enable)
+void Display_SwitchDisplay(const bool Enable)
 {
-	if(Enable == TRUE)
+	if(Enable == true)
 	{
 		SSD1306_WriteCommand(SSD1306_CMD_DISPLAY_ON);
 	}
@@ -215,9 +215,9 @@ void Display_SwitchDisplay(const Bool_t Enable)
 	}
 }
 
-void Display_SwitchInvert(const Bool_t Enable)
+void Display_SwitchInvert(const bool Enable)
 {
-	if(Enable == TRUE)
+	if(Enable == true)
 	{
 		SSD1306_WriteCommand(SSD1306_CMD_INVERT_ON);
 	}

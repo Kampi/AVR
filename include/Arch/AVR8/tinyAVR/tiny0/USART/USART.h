@@ -1,7 +1,7 @@
 /*
  * USART.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for Atmel AVR8 tiny0 USART module.
 
@@ -147,10 +147,10 @@
 	USART_Size_t Size;							/**< Data bit settings */ 	
 	int8_t BSCALE;								/**< BSCALE value for baud rate */
 	USART_Polarity_t ClockPolarity;				/**< Clock polarity. Only needed in synchronous mode */
-	Bool_t EnableDoubleSpeed;					/**< Set #TRUE to enable double speed */
-	Bool_t EnableInterruptSupport;				/**< Set to #TRUE to enable interrupt support */
-	Bool_t EnableEcho;							/**< Set to #TRUE to enable the USART echo */
-	Bool_t EnableOpenDrain;						/**< Set to #TRUE to enable the open drain mode for the Tx pin */
+	bool EnableDoubleSpeed;					/**< Set #true to enable double speed */
+	bool EnableInterruptSupport;				/**< Set to #true to enable interrupt support */
+	bool EnableEcho;							/**< Set to #true to enable the USART echo */
+	bool EnableOpenDrain;						/**< Set to #true to enable the open drain mode for the Tx pin */
  } USART_Config_t;
 
  /** @brief USART message object for interrupt driven transmission.
@@ -254,8 +254,8 @@
  /** @brief			Enable/Disable open drain mode for the Tx pin.
   *  @param Enable	Enable/Disable
   */
- static inline void USART_SwitchOpenDrain(const Bool_t Enable) __attribute__ ((always_inline));
- static inline void USART_SwitchOpenDrain(const Bool_t Enable)
+ static inline void USART_SwitchOpenDrain(const bool Enable) __attribute__ ((always_inline));
+ static inline void USART_SwitchOpenDrain(const bool Enable)
  {
 	 USART0.CTRLB = (USART0.CTRLB & ~(0x01 << 0x03)) | ((Enable & 0x01) << 0x03);
  }
@@ -308,14 +308,14 @@
  /** @brief			Enable/Disable the USART echo.
   *  @param Enable	Enable/Disable the echo
   */
- void USART_SwitchEcho(const Bool_t Enable);
+ void USART_SwitchEcho(const bool Enable);
 
  /** @brief				Set the baud rate of a USART interface.
   *  @param Baudrate	Baudrate for the interface
   *  @param Clock		USART module clock
   *  @param DoubleSpeed	Enabled/Disable double speed
   */
- void USART_SetBaudrate(const uint32_t Baudrate, const uint32_t Clock, const Bool_t DoubleSpeed);
+ void USART_SetBaudrate(const uint32_t Baudrate, const uint32_t Clock, const bool DoubleSpeed);
 
  /** @brief			Transmit a char array with the USART interface.
   *  @param Data	Pointer to data array
@@ -341,18 +341,18 @@
  void USART_OneWire_Init(void);
 
  /** @brief		Transmit a reset signal and wait for a presence pulse.
-  *  @return	TRUE when presence pulse was detected
+  *  @return	true when presence pulse was detected
   */
- Bool_t USART_OneWire_Reset(void);
+ bool USART_OneWire_Reset(void);
 
  /** @brief		Transmit a bit over the USART 1-Wire interface.
   *  @param Bit	Data bit
   */
- void USART_OneWire_WriteBit(const Bool_t Bit);
+ void USART_OneWire_WriteBit(const bool Bit);
 
  /** @brief		Read a bit from the USART 1-Wire interface.
   *  @return	Data bit
   */
- Bool_t USART_OneWire_ReadBit(void);
+ bool USART_OneWire_ReadBit(void);
 
 #endif /* USART_H_ */

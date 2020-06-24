@@ -1,7 +1,7 @@
 /*
  * types.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Common type definitions for AVR microcontroller.
 
@@ -33,14 +33,7 @@
 
  #include <avr/io.h>
  #include <stddef.h>
- 
- /** @brief Definition of a boolean data type.
-  */
- typedef enum
- {
-	FALSE = 0x00,								/**< Boolean FALSE */ 
-	TRUE = 0x01,								/**< Boolean TRUE */ 
- } Bool_t;
+ #include <stdbool.h>
 
  /** @brief Definition of a complex number.
   */
@@ -149,20 +142,20 @@
   *  @param Array1	Pointer to array 1
   *  @param Array2	Pointer to array 2
   *  @param Length	Length of the arrays
-  *  @return		#TRUE if both arrays are identical
+  *  @return		#true if both arrays are identical
   */
- static inline Bool_t CompareArray(const uint8_t* Array1, const uint8_t* Array2, const uint32_t Length) __attribute__ ((always_inline));
- static inline Bool_t CompareArray(const uint8_t* Array1, const uint8_t* Array2, const uint32_t Length)
+ static inline bool CompareArray(const uint8_t* Array1, const uint8_t* Array2, const uint32_t Length) __attribute__ ((always_inline));
+ static inline bool CompareArray(const uint8_t* Array1, const uint8_t* Array2, const uint32_t Length)
  {
 	 for(uint32_t i = 0x00; i < Length; i++)
 	 {
 		 if(*(Array1++) != *(Array2++))
 		 {
-			return FALSE;
+			return false;
 		 }
 	 }
 	
-	 return TRUE;
+	 return true;
  }
 
 #endif /* TYPES_H_ */

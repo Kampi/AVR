@@ -1,7 +1,7 @@
 /*
  * AnalogSensors_XPlainedA3.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Sensor data for XPlainedA3BU development board.
 

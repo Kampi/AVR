@@ -1,7 +1,7 @@
 /*
  * Config_DS1307.h
  * 
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Configuration example for the Dallas DS1307 I2C RTC.
 

@@ -1,7 +1,7 @@
 /*
  * PLL.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for Atmel AVR XMega PLL module. 
 
@@ -50,7 +50,7 @@
  typedef struct
  {
 	 PLL_Clock_t Clock;				/**< PLL clock source */ 
-	 Bool_t DividedOutput;			/**< Clock division of 2 */ 
+	 bool DividedOutput;			/**< Clock division of 2 */ 
 	 uint8_t Mult;					/**< PLL multiplier */ 
  } PLL_Config_t;
 
@@ -113,17 +113,17 @@
  /** @brief			Enable/Disable the divided output for the PLL.
   *  @param Enable	Enable/Disable
   */
- static inline void PLL_SetDividedOutput(Bool_t Enable) __attribute__((always_inline));
- static inline void PLL_SetDividedOutput(Bool_t Enable)
+ static inline void PLL_SetDividedOutput(bool Enable) __attribute__((always_inline));
+ static inline void PLL_SetDividedOutput(bool Enable)
  {
 	 OSC.PLLCTRL = (OSC.PLLCTRL & (~(0x01 << 0x05))) | (Enable << 0x05);
  }
 
  /** @brief		Get the status of the divided output for the PLL.
-  *  @return	*TRUE if divided output is enabled
+  *  @return	*true if divided output is enabled
   */
- static inline Bool_t PLL_GetDividedOutput(void) __attribute__((always_inline));
- static inline Bool_t PLL_GetDividedOutput(void)
+ static inline bool PLL_GetDividedOutput(void) __attribute__((always_inline));
+ static inline bool PLL_GetDividedOutput(void)
  {
 	 return (OSC.PLLCTRL & 0x20) >> 0x05;
  }

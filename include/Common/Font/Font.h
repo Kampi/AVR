@@ -1,7 +1,7 @@
 /*
  * Font.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Font set for displays.
 
@@ -31,7 +31,7 @@
 #ifndef FONT_H_
 #define FONT_H_
 
- #include "Common/Common.h"
+ #include <stdint.h>
 
  #define FONT_HEIGHT			8						/**< Font height in pixel */
 

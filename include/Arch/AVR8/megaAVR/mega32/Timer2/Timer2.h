@@ -1,7 +1,7 @@
 /*
  * Timer2.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for AVR8 8-Bit Timer2
 
