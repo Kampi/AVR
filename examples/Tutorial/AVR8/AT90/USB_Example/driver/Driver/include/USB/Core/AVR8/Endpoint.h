@@ -1,7 +1,7 @@
 /*
  * Endpoints.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: USB Endpoints for AT90USB1287.
 
@@ -38,7 +38,7 @@
 
  /** @brief	Max. endpoints for the device controller.
   */
- #define MAX_ENDPOINTS									0x07
+ #define ENDPOINT_MAX_ENDPOINTS							0x07
 
  /** @brief	Control endpoint address for USB devices.
   */

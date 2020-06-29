@@ -35,7 +35,6 @@
 
  #include "Common/Common.h"
 
-
  /** @ingroup 	USB-HID
   *  @brief		USB HID class descriptor types.
   */
@@ -43,6 +42,7 @@
  {
 	 HID_DESCRIPTOR_TYPE_HID = 0x21,									/**< HID class descriptor */
 	 HID_DESCRIPTOR_TYPE_REPORT = 0x22,									/**< HID report descriptor */
+	 HID_DESCRIPTOR_TYPE_PHYSICAL = 0x22,								/**< HID physical descriptor */
  } USB_HID_DescriptorTypes_t;
 
  /** @ingroup 	USB-HID

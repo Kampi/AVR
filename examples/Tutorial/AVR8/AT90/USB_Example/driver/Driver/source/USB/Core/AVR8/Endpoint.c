@@ -1,7 +1,7 @@
 /*
  * Endpoint.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: USB endpoint for AVR8 devices.
 
@@ -38,13 +38,13 @@ uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, co
 {
 	uint8_t Address_Temp = Address & 0x0F;
 
-	if((Address_Temp & 0x07) > MAX_ENDPOINTS)
+	if((Address_Temp & 0x07) > ENDPOINT_MAX_ENDPOINTS)
 	{
 		return 0x00;
 	}
 
 	// Allocate the memory for the endpoints
-	for(uint8_t i = Address_Temp; i < MAX_ENDPOINTS; i++)
+	for(uint8_t i = Address_Temp; i < ENDPOINT_MAX_ENDPOINTS; i++)
 	{
 		uint8_t UECFG0X_Temp;
 		uint8_t UECFG1X_Temp;

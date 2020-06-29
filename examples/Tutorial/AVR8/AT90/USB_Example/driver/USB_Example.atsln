@@ -16,6 +16,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{11CDC8
 	EndProjectSection
 EndProject
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "USB_Mouse", "USB_Mouse\USB_Mouse.cproj", "{41E0889D-031D-4796-9B3F-11F5716A91F8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{00801EB2-8D85-47EA-86C8-E93467FFB558} = {00801EB2-8D85-47EA-86C8-E93467FFB558}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

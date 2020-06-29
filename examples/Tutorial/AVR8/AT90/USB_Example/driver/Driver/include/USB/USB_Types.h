@@ -1,9 +1,9 @@
 /*
  * USB_Types.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: Common USB types for the USB driver..
+ *  File info: Common USB types for the USB driver.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify

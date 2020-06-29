@@ -1,7 +1,7 @@
 /*
  * DescriptorTypes.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Standard USB Descriptor definitions.
 
@@ -49,7 +49,7 @@
 
  /** @brief	Macro to convert a USB BCD version number.
  */
- #define USB_VERSION(Revision, Minor, Major)			((Major & 0xFF) << 0x08) | ((Minor & 0x0F) << 0x04) | (Revision & 0x0F)
+ #define USB_VERSION(Major, Minor, Revision)			((Major & 0xFF) << 0x08) | ((Minor & 0x0F) << 0x04) | (Revision & 0x0F)
 
  /** @brief	Macro to create the value for the maximum power consumption of a device in mA.
  */

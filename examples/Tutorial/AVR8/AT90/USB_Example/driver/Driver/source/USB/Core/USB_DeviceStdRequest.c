@@ -1,7 +1,7 @@
  /*
  * USB_DeviceStdRequest.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: USB standard device request implementation.
 
@@ -40,7 +40,7 @@ volatile USB_State_t _DeviceState;
 USB_DeviceCallbacks_t _USBEvents;
 static USB_SetupPacket_t _ControlRequest;
 
-void USBDevice_ControlRequest(void)
+void USB_Device_ControlRequest(void)
 {	
 	uint8_t* RequestHeader = (uint8_t*)&_ControlRequest;
 	
@@ -85,7 +85,7 @@ void USBDevice_ControlRequest(void)
 				// Get the endpoint address
 				uint8_t Endpoint = ((uint8_t)_ControlRequest.wIndex & 0x0F);
 
-				if(Endpoint >= MAX_ENDPOINTS)
+				if(Endpoint >= ENDPOINT_MAX_ENDPOINTS)
 				{
 					return;
 				}
@@ -234,8 +234,9 @@ void USBDevice_ControlRequest(void)
 	
 				The request has a data length of n byte with the descriptor data.
 			*/
-			
-			if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE))
+
+			if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE) ||
+			  (_ControlRequest.bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_INTERFACE)))
 			{
 				const void* Descriptor;
 				uint16_t DescriptorSize;
@@ -265,7 +266,7 @@ void USBDevice_ControlRequest(void)
 					- SETUP stage
 					- STATUS stage
 			*/
-	
+
 			if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE))
 			{
 				Endpoint_WriteByte(_Configuration);
