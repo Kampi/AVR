@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: USB-Controller for AT90USB1287.
+ *  File info: USB controller for Atmel AVR8 AT90 MCUs.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file USB/Core/AVR8/USB_Controller.h
- *  @brief USB controller for AT90USB1287.
+ *  @brief USB controller for Atmel AVR8 AT90 MCUs.
  *
  *  This file contains the prototypes and definitions for the AT90USB1287 USB controller.
  *
@@ -154,22 +154,6 @@
 	 {
 		 UHWCON &= ~(0x01 << UIMOD);
 	 }
- }
-
- /** @brief	Attach the device to the USB bus.
-  */
- static inline void USB_Controller_Attach(void) __attribute__ ((always_inline));
- static inline void USB_Controller_Attach(void)
- {
-	 UDCON &= ~(0x01 << DETACH);
- }
- 
- /** @brief	Detach the device from the USB bus.
-  */
- static inline void USB_Controller_Detach(void) __attribute__ ((always_inline));
- static inline void USB_Controller_Detach(void)
- {
-	 UDCON &= ~(0x01 << DETACH);
  }
 
  /** @brief			Initialize the USB interface.

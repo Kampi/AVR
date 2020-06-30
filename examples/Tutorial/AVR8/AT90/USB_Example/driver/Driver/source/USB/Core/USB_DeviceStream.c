@@ -68,7 +68,7 @@ Endpoint_CS_State_t USB_DeviceStream_ControlIN(const void* Buffer, const uint16_
 		Length_Temp = RequestedLength;
 	}
 
-	while(Length)
+	while(Length_Temp)
 	{
 		Endpoint_CS_State_t State = USB_DeviceStream_GetControlEndpointState();
 		if(State != ENDPOINT_CS_NO_ERROR)
@@ -90,7 +90,7 @@ Endpoint_CS_State_t USB_DeviceStream_ControlIN(const void* Buffer, const uint16_
 				Length_Temp--;
 			}
 
-			// Start the transmission of the data
+			// Start the transmission of the data and wait for complete
 			Endpoint_FlushIN();
 			while(!Endpoint_INReady());
 		}

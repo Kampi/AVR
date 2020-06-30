@@ -41,9 +41,9 @@ USB_DeviceCallbacks_t _USBEvents;
 static USB_SetupPacket_t _ControlRequest;
 
 void USB_Device_ControlRequest(void)
-{	
+{
 	uint8_t* RequestHeader = (uint8_t*)&_ControlRequest;
-	
+
 	// Get the SETUP packet
 	for(uint8_t i = 0x00; i < sizeof(USB_SetupPacket_t); i++)
 	{
@@ -68,7 +68,7 @@ void USB_Device_ControlRequest(void)
 			*/
 
 			uint16_t Status = 0x00;
-			
+
 			// Get the device status
 			if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE))
 			{
@@ -117,14 +117,14 @@ void USB_Device_ControlRequest(void)
 
 				The request has a data length of 1 byte with the interface number.
 			*/
-			
+
 			// Process the DATA stage
 			Endpoint_WriteByte(1);
 			Endpoint_FlushIN();
 
 			// Process the STATUS stage
 			Endpoint_HandleSTATUS(_ControlRequest.bmRequestType);
-			
+
 			break;
 		}
 		case REQUEST_SET_INTERFACE:
@@ -175,7 +175,7 @@ void USB_Device_ControlRequest(void)
 			{
 				if(_ControlRequest.wValue == REQUEST_FEATURE_DEVICE_TEST)
 				{
-					// Select test with __ControlRequest.wIndex
+					// Select test with _ControlRequest.wIndex
 				}
 			}
 			else if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_INTERFACE))
@@ -325,6 +325,7 @@ void USB_Device_ControlRequest(void)
 		}
 	}
 
+	// Call the control request event to handle the class specific requests
 	if(_USBEvents.ControlRequest != NULL)
 	{
 		_USBEvents.ControlRequest(_ControlRequest.bRequest, _ControlRequest.bmRequestType, _ControlRequest.wValue);

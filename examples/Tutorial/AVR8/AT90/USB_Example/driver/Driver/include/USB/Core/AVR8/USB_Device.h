@@ -79,4 +79,20 @@
 	 return UDFNUM;
  }
 
+ /** @brief	Attach the device to the USB bus.
+  */
+ static inline void USB_Device_Attach(void) __attribute__ ((always_inline));
+ static inline void USB_Device_Attach(void)
+ {
+	 UDCON &= ~(0x01 << DETACH);
+ }
+
+ /** @brief	Detach the device from the USB bus.
+  */
+ static inline void USB_Device_Detach(void) __attribute__ ((always_inline));
+ static inline void USB_Device_Detach(void)
+ {
+	 UDCON &= ~(0x01 << DETACH);
+ }
+
 #endif /* USB_DEVICE_H_  */ 
