@@ -35,7 +35,9 @@
  #include <avr/io.h>
  #include <avr/pgmspace.h>
  #include <avr/interrupt.h>
+
  #include <stddef.h>
+ #include <string.h>
 
  #include "Macros.h"
  #include "USB/USB_Types.h"

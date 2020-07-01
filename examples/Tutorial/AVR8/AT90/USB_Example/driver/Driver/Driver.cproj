@@ -135,6 +135,8 @@
     <Folder Include="include\Joystick" />
     <Folder Include="include\USB\" />
     <Folder Include="include\USB\Core\" />
+    <Folder Include="include\USB\Class\" />
+    <Folder Include="include\USB\Class\HID" />
     <Folder Include="include\USB\Core\AVR8\" />
     <Folder Include="source" />
     <Folder Include="source\ADC\" />
@@ -156,6 +158,15 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\Macros.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\USB\Class\Class.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\USB\Class\HID\HID.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\USB\Class\HID\HID_Common.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\USB\Core\AVR8\Endpoint.h">

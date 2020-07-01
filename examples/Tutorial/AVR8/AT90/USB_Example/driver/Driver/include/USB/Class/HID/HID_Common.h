@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Services/USB/Class/HID/HID_Common.h
+/** @file USB/Class/HID/HID_Common.h
  *  @brief Common definitions for USB HID class.
  *		   Please read https://www.usb.org/sites/default/files/documents/hid1_11.pdf when you need more information.
  *
@@ -121,6 +121,16 @@
 	 HID_PROTOCOL_KEYBOARD = 0x01,										/**< Keyboard protocol */
 	 HID_PROTOCOL_MOUSE = 0x02,											/**< Mouse protocol */
  } USB_HID_Protocol_t;
+
+ /** @ingroup	USB-HID
+  *  @brief		USB HID report types.
+  */
+ typedef enum
+ {
+	 HID_REPORT_TYPE_INPUT = 0x01,										/**< Input report */
+	 HID_REPORT_TYPE_OUTPUT = 0x02,										/**< Output report */
+	 HID_REPORT_TYPE_FEATURE = 0x03,									/**< Feature report */
+ } USB_HID_ReportType_t;
 
  /** @ingroup	USB-HID-Keyboard
   *  @brief		USB HID keyboard scan codes.
