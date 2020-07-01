@@ -1,9 +1,9 @@
 /*
- * USB_DeviceController.h
+ * Common.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: Common includes for the USB driver.
+ *  File info: Common includes for the USB example.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,8 +22,8 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */ 
 
-/** @file USB/Core/Common.h
- *  @brief Common includes for the USB driver.
+/** @file Common.h
+ *  @brief Common includes for the USB example.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs
@@ -35,9 +35,11 @@
  #include <avr/io.h>
  #include <avr/pgmspace.h>
  #include <avr/interrupt.h>
- #include <stddef.h>
 
- #include "USB/Macros.h"
+ #include <stddef.h>
+ #include <string.h>
+
+ #include "Macros.h"
  #include "USB/USB_Types.h"
 
 #endif /* COMMON_H_ */
