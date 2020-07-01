@@ -1,9 +1,9 @@
 /*
- * Class.h
- *
- *  Copyright (C) Daniel Kampert, 2020
+ * Config.h
+ * 
+ *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: USB device classes.
+ *  File info: Configuration file for the AT90USB1287 USB examples.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,16 +22,14 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Services/USB/Class/Class.h
- *  @brief USB device classes.
+/** @file Config.h
+ *  @brief Configuration file for the AT90USB1287 USB examples.
  *
  *  @author Daniel Kampert
- *  @bug No known bugs
  */
 
-#ifndef CLASS_H_
-#define CLASS_H_
+#ifndef CONFIG_USB_H_
+#define CONFIG_USB_H_
 
- #include "HID/HID.h"
 
-#endif /* CLASS_H_ */
+#endif /* CONFIG_USB_H_ */

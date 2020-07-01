@@ -1,9 +1,9 @@
 /*
- * Class.h
- *
+ * Macros.h
+ * 
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: USB device classes.
+ *  File info: Common GCC macros. 
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,16 +22,30 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Services/USB/Class/Class.h
- *  @brief USB device classes.
+/** @file Macros.h
+ *  @brief Common GCC macros.
  *
  *  @author Daniel Kampert
- *  @bug No known bugs
  */
 
-#ifndef CLASS_H_
-#define CLASS_H_
+#ifndef MACROS_H_
+#define MACROS_H_
 
- #include "HID/HID.h"
+ #define _CONCAT(A, B)														A ## B
+ #define _FIRST(A, B)														A
+ #define _SECOND(A, B)														B
+ 
+ #define FIRST_ARG(A)														_FIRST(A)
+ #define SECOND_ARG(A)														_SECOND(A)
+ #define CONCAT(A)															_CONCAT(A)
 
-#endif /* CLASS_H_ */
+ #define GET_PERIPHERAL(Arg)												&_FIRST(Arg)
+ #define GET_INDEX(Arg)														_SECOND(Arg)
+
+ #define VA_NARGS_IMPL(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, N, ...)		2 * N
+ #define VA_NARGS(...)														VA_NARGS_IMPL(__VA_ARGS__, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
+
+ #define _STR(x) #x
+ #define STR(x) _STR(x)
+
+#endif /* MACROS_H_ */

@@ -1,9 +1,9 @@
 /*
- * TestDescriptor.h
+ * MouseDescriptor.h
  *
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: Simple test descriptor for the AVR USB tutorial.
+ *  File info: USB descriptor for a generic USB mouse.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -19,46 +19,43 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file TestDescriptor.h
- *  @brief Simple test descriptor for the AVR USB tutorial.
+/** @file MouseDescriptor.h
+ *  @brief USB descriptor for a generic USB mouse.
+ *		   Please read https://usb.org/sites/default/files/documents/hid1_11.pdf if you need some more information.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs
  */
 
-#ifndef TESTDESCRIPTOR_H_
-#define TESTDESCRIPTOR_H_
+#ifndef MOUSEDESCRIPTOR_H_
+#define MOUSEDESCRIPTOR_H_
 
  #include "USB/USB.h"
 
- /** @brief	Address of the IN endpoint.
+ /** @brief	Address of the Mouse HID IN endpoint.
   */
- #define IN_EP										(ENDPOINT_DIRECTION_IN | 0x01)
+ #define MOUSE_IN_EP								(ENDPOINT_DIRECTION_IN | 0x01)
 
- /** @brief	Address of the OUT endpoint.
+ /** @brief	Size of the Mouse HID endpoint.
   */
- #define OUT_EP										(ENDPOINT_DIRECTION_OUT | 0x02)
-
- /** @brief	Size of the endpoint.
-  */
- #define EP_SIZE									8
+ #define MOUSE_EP_SIZE								8
 
  /** @brief Size of the mouse control endpoint.
   */
- #define ENDPOINT_CONTROL_SIZE						ENDPOINT_CONTROL_DEFAULT_SIZE
+ #define MOUSE_CTRL_EP_SIZE							ENDPOINT_CONTROL_DEFAULT_SIZE
 
- /** @brief USB string descriptor types
+ /** @brief USB string descriptors used by the mouse descriptor.
   */
  typedef enum
  {
-	 STRING_ID_LANGUAGE = 0x00,											/**< Supported Languages string descriptor ID (must be zero) */
-	 STRING_ID_MANUFACTURER = 0x01,										/**< Manufacturer string ID */
-	 STRING_ID_PRODUCT = 0x02,											/**< Product string ID */
-	 STRING_ID_SERIAL = 0x03,											/**< Serial string ID */
- } StringDescriptors_t;
+	 MOUSE_STRING_ID_LANGUAGE = 0x00,									/**< Supported Languages string descriptor ID (must be zero) */
+	 MOUSE_STRING_ID_MANUFACTURER = 0x01,								/**< Manufacturer string ID */
+	 MOUSE_STRING_ID_PRODUCT = 0x02,									/**< Product string ID */
+	 MOUSE_STRING_ID_SERIAL = 0x03,										/**< Serial string ID */
+ } Mouse_Strings_t;
 
  /** @brief	Device configuration descriptor structure.
   */
@@ -66,8 +63,8 @@
  {
 	 USB_ConfigurationDescriptor_t Configuration;						/**< Configuration descriptor */
 	 USB_InterfaceDescriptor_t Interface;								/**< Interface descriptor */
+	 USB_HID_Descriptor_t MouseHID; 									/**< HID descriptor */
 	 USB_EndpointDescriptor_t DataINEndpoint;							/**< Endpoint descriptor */
-	 USB_EndpointDescriptor_t DataOUTEndpoint;							/**< Endpoint descriptor */
  } USB_Configuration_t;
 
-#endif /* TESTDESCRIPTOR_H_ */
+#endif /* MOUSEDESCRIPTOR_H_ */

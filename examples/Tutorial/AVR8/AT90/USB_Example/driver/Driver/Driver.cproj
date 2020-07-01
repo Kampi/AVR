@@ -4,17 +4,19 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>7.0</ProjectVersion>
     <ToolchainName>com.Atmel.AVRGCC8.C</ToolchainName>
-    <ProjectGuid>dce6c7e3-ee26-4d79-826b-08594b9ad897</ProjectGuid>
+    <ProjectGuid>{00801eb2-8d85-47ea-86c8-e93467ffb558}</ProjectGuid>
     <avrdevice>AT90USB1287</avrdevice>
     <avrdeviceseries>none</avrdeviceseries>
-    <OutputType>Executable</OutputType>
+    <OutputType>StaticLibrary</OutputType>
     <Language>C</Language>
-    <OutputFileName>$(MSBuildProjectName)</OutputFileName>
-    <OutputFileExtension>.elf</OutputFileExtension>
+    <OutputFileName>lib$(MSBuildProjectName)</OutputFileName>
+    <OutputFileExtension>.a</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
-    <AssemblyName>USB_Example</AssemblyName>
-    <Name>USB_Example</Name>
-    <RootNamespace>USB_Example</RootNamespace>
+    <AvrGccProjectExtensions>
+    </AvrGccProjectExtensions>
+    <AssemblyName>USB_Library</AssemblyName>
+    <Name>Driver</Name>
+    <RootNamespace>USB_Library</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
@@ -40,38 +42,11 @@
         </dependencies>
       </framework-data>
     </AsfFrameworkConfig>
-    <avrtool>com.atmel.avrdbg.tool.jtagice3plus</avrtool>
-    <avrtoolserialnumber>J30200034105</avrtoolserialnumber>
-    <avrdeviceexpectedsignature>0x1E9782</avrdeviceexpectedsignature>
-    <com_atmel_avrdbg_tool_jtagice3plus>
-      <ToolOptions>
-        <InterfaceProperties>
-          <JtagDbgClock>3731638</JtagDbgClock>
-        </InterfaceProperties>
-        <InterfaceName>JTAG</InterfaceName>
-      </ToolOptions>
-      <ToolType>com.atmel.avrdbg.tool.jtagice3plus</ToolType>
-      <ToolNumber>J30200034105</ToolNumber>
-      <ToolName>JTAGICE3</ToolName>
-    </com_atmel_avrdbg_tool_jtagice3plus>
-    <avrtoolinterface>JTAG</avrtoolinterface>
-    <avrtoolinterfaceclock>3731638</avrtoolinterfaceclock>
-    <com_atmel_avrdbg_tool_atmelice>
-      <ToolOptions>
-        <InterfaceProperties>
-          <JtagDbgClock>0</JtagDbgClock>
-        </InterfaceProperties>
-        <InterfaceName>JTAG</InterfaceName>
-      </ToolOptions>
-      <ToolType>com.atmel.avrdbg.tool.atmelice</ToolType>
-      <ToolNumber>J41800078275</ToolNumber>
-      <ToolName>Atmel-ICE</ToolName>
-    </com_atmel_avrdbg_tool_atmelice>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
       <AvrGcc>
-        <avrgcc.common.Device>-mmcu=at90usb1287 -B "%24(PackRepoDir)\atmel\ATmega_DFP\1.3.300\gcc\dev\at90usb1287"</avrgcc.common.Device>
+        <avrgcc.common.Device>-mmcu=at90usb1287 -B "%24(PackRepoDir)\Atmel\ATmega_DFP\1.3.300\gcc\dev\at90usb1287"</avrgcc.common.Device>
         <avrgcc.common.optimization.RelaxBranches>True</avrgcc.common.optimization.RelaxBranches>
         <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
         <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
@@ -83,11 +58,16 @@
         <avrgcc.compiler.symbols.DefSymbols>
           <ListValues>
             <Value>NDEBUG</Value>
+            <Value>MCU_ARCH=MCU_ARCH_AVR8</Value>
+            <Value>MCU_NAME=MCU_NAME_AT90USB1287</Value>
+            <Value>MCU_LITTLE_ENDIAN</Value>
           </ListValues>
         </avrgcc.compiler.symbols.DefSymbols>
         <avrgcc.compiler.directories.IncludePaths>
           <ListValues>
-            <Value>%24(PackRepoDir)\atmel\ATmega_DFP\1.3.300\include</Value>
+            <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.3.300\include</Value>
+            <Value>../../config</Value>
+            <Value>../../../../AVR/include</Value>
           </ListValues>
         </avrgcc.compiler.directories.IncludePaths>
         <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
@@ -101,7 +81,7 @@
         </avrgcc.linker.libraries.Libraries>
         <avrgcc.assembler.general.IncludePaths>
           <ListValues>
-            <Value>%24(PackRepoDir)\atmel\ATmega_DFP\1.3.300\include</Value>
+            <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.3.300\include</Value>
           </ListValues>
         </avrgcc.assembler.general.IncludePaths>
       </AvrGcc>
@@ -110,7 +90,7 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <ToolchainSettings>
       <AvrGcc>
-        <avrgcc.common.Device>-mmcu=at90usb1287 -B "%24(PackRepoDir)\atmel\ATmega_DFP\1.3.300\gcc\dev\at90usb1287"</avrgcc.common.Device>
+        <avrgcc.common.Device>-mmcu=at90usb1287 -B "%24(PackRepoDir)\Atmel\ATmega_DFP\1.3.300\gcc\dev\at90usb1287"</avrgcc.common.Device>
         <avrgcc.common.optimization.RelaxBranches>True</avrgcc.common.optimization.RelaxBranches>
         <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
         <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
@@ -126,9 +106,8 @@
         </avrgcc.compiler.symbols.DefSymbols>
         <avrgcc.compiler.directories.IncludePaths>
           <ListValues>
-            <Value>%24(PackRepoDir)\atmel\ATmega_DFP\1.3.300\include</Value>
-            <Value>../../Driver/include</Value>
-            <Value>../..</Value>
+            <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.3.300\include</Value>
+            <Value>../include</Value>
           </ListValues>
         </avrgcc.compiler.directories.IncludePaths>
         <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
@@ -138,17 +117,11 @@
         <avrgcc.linker.libraries.Libraries>
           <ListValues>
             <Value>libm</Value>
-            <Value>libDriver</Value>
           </ListValues>
         </avrgcc.linker.libraries.Libraries>
-        <avrgcc.linker.libraries.LibrarySearchPaths>
-          <ListValues>
-            <Value>../../Driver/Debug</Value>
-          </ListValues>
-        </avrgcc.linker.libraries.LibrarySearchPaths>
         <avrgcc.assembler.general.IncludePaths>
           <ListValues>
-            <Value>%24(PackRepoDir)\atmel\ATmega_DFP\1.3.300\include</Value>
+            <Value>%24(PackRepoDir)\Atmel\ATmega_DFP\1.3.300\include</Value>
           </ListValues>
         </avrgcc.assembler.general.IncludePaths>
         <avrgcc.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcc.assembler.debugging.DebugLevel>
@@ -156,13 +129,95 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="main.c">
+    <Folder Include="include" />
+    <Folder Include="include\ADC\" />
+    <Folder Include="include\GPIO\" />
+    <Folder Include="include\Joystick" />
+    <Folder Include="include\USB\" />
+    <Folder Include="include\USB\Core\" />
+    <Folder Include="include\USB\Class\" />
+    <Folder Include="include\USB\Class\HID" />
+    <Folder Include="include\USB\Core\AVR8\" />
+    <Folder Include="source" />
+    <Folder Include="source\ADC\" />
+    <Folder Include="source\USB\" />
+    <Folder Include="source\USB\Core\" />
+    <Folder Include="source\USB\Core\AVR8\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="include\ADC\ADC.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="TestDescriptor.c">
+    <Compile Include="include\Common.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="TestDescriptor.h">
+    <Compile Include="include\GPIO\GPIO.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\Joystick\Joystick.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\Macros.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\USB\Class\Class.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\USB\Class\HID\HID.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\USB\Class\HID\HID_Common.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\USB\Core\AVR8\Endpoint.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\USB\Core\AVR8\USB_Controller.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\USB\Core\AVR8\USB_Device.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\USB\Core\AVR8\USB_Interrupt.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\USB\Core\StandardDescriptor.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\USB\Core\StandardRequest.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\USB\Core\USB_DeviceStdRequest.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\USB\Core\USB_DeviceStream.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\USB\USB.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\USB\USB_Types.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\ADC\ADC.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\USB\Core\AVR8\Endpoint.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\USB\Core\AVR8\USB_Controller.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\USB\Core\AVR8\USB_Interrupt.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\USB\Core\USB_DeviceStdRequest.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\USB\Core\USB_DeviceStream.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\USB\USB.c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

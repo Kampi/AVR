@@ -1,9 +1,9 @@
 /*
- * Class.h
+ * HID.h
  *
- *  Copyright (C) Daniel Kampert, 2020
+ *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: USB device classes.
+ *  File info: USB HID class.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,16 +22,16 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Services/USB/Class/Class.h
- *  @brief USB device classes.
+/** @file USB/Class/HID/HID.h
+ *  @brief USB HID class.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs
  */
 
-#ifndef CLASS_H_
-#define CLASS_H_
+#ifndef HID_H_
+#define HID_H_
 
- #include "HID/HID.h"
+ #include "HID_Common.h"
 
-#endif /* CLASS_H_ */
+#endif /* HID_H_  */

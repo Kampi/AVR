@@ -1,7 +1,7 @@
 /*
  * Class.h
  *
- *  Copyright (C) Daniel Kampert, 2020
+ *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
  *  File info: USB device classes.
 
@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Services/USB/Class/Class.h
+/** @file USB/Class/Class.h
  *  @brief USB device classes.
  *
  *  @author Daniel Kampert
@@ -32,6 +32,6 @@
 #ifndef CLASS_H_
 #define CLASS_H_
 
- #include "HID/HID.h"
+#include "HID/HID.h"
 
 #endif /* CLASS_H_ */

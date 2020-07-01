@@ -1,9 +1,9 @@
 /*
- * Class.h
+ * Common.h
  *
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: USB device classes.
+ *  File info: Common includes for the USB example.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -19,19 +19,27 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
- */
+  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
+ */ 
 
-/** @file Services/USB/Class/Class.h
- *  @brief USB device classes.
+/** @file Common.h
+ *  @brief Common includes for the USB example.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs
  */
 
-#ifndef CLASS_H_
-#define CLASS_H_
+#ifndef COMMON_H_
+#define COMMON_H_
 
- #include "HID/HID.h"
+ #include <avr/io.h>
+ #include <avr/pgmspace.h>
+ #include <avr/interrupt.h>
 
-#endif /* CLASS_H_ */
+ #include <stddef.h>
+ #include <string.h>
+
+ #include "Macros.h"
+ #include "USB/USB_Types.h"
+
+#endif /* COMMON_H_ */

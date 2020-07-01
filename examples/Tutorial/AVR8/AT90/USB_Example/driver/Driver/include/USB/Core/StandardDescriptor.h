@@ -19,21 +19,21 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Services/USB/Core/StandardDescriptor.h
+/** @file USB/Core/StandardDescriptor.h
  *  @brief Standard USB Descriptor definitions.
- *		   Please read http://www.usbmadesimple.co.uk/ums_4.htm when you need more information.
+ *		   See http://www.usbmadesimple.co.uk/ums_4.htm for additional information.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs
  */
 
-#ifndef STANDARDDESCRIPTOR_H_
-#define STANDARDDESCRIPTOR_H_
+#ifndef DESCRIPTORTYPES_H_
+#define DESCRIPTORTYPES_H_
 
- #include "Common/Common.h"
+ #include "Common.h"
 
  /** @brief	Macro to convert multiple bytes to a Unicode string descriptor.
  */
@@ -43,13 +43,13 @@
  */
  #define WCHAR_TO_STRING_DESCRIPTOR(Array)				{ .bLength = sizeof(USB_StringDescriptor_t) + (sizeof(Array) - 2), .bDescriptorType = DESCRIPTOR_TYPE_STRING, .bString = Array }
 
- /** @brief	Macro to convert a primary language and a sub language into a 16-bit language id
+ /** @brief	Macro to convert a primary language and a sub language into a 16-bit language id.
  */
  #define CONV_LANG(Primary, Sub)						(((Sub & 0x3F) << 10) | (Primary & 0x3FF))
 
  /** @brief	Macro to convert a USB BCD version number.
  */
- #define #define USB_VERSION(Major, Minor, Revision)	((Major & 0xFF) << 0x08) | ((Minor & 0x0F) << 0x04) | (Revision & 0x0F)
+ #define USB_VERSION(Major, Minor, Revision)			((Major & 0xFF) << 0x08) | ((Minor & 0x0F) << 0x04) | (Revision & 0x0F)
 
  /** @brief	Macro to create the value for the maximum power consumption of a device in mA.
  */
@@ -58,18 +58,18 @@
  /** @brief	Macro to create the USB configuration descriptor bmAttributes bitmap from a given #USB_ConfigAttributes_t mask.
  */
  #define USB_MASK2CONFIG(Mask)							(0x80 | Mask)
-
+ 
  /** @brief Use class code info from Interface descriptors. Use only with #USB_CLASS_USE_INTERFACE.
   */
  #define USB_SUBCLASS_NONE								0x00
-
+ 
  /** @brief Use protocol code info from Interface descriptors. Use only with #USB_CLASS_USE_INTERFACE.
   */
  #define USB_PROTOCOL_NONE								0x00
 
- /** @ingroup 	USB
-  *  @brief 	USB descriptor types
-  */
+ /** @ingroup USB
+  *  USB descriptor types */
+ /*\@{*/
  typedef enum
  {
 	 DESCRIPTOR_TYPE_DEVICE = 0x01,										/**< Device descriptor ID */ 
@@ -78,11 +78,12 @@
 	 DESCRIPTOR_TYPE_INTERFACE = 0x04,									/**< Interface descriptor ID */ 
 	 DESCRIPTOR_TYPE_ENDPOINT = 0x05,									/**< Endpoint descriptor ID */ 
  } DescriptorTypes_t;
+ /*\@}*/
 
- /** @ingroup 	USB
-  *  @brief 	USB base classes
-  *  			NOTE: Please read https://www.usb.org/defined-class-codes when you need more information.
-  */
+ /** @ingroup USB
+  *  USB base classes
+  *  NOTE: Visit https://www.usb.org/defined-class-codes for more information. */
+ /*\@{*/
  typedef enum
  {
 	 USB_CLASS_USE_INTERFACE = 0x00,									/**< Use the USB Interface Descriptor for the class information 
@@ -130,10 +131,11 @@
  	 USB_CLASS_VENDOR = 0xFF,											/**< Vendor specific device class
 																			 NOTE: Use this in the Device and Interface Descriptor */
  } USB_BaseClass_t;
+ /*\@}*/
 
- /** @ingroup 	USB
-  *  @brief		USB primary language ID codes.
-  */
+ /** @ingroup USB
+  *  USB primary language ID codes */
+ /*\@{*/
  typedef enum
  {
 	 LANG_ARABIC = 0x01,                 			 					/**< Primary language: Arabic */
@@ -208,10 +210,11 @@
 	 LANG_NEPALI = 0x61,         			 							/**< Primary language: Nepali */
 	 LANG_HID = 0xff,			 										/**< Reserved for USB HID class use */
  } USB_PrimLangID_t;
+ /*\@}*/
 
- /** @ingroup 	USB
-  *  @brief		USB sublanguage ID codes.
-  */
+ /** @ingroup USB
+  *  USB sublanguage ID codes */
+ /*\@{*/
  typedef enum
  {
 	 SUBLANG_ARABIC_SAUDI_ARABIA = 0x01,								/**< Sublanguage: Arabic (Saudi Arabia) */
@@ -309,20 +312,21 @@
 	 SUBLANG_HID_VENDOR_DEFINED_3 = 0x3e,								/**< Sublanguage: HID (Vendor Defined 3) */
 	 SUBLANG_HID_VENDOR_DEFINED_4 = 0x3f,								/**< Sublanguage: HID (Vendor Defined 4) */
  } USB_SubLangID_t;
+ /*\@}*/
 
- /** @ingroup 	USB
-  *  @brief		USB configuration for the \ref USB_EndpointDescriptor_t.bmAttributes field.
-  */
+ /** @ingroup USB
+  *  USB configuration #bmAttributes */
+ /*\@{*/
  typedef enum
  {
-	 USB_CONFIG_NO_CONFIG = 0x00,										/**< No other configuration values */
 	 USB_CONFIG_SELF_POWERED = 0x40,									/**< Device Self-powered mask */
 	 USB_CONFIG_REMOTE_WAKE = 0x20,										/**< Remote Wakeup attribute mask */
  } USB_ConfigAttributes_t;
+ /*\@}*/
 
- /** @ingroup 	USB
-  *  @brief		USB endpoint for the \ref USB_EndpointDescriptor_t.bmAttributes field.
-  */
+ /** @ingroup USB
+  *  USB endpoint #bmAttributes */
+ /*\@{*/
  typedef enum
  {
 	 USB_ENDPOINT_USAGE_DATA = (0x00 << 0x04),							/**< Data endpoint */
@@ -332,15 +336,16 @@
 	 USB_ENDPOINT_SYNC_ASYNC = (0x01 << 0x02),							/**< Asynchronous Synchronization */
 	 USB_ENDPOINT_SYNC_ADAPTIVE = (0x02 << 0x02),						/**< Adaptive Synchronization */
 	 USB_ENDPOINT_SYNC_SYNCH = (0x03 << 0x02),							/**< Synchronous Synchronization */
-	 USB_ENDPOINT_TRANSFER_CONTROL = (0x00 << 0x00),					/**< Control transfer */
-	 USB_ENDPOINT_TRANSFER_ISOCHR = (0x01 << 0x00),						/**< Isochronous transfer */
-	 USB_ENDPOINT_TRANSFER_BULK = (0x02 << 0x00),						/**< Bulk transfer */
-	 USB_ENDPOINT_TRANSFER_INTERRUPT = (0x03 << 0x00),					/**< Interrupt transfer */
+	 USB_ENDPOINT_TRANSFER_CONTROL = 0x00,								/**< Control transfer */
+	 USB_ENDPOINT_TRANSFER_ISOCHR = 0x01,								/**< Isochronous transfer */
+	 USB_ENDPOINT_TRANSFER_BULK = 0x02,									/**< Bulk transfer */
+	 USB_ENDPOINT_TRANSFER_INTERRUPT = 0x03,							/**< Interrupt transfer */
  } USB_EndpointAttributes_t;
+ /*\@}*/
 
- /** @ingroup 	USB
-  *  @brief 	USB device descriptor definition.
-  */
+ /** @ingroup USB
+  *  USB device descriptor definition */
+ /*\@{*/
  typedef struct
  {
 	 uint8_t bLength;													/**< Size of this descriptor in bytes */
@@ -358,10 +363,11 @@
 	 uint8_t iSerialNumber;												/**< Index of string descriptor describing the device serial number - set to 0 if no string */
 	 uint8_t bNumConfigurations; 										/**< Number of possible configurations */
  } __attribute__((packed)) USB_DeviceDescriptor_t;
+ /*\@}*/
 
- /** @ingroup 	USB
-  *  @brief 	USB configuration descriptor definition.
-  */
+ /** @ingroup USB
+  *  USB configuration descriptor definition */
+ /*\@{*/
  typedef struct
  {
 	 uint8_t bLength;													/**< Size of this descriptor in bytes */
@@ -370,16 +376,28 @@
 	 uint8_t bNumInterfaces;											/**< Number of interfaces supported by this configuration */
 	 uint8_t bConfigurationValue;										/**< Value used by Set Configuration to select this configuration */
 	 uint8_t iConfiguration;											/**< Index of string descriptor describing configuration - set to 0 if no string */
-	 uint8_t bmAttributes;												/**< D7: Must be set to 1.
+	 uint8_t bmAttributes;												/**< D7: Must be set to 1
 																			 D6: Self-powered
 																			 D5: Remote Wakeup
-																			 D4-D0: Set to 0. */
+																			 D4-D0: Set to 0 */
 	 uint8_t bMaxPower;													/**< Maximum current drawn by device in this configuration. In units of 2mA. So 50 means 100 mA */
  } __attribute__((packed)) USB_ConfigurationDescriptor_t;
+ /*\@}*/
 
- /** @ingroup 	USB
-  *  @brief		USB interface descriptor definition.
-  */
+ /** @ingroup USB
+  *  USB string descriptor definition */
+ /*\@{*/
+ typedef struct
+ {
+	 uint8_t bLength;													/**< Size of this descriptor in bytes */
+	 uint8_t bDescriptorType;											/**< STRING descriptor type (=3) */
+	 wchar_t bString[];													/**< UNICODE encoded string */
+ } __attribute__((packed)) USB_StringDescriptor_t;
+ /*\@}*/
+
+ /** @ingroup USB
+  *  USB interface descriptor definition */
+ /*\@{*/
  typedef struct
  {
 	 uint8_t bLength;													/**< Size of this descriptor in bytes */
@@ -392,52 +410,44 @@
 	 uint8_t bInterfaceProtocol;										/**< Protocol Code assigned by USB-IF */
 	 uint8_t iInterface;												/**< Index of string descriptor describing interface - set to 0 if no string */
  } __attribute__((packed)) USB_InterfaceDescriptor_t;
+ /*\@}*/
 
- /** @ingroup 	USB
-  *  @brief		USB endpoint descriptor definition.
-  */
+ /** @ingroup USB
+  *  USB endpoint descriptor definition */
+ /*\@{*/
  typedef struct
  {
 	 uint8_t bLength;													/**< Size of this descriptor in bytes */
 	 uint8_t bDescriptorType;											/**< ENDPOINT descriptor type (=5) */
 	 uint8_t bEndpointAddress;											/**< The address of this endpoint within the device.
-																			 D7: Direction \n
-																				0	OUT \n
-																				1	IN \n
-																			 D6-D4: Set to 0. \n
+																			 D7: Direction
+																			 0 = OUT, 1 = IN
+																			 D6-D4: Set to 0
 																			 D3-D0: Endpoint number */
-	 uint8_t bmAttributes;												/**< D1:0 Transfer Type \n
-																				00	Control \n
-																				01	Isochronous \n
-																				10	Bulk \n
-																				11	Interrupt \n
-																			 The following only apply to isochronous endpoints. Else set to 0. \n
-																			 D3:2 Synchronization Type \n
-																				00	No Synchronization \n
-																				01	Asynchronous \n
-																				10	Adaptive \n
-																				11	Synchronous \n
-																			 D5:4 Usage Type \n
-																				00	Data endpoint \n
-																				01	Feedback endpoint \n
-																				10	Implicit feedback Data endpoint \n
-																				11	Reserved \n
-																			 D7:6 Reserved. Set to 0. */
+	 uint8_t bmAttributes;												/**< D1:0 Transfer Type
+																			 00 = Control
+																			 01 = Isochronous
+																			 10 = Bulk
+																			 11 = Interrupt
+																			 The following only apply to isochronous endpoints. Else set to 0.
+																			 D3:2 Synchronization Type
+																			 00 = No Synchronization
+																			 01 = Asynchronous
+																			 10 = Adaptive
+																			 11 = Synchronous
+																			 D5:4 Usage Type
+																			 00 = Data endpoint
+																			 01 = Feedback endpoint
+																			 10 = Implicit feedback Data endpoint
+																			 11 = Reserved
+																			 D7:6 Reserved
+																			 Set to 0 */
 	 uint16_t wMaxPacketSize;											/**< Maximum packet size this endpoint can send or receive 
 																		     when this configuration is selected  */
 	 uint8_t bInterval;													/**< Interval for polling endpoint for data transfers. 
 																			 Expressed in frames (ms) for low/full speed or micro frames (125us) for high speed */
  } __attribute__((packed)) USB_EndpointDescriptor_t;
-
- /** @ingroup 	USB
-  *  @brief		USB string descriptor definition.
-  */
- typedef struct
- {
-	 uint8_t bLength;													/**< Size of this descriptor in bytes */
-	 uint8_t bDescriptorType;											/**< STRING descriptor type (=3) */
-	 wchar_t bString[];													/**< UNICODE encoded string */
- } __attribute__((packed)) USB_StringDescriptor_t;
+ /*\@}*/
 
  /** @brief		Function prototype to load an descriptor from the program memory.
   *  @wValue	wValue from USB packet
@@ -447,4 +457,4 @@
   */
  extern const void* USB_GetDescriptor(const uint16_t wValue, const uint16_t wIndex, uint16_t* Size);
 
-#endif /* STANDARDDESCRIPTOR_H_ */ 
+#endif /* DESCRIPTORTYPES_H_  */ 

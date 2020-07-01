@@ -1,9 +1,9 @@
 /*
- * Endpoint.h
+ * Endpoints.h
  *
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: Endpoint definition for the Atmel AVR8 AT90 USB interface.
+ *  File info: Endpoint functions for the Atmel AVR8 AT90 USB interface.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -19,66 +19,75 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
- */ 
+  Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
+ */
 
-/** @file Arch/AVR8/AT90/USB/Endpoint.h
- *  @brief Endpoint definition for the Atmel AVR8 AT90 USB interface.
+/** @file USB/Core/AVR8/Endpoint.h
+ *  @brief Endpoint functions for the Atmel AVR8 AT90 USB interface.
  *
- *  This file contains the prototypes and definitions for Atmel AVR endpoints.
+ *  This file contains the prototypes and definitions for the AT90USB1287 USB Endpoints.
  *
  *  @author Daniel Kampert
- *  @bug No known bugs
+ *  @bug No known bugs.
  */
 
 #ifndef ENDPOINT_H_
 #define ENDPOINT_H_
 
- #include "Arch/AVR8/AT90/USB/USB_Controller.h"
- #include "Services/USB/Core/StandardRequest.h"
+ #include "USB/Core/AVR8/USB_Device.h"
+
+ /** @brief	Max. endpoints for the device controller.
+  */
+ #define ENDPOINT_MAX_ENDPOINTS							0x07
+
+ /** @brief	Control endpoint address for USB devices.
+  */
+ #define ENDPOINT_CONTROL_ADDRESS						0x00
+
+ /** @brief	Default size for control endpoint.
+  */
+ #define ENDPOINT_CONTROL_DEFAULT_SIZE					0x08
+
+ /** @brief	Mask for IN endpoint.
+  */
+ #define ENDPOINT_DIR_MASK_IN							0x80
 
  /** @brief	Endpoint types.
   */
  typedef enum
  {
-	 ENDPOINT_TYPE_CONTROL = 0x00,										/**< Control endpoint */ 
-	 ENDPOINT_TYPE_ISOCHRONOUS = 0x01,									/**< Isochronous endpoint */ 
-	 ENDPOINT_TYPE_BULK = 0x02,											/**< Bulk endpoint */ 
-	 ENDPOINT_TYPE_INTERRUPT = 0x03										/**< Interrupt endpoint */ 
+	 ENDPOINT_TYPE_CONTROL = 0x00,						/**< Control endpoint */ 
+	 ENDPOINT_TYPE_ISOCHRONOUS = 0x01,					/**< Isochronous endpoint */ 
+	 ENDPOINT_TYPE_BULK = 0x02,							/**< Bulk endpoint */ 
+	 ENDPOINT_TYPE_INTERRUPT = 0x03						/**< Interrupt endpoint */ 
  } Endpoint_Type_t;
 
  /** @brief	Endpoint size in bytes.
   */
  typedef enum
  {
-	 ENDPOINT_SIZE_8 = 0x00,											/**< Endpoint size 8 bytes */ 
-	 ENDPOINT_SIZE_16 = 0x01,											/**< Endpoint size 16 bytes */ 
-	 ENDPOINT_SIZE_32 = 0x02,											/**< Endpoint size 32 bytes */ 
-	 ENDPOINT_SIZE_64 = 0x03,											/**< Endpoint size 64 bytes */ 
-	 ENDPOINT_SIZE_128 = 0x04,											/**< Endpoint size 128 bytes \n
-																			 NOTE: Only for endpoint 1! */ 
-	 ENDPOINT_SIZE_256 = 0x05,											/**< Endpoint size 256 bytes \n
-																			 NOTE: Only for endpoint 1! */ 
+	 ENDPOINT_SIZE_8 = 0x00,							/**< Endpoint size 8 bytes */ 
+	 ENDPOINT_SIZE_16 = 0x01,							/**< Endpoint size 16 bytes */ 
+	 ENDPOINT_SIZE_32 = 0x02,							/**< Endpoint size 32 bytes */ 
+	 ENDPOINT_SIZE_64 = 0x03,							/**< Endpoint size 64 bytes */ 
+	 ENDPOINT_SIZE_128 = 0x04,							/**< Endpoint size 128 bytes \n
+															 NOTE: Only for endpoint 1! */ 
+	 ENDPOINT_SIZE_256 = 0x05,							/**< Endpoint size 256 bytes \n
+															 NOTE: Only for endpoint 1! */ 
  } Endpoint_Size_t;
 
  /** @brief	Endpoint directions.
   */
  typedef enum
  {
-	 ENDPOINT_DIRECTION_OUT = 0x00,										/**< Endpoint direction OUT */ 
-	 ENDPOINT_DIRECTION_IN = 0x80,										/**< Endpoint direction IN */ 
+	 ENDPOINT_DIRECTION_OUT = 0x00,						/**< OUT endpoint */ 
+	 ENDPOINT_DIRECTION_IN = 0x80,						/**< IN endpoint */ 
  } Endpoint_Direction_t;
 
  /** @brief	Control endpoint size in bytes.
   */
  #if(!defined(ENDPOINT_CONTROL_SIZE))
 	 #define ENDPOINT_CONTROL_SIZE					ENDPOINT_CONTROL_DEFAULT_SIZE
- #endif
- 
- /** @brief	Control endpoint address.
-  */
- #if(!defined(ENDPOINT_CONTROL_ADDRESS))
-	 #define ENDPOINT_CONTROL_ADDRESS				ENDPOINT_CONTROL_DEFAULT_ADDRESS
  #endif
 
  /** @brief			Select an endpoint.
@@ -118,7 +127,7 @@
  {
 	 UECONX &= ~(0x01 << EPEN);
  }
-
+ 
  /** @brief		Get the direction of the active endpoint.
   *				NOTE: You have so use #Endpoint_Select first!
   *  @return	Endpoint direction
@@ -133,7 +142,7 @@
 	 
 	 return ENDPOINT_DIRECTION_OUT;
  }
-
+ 
  /** @brief		Get the current active endpoint.
   *  @return	Endpoint address
   */
@@ -182,7 +191,7 @@
 
  /** @brief		Test if the control endpoint received an setup packed.
   *				NOTE: You have so use #Endpoint_Select first!
-  *  @return	#true when a setup packed was received
+  *  @return	#TRUE when a setup packed was received
   */
  static inline uint8_t Endpoint_SETUPReceived(void) __attribute__ ((always_inline));
  static inline uint8_t Endpoint_SETUPReceived(void)
@@ -192,7 +201,7 @@
 
  /** @brief		Test if new OUT data is received.
   *				NOTE: You have so use #Endpoint_Select first!
-  *  @return	#true when OUT data received.
+  *  @return	#TRUE when OUT data received.
   */
  static inline uint8_t Endpoint_OUTReceived(void) __attribute__ ((always_inline));
  static inline uint8_t Endpoint_OUTReceived(void)
@@ -202,7 +211,7 @@
 
  /** @brief		Test if the bank can accept new IN data.
   *				NOTE: You have so use #Endpoint_Select first!
-  *  @return	#true when bank is ready
+  *  @return	#TRUE when bank is ready
   */
  static inline uint8_t Endpoint_INReady(void) __attribute__ ((always_inline));
  static inline uint8_t Endpoint_INReady(void)
@@ -218,7 +227,7 @@
  {
 	 UECONX |= (0x01 << STALLRQ);
  }
-
+ 
  /** @brief	Clear the stall condition.
   *			NOTE: You have so use #Endpoint_Select first!
   */
@@ -230,7 +239,7 @@
 
  /** @brief		Test if the endpoint is stalled.
   *				NOTE: You have so use #Endpoint_Select first!
-  *  @return	#true when stalled
+  *  @return	#TRUE when stalled
   */
  static inline uint8_t Endpoint_IsSTALL(void) __attribute__ ((always_inline));
  static inline uint8_t Endpoint_IsSTALL(void)
@@ -240,7 +249,7 @@
 
  /** @brief		Test if the application can read data from the endpoint or can write data to the endpoint.
   *				NOTE: You have so use #Endpoint_Select first!
-  *  @return	#true when IN endpoint and write is allowed, #true when OUT endpoint and read is allowed
+  *  @return	#TRUE when IN endpoint and write is allowed, #TRUE when OUT endpoint and read is allowed
   */
  static inline uint8_t Endpoint_IsReadWriteAllowed(void) __attribute__ ((always_inline));
  static inline uint8_t Endpoint_IsReadWriteAllowed(void)
@@ -267,7 +276,7 @@
  {
 	 UEDATX = Data;
  }
-
+ 
  /** @brief	Write two data bytes (one integer) in the currently selected endpoint.
   *			NOTE: You have so use #Endpoint_Select first!
   *  @Data	Data bytes
@@ -283,10 +292,10 @@
   *  @param Address		Endpoint address
   *  @param Type		Endpoint type
   *  @param Size		Endpoint size in bytes
-  *  @param DoubleBank	Set to #true to use a double bank for the endpoint
-  *  @return			#true when successfully
+  *  @param DoubleBank	Set to #TRUE to use a double bank for the endpoint
+  *  @return			#TRUE when successfully
   */
- bool Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, const Endpoint_Size_t Size, const bool DoubleBank);
+ uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, const uint8_t Size, const uint8_t DoubleBank);
 
  /** @brief				Process the STATUS stage of the control transmission. The operation depends on the request direction.
   *  @param Direction	USB request direction

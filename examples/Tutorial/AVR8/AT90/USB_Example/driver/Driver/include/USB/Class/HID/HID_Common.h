@@ -1,7 +1,7 @@
 /*
  * HID_Common.h
  *
- *  Copyright (C) Daniel Kampert, 2020
+ *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
  *  File info: Common definitions for USB HID class.
 
@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Services/USB/Class/HID/HID_Common.h
+/** @file USB/Class/HID/HID_Common.h
  *  @brief Common definitions for USB HID class.
  *		   Please read https://www.usb.org/sites/default/files/documents/hid1_11.pdf when you need more information.
  *
@@ -33,7 +33,7 @@
 #ifndef HID_COMMON_H_
 #define HID_COMMON_H_
 
- #include "Common/Common.h"
+ #include "Common.h"
 
  /** @ingroup 	USB-HID
   *  @brief		USB HID class descriptor types.
