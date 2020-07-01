@@ -71,9 +71,9 @@ const uint8_t PROGMEM MouseReport[] =
 
 const USB_DeviceDescriptor_t PROGMEM DeviceDescriptor =
 {
-	.bLength                = sizeof(USB_DeviceDescriptor_t), 
+	.bLength				= sizeof(USB_DeviceDescriptor_t), 
 	.bDescriptorType		= DESCRIPTOR_TYPE_DEVICE,
-	.bcdUSB			        = USB_VERSION(1, 1, 0),
+	.bcdUSB					= USB_VERSION(1, 1, 0),
 	.bDeviceClass			= USB_CLASS_USE_INTERFACE,
 	.bDeviceSubClass		= USB_SUBCLASS_NONE,
 	.bDeviceProtocol		= USB_PROTOCOL_NONE,
@@ -94,45 +94,45 @@ const USB_Configuration_t PROGMEM ConfigurationDescriptor[] =
 {
 	[0].Configuration =
 	{
-		.bLength = sizeof(USB_ConfigurationDescriptor_t),
-		.bDescriptorType = DESCRIPTOR_TYPE_CONFIGURATION,
-		.wTotalLength = sizeof(USB_Configuration_t),
-		.bNumInterfaces = 0x01,
-		.bConfigurationValue = 0x01,
-		.iConfiguration = 0x00,
-		.bmAttributes = USB_MASK2CONFIG(USB_CONFIG_SELF_POWERED),
-		.bMaxPower = USB_CURRENT_CONSUMPTION(100),
+		.bLength				= sizeof(USB_ConfigurationDescriptor_t),
+		.bDescriptorType		= DESCRIPTOR_TYPE_CONFIGURATION,
+		.wTotalLength			= sizeof(USB_Configuration_t),
+		.bNumInterfaces			= 0x01,
+		.bConfigurationValue	= 0x01,
+		.iConfiguration			= 0x00,
+		.bmAttributes			= USB_MASK2CONFIG(USB_CONFIG_SELF_POWERED),
+		.bMaxPower				= USB_CURRENT_CONSUMPTION(100),
 	},
 	[0].Interface =
 	{
-		.bLength = sizeof(USB_InterfaceDescriptor_t),
-		.bDescriptorType = DESCRIPTOR_TYPE_INTERFACE,
-		.bInterfaceNumber = 0x00,
-		.bAlternateSetting = 0x00,
-		.bNumEndpoints = 0x01,
-		.bInterfaceClass = USB_CLASS_HID,
-		.bInterfaceSubClass = HID_SUBCLASS_BOOT_INTERFACE,
-		.bInterfaceProtocol = HID_PROTOCOL_MOUSE,
-		.iInterface = 0x00,
+		.bLength				= sizeof(USB_InterfaceDescriptor_t),
+		.bDescriptorType		= DESCRIPTOR_TYPE_INTERFACE,
+		.bInterfaceNumber		= 0x00,
+		.bAlternateSetting		= 0x00,
+		.bNumEndpoints			= 0x01,
+		.bInterfaceClass		= USB_CLASS_HID,
+		.bInterfaceSubClass		= HID_SUBCLASS_NONE,
+		.bInterfaceProtocol		= HID_PROTOCOL_NONE,
+		.iInterface				= 0x00,
 	},
 	[0].MouseHID =
 	{
-		.bLength = sizeof(USB_HID_Descriptor_t),
-		.bDescriptorType = HID_DESCRIPTOR_TYPE_HID,
-		.bcdHID = USB_VERSION(1, 1, 0),
-		.bCountryCode = HID_COUNTRYCODE_GERMAN,
-		.bNumDescriptors = 0x01,
-		.bReportType = HID_DESCRIPTOR_TYPE_REPORT,
-		.wDescriptorLength = sizeof(MouseReport),
+		.bLength				= sizeof(USB_HID_Descriptor_t),
+		.bDescriptorType		= HID_DESCRIPTOR_TYPE_HID,
+		.bcdHID					= USB_VERSION(1, 1, 0),
+		.bCountryCode			= HID_COUNTRYCODE_GERMAN,
+		.bNumDescriptors		= 0x01,
+		.bReportType			= HID_DESCRIPTOR_TYPE_REPORT,
+		.wDescriptorLength		= sizeof(MouseReport),
 	},
 	[0].DataINEndpoint =
 	{
-		.bLength = sizeof(USB_EndpointDescriptor_t),
-		.bDescriptorType = DESCRIPTOR_TYPE_ENDPOINT,
-		.bEndpointAddress = MOUSE_IN_EP,
-		.bmAttributes = USB_ENDPOINT_USAGE_DATA | USB_ENDPOINT_SYNC_NO | USB_ENDPOINT_TRANSFER_INTERRUPT,
-		.wMaxPacketSize = MOUSE_EP_SIZE,
-		.bInterval = 0x0A,
+		.bLength				= sizeof(USB_EndpointDescriptor_t),
+		.bDescriptorType		= DESCRIPTOR_TYPE_ENDPOINT,
+		.bEndpointAddress		= MOUSE_IN_EP,
+		.bmAttributes			= USB_ENDPOINT_USAGE_DATA | USB_ENDPOINT_SYNC_NO | USB_ENDPOINT_TRANSFER_INTERRUPT,
+		.wMaxPacketSize			= MOUSE_EP_SIZE,
+		.bInterval				= 0x0A,
 	}
 };
 
