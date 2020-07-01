@@ -1,9 +1,9 @@
 /*
  * USB_Interrupt.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: Interrupt functions for AT90USB1287 USB.
+ *  File info: Interrupt functions for Atmel AVR AT90 USB interface.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file USB/Core/AVR8/USB_Interrupt.h
- *  @brief Interrupt functions for AVR8 USB.
+ *  @brief Interrupt functions for Atmel AVR AT90 USB interface.
  *
  *  This file contains the implementation of the AT90USB1287 USB driver interrupts.
  *

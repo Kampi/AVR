@@ -1,9 +1,9 @@
 /*
  * Endpoint.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: USB endpoint for AVR8 devices.
+ *  File info: Endpoint functions for the Atmel AVR8 AT90 USB interface.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file USB/Core/AVR8/Endpoint.c
- *  @brief USB endpoint for AVR8 devices.
+ *  @brief Endpoint functions for the Atmel AVR8 AT90 USB interface.
  * 
  *  This file contains the implementation of the AVR8 endpoint driver.
  *
@@ -38,36 +38,36 @@ uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, co
 {
 	uint8_t Address_Temp = Address & 0x0F;
 
-	if((Address_Temp & 0x07) > MAX_ENDPOINTS)
+	if((Address_Temp & 0x07) > ENDPOINT_MAX_ENDPOINTS)
 	{
 		return 0x00;
 	}
 
 	// Allocate the memory for the endpoints
-	for(uint8_t i = Address_Temp; i < MAX_ENDPOINTS; i++)
+	for(uint8_t i = Address_Temp; i < ENDPOINT_MAX_ENDPOINTS; i++)
 	{
 		uint8_t UECFG0X_Temp;
 		uint8_t UECFG1X_Temp;
 		uint8_t UEIENX_Temp;
 
-		Endpoint_Select(Address_Temp);
+		Endpoint_Select(i);
 
 		if(i == Address_Temp)
 		{
 			// Configure UECFG0X-register
 			UECFG0X_Temp = (Type << EPTYPE0);
-			
+
 			if(Address & ENDPOINT_DIR_MASK_IN)
 			{
 				UECFG0X_Temp |= (0x01 << EPDIR);
 			}
-			
+
 			// Configure UECFG1X-register
 			if(DoubleBank > 0x01)
 			{
 				UECFG1X_Temp |= (0x01 << EPBK0);
 			}
-			
+
 			// Convert the endpoint size into the correct bit mask (see the datasheet for the mask values)
 			uint8_t Temp = 0x08;
 			uint8_t EPSIZE = 0x00;
@@ -76,20 +76,20 @@ uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, co
 				EPSIZE++;
 				Temp <<= 0x01;
 			}
-			
+
 			UECFG1X_Temp |= (EPSIZE << EPSIZE0);
 
 			// Set the ALLOC bit
 			UECFG1X_Temp |= (0x01 << ALLOC);
 
 			// Configure UEIENX-register
-			UEIENX_Temp = (0x01 << RXSTPE);
+			UEIENX_Temp = 0x00;
 		}
 		else
 		{
 			UECFG0X_Temp = UECFG0X;
 			UECFG1X_Temp = UECFG1X;
-			UEIENX_Temp = 0x00;
+			UEIENX_Temp = UEIENX;
 		}
 
 		// Skip the endpoint if the memory isn´t allocated
@@ -100,12 +100,12 @@ uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, co
 
 		// Disable the selected endpoint
 		Endpoint_Disable();
-		
+
 		// Clear the ALLOC-bit, so the endpoints will slide down
 		UECFG1X &= ~(0x01 << ALLOC);
 
 		// Configure and activate the endpoint
-		// See figure 23-2 in the device datasheet
+		// See figure 23-2 in the official device datasheet
 		Endpoint_Enable();
 		UECFG0X = UECFG0X_Temp;
 		UECFG1X = UECFG1X_Temp;
@@ -117,6 +117,9 @@ uint8_t Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, co
 			return 0x00;
 		}
 	}
+
+	// Select the configured endpoint
+	Endpoint_Select(Address_Temp);
 
 	return 0x01;
 }

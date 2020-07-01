@@ -1,7 +1,7 @@
 /*
  * USB.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: USB driver for AT90USB1287.
 
@@ -61,7 +61,7 @@ void USB_Poll(void)
 	// Wait for a new setup packet
 	if(Endpoint_SETUPReceived())
 	{
-		USBDevice_ControlRequest();
+		USB_Device_ControlRequest();
 	}
 
 	// Switch back to the previous endpoint

@@ -1,7 +1,7 @@
 /*
  * Joystick.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for simple joysticks.
 
@@ -34,40 +34,39 @@
 #ifndef JOYSTICK_H_
 #define JOYSTICK_H_
 
- #include <avr/io.h>
+ #include "Common.h"
  
- /** @brief Joystick pushed in the left direction
-  */
  typedef enum
  {
-	 JOYSTICK_NO_ACTION = 0x00,								/**< Nothing happens */
-	 JOYSTICK_LEFT = (0x01 << 0x06),						/**< Joystick is pushed left */
-	 JOYSTICK_RIGHT = (0x01 << 0x04) >> 0x01,				/**< Joystick is pushed right */
-	 JOYSTICK_UP = (0x01 << 0x07),							/**< Joystick is pushed up */
-	 JOYSTICK_DOWN = (0x01 << 0x05) >> 0x01,				/**< Joystick is pushed down */
-	 JOYSTICK_PRESS = (0x01 << 0x05),						/**< Joystick is pressed */
+	 JOYSTICK_NO_ACTION = 0x00,                             /**< Nothing happens */
+	 JOYSTICK_LEFT = (0x01 << 0x06),                        /**< Joystick is pushed left */
+	 JOYSTICK_RIGHT = (0x01 << 0x04) >> 0x01,               /**< Joystick is pushed right */
+	 JOYSTICK_UP = (0x01 << 0x07),                          /**< Joystick is pushed up */
+	 JOYSTICK_DOWN = (0x01 << 0x05) >> 0x01,                /**< Joystick is pushed down */
+	 JOYSTICK_PRESS = (0x01 << 0x05),                       /**< Joystick is pressed */
  } Joystick_Action_t;
- 
+
  /** @brief	Initialize the joystick.
   */
  static inline void Joystick_Init(void) __attribute__ ((always_inline));
  static inline void Joystick_Init(void)
  {
-	 DDRB &= ~((0x01 << 0x05) | (0x01 << 0x06) | (0x01 << 0x07));
-	 DDRE &= ~((0x01 << 0x04) | (0x01 << 0x05));
+	 PORTB.DIR &= ~((0x01 << 0x05) | (0x01 << 0x06) | (0x01 << 0x07));
+	 PORTE.DIR &= ~((0x01 << 0x04) | (0x01 << 0x05));
 
-	 PORTB |= ((0x01 << 0x05) | (0x01 << 0x06) | (0x01 << 0x07));
-	 PORTE |= ((0x01 << 0x04) | (0x01 << 0x05));
+	 PORTB.OUT |= ((0x01 << 0x05) | (0x01 << 0x06) | (0x01 << 0x07));
+	 PORTE.OUT |= ((0x01 << 0x04) | (0x01 << 0x05));
  }
- 
+
  /** @brief		Initialize the joystick.
   *  @return	Status of the joystick
   */
- static inline void Joystick_Init(void) __attribute__ ((always_inline));
+ static inline Joystick_Action_t Joystick_Read(void) __attribute__ ((always_inline));
  static inline Joystick_Action_t Joystick_Read(void)
  {
-	 return (((uint8_t)~PINB & ((0x01 << 0x05) | (0x01 << 0x06) | (0x01 << 0x07))) |
-			(((uint8_t)~PINE & ((0x01 << 0x04) | (0x01 << 0x05))) >> 0x01));
+	 return (((uint8_t)~PORTB.IN & ((0x01 << 0x05) | (0x01 << 0x06) | (0x01 << 0x07))) | 
+			(((uint8_t)~PORTE.IN & ((0x01 << 0x04) | (0x01 << 0x05))) >> 0x01));
  }
+
 
 #endif /* JOYSTICK_H_ */
