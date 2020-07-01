@@ -1,5 +1,5 @@
 /*
- * DescriptorTypes.h
+ * StandardDescriptor.h
  *
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de

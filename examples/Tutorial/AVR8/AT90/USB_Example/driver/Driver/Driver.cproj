@@ -181,9 +181,6 @@
     <Compile Include="include\USB\Core\AVR8\USB_Interrupt.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="include\USB\Core\StandardDescriptor.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="include\USB\Core\StandardRequest.h">
       <SubType>compile</SubType>
     </Compile>
@@ -191,6 +188,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\USB\Core\USB_DeviceStream.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\USB\StandardDescriptor.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="include\USB\USB.h">
