@@ -49,7 +49,7 @@
 
  /** @brief	Macro to convert a USB BCD version number.
  */
- #define #define USB_VERSION(Major, Minor, Revision)	((Major & 0xFF) << 0x08) | ((Minor & 0x0F) << 0x04) | (Revision & 0x0F)
+ #define USB_VERSION(Major, Minor, Revision)			((Major & 0xFF) << 0x08) | ((Minor & 0x0F) << 0x04) | (Revision & 0x0F)
 
  /** @brief	Macro to create the value for the maximum power consumption of a device in mA.
  */
