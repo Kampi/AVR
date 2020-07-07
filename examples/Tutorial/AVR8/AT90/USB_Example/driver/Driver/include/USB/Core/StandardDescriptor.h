@@ -35,28 +35,37 @@
 
  #include "Common.h"
 
- /** @brief	Macro to convert multiple bytes to a Unicode string descriptor.
- */
+ /** @brief			Macro to convert multiple bytes to a unicode string descriptor.
+  *  @param	ARGS	Unicode string
+  */
  #define LANG_TO_STRING_DESCRIPTOR(...)					{ .bLength = sizeof(USB_StringDescriptor_t) + (uint16_t)VA_NARGS(__VA_ARGS__), .bDescriptorType = DESCRIPTOR_TYPE_STRING, .bString = {__VA_ARGS__} }
 
- /** @brief	Macro to convert a char array to a Unicode string descriptor.
- */
+ /** @brief			Macro to convert a char array to a unicode string descriptor.
+  *  @param	Array	Char array
+  */
  #define WCHAR_TO_STRING_DESCRIPTOR(Array)				{ .bLength = sizeof(USB_StringDescriptor_t) + (sizeof(Array) - 2), .bDescriptorType = DESCRIPTOR_TYPE_STRING, .bString = Array }
 
  /** @brief	Macro to convert a primary language and a sub language into a 16-bit language id.
- */
+  *  @param Primary	Primary language ID
+  *  @param Sub		Sublanguage ID
+  */
  #define CONV_LANG(Primary, Sub)						(((Sub & 0x3F) << 10) | (Primary & 0x3FF))
 
- /** @brief	Macro to convert a USB BCD version number.
- */
+ /** @brief				Macro to convert a USB BCD version number.
+  *  @param Major		Version major number
+  *  @param Minor		Version minor number
+  *  @param Revision	Version revision number
+  */
  #define USB_VERSION(Major, Minor, Revision)			((Major & 0xFF) << 0x08) | ((Minor & 0x0F) << 0x04) | (Revision & 0x0F)
 
- /** @brief	Macro to create the value for the maximum power consumption of a device in mA.
- */
+ /** @brief					Macro to create the value for the maximum power consumption of a device.
+  *	 @param Current	Current consumption in mA
+  */
  #define USB_CURRENT_CONSUMPTION(Current)				((Current) >> 0x01)
 
- /** @brief	Macro to create the USB configuration descriptor bmAttributes bitmap from a given #USB_ConfigAttributes_t mask.
- */
+ /** @brief			Macro to create the USB \ref USB_ConfigurationDescriptor_t.bmAttributes bitmap from a given \ref USB_ConfigAttributes_t mask.
+  *	 @param Mask	USB configuration attributes
+  */
  #define USB_MASK2CONFIG(Mask)							(0x80 | Mask)
  
  /** @brief Use class code info from Interface descriptors. Use only with #USB_CLASS_USE_INTERFACE.
