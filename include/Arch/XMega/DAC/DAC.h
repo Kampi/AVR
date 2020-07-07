@@ -36,6 +36,12 @@
 
  #include "Common/Common.h"
 
+ /** @brief				Macro to convert a given voltage into the binary value for the DAC.
+  *  @param	Voltage		Output voltage
+  *  @param Reference	DAC reference voltage
+ */
+ #define DAC_VOLTAGE_TO_BIN(Voltage, Reference)				((Voltage * 1000) * (0x01UL << DAC_RESOLUTION)) / (Reference * 1000)
+
  /** @brief	DAC channels.
   */
  typedef enum
@@ -95,7 +101,6 @@
 	DAC_OutputConfig_t OutputConfig;	/**< Channel selection */
 	DAC_Adjustment_t Adjustment;		/**< DAC data adjustment */
 	DAC_Reference_t Reference;			/**< Reference voltage */
-	float RefVoltage;					/**< Reference voltage in [V] */
  } DAC_Config_t;
 
  /** @brief			Start the AES module.
@@ -163,11 +168,6 @@
   *  @param Reference	Reference
   */
  void DAC_SetReference(DAC_t* Device, const DAC_Reference_t Reference);
-
- /** @brief				Set the voltage devider value.
-  *  @param Reference	Reference voltage in [V]
-  */
- void DAC_SetVoltageDivider(const float Reference);
  
  /** @brief			Get the reference for DAC module.
   *  @param Device	Pointer to DAC object
@@ -193,13 +193,6 @@
   *  @param Value	Output value in binary format
   */
  void DAC_WriteChannel(DAC_t* Device, const DAC_Channel_t Channel, const uint16_t Value);
- 
- /** @brief			Set the output voltage of a DAC module.
-  *  @param Device	Pointer to DAC object
-  *  @param Channel	DAC channel
-  *  @param Voltage	Output voltage
-  */
- void DAC_WriteVoltage(DAC_t* Device, const DAC_Channel_t Channel, const float Voltage);
 
  /** @brief					Configure the DAC for event integration.
   *  @param Device			Pointer to DAC object

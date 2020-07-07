@@ -22,18 +22,18 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Config_DisplayManager.h
+/** @file configs/Config_DisplayManager.h
  *  @brief Configuration example for the display manager.
  *
  *  @author Daniel Kampert
  */
 
-#ifndef CONFIG_SSD1306_H_
-#define CONFIG_SSD1306_H_
+#ifndef CONFIG_DISPLAYMANAGER_H_
+#define CONFIG_DISPLAYMANAGER_H_
 
  #include "Common/Common.h"
  
- #define WITH_SSD1306															/**< Use the SSD1306 display */
+ #define USE_SSD1306															/**< Use the SSD1306 display */
  
  #define DISPLAY_INTERFACE							USARTD, 0					/**< USART interface used by display manager. */
  #define DISPLAY_CLOCK								1000000UL					/**< Display interface speed. */
@@ -50,17 +50,17 @@
  #define DISPLAY_PIXEL_PER_BYTE						8							/**< Number of pixel which can fit into one byte. */
 
 /*
- #define WITH_ST7565R
+ #define USE_ST7565R
 
  #define ST7565R_INTERFACE_TYPE						INTERFACE_USART_SPI
  #define DISPLAY_INTERFACE							USARTD, 0
  #define DISPLAY_CLOCK								1000000
 
  // LCD interface definitions
- #define ST7565R_REGISTER_SELECT					&PORTD, 0
- #define ST7565R_RESET								&PORTA, 3
- #define ST7565R_BACKLIGHT							&PORTE, 4
- #define ST7565R_SS									&PORTF, 3
+ #define ST7565R_REGISTER_SELECT					PORTD, 0
+ #define ST7565R_RESET								PORTA, 3
+ #define ST7565R_BACKLIGHT							PORTE, 4
+ #define ST7565R_SS									PORTF, 3
 
  // Display definitions
  #define DISPLAY_WIDTH								128
@@ -70,4 +70,4 @@
  #define DISPLAY_CONTRAST_MIN						30
 */ 
  
-#endif /* CONFIG_SSD1306_H_ */
+#endif /* CONFIG_DISPLAYMANAGER_H_ */

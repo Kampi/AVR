@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Arch/AVR8/megaAVR/GPIO/GPIO.c
+/** @file Arch/AVR8/megaAVR/mega32/GPIO/GPIO.c
  *  @brief Driver for Atmel AVR8 mega32 GPIO interface.
  *
  *  This file contains the implementation of the Atmel AVR8 mega32 GPIO driver.
@@ -30,7 +30,7 @@
  *  @author Daniel Kampert
  */
 
-#include "Arch/AVR8/megaAVR/GPIO/GPIO.h"
+#include "Arch/AVR8/megaAVR/mega32/GPIO/GPIO.h"
 
 #ifndef DOXYGEN
 	static struct

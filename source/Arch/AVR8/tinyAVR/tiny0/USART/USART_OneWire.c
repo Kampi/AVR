@@ -50,22 +50,22 @@
 
 /** @brief Baudrate value for 115200 baud.
  */
-static uint32_t _Baud115200 = 93;
+static uint32_t _Baud115200 = 0x00;
 
 /** @brief Baudrate value for 9600 baud.
  */
-static uint16_t _Baud9600 = 1111;
+static uint16_t _Baud9600 = 0x00;
 
 /** @brief		Transmit a data package over the USART 1-Wire interface and receive the answer.
  *  @param Data	Data byte
  *  @return		Answer from device
  */
-static bool USART_OneWire_ReadWrite(const uint8_t Data)
+static uint8_t USART_OneWire_ReadWrite(const uint8_t Data)
 {
 	USART0.TXDATAL = Data;
 	while(!(USART0.STATUS & USART_RXCIF_bm));
 	
-	return (bool)USART0.RXDATAL;
+	return USART0.RXDATAL;
 }
 
 void USART_OneWire_Init(void)
@@ -98,9 +98,9 @@ void USART_OneWire_WriteBit(const bool Bit)
 	}
 }
 
-uint8_t USART_OneWire_ReadBit(void)
+bool USART_OneWire_ReadBit(void)
 {
-	return (USART_OneWire_ReadWrite(USART_ONEWIRE_READ) == USART_ONEWIRE_READ);
+	return (bool)(USART_OneWire_ReadWrite(USART_ONEWIRE_READ) == USART_ONEWIRE_READ);
 }
 
 bool USART_OneWire_Reset(void)

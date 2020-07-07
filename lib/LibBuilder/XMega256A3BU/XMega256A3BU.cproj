@@ -95,17 +95,16 @@
         <avrgcc.compiler.symbols.DefSymbols>
           <ListValues>
             <Value>DEBUG</Value>
-            <Value>BOARD=BOARD_NONE</Value>
             <Value>MCU_NAME=MCU_NAME_ATXMEGA256A3BU</Value>
             <Value>MCU_ARCH=MCU_ARCH_XMEGA</Value>
-            <Value>CONFIG="Config_LibXMega256A3BU.h"</Value>
+            <Value>CONFIG="Config_A3BU.h"</Value>
             <Value>MCU_LITTLE_ENDIAN</Value>
           </ListValues>
         </avrgcc.compiler.symbols.DefSymbols>
         <avrgcc.compiler.directories.IncludePaths>
           <ListValues>
             <Value>%24(PackRepoDir)\atmel\XMEGAA_DFP\1.1.68\include</Value>
-            <Value>../../../../configs</Value>
+            <Value>../../configs</Value>
             <Value>../../../../include</Value>
           </ListValues>
         </avrgcc.compiler.directories.IncludePaths>
@@ -142,7 +141,7 @@
     <Folder Include="source\Arch\XMega\DAC" />
     <Folder Include="source\Arch\XMega\AC" />
     <Folder Include="source\Arch\XMega\CRC" />
-    <Folder Include="source\Arch\XMega\BatteryBackup" />
+    <Folder Include="source\Arch\XMega\RTC32\BatteryBackup" />
     <Folder Include="source\Arch\XMega\Timer" />
     <Folder Include="source\Arch\XMega\RTC32" />
     <Folder Include="source\Arch\XMega\NVM" />
@@ -150,83 +149,109 @@
     <Folder Include="source\Arch\XMega\USART" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="source\Arch\XMega\AC\AC.c">
+    <Compile Include="..\..\..\source\Arch\XMega\AC\AC.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\AC\AC.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\ADC\ADC.c">
+    <Compile Include="..\..\..\source\Arch\XMega\ADC\ADC.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\ADC\ADC.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\AES\AES.c">
+    <Compile Include="..\..\..\source\Arch\XMega\AES\AES.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\AES\AES.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\BatteryBackup\BatteryBackup.c">
+    <Compile Include="..\..\..\source\Arch\XMega\RTC32\BatteryBackup\BatteryBackup.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\RTC32\BatteryBackup\BatteryBackup.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\ClockManagement\SysClock.c">
+    <Compile Include="..\..\..\source\Arch\XMega\RTC32\RTC32.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\RTC32\RTC32.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\CRC\CRC.c">
+    <Compile Include="..\..\..\source\Arch\XMega\ClockManagement\SysClock.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\ClockManagement\SysClock.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\DAC\DAC.c">
+    <Compile Include="..\..\..\source\Arch\XMega\CRC\CRC.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\CRC\CRC.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\DMA\DMA.c">
+    <Compile Include="..\..\..\source\Arch\XMega\DAC\DAC.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\DAC\DAC.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\GPIO\GPIO.c">
+    <Compile Include="..\..\..\source\Arch\XMega\DMA\DMA.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\DMA\DMA.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\I2C\I2C.c">
+    <Compile Include="..\..\..\source\Arch\XMega\GPIO\GPIO.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\GPIO\GPIO.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\I2C\I2CM.c">
+    <Compile Include="..\..\..\source\Arch\XMega\I2C\I2C.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\I2C\I2C.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\I2C\I2CS.c">
+    <Compile Include="..\..\..\source\Arch\XMega\I2C\I2CM.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\I2C\I2CM.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\I2C\I2C_Interrupt.c">
+    <Compile Include="..\..\..\source\Arch\XMega\I2C\I2CS.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\I2C\I2CS.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\NVM\NVM.c">
+    <Compile Include="..\..\..\source\Arch\XMega\I2C\I2C_Interrupt.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\I2C\I2C_Interrupt.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\NVM\NVM_Flash.s">
+    <Compile Include="..\..\..\source\Arch\XMega\NVM\NVM.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\NVM\NVM.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\RTC32\RTC32.c">
+    <Compile Include="..\..\..\source\Arch\XMega\NVM\NVM_Flash.s">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\NVM\NVM_Flash.s</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\SPI\SPI.c">
+    <Compile Include="..\..\..\source\Arch\XMega\SPI\SPI.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\SPI\SPI.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\SPI\SPIM.c">
+    <Compile Include="..\..\..\source\Arch\XMega\SPI\SPIM.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\SPI\SPIM.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\SPI\SPIS.c">
+    <Compile Include="..\..\..\source\Arch\XMega\SPI\SPIS.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\SPI\SPIS.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\SPI\SPI_Interrupt.c">
+    <Compile Include="..\..\..\source\Arch\XMega\SPI\SPI_Interrupt.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\SPI\SPI_Interrupt.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\Timer\Timer0.c">
+    <Compile Include="..\..\..\source\Arch\XMega\Timer\Timer0.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\Timer\Timer0.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\Timer\Timer1.c">
+    <Compile Include="..\..\..\source\Arch\XMega\Timer\Timer1.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\Timer\Timer1.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\Timer\Timer2.c">
+    <Compile Include="..\..\..\source\Arch\XMega\Timer\Timer2.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\Timer\Timer2.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\USART\USART.c">
+    <Compile Include="..\..\..\source\Arch\XMega\USART\USART.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\USART\USART.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\USART\USART_Interrupt.c">
+    <Compile Include="..\..\..\source\Arch\XMega\USART\USART_Interrupt.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\USART\USART_Interrupt.c</Link>
     </Compile>
-    <Compile Include="source\Arch\XMega\USART\USART_SPI.c">
+    <Compile Include="..\..\..\source\Arch\XMega\USART\USART_SPI.c">
       <SubType>compile</SubType>
+      <Link>source\Arch\XMega\USART\USART_SPI.c</Link>
     </Compile>
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />

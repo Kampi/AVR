@@ -25,7 +25,7 @@
 /** @file Services/DisplayManager/DisplayManager.h
  *  @brief AVR display manager service.
  *
- *  This contains the prototypes and definitions for the display manager.
+ *  This contains the prototypes and definitions for the display manager service.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs
@@ -33,15 +33,21 @@
 
 #ifndef DISPLAYMANAGER_H_
 #define DISPLAYMANAGER_H_
- 
+
  #include "Common/Common.h"
- 
+
  #if(defined USE_SSD1306)
 	 #include "Peripheral/SSD1306/SSD1306.h"
 	 typedef SPIM_Config_t DisplayInterface_t;
+
+	 #define DISPLAY_INTERFACE				SSD1306_INTERFACE
+	 #define DISPLAY_CLOCK					SSD1306_CLOCK
  #elif(defined USE_ST7565R)
 	 #include "Peripheral/ST7565R/ST7565R.h"
 	 typedef SPIM_Config_t DisplayInterface_t;
+
+	 #define DISPLAY_INTERFACE				ST7565R_INTERFACE
+	 #define DISPLAY_CLOCK					ST7565R_CLOCK
  #endif
 
  #include "Common/Font/Font.h"
@@ -49,10 +55,6 @@
 
  #if((!defined DISPLAY_WIDTH) | (!defined DISPLAY_HEIGHT) | (!defined DISPLAY_PIXEL_PER_BYTE))
 	#error "Invalid display manager dimension configuration. Please check the configuration file!"
- #endif
-
- #if(!defined(DISPLAY_INTERFACE))
-	 #error "'DISPLAY_INTERFACE' missing for display manager service!"
  #endif
 
  #define DISPLAYMANAGER_LCD_WIDTH					DISPLAY_WIDTH																					/**< Width of the display in pixel*/
@@ -70,10 +72,10 @@
   */
  extern void Display_Reset(void);
  
- /** @brief			Enable/Disable the display back light.
+ /** @brief			Enable/Disable the display backlight.
   *  @param Enable	#true to enable the back light.
   */
- extern void Display_SwitchDisplay(const bool Enable);
+ extern void Display_SwitchBacklight(const bool Enable);
 
  /** @brief			Write a data byte to the display.
   *  @param Data	Data byte
@@ -152,6 +154,11 @@
   */
  void DisplayManager_Init(void);
 
+ /** @brief			Enable/Disable the display backlight.
+  *  @param Enable	#true to enable the back light.
+  */
+ void DisplayManager_SwitchBacklight(const bool Enable);
+
  /** @brief	Clear the display.
   */
  void DisplayManager_Clear(void);
@@ -165,20 +172,6 @@
   *  @param Column	Column number
   */
  void DisplayManager_ClearColumn(const uint8_t Column);
-
- /** @brief			Write a single byte to the display.
-  *  @param Page	Display page
-  *  @param Column	Display column
-  *  @param Data	Display data
-  */
- void DisplayManager_WriteByte(const uint8_t Page, const uint8_t Column, const uint8_t Data);
-
- /** @brief			Read a single byte from the display.
-  *  @param Page	Display page
-  *  @param Column	Display column
-  *  @return		Display data
-  */
- uint8_t DisplayManager_ReadByte(const uint8_t Page, const uint8_t Column);
 
  /** @brief		Draw a single pixel on the display.
   *  @param x		x coordinate

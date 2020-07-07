@@ -61,23 +61,25 @@ bool Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, const
 				UECFG0X_Temp |= (0x01 << EPDIR);
 			}
 
-			// Configure UECFG1X-register			
+			// Configure UECFG1X-register
 			if(DoubleBank > 0x01)
 			{
 				UECFG1X_Temp |= (0x01 << EPBK0);
 			}
 
-			if(Size > 0x06)
+			// Convert the endpoint size into the correct bit mask (see the datasheet for the mask values)
+			uint8_t Temp = 0x08;
+			uint8_t EPSIZE = 0x00;
+			while(Temp < Size)
 			{
-				UECFG1X_Temp &= ~((0x01 << EPSIZE2) | (0x01 << EPSIZE1) | (0x01 << EPSIZE0));
-			}
-			else
-			{
-				UECFG1X_Temp |= (Size << EPSIZE0);
+				EPSIZE++;
+				Temp <<= 0x01;
 			}
 
+			UECFG1X_Temp |= (EPSIZE << EPSIZE0);
+
 			// Set the ALLOC bit
-			UECFG1X_Temp = (0x01 << ALLOC);
+			UECFG1X_Temp |= (0x01 << ALLOC);
 
 			// Configure UEIENX-register
 			UEIENX_Temp = 0x00;

@@ -32,6 +32,8 @@
 
 #include "Arch/AVR8/AT90/USB/USB_Controller.h"
 
+uint8_t _Configuration;
+
 void USB_Controller_Init(const USB_Config_t* Config)
 {	
 	USB_Controller_ResetInterface();

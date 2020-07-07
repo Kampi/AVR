@@ -33,14 +33,14 @@
 
 #include "Arch/XMega/AES/AES.h"
 
-static uint8_t* _AES_DataPtr;
-
 #ifndef DOXYGEN
 	static struct
 	{
 		AES_Callback_t ReadyCallback;
 	} AES_Callbacks;
 #endif
+
+static uint8_t* _AES_DataPtr;
 
 /** @brief	AES interrupt handler.
  */
@@ -63,7 +63,7 @@ void AES_ChangeInterruptLevel(const Interrupt_Level_t InterruptLevel)
 void AES_InstallCallback(const AES_InterruptConfig_t* Config)
 {
 	AES.INTCTRL = Config->InterruptLevel;
-	
+
 	if(Config->Source == AES_READY_INTERRUPT)
 	{
 		AES_Callbacks.ReadyCallback = Config->Callback;
@@ -112,7 +112,7 @@ const AES_Error_t AES_GenerateLastSubkey(const uint8_t* Key, uint8_t* SubKey)
 
 		return AES_ERROR;
 	}
-	
+
 	return AES_NO_ERROR;
 }
 
@@ -172,7 +172,7 @@ const AES_Error_t AES_Encrypt(const volatile uint8_t* DecryptedData, volatile ui
 		
 		return AES_NO_ERROR;
 	}
-	
+
 	return AES_ERROR;
 }
 
@@ -201,7 +201,7 @@ const AES_Error_t AES_Decrypt(const volatile uint8_t* EncryptedData, volatile ui
 		{
 			*(DecryptedData++) = AES.STATE;
 		}
-		
+
 		return AES_NO_ERROR;
 	}
 
@@ -278,7 +278,7 @@ const AES_Error_t AES_CBC_Decrypt(uint8_t* EncryptedData, volatile uint8_t* Decr
 		// Set the module in decryption mode, enable XOR and start it
 		AES_SetDecryptMode();
 		AES_EnableCBC();
-		
+
 		while(AES_IsBusy());
 
 		// Check for error
@@ -305,7 +305,7 @@ const AES_Error_t AES_CBC_Decrypt(uint8_t* EncryptedData, volatile uint8_t* Decr
 			{
 				*(DecryptedData++) = AES.STATE;
 			}
-			
+
 			AES.CTRL = AES.CTRL & (~AES_XOR_bm);
 		}
 		else
@@ -313,7 +313,7 @@ const AES_Error_t AES_CBC_Decrypt(uint8_t* EncryptedData, volatile uint8_t* Decr
 			return AES_ERROR;
 		}
 	}
-	
+
 	// Disable auto mode and XOR feature
 	AES_DisableCBC();
 
@@ -334,7 +334,7 @@ const AES_Error_t AES_CBC_Decrypt(uint8_t* EncryptedData, volatile uint8_t* Decr
 				*(_AES_DataPtr++) = AES.STATE;
 			}
 		}
-		
+
 		_AES_InterruptHandler();
 	}
 #endif

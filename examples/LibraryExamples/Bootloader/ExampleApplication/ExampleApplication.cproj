@@ -112,14 +112,14 @@
       <Value>MCU_NAME=MCU_NAME_ATXMEGA384C3</Value>
       <Value>MCU_ARCH=MCU_ARCH_XMEGA</Value>
       <Value>MCU_LITTLE_ENDIAN</Value>
-      <Value>CONFIG="Config.h"</Value>
+      <Value>CONFIG="Config_Bootloader.h"</Value>
     </ListValues>
   </avrgcc.compiler.symbols.DefSymbols>
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
       <Value>%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\include</Value>
       <Value>../../../../../include</Value>
-      <Value>../config</Value>
+      <Value>../../../../../configs</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>

@@ -43,7 +43,7 @@
 		SPI_Callback_t CompleteInterrupt;
 		SPI_Callback_t ErrorCallback;
 	} _SPI_Callbacks[SPI_DEVICES];
-	
+
 	extern SPI_DeviceMode_t _SPI_DeviceModes[SPI_DEVICES];
 #endif
 

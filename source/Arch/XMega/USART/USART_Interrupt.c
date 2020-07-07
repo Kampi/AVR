@@ -77,7 +77,7 @@ static void _USART_InterruptHandler(const uint8_t Device, const uint8_t Channel,
 				{
 					_USART_SPI_Callbacks[Device][Channel].CompleteInterrupt();
 				}
-			
+
 				_SPI_Messages[Device][Channel].Status = SPI_MESSAGE_COMPLETE;
 			}
 		}
@@ -118,7 +118,7 @@ static void _USART_InterruptHandler(const uint8_t Device, const uint8_t Channel,
 			{
 				_USART_Messages[Device][Channel].Device->DATA = _USART_Messages[Device][Channel].Device->DATA;
 			}
-		
+
 			if (_USART_Callbacks[Device][Channel].RxCallback)
 			{
 				_USART_Callbacks[Device][Channel].RxCallback();

@@ -1,5 +1,5 @@
 /*
- * Config_DS1307.h
+ * Config_BH1750.h
  * 
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file configs/Config_DS1307.h
+/** @file configs/Config_BH1750.h
  *  @brief Example configuration file for the Rohm BH1750VI I2C ambient light sensor.
  *
  *  @author Daniel Kampert

@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Arch/AVR8/megaAVR/Timer/Timer.h
+/** @file Arch/AVR8/megaAVR/mega32/Timer/Timer.h
  *  @brief Driver for Atmel AVR8 megaAVR Timer modules.
  *
  *  This contains the prototypes and definitions for the AVR8 Timer driver.
@@ -36,89 +36,74 @@
 
  #include "Common/Common.h"
  
- #include "Arch/AVR8/megaAVR/CPU/CPU.h"
+ #include "Arch/AVR8/megaAVR/mega32/CPU/CPU.h"
  
  /** @brief	Timer callback definition.
  */
  typedef void (*Timer_Callback_t)(void);
 
- /** @brief	Timer commands
- */
- typedef enum
- {
-	 TIMER_COMMAND_NONE = 0x00,								/**< Empty command */ 
-	 TIMER_COMMAND_UPDATE = 0x01,							/**< Force update */ 
-	 TIMER_COMMAND_RESTART = 0x02,							/**< Force restart */ 
-	 TIMER_COMMAND_RESET = 0x03,							/**< Force reset */ 
- } Timer_Command_t;
-
  /** @brief	Timer count directions.
  */
  typedef enum
  {
-	 TIMER_DIRECTION_TOP = 0x00,							/**< Count to top, Interrupt when overflow */ 
-	 TIMER_DIRECTION_BOTTOM = 0x01,							/**< Count to bottom, Interrupt when underflow */ 
+	 TIMER_DIRECTION_TOP = 0x00,							/**< Count to top, Interrupt when overflow */
+	 TIMER_DIRECTION_BOTTOM = 0x01,							/**< Count to bottom, Interrupt when underflow */
  } Timer_Direction_t;
 
  /** @brief Timer prescaler.
   */
  typedef enum
  {
-	 TIMER_PRESCALER_1 = 0x01,								/**< Prescaler 1 */ 
-	 TIMER_PRESCALER_2 = 0x02,								/**< Prescaler 2 */ 
-	 TIMER_PRESCALER_4 = 0x03,								/**< Prescaler 4 */ 
-	 TIMER_PRESCALER_8 = 0x04,								/**< Prescaler 8 */ 
-	 TIMER_PRESCALER_64 = 0x05,								/**< Prescaler 64 */ 
-	 TIMER_PRESCALER_256 = 0x06,							/**< Prescaler 256 */ 
-	 TIMER_PRESCALER_1024 = 0x07,							/**< Prescaler 1024 */ 
+	 TIMER_PRESCALER_1 = 0x01,								/**< Prescaler 1 */
+	 TIMER_PRESCALER_2 = 0x02,								/**< Prescaler 2 */
+	 TIMER_PRESCALER_4 = 0x03,								/**< Prescaler 4 */
+	 TIMER_PRESCALER_8 = 0x04,								/**< Prescaler 8 */
+	 TIMER_PRESCALER_64 = 0x05,								/**< Prescaler 64 */
+	 TIMER_PRESCALER_256 = 0x06,							/**< Prescaler 256 */
+	 TIMER_PRESCALER_1024 = 0x07,							/**< Prescaler 1024 */
  } Timer_Prescaler_t;
 
  /** @brief Timer callback types.
   */
  typedef enum
  {
-	 TIMER_OVERFLOW_INTERRUPT = 0x01,						/**< Timer overflow interrupt */ 
-	 TIMER_ERROR_INTERRUPT = 0x02,							/**< Timer error interrupt */ 
-	 TIMER_CCA_INTERRUPT = 0x10,							/**< Timer capture compare A interrupt */ 
-	 TIMER_CCB_INTERRUPT = 0x20,							/**< Timer capture compare B interrupt */ 
-	 TIMER_CCC_INTERRUPT = 0x40,							/**< Timer capture compare C interrupt */ 
-	 TIMER_CCD_INTERRUPT = 0x80,							/**< Timer capture compare D interrupt */ 
-	 TIMER_COMPMATCH_INTERRUPT = 0x02,						/**< Timer output compare match interrupt */ 
-	 TIMER_COMPMATCH_A_INTERRUPT = 0x03,					/**< Timer output compare match A interrupt */ 
-	 TIMER_COMPMATCH_B_INTERRUPT = 0x04,					/**< Timer output compare match B interrupt */ 
-	 TIMER_CAPTURE_INTERRUPT = 0x05,						/**< Timer input capture interrupt */ 
+	 TIMER_OVERFLOW_INTERRUPT = 0x01,						/**< Timer overflow interrupt */
+	 TIMER_COMPMATCH_INTERRUPT = 0x02,						/**< Timer output compare match interrupt */
+	 TIMER_COMPMATCH_A_INTERRUPT = 0x03,					/**< Timer output compare match A interrupt */
+	 TIMER_COMPMATCH_B_INTERRUPT = 0x04,					/**< Timer output compare match B interrupt */
+	 TIMER_CAPTURE_INTERRUPT = 0x05,						/**< Timer input capture interrupt */
  } Timer_CallbackType_t;
 
  /** @brief Timer device modes.
   */
  typedef enum
  {
-	 TIMER_MODE_0 = 0x00,									/**< Timer mode 0 */ 
-	 TIMER_MODE_1 = 0x01,									/**< Timer mode 1 */ 
-	 TIMER_MODE_2 = 0x02,									/**< Timer mode 2 */ 
-	 TIMER_MODE_3 = 0x03,									/**< Timer mode 3 */ 
-	 TIMER_MODE_4 = 0x04,									/**< Timer mode 4 */ 
-	 TIMER_MODE_5 = 0x05,									/**< Timer mode 5 */ 
-	 TIMER_MODE_6 = 0x06,									/**< Timer mode 6 */ 
-	 TIMER_MODE_7 = 0x07,									/**< Timer mode 7 */ 
-	 TIMER_MODE_8 = 0x08,									/**< Timer mode 8 */ 
-	 TIMER_MODE_9 = 0x09,									/**< Timer mode 9 */ 
-	 TIMER_MODE_10 = 0x0A,									/**< Timer mode 10 */ 
-	 TIMER_MODE_11 = 0x0B,									/**< Timer mode 11 */ 
-	 TIMER_MODE_12 = 0x0C,									/**< Timer mode 12 */ 
-	 TIMER_MODE_13 = 0x0D,									/**< Timer mode 13 */ 
-	 TIMER_MODE_14 = 0x0E,									/**< Timer mode 14 */ 
-	 TIMER_MODE_15 = 0x0F,									/**< Timer mode 15 */ 
+	 TIMER_MODE_0 = 0x00,									/**< Timer mode 0 */
+	 TIMER_MODE_1 = 0x01,									/**< Timer mode 1 */
+	 TIMER_MODE_2 = 0x02,									/**< Timer mode 2 */
+	 TIMER_MODE_3 = 0x03,									/**< Timer mode 3 */
+	 TIMER_MODE_4 = 0x04,									/**< Timer mode 4 */
+	 TIMER_MODE_5 = 0x05,									/**< Timer mode 5 */
+	 TIMER_MODE_6 = 0x06,									/**< Timer mode 6 */
+	 TIMER_MODE_7 = 0x07,									/**< Timer mode 7 */
+	 TIMER_MODE_8 = 0x08,									/**< Timer mode 8 */
+	 TIMER_MODE_9 = 0x09,									/**< Timer mode 9 */
+	 TIMER_MODE_10 = 0x0A,									/**< Timer mode 10 */
+	 TIMER_MODE_11 = 0x0B,									/**< Timer mode 11 */
+	 TIMER_MODE_12 = 0x0C,									/**< Timer mode 12 */
+	 TIMER_MODE_13 = 0x0D,									/**< Timer mode 13 */
+	 TIMER_MODE_14 = 0x0E,									/**< Timer mode 14 */
+	 TIMER_MODE_15 = 0x0F,									/**< Timer mode 15 */
  } Timer_Mode_t;
 
  /** @brief Timer capture compare channels.
   */
  typedef enum
  {
-	 TIMER_CCA = 0x00,										/**< Capture compare channel A */ 
-	 TIMER_CCB = 0x01,										/**< Capture compare channel B */ 
-	 TIMER_CCC = 0x02,										/**< Capture compare channel C */ 
-	 TIMER_CCD = 0x03,										/**< Capture compare channel D */ 
+	 TIMER_CCA = 0x00,										/**< Capture compare channel A */
+	 TIMER_CCB = 0x01,										/**< Capture compare channel B */
+	 TIMER_CCC = 0x02,										/**< Capture compare channel C */
+	 TIMER_CCD = 0x03,										/**< Capture compare channel D */
  } Timer_CCChannel_t;
  
  /** @brief Timer compare output configuration for AVR8 devices.
@@ -126,30 +111,30 @@
   */
  typedef enum
  {
-	 TIMER_COMPARE_MODE_0 = 0x00,							/**< Compare mode 0 */ 
-	 TIMER_COMPARE_MODE_1 = 0x01,							/**< Compare mode 1 */ 
-	 TIMER_COMPARE_MODE_2 = 0x02,							/**< Compare mode 2 */ 
-	 TIMER_COMPARE_MODE_3 = 0x03,							/**< Compare mode 3 */ 
+	 TIMER_COMPARE_MODE_0 = 0x00,							/**< Compare mode 0 */
+	 TIMER_COMPARE_MODE_1 = 0x01,							/**< Compare mode 1 */
+	 TIMER_COMPARE_MODE_2 = 0x02,							/**< Compare mode 2 */
+	 TIMER_COMPARE_MODE_3 = 0x03,							/**< Compare mode 3 */
  } Timer_CompareOutput_t;
 
  /** @brief External clock settings for timer.
   */
  typedef enum
  {
-	 TIMER_EXT_CLOCK_FALL = 0x00,							/**< Set external clock on falling edge */ 
-	 TIMER_EXT_CLOCK_RISE = 0x01,							/**< Set external clock on rising edge */ 
+	 TIMER_EXT_CLOCK_FALL = 0x00,							/**< Set external clock on falling edge */
+	 TIMER_EXT_CLOCK_RISE = 0x01,							/**< Set external clock on rising edge */
  } Timer_ExtClock_t;
 
  /** @brief	Timer 0 configuration object.
  */
  typedef struct
  {
-	 Timer_Prescaler_t Prescaler;							/**< CTimer clock prescaler */ 
-	 Timer_CompareOutput_t CompareOutput;					/**< Compare output settings */ 
-	 uint8_t Period;										/**< Timer period 
+	 Timer_Prescaler_t Prescaler;							/**< CTimer clock prescaler */
+	 Timer_CompareOutput_t CompareOutput;					/**< Compare output settings */
+	 uint8_t Period;										/**< Timer period \n
 																 NOTE: You have to set it once. The timer get reloaded during each interrupt. */ 
-	 uint8_t Compare;										/**< Compare value
-																 NOTE: ONly needed if you use the #CompareOutput. */ 
+	 uint8_t Compare;										/**< Compare value \n
+																 NOTE: ONly needed if you use the \ref Timer0_Config_t.CompareOutput. */
  } Timer0_Config_t;
 
  /** @brief	Timer 0 waveform configuration object.
@@ -160,8 +145,8 @@
 	 Timer_CompareOutput_t CompareOutput;					/**< Compare output settings */
 	 Timer_Mode_t Mode;										/**< Timer mode for waveform generation */
 	 uint8_t Period;										/**< Timer period */
-	 uint8_t Compare;										/**< Compare value
-																 NOTE: ONly needed if you use the #CompareOutput. */ 
+	 uint8_t Compare;										/**< Compare value \n
+																 NOTE: ONly needed if you use the \ref Timer0_Config_t.CompareOutput. */
  } Timer0_WaveConfig_t;
 
  /** @brief	Timer 0 interrupt configuration object.

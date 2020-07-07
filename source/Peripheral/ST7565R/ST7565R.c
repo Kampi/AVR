@@ -83,16 +83,16 @@
 #if(MCU_ARCH == MCU_ARCH_XMEGA)
 	#if(ST7565R_INTERFACE_TYPE == INTERFACE_USART_SPI)
 		#define ST7565R_SPIM_INIT(Config)											USART_SPI_Init(Config)
-		#define ST7565R_SPIM_TRANSMIT(Data)											USART_SPI_SendData(&CONCAT(DISPLAY_INTERFACE), Data)
-		#define ST7565R_SPIM_SET_CLOCK(SPIClock, Clock)								USART_SPI_SetClockRate(&CONCAT(DISPLAY_INTERFACE), SPIClock, Clock, false)
-		#define ST7565R_SPIM_GET_CLOCK(Clock)										USART_SPI_GetClockRate(&CONCAT(DISPLAY_INTERFACE), Clock)
+		#define ST7565R_SPIM_TRANSMIT(Data)											USART_SPI_SendData(&CONCAT(ST7565R_INTERFACE), Data)
+		#define ST7565R_SPIM_SET_CLOCK(SPIClock, Clock)								USART_SPI_SetClockRate(&CONCAT(ST7565R_INTERFACE), SPIClock, Clock, false)
+		#define ST7565R_SPIM_GET_CLOCK(Clock)										USART_SPI_GetClockRate(&CONCAT(ST7565R_INTERFACE), Clock)
 		#define ST7565R_SPIM_CHIP_SELECT(Port, Pin)									USART_SPI_SelectDevice(Port, Pin)
 		#define ST7565R_SPIM_CHIP_DESELECT(Port, Pin)								USART_SPI_DeselectDevice(Port, Pin)
 	#elif(ST7565R_INTERFACE_TYPE == INTERFACE_SPI)
 		#define ST7565R_SPIM_INIT(Config)											SPIM_Init(Config)
-		#define ST7565R_SPIM_TRANSMIT(Data)											SPIM_SendData(&CONCAT(DISPLAY_INTERFACE), Data)
-		#define ST7565R_SPIM_SET_CLOCK(SPIClock, Clock)								SPIM_SetClock(&CONCAT(DISPLAY_INTERFACE), SPIClock, Clock)
-		#define ST7565R_SPIM_GET_CLOCK(Clock)										SPIM_GetClock(&CONCAT(DISPLAY_INTERFACE), Clock)
+		#define ST7565R_SPIM_TRANSMIT(Data)											SPIM_SendData(&CONCAT(ST7565R_INTERFACE), Data)
+		#define ST7565R_SPIM_SET_CLOCK(SPIClock, Clock)								SPIM_SetClock(&CONCAT(ST7565R_INTERFACE), SPIClock, Clock)
+		#define ST7565R_SPIM_GET_CLOCK(Clock)										SPIM_GetClock(&CONCAT(ST7565R_INTERFACE), Clock)
 		#define ST7565R_SPIM_CHIP_SELECT(Port, Pin)									SPIM_SelectDevice(Port, Pin)
 		#define ST7565R_SPIM_CHIP_DESELECT(Port, Pin)								SPIM_DeselectDevice(Port, Pin)
 	#else
@@ -139,7 +139,65 @@ static void ST7565R_WriteCommandBytes(const uint8_t* Data, const uint8_t Length)
 	ST7565R_SPIM_CHIP_DESELECT(GET_PERIPHERAL(ST7565R_SS), GET_INDEX(ST7565R_SS));
 }
 
-void Display_Init(SPIM_Config_t* Config)
+/** @brief	Perform a hardware reset of the display.
+ */
+static void ST7565R_HardwareReset(void)
+{
+	GPIO_Clear(GET_PERIPHERAL(ST7565R_RESET), GET_INDEX(ST7565R_RESET));
+
+	// Wait a bit
+ 	for(uint8_t Counter = 0; Counter < 0xFF; Counter++);
+
+ 	GPIO_Set(GET_PERIPHERAL(ST7565R_RESET), GET_INDEX(ST7565R_RESET));
+
+	// Wait a bit
+ 	for(uint8_t Counter = 0; Counter < 0x0FF; Counter++);
+}
+
+/** @brief	Perform a software reset of the display.
+ */
+static void ST7565R_SoftwareReset(void)
+{
+	ST7565R_WriteCommand(ST7565R_CMD_RESET);
+}
+
+/** @brief	Clear the display.
+ */
+static void ST7565R_Clear(void)
+{
+	uint8_t Page, Column;
+
+	for(Page = 0x00; Page < (DISPLAY_HEIGHT / DISPLAY_PIXEL_PER_BYTE); Page++)
+	{
+		for(Column = 0x00; Column < DISPLAY_WIDTH; Column++)
+		{
+			Display_SetPage(Page);
+			Display_SetColumn(Column);
+			Display_WriteData(0x00);
+		}
+	}
+}
+
+/** @brief		Clear one line of the display.
+ *  @param Line	Line number
+ */
+static void ST7565R_ClearLine(const uint8_t Line)
+{
+	uint8_t Column;
+
+	Display_SetPage(Line);
+
+	for(Column = 0x00; Column < DISPLAY_WIDTH; Column++)
+	{
+		Display_SetColumn(Column);
+		Display_WriteData(0x00);
+	}
+}
+
+/** @brief			Initialize the display controller.
+ *  @param Config	Pointer to SPI master configuration object
+ */
+static void ST7565R_Init(SPIM_Config_t* Config)
 {
 	const uint8_t Init[] = {
 		ST7565R_CMD_ADC_NORMAL,
@@ -189,21 +247,26 @@ void Display_Init(SPIM_Config_t* Config)
 	ST7565R_Clear();
 }
 
+void Display_Init(SPIM_Config_t* Config)
+{
+	ST7565R_Init(Config);
+}
+
 void Display_Reset(void)
 {
 	ST7565R_HardwareReset();
 	ST7565R_SoftwareReset();
 }
 
-void Display_Switch(const bool State)
+void Display_SwitchBacklight(const bool Enable)
 {
-	if(State == true)
+	if(Enable == false)
 	{
-		ST7565R_WriteCommand(ST7565R_CMD_DISPLAY_ON);
+		GPIO_Clear(GET_PERIPHERAL(ST7565R_BACKLIGHT), GET_INDEX(ST7565R_BACKLIGHT));
 	}
-	else
+	else if(Enable == true)
 	{
-		ST7565R_WriteCommand(ST7565R_CMD_DISPLAY_OFF);
+		GPIO_Set(GET_PERIPHERAL(ST7565R_BACKLIGHT), GET_INDEX(ST7565R_BACKLIGHT));
 	}
 }
 
@@ -234,30 +297,9 @@ void Display_SetStartLine(const uint8_t Line)
 	ST7565R_WriteCommand(ST7565R_CMD_START_LINE(Line & 0x3F));
 }
 
-/*
-	Display driver functions
-*/
-void ST7565R_HardwareReset(void)
+void Display_SwitchDisplay(const bool Enable)
 {
-	GPIO_Clear(GET_PERIPHERAL(ST7565R_RESET), GET_INDEX(ST7565R_RESET));
-
-	// Wait a bit
- 	for(uint8_t Counter = 0; Counter < 0xFF; Counter++);
-
- 	GPIO_Set(GET_PERIPHERAL(ST7565R_RESET), GET_INDEX(ST7565R_RESET));
-
-	// Wait a bit
- 	for(uint8_t Counter = 0; Counter < 0x0FF; Counter++);
-}
-
-void ST7565R_SoftwareReset(void)
-{
-	ST7565R_WriteCommand(ST7565R_CMD_RESET);
-}
-
-void ST7565R_SleepEnable(const bool State)
-{
-	if(State == true)
+	if(Enable == true)
 	{
 		ST7565R_WriteCommand(ST7565R_CMD_SLEEP_MODE);
 	}
@@ -267,9 +309,9 @@ void ST7565R_SleepEnable(const bool State)
 	}
 }
 
-void ST7565R_SwitchInvert(const bool Invert)
+void Display_SwitchInvert(const bool Enable)
 {
-	if(Invert == true)
+	if(Enable == true)
 	{
 		ST7565R_WriteCommand(ST7565R_CMD_DISPLAY_REVERSE);
 	}
@@ -279,57 +321,18 @@ void ST7565R_SwitchInvert(const bool Invert)
 	}
 }
 
-void ST7565R_SetContrast(const uint8_t Contrast)
+void Display_SetContrast(const uint8_t Contrast)
 {
 	uint8_t ContrastTemp = Contrast;
-	if (Contrast < DISPLAY_CONTRAST_MIN) 
+	if (Contrast < DISPLAY_CONTRAST_MIN)
 	{
 		ContrastTemp = DISPLAY_CONTRAST_MIN;
 	}
-	if (Contrast > DISPLAY_CONTRAST_MAX) 
+	if (Contrast > DISPLAY_CONTRAST_MAX)
 	{
 		ContrastTemp = DISPLAY_CONTRAST_MAX;
 	}
 
 	ST7565R_WriteCommand(ST7565R_CMD_ELECTRONIC_VOLUME_MODE_SET);
 	ST7565R_WriteCommand(ST7565R_CMD_ELECTRONIC_VOLUME(ContrastTemp));
-}
-
-void ST7565R_SwitchBacklight(const bool State)
-{
-	if(State == false)
-	{
-		GPIO_Clear(GET_PERIPHERAL(ST7565R_BACKLIGHT), GET_INDEX(ST7565R_BACKLIGHT));
-	}
-	else if(State == true)
-	{
-		GPIO_Set(GET_PERIPHERAL(ST7565R_BACKLIGHT), GET_INDEX(ST7565R_BACKLIGHT));
-	}
-}
-
-void ST7565R_ClearLine(const uint8_t Line)
-{
-	uint8_t Column;
-
-	Display_SetPage(Line);
-
-	for(Column = 0; Column < DISPLAY_WIDTH; Column++)
-	{
-		Display_SetColumn(Column);
-		Display_WriteData(0x00);
-	}
-}
-
-void ST7565R_Clear(void)
-{
-	uint8_t Page, Column;
-	for(Page = 0; Page < (DISPLAY_HEIGHT / DISPLAY_PIXEL_PER_BYTE); Page++)
-	{
-		for(Column = 0; Column < DISPLAY_WIDTH; Column++)
-		{
-			Display_SetPage(Page);
-			Display_SetColumn(Column);
-			Display_WriteData(0x00);
-		}
-	}
 }

@@ -38,45 +38,6 @@
 	extern I2C_Message_t _I2CM_Messages[TWI_DEVICES];
 #endif
 
-/** @brief			Send the address (including R/W bit) of a bus slave in master mode.
- *  @param Device	Pointer to TWI device object
- *  @param Address	Slave device address
- */
-static inline void I2CM_SendAddress(TWI_t* Device, const uint8_t Address) __attribute__((always_inline));
-static inline void I2CM_SendAddress(TWI_t* Device, const uint8_t Address)
-{
-	Device->MASTER.ADDR = Address;
-	while(!((Device->MASTER.STATUS & TWI_MASTER_WIF_bm) || (Device->MASTER.STATUS & TWI_MASTER_RIF_bm)));
-}
-
-/** @brief			Write a data byte in master mode to the I2C.
- *  @param Device	Pointer to TWI device object
- *  @param Data		Data byte
- */
-static inline void I2CM_SendData(TWI_t* Device, const uint8_t Data) __attribute__((always_inline));
-static inline void I2CM_SendData(TWI_t* Device, const uint8_t Data)
-{
-	Device->MASTER.DATA = Data;
-	while(!(Device->MASTER.STATUS & TWI_MASTER_WIF_bm));
-}
-
-/** @brief			Write a stop condition in master mode.
- *  @param Device	Pointer to TWI device object
- *  @param NACK		#true if NACK should generated
- */
-static inline void I2CM_SendStop(TWI_t* Device, const bool NACK) __attribute__((always_inline));
-static inline void I2CM_SendStop(TWI_t* Device, const bool NACK)
-{
-	if(NACK)
-	{
-		Device->MASTER.CTRLC = TWI_MASTER_ACKACT_bm | TWI_MASTER_CMD_STOP_gc;
-	}
-	else
-	{
-		Device->MASTER.CTRLC = TWI_MASTER_CMD_STOP_gc;
-	}
-}
-
 /** @brief			Get a data byte in master mode from the bus.
  *  @param Device	Pointer to TWI object
  *  @param NACK		#true if NACK should generated
@@ -85,15 +46,15 @@ static inline void I2CM_SendStop(TWI_t* Device, const bool NACK)
 static uint8_t I2CM_ReadData(TWI_t* Device, const bool NACK)
 {
 	uint8_t Data = 0x00;
-	
+
 	while(!(Device->MASTER.STATUS & TWI_MASTER_RIF_bm));
 	Data = Device->MASTER.DATA;
-	
+
 	if(!NACK)
 	{
 		Device->MASTER.CTRLC = TWI_MASTER_CMD_RECVTRANS_gc;
 	}
-	
+
 	return Data;
 }
 
@@ -106,9 +67,9 @@ void I2CM_Init(I2CM_Config_t* Config)
 	I2CM_SwitchQuickCommand(Config->Device, Config->EnableQuickCommand);
 	I2CM_SwitchSmartMode(Config->Device, Config->EnableSmartMode);
 	I2C_MasterEnable(Config->Device);
-	
+
 	I2CM_Reset(Config->Device);
-	
+
 	if(Config->EnableInterruptSupport == true)
 	{
 		I2CM_EnableInterruptSupport(Config->Device, Config->InterruptLevel);
@@ -118,7 +79,7 @@ void I2CM_Init(I2CM_Config_t* Config)
 const I2C_MasterStatus_t I2CM_Status(const TWI_t* Device)
 {
 	uint8_t ID = 0x00;
-	
+
 	if(Device == &TWIC)
 	{
 		ID = TWIC_ID;
@@ -127,7 +88,7 @@ const I2C_MasterStatus_t I2CM_Status(const TWI_t* Device)
 	{
 		ID = TWIE_ID;
 	}
-	
+
 	return _I2CM_Messages[ID].Status;
 }
 
@@ -138,7 +99,7 @@ I2C_Error_t I2CM_WriteByte(TWI_t* Device, const uint8_t Address, const uint8_t D
 	{
 		return I2C_WRITE_ADDR_ERROR;
 	}
-	
+
 	I2CM_SendData(Device, Data);
 	if(I2CM_ReadStatus(Device) & (TWI_MASTER_BUSERR_bm | TWI_MASTER_RXACK_bm | TWI_MASTER_ARBLOST_bm))
 	{
@@ -146,12 +107,12 @@ I2C_Error_t I2CM_WriteByte(TWI_t* Device, const uint8_t Address, const uint8_t D
 
 		return I2C_BUS_ERROR;
 	}
-	
+
 	if(Stop == true)
 	{
 		I2CM_SendStop(Device, false);
 	}
-	
+
 	return I2C_NO_ERROR;
 }
 
@@ -162,7 +123,7 @@ I2C_Error_t I2CM_WriteBytes(TWI_t* Device, const uint8_t Address, const uint8_t 
 	{
 		return I2C_WRITE_ADDR_ERROR;
 	}
-	
+
 	for(uint8_t i = 0x00; i < Length; i++)
 	{
 		I2CM_SendData(Device, *Data++);
@@ -189,14 +150,14 @@ I2C_Error_t I2CM_ReadByte(TWI_t* Device, const uint8_t Address, uint8_t* Data, c
 	{
 		return I2C_READ_ADDR_ERROR;
 	}
-	
+
 	*Data = I2CM_ReadData(Device, true);
-	
+
 	if(Stop == true)
 	{
 		I2CM_SendStop(Device, true);
 	}
-	
+
 	return I2C_NO_ERROR;
 }
 
@@ -207,7 +168,7 @@ I2C_Error_t I2CM_ReadBytes(TWI_t* Device, const uint8_t Address, const uint8_t L
 	{
 		return I2C_READ_ADDR_ERROR;
 	}
-	
+
 	for(uint8_t i = 0x00; i < (Length - 1); i++)
 	{
 		*Data++ = I2CM_ReadData(Device, false);
@@ -218,35 +179,35 @@ I2C_Error_t I2CM_ReadBytes(TWI_t* Device, const uint8_t Address, const uint8_t L
 			return I2C_BUS_ERROR;
 		}
 	}
-	
+
 	*Data++ = I2CM_ReadData(Device, true);
-	
+
 	if(Stop == true)
 	{
 		I2CM_SendStop(Device, true);
 	}
-	
+
 	return I2C_NO_ERROR;
 }
 
 void I2CM_SetBaudrate(TWI_t* Device, const uint32_t Baudrate, const uint32_t Clock)
 {
 	uint32_t BaudTemp = Baudrate;
-	
+
 	if((BaudTemp < 100000) || (BaudTemp > 400000))
 	{
 		BaudTemp = 100000;
 	}
-	
-	BaudTemp = (Clock / (BaudTemp << 0x01)) - 5;
-	
+
+	BaudTemp = (Clock / (BaudTemp << 0x01)) - 0x05;
+
 	Device->MASTER.BAUD = BaudTemp;
 }
 
 void I2CM_TransmitBytes(TWI_t* Device, const uint8_t DeviceAddress, const uint8_t Bytes, uint8_t* Data)
 {
 	uint8_t ID = 0x00;
-	
+
 	if(Device == &TWIC)
 	{
 		ID = TWIC_ID;
@@ -255,10 +216,10 @@ void I2CM_TransmitBytes(TWI_t* Device, const uint8_t DeviceAddress, const uint8_
 	{
 		ID = TWIE_ID;
 	}
-	
+
 	_I2CM_Messages[ID].BufferRead = 0x00;
 	_I2CM_Messages[ID].BytesToRead = 0x00;
-	
+
 	_I2CM_Messages[ID].IndexWrite = 0;
 	_I2CM_Messages[ID].BufferWrite = Data;
 	_I2CM_Messages[ID].BytesToWrite = Bytes;
@@ -266,7 +227,7 @@ void I2CM_TransmitBytes(TWI_t* Device, const uint8_t DeviceAddress, const uint8_
 	_I2CM_Messages[ID].DeviceAddress = DeviceAddress;
 	_I2CM_Messages[ID].Register = 0x00;
 	_I2CM_Messages[ID].Status = I2C_MASTER_WRITE;
-	
+
 	// Start the transmission by writing the address
 	_I2CM_Messages[ID].Device->MASTER.ADDR = I2C_WRITE(DeviceAddress);
 }
@@ -274,7 +235,7 @@ void I2CM_TransmitBytes(TWI_t* Device, const uint8_t DeviceAddress, const uint8_
 void I2CM_Transmit(TWI_t* Device, const uint8_t DeviceAddress, const uint8_t Command, const uint8_t Bytes, uint8_t* Data)
 {
 	uint8_t ID = 0x00;
-	
+
 	if(Device == &TWIC)
 	{
 		ID = TWIC_ID;
@@ -283,10 +244,10 @@ void I2CM_Transmit(TWI_t* Device, const uint8_t DeviceAddress, const uint8_t Com
 	{
 		ID = TWIE_ID;
 	}
-	
+
 	_I2CM_Messages[ID].BufferRead = 0x00;
 	_I2CM_Messages[ID].BytesToRead = 0x00;
-	
+
 	_I2CM_Messages[ID].IndexWrite = 0x00;
 	_I2CM_Messages[ID].BufferWrite = Data;
 	_I2CM_Messages[ID].BytesToWrite = Bytes;
@@ -294,7 +255,7 @@ void I2CM_Transmit(TWI_t* Device, const uint8_t DeviceAddress, const uint8_t Com
 	_I2CM_Messages[ID].DeviceAddress = DeviceAddress;
 	_I2CM_Messages[ID].Register = Command;
 	_I2CM_Messages[ID].Status = I2C_MASTER_REGISTER;
-	
+
 	// Start the transmission by writing the address
 	_I2CM_Messages[ID].Device->MASTER.ADDR = I2C_WRITE(_I2CM_Messages[ID].DeviceAddress);
 }
@@ -302,7 +263,7 @@ void I2CM_Transmit(TWI_t* Device, const uint8_t DeviceAddress, const uint8_t Com
 void I2CM_ReceiveBytes(TWI_t* Device, const uint8_t DeviceAddress, const uint8_t Bytes, uint8_t* Data)
 {
 	uint8_t ID = 0x00;
-	
+
 	if(Device == &TWIC)
 	{
 		ID = TWIC_ID;
@@ -322,7 +283,7 @@ void I2CM_ReceiveBytes(TWI_t* Device, const uint8_t DeviceAddress, const uint8_t
 	_I2CM_Messages[ID].DeviceAddress = DeviceAddress;
 	_I2CM_Messages[ID].Register = 0x00;
 	_I2CM_Messages[ID].Status = I2C_MASTER_READ;
-	
+
 	// Start the transmission by writing the address
 	_I2CM_Messages[ID].Device->MASTER.ADDR = I2C_READ(DeviceAddress);
 }
@@ -330,7 +291,7 @@ void I2CM_ReceiveBytes(TWI_t* Device, const uint8_t DeviceAddress, const uint8_t
 void I2CM_Receive(TWI_t* Device, const uint8_t DeviceAddress, const uint8_t Command, const uint8_t Bytes, uint8_t* Data)
 {
 	uint8_t ID = 0x00;
-	
+
 	if(Device == &TWIC)
 	{
 		ID = TWIC_ID;
@@ -339,10 +300,10 @@ void I2CM_Receive(TWI_t* Device, const uint8_t DeviceAddress, const uint8_t Comm
 	{
 		ID = TWIE_ID;
 	}
-	
+
 	_I2CM_Messages[ID].BufferWrite = 0x00;
 	_I2CM_Messages[ID].BytesToWrite = 0x00;
-	
+
 	_I2CM_Messages[ID].IndexRead = 0x00;
 	_I2CM_Messages[ID].BufferRead = Data;
 	_I2CM_Messages[ID].BytesToRead = Bytes;
@@ -350,7 +311,7 @@ void I2CM_Receive(TWI_t* Device, const uint8_t DeviceAddress, const uint8_t Comm
 	_I2CM_Messages[ID].DeviceAddress = DeviceAddress;
 	_I2CM_Messages[ID].Register = Command;
 	_I2CM_Messages[ID].Status = I2C_MASTER_REGISTER;
-	
+
 	// Start the transmission by writing the address
 	_I2CM_Messages[ID].Device->MASTER.ADDR = I2C_WRITE(_I2CM_Messages[ID].DeviceAddress);
 }

@@ -75,18 +75,23 @@ void USART_SPI_Init(SPIM_Config_t* Config)
 		ID = USARTE_ID;
 		Channel = 0x00;
 	}
-	#if(MCU_NAME == MCU_NAME_ATXMEGA256A3BU)
+	#if(defined USARTC1)
 		else if(Device == &USARTC1)
 		{
 			ID = USARTC_ID;
 			Channel = 0x01;
 		}
+	#endif
 
+	#if(defined USARTD1)
 		else if(Device == &USARTD1)
 		{
 			ID = USARTD_ID;
 			Channel = 0x01;
 		}
+	#endif
+
+	#if(defined USARTF0)
 		else if(Device == &USARTF0)
 		{
 			ID = USARTF_ID;
@@ -165,17 +170,23 @@ void USART_SPI_EnableInterruptSupport(USART_t* Device, const Interrupt_Level_t L
 		Channel = 0x00;
 	}
 
-	#if(MCU_NAME == MCU_NAME_ATXMEGA256A3BU)
+	#if(defined USARTC1)
 		else if(Device == &USARTC1)
 		{
 			ID = USARTC_ID;
 			Channel = 0x01;
 		}
+	#endif
+
+	#if(defined USARTD1)
 		else if(Device == &USARTD1)
 		{
 			ID = USARTD_ID;
 			Channel = 0x01;
 		}
+	#endif
+
+	#if(defined USARTF0)
 		else if(Device == &USARTF0)
 		{
 			ID = USARTF_ID;
@@ -227,21 +238,27 @@ SPI_Status_t USART_SPI_Transmit(SPI_Message_t* Message)
 		Channel = 0x00;
 	}
 
-	#if(MCU_NAME == MCU_NAME_ATXMEGA256A3BU)
-		else if(Device == &USARTF0)
+	#if(defined USARTC1)
+		else if(Device == &USARTC1)
 		{
-			ID = USARTF_ID;
-			Channel = 0x00;
+			ID = USARTC_ID;
+			Channel = 0x01;
 		}
+	#endif
+
+	#if(defined USARTD1)
 		else if(Device == &USARTD1)
 		{
 			ID = USARTD_ID;
 			Channel = 0x01;
 		}
-		else if(Device == &USARTC1)
+	#endif
+
+	#if(defined USARTF0)
+		else if(Device == &USARTF0)
 		{
-			ID = USARTC_ID;
-			Channel = 0x01;
+			ID = USARTF_ID;
+			Channel = 0x00;
 		}
 	#endif
 
@@ -291,19 +308,24 @@ void USART_SPI_InstallCallback(const SPI_InterruptConfig_t* Config)
 		ID = USARTE_ID;
 		Channel = 0x00;
 	}
-	
-	#if(MCU_NAME == MCU_NAME_ATXMEGA256A3BU)
+
+	#if(defined USARTC1)
 		else if(Device == &USARTC1)
 		{
 			ID = USARTC_ID;
 			Channel = 0x00;
 		}
+	#endif
 
+	#if(defined USARTD1)
 		else if(Device == &USARTD1)
 		{
 			ID = USARTD_ID;
 			Channel = 0x01;
 		}
+	#endif
+
+	#if(defined USARTF0)
 		else if(Device == &USARTF0)
 		{
 			ID = USARTF_ID;
@@ -338,18 +360,24 @@ void USART_SPI_RemoveCallback(USART_t* Device, const SPI_CallbackType_t Callback
 		USART = USARTE_ID;
 		Channel = 0x00;
 	}
-	#if(MCU_NAME == MCU_NAME_ATXMEGA256A3BU)
+
+	#if(defined USARTC1)
 		else if(Device == &USARTC1)
 		{
 			USART = USARTC_ID;
 			Channel = 0x00;
 		}
+	#endif
 
+	#if(defined USARTD1)
 		else if(Device == &USARTD1)
 		{
 			USART = USARTD_ID;
 			Channel = 0x01;
 		}
+	#endif
+
+	#if(defined USARTF0)
 		else if(Device == &USARTF0)
 		{
 			USART = USARTE_ID;
@@ -391,25 +419,31 @@ SPI_Status_t USART_SPI_Status(const USART_t* Device)
 		ID = USARTE_ID;
 		Channel = 0x00;
 	}
-	#if(MCU_NAME == MCU_NAME_ATXMEGA256A3BU)
-		else if(Device == &USARTF0)
-		{
-			ID = USARTF_ID;
-			Channel = 0x00;
-		}
+
+	#if(defined USARTC1)
 		else if(Device == &USARTC1)
 		{
 			ID = USARTC_ID;
 			Channel = 0x01;
 		}
+	#endif
 
+	#if(defined USARTD1)
 		else if(Device == &USARTD1)
 		{
 			ID = USARTD_ID;
 			Channel = 0x01;
 		}
 	#endif
-	
+
+	#if(defined USARTF0)
+		else if(Device == &USARTF0)
+		{
+			ID = USARTF_ID;
+			Channel = 0x00;
+		}
+	#endif
+
 	return _SPI_Messages[ID][Channel].Status;
 }
 

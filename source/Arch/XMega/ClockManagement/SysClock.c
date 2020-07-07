@@ -86,7 +86,7 @@ uint32_t SysClock_GetClockPer4(void)
 		}
 	}
 }
- 
+
 uint32_t SysClock_GetClockPer2(void)
 {
 	uint32_t Clock = SysClock_GetClockPer4();
@@ -107,7 +107,7 @@ uint32_t SysClock_GetClockPer2(void)
 		}
 	}
 }
- 
+
 uint32_t SysClock_GetClockPer(void)
 {
 	uint32_t Clock = SysClock_GetClockPer2();

@@ -38,8 +38,8 @@
 
  #include "Common/Common.h"
  
- #include "Arch/AVR8/megaAVR/CPU/CPU.h"
- #include "Arch/AVR8/megaAVR/GPIO/GPIO.h"
+ #include "Arch/AVR8/megaAVR/mega32/CPU/CPU.h"
+ #include "Arch/AVR8/megaAVR/mega32/GPIO/GPIO.h"
 
  /** @defgroup I2C
   *  @{

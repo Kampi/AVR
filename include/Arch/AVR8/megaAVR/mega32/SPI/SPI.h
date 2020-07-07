@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Arch/AVR8/megaAVR/SPI/SPI.h
+/** @file Arch/AVR8/megaAVR/mega32/SPI/SPI.h
  *  @brief Driver for AVR8 SPI module.
  *
  *  This contains the prototypes and definitions for the AVR8 SPI driver.
@@ -36,8 +36,8 @@
 
  #include "Common/Common.h"
 
- #include "Arch/AVR8/megaAVR/CPU/CPU.h"
- #include "Arch/AVR8/megaAVR/GPIO/GPIO.h"
+ #include "Arch/AVR8/megaAVR/mega32/CPU/CPU.h"
+ #include "Arch/AVR8/megaAVR/mega32/GPIO/GPIO.h"
 
  /** @brief	SPI callback definition.
  */

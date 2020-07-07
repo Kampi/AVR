@@ -102,7 +102,6 @@
  #include "Arch/XMega/PMIC/PMIC.h"
  #include "Arch/XMega/USART/USART.h"
  #include "Arch/XMega/RTC32/RTC32.h"
- #include "Arch/XMega/IRCOM/IRCOM.h"
  #include "Arch/XMega/Timer/Timer.h"
  #include "Arch/XMega/Watchdog/Watchdog.h"
  #include "Arch/XMega/ClockManagement/PLL.h"
@@ -110,7 +109,6 @@
  #include "Arch/XMega/EventSystem/EventSystem.h"
  #include "Arch/XMega/ClockManagement/SysClock.h"
  #include "Arch/XMega/ClockManagement/ExtClock.h"
- #include "Arch/XMega/BatteryBackup/BatteryBackup.h"
  #include "Arch/XMega/PowerManagement/PowerManagement.h"
 
  /*

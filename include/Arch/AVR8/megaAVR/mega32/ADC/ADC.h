@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Arch/AVR8/megaAVR/ADC/ADC.h
+/** @file Arch/AVR8/megaAVR/mega32/ADC/ADC.h
  *  @brief Driver for Atmel AVR8 megaAVR ADC module.
  *
  *  This contains the prototypes and definitions for the megaAVR ADC driver.
@@ -36,7 +36,7 @@
 
  #include "Common/Common.h"
 
- #include "Arch/AVR8/megaAVR/CPU/CPU.h"
+ #include "Arch/AVR8/megaAVR/mega32/CPU/CPU.h"
 
 /** @brief			ADC callback definition.
  *  @param Device	ADC device
