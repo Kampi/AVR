@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for AT45DB642 SPI flash memory.
+ *  File info: Driver for the AT45DB642 SPI flash memory.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Peripheral/AT45DB642D/AT45DB642D.c
- *  @brief Driver for AT45DB642D flash memory.
+ *  @brief Driver for the AT45DB642 SPI flash memory.
  *
  *  This file contains the implementation of the flash memory driver.
  *
@@ -101,17 +101,56 @@
 	/** @} */ // end of AT45DB642D-Status
 /** @} */ // end of AT45DB642D
 
+#if(MCU_ARCH == MCU_ARCH_XMEGA)
+	#if(AT45DB642D_INTERFACE_TYPE == INTERFACE_USART_SPI)
+		#define AT45DB642D_SPIM_INIT(Config)											USART_SPI_Init(Config)
+		#define AT45DB642D_SPIM_TRANSMIT(Data)											USART_SPI_SendData(&CONCAT(AT45DB642D_INTERFACE), Data)
+		#define AT45DB642D_SPIM_SET_CLOCK(SPIClock, Clock)								USART_SPI_SetClockRate(&CONCAT(AT45DB642D_INTERFACE), SPIClock, Clock, false)
+		#define AT45DB642D_SPIM_GET_CLOCK(Clock)										USART_SPI_GetClockRate(&CONCAT(AT45DB642D_INTERFACE), Clock)
+		#define AT45DB642D_SPIM_CHIP_SELECT(Port, Pin)									USART_SPI_SelectDevice(Port, Pin)
+		#define AT45DB642D_SPIM_CHIP_DESELECT(Port, Pin)								USART_SPI_DeselectDevice(Port, Pin)
+	#elif(AT45DB642D_INTERFACE_TYPE == INTERFACE_SPI)
+		#define AT45DB642D_SPIM_INIT(Config)											SPIM_Init(Config)
+		#define AT45DB642D_SPIM_TRANSMIT(Data)											SPIM_SendData(&CONCAT(AT45DB642D_INTERFACE), Data)
+		#define AT45DB642D_SPIM_SET_CLOCK(SPIClock, Clock)								SPIM_SetClock(&CONCAT(AT45DB642D_INTERFACE), SPIClock, Clock)
+		#define AT45DB642D_SPIM_GET_CLOCK(Clock)										SPIM_GetClock(&CONCAT(AT45DB642D_INTERFACE), Clock)
+		#define AT45DB642D_SPIM_CHIP_SELECT(Port, Pin)									SPIM_SelectDevice(Port, Pin)
+		#define AT45DB642D_SPIM_CHIP_DESELECT(Port, Pin)								SPIM_DeselectDevice(Port, Pin)
+	#else
+		#error "Interface not supported for AT45DB642D!"
+	#endif
+#elif(MCU_ARCH == MCU_ARCH_AVR8)
+	#define AT45DB642D_SPIM_INIT(Config)												SPIM_Init(Config)
+	#define AT45DB642D_SPIM_TRANSMIT(Data)												SPIM_SendData(Data)
+	#define AT45DB642D_SPIM_SET_CLOCK(SPIClock, Clock)									SPIM_SetClock(SPIClock, Clock)
+	#define AT45DB642D_SPIM_GET_CLOCK(Clock)											SPIM_GetClock(Clock)
+	#define AT45DB642D_SPIM_CHIP_SELECT(Port, Pin)										SPIM_SelectDevice(Port, Pin)
+	#define AT45DB642D_SPIM_CHIP_DESELECT(Port, Pin)									SPIM_DeselectDevice(Port, Pin)
+#else
+	#error "Architecture not supported for AT45DB642D!"
+#endif
+
+/*
 static uint8_t AT45DB642D_ReadStatus(void)
 {
 	AT45DB642D_SPI_TRANSMIT(AT45DB642D_CMD_READ_STATUS);
 	return AT45DB642D_SPI_TRANSMIT(0x00);;
-}
+}*/
 
-void Flash_Init(SPIM_Config_t* Config)
+/*
+static bool AT45DB642D_IsBusy(void)
 {
-	AT45DB642D_SPI_INIT(Config);
-}
+	return (!((AT45DB642D_ReadStatus() & (0x01 << AT45DB642D_BUSY)) >> AT45DB642D_BUSY));
+}*/
 
+void AT45DB642D_Init(SPIM_Config_t* Config)
+{
+	if(Config != NULL)
+	{
+		AT45DB642D_SPIM_INIT(Config);
+	}
+}
+/*
 uint16_t Flash_ReadID(void)
 {
 	uint8_t DeviceID[4];
@@ -125,10 +164,7 @@ uint16_t Flash_ReadID(void)
 	return ((DeviceID[1] << 0x08) | DeviceID[0]);
 }
 
-Bool_t Flash_IsBusy(void)
-{
-	return (!((AT45DB642D_ReadStatus() & (0x01 << AT45DB642D_BUSY)) >> AT45DB642D_BUSY));
-}
+
 
 uint8_t Flash_ReadByte(void)
 {
@@ -282,7 +318,4 @@ void AT45DB642D_Flush(AT45DB642D_Buffer_t Buffer, uint16_t PageAddress)
 	AT45DB642D_SPI_TRANSMIT((PageAddress_Temp & 0xFF00) >> 0x08);
 	AT45DB642D_SPI_TRANSMIT((PageAddress_Temp & 0x00FF));	
 	//AT45DB642D_SPI_CHIP_DESELECT(FLASH_SS_PORT, FLASH_SS_PIN);
-}
-
-
-
+}*/

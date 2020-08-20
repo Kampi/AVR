@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: Hardware driver for the Atmel XPlainedA3BU Development board.
+ *  File info: Hardware driver and on-board peripherals of the Atmel AVR XPlainedA3BU development board.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Common/Board/XMegaA3XPlained.h
- *  @brief Hardware driver driver and on-board peripheral the Atmel AVR XPlainedA3BU development board.
+ *  @brief Hardware driver and on-board peripherals of the Atmel AVR XPlainedA3BU development board.
  *
  *  @author Daniel Kampert
  */
@@ -32,14 +32,6 @@
 #define XMEGAA3XPLAINED_H_
 
  #include "Common/Board/MCU/XMega256A3BU.h"
-
- /*
-	 Board specific configurations
- */
-
- /*
-	Peripheral definitions
- */
 
  /* 
 	LEDs
@@ -80,7 +72,7 @@
 
  #define I2C_CLOCK									100000
  #define I2C_DEFAULT_INTERFACE						&TWIC
- 
+
  /*
 	Reference voltage [mV]
  */
@@ -115,11 +107,13 @@
 	Peripheral includes
  */
  #include "Peripheral/AnalogSensors.h"
- #include "Peripheral/ST7565R/ST7565R.h"
+ #include "Peripheral/AT45DB642D/AT45DB642D.h"
  
  /*
 	Services
  */
+ #include "Services/RTC/RTC.h"
+ #include "Services/SystemThread/SystemThread.h"
  #include "Services/DisplayManager/DisplayManager.h"
 
  /*

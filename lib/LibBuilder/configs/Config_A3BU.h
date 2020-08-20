@@ -42,32 +42,6 @@
  #define SPI_BUFFER_SIZE							32							/**< Size of SPI buffer in bytes. */
  #define TWI_BUFFER_SIZE							32							/**< Size of TWI buffer in bytes. */
  #define DMA_BUFFER_SIZE							32							/**< Size of the DMA buffer. */
-
- /* 
-	LED
- */
- #define LED0										PORTR, 0
- #define LED1										PORTR, 1
- #define LED2										PORTD, 4
- #define LED3										PORTD, 5
- 
- /* 
-	Push buttons
- */
- #define SW0										PORTE, 5
- #define SW1										PORTF, 1
- #define SW2										PORTF, 2
-
- /*
-	Analog sensors
- */
- #define LIGHT_SENSOR								0
- #define TEMPERATURE_SENSOR							1
-
- /*
-	Reference voltage [mV]
- */
- #define REFERENCE_VOLTAGE							3300
  
  /*
 	 On-board display

@@ -129,19 +129,16 @@
  */
  typedef struct
  {
-	 Timer_Prescaler_t Prescaler;							/**< CTimer clock prescaler */
-	 Timer_CompareOutput_t CompareOutput;					/**< Compare output settings */
+	 Timer_Prescaler_t Prescaler;							/**< Timer clock prescaler */
 	 uint8_t Period;										/**< Timer period \n
-																 NOTE: You have to set it once. The timer get reloaded during each interrupt. */ 
-	 uint8_t Compare;										/**< Compare value \n
-																 NOTE: ONly needed if you use the \ref Timer0_Config_t.CompareOutput. */
+																 NOTE: You have to set it once. The timer get reloaded during each interrupt. */
  } Timer0_Config_t;
 
  /** @brief	Timer 0 waveform configuration object.
  */
  typedef struct
  {
-	 Timer_Prescaler_t Prescaler;							/**< CTimer clock prescaler */ 
+	 Timer_Prescaler_t Prescaler;							/**< CTimer clock prescaler */
 	 Timer_CompareOutput_t CompareOutput;					/**< Compare output settings */
 	 Timer_Mode_t Mode;										/**< Timer mode for waveform generation */
 	 uint8_t Period;										/**< Timer period */

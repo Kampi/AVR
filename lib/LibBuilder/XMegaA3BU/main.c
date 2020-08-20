@@ -1,8 +1,5 @@
 #include "Board.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #define	AES_BLOCKS								3
 
 void DMA_TransactionComplete(uint8_t Channel);
@@ -14,9 +11,14 @@ void Timer_Tick(void);
 void RTC32_Tick(void);
 void AES_Callback(void);
 
+void Thread1(void);
+void Thread2(void);
+
 uint8_t I2C_WriteBuffer[TWI_BUFFER_SIZE];
 uint8_t I2C_ReadBuffer[TWI_BUFFER_SIZE];
 uint8_t I2C_SlaveBuffer[TWI_BUFFER_SIZE];
+
+uint8_t ADC_Buffer[2];
 
 /*
  *	GPIO configuration
@@ -141,25 +143,6 @@ ADC_Config_t Config_ADC = {
 	.Prescaler = ADC_PRESCALER_512,
 };
 
-ADC_ChannelConfig_t AnalogPinConfig = {
-	.Device = &ADCA, 
-	.Channel = &ADCA.CH2, 
-	.Gain = ADC_CHAN_GAIN_1, 
-	.Mode = ADC_CHAN_SINGLE, 
-	.Input = 4
-};
-
-/*
-	Configure the pin with the temperature sensor for ADC channel 1
- */
-ADC_ChannelConfig_t LightPinConfig = {
-	.Device = &ADCA,
-	.Channel = &ADCA.CH1,
-	.Gain = ADC_CHAN_GAIN_1,
-	.Mode = ADC_CHAN_SINGLE,
-	.Input = LIGHT_SENSOR
-};
-
 /*
 	Config the pin with the temperature sensor for ADC channel 0
  */
@@ -172,27 +155,42 @@ ADC_ChannelConfig_t TempPinConfig = {
 };
 
 /*
+	Configure the pin with the light sensor for ADC channel 1
+ */
+ADC_ChannelConfig_t LightPinConfig = {
+	.Device = &ADCA,
+	.Channel = &ADCA.CH1,
+	.Gain = ADC_CHAN_GAIN_1,
+	.Mode = ADC_CHAN_SINGLE,
+	.Input = LIGHT_SENSOR,
+};
+
+/*
 	DMA configuration
  */
-const DMA_DestinationBuffer Destination;
 DMA_Config_t Config_DMA = {
 	.BufferMode = DMA_DOUBLEBUFFER_DISABLE, 
 	.Priority = DMA_PRIORITY_RR
 };
 
-DMA_TransferConfig_t ADC_TransmitConfig = {
+/*
+	Use DMA channel 0 to continuously transmit the sampled data from the light sensor channel of the ADC (channel 1) to the output channel
+	of the DAC (channel 0).
+*/
+DMA_TransferConfig_t LightSensorData = {
 	.Channel = &DMA.CH0,
 	.EnableSingleShot = false,
-	.EnableRepeatMode = false,
+	.EnableRepeatMode = true,
 	.BurstLength = DMA_BURSTLENGTH_2,
 	.SrcReload = DMA_ADDRESS_RELOAD_TRANSACTION,
 	.DstReload = DMA_ADDRESS_RELOAD_TRANSACTION,
 	.SrcAddrMode = DMA_ADDRESS_MODE_INC,
 	.DstAddrMode = DMA_ADDRESS_MODE_INC,
-	.TriggerSource = DMA_TRIGGER_ADCA_CH0,
+	.TriggerSource = DMA_TRIGGER_ADCA_CH1,
 	.TransferCount = 2,
 	.RepeatCount = 0,
-	.SrcAddress = (uintptr_t)&ADCA.CH0.RES,
+	.SrcAddress = (uintptr_t)&ADCA.CH1RES,
+	.DstAddress = (uintptr_t)&DACB.CH0DATA,
 };
 
 DMA_InterruptConfig_t Interrupt_DMA_ADC = {
@@ -207,7 +205,7 @@ DMA_InterruptConfig_t Interrupt_DMA_ADC = {
  */
 DAC_Config_t Config_DAC = {
 	.Device = &DACB,
-	.Channel = DAC_CHANNEL_0 | DAC_CHANNEL_1, 
+	.Channel = DAC_CHANNEL_0,
 	.OutputConfig = DAC_SINGLE_CHANNEL_0, 
 	.Reference = DAC_REFERENCE_INT1V, 
 	.Adjustment = DAC_ADJUST_RIGHT
@@ -293,10 +291,7 @@ int main(void)
 	*/
 	SysClock_Init();
 	
-	/*
-		USB
-	*/
-	//UDC_Start();
+	SystemThread_Init();
 
 	/*
 		Enable the LED outputs
@@ -332,34 +327,31 @@ int main(void)
 	
 	/*
 		CRC
-		Checksum must be 0xE5CC for the given example
+		The CRC result can be checked online at http://www.sunshine2k.de/coding/javascript/crc/crc_js.html
 	*/
-	//CRC_Data_t CRCData = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
-	//uint32_t Checksum = CRC_Data(CRCData, CRC_LENGTH, CRC_LENGTH_16);
-	//uint32_t CRCMemory = CRC_Memory(0, FLASH_SIZE);
+	uint8_t CRCData[] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
+	uint32_t Checksum = CRC_Data(CRCData, sizeof(CRCData), CRC_LENGTH_16, CRC_ZERO);
 
 	/*
 		Initialize the DMA
 	*/
 	DMA_Init(&Config_DMA);
 	DMA_Channel_InstallCallback(&Interrupt_DMA_ADC);
-	DMA_Channel_Config(&ADC_TransmitConfig);
-	DMA_Channel_Enable(ADC_TransmitConfig.Channel);
+	DMA_Channel_Config(&LightSensorData);
+	DMA_Channel_Enable(LightSensorData.Channel);
 	
 	/* 
 		Initialize the ADC
 	*/
 	ADC_Init(&Config_ADC);
-	ADC_SetupInput(&LightPinConfig);
-	ADC_SetupInput(&TempPinConfig);
-	ADC_SetupInput(&AnalogPinConfig);
+	ADC_Channel_Init(&LightPinConfig);
+	ADC_Channel_Init(&TempPinConfig);
 	ADC_SetDMARequest(Config_ADC.Device, ADC_DMA_CH01);
 
 	/*
 		Initialize the DAC
 	*/
 	DAC_Init(&Config_DAC);
-	DAC_WriteVoltage(Config_DAC.Device, Config_DAC.Channel, 1.00);
 
 	/*
 		Initialize the AC
@@ -464,7 +456,7 @@ int main(void)
 	*/
 	EnableGlobalInterrupts();
 	PMIC_EnableAllInterruptLevel();
-	
+
 	ADC_Channel_StartConversion(LightPinConfig.Channel);
 	ADC_Channel_StartConversion(TempPinConfig.Channel);
 	
@@ -474,6 +466,7 @@ int main(void)
 	{
 		//Watchdog_Reset();
 		//AC_WaitForComparator(Config_AC.Device, Config_AC.Comparator);
+		SystemThread_Run();
 	}
 	
 	return 0;
@@ -481,10 +474,7 @@ int main(void)
 
 void DMA_TransactionComplete(uint8_t Channel)
 {
-	uint16_t Result = (Destination[1] << 0x08) + Destination[0];
-
-	DMA_Channel_Enable(ADC_TransmitConfig.Channel);
-	ADC_Channel_StartConversion(TempPinConfig.Channel);
+	ADC_Channel_StartConversion(LightPinConfig.Channel);
 }
 
 void SW0_Callback(void)
@@ -522,7 +512,6 @@ void SW2_Callback(void)
 
 void AC_Callback(void)
 {
-	//ST7565R_WriteText(3, 0, "AC callback...");
 }
 
 void Timer_Tick(void)
@@ -537,4 +526,14 @@ void RTC32_Tick(void)
 
 void AES_Callback(void)
 {
+}
+
+void Thread1(void)
+{
+	PORTR.OUTSET = 0x01;	
+}
+
+void Thread2(void)
+{
+	PORTR.OUTCLR = 0x00;
 }

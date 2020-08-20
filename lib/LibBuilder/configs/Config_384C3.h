@@ -43,31 +43,6 @@
  #define TWI_BUFFER_SIZE							32							/**< Size of TWI buffer in bytes. */
 
  /*
-	 LED
- */
- #define LED0										PORTR, 0					/**< Yellow LED0. */
- #define LED1										PORTR, 1					/**< Yellow LED1. */
- #define LED2										PORTD, 4					/**< Red/Green LED. */
- #define LED3										PORTD, 5					/**< Green LED. */
- 
- /* 
-	Push buttons
- */
- #define SW0										PORTF, 1					/**< Push button 0. */
- #define SW1										PORTF, 2					/**< Push button 1. */
-
- /*
-	Reference voltage [mV]
- */
- #define REFERENCE_VOLTAGE							3300
-
- /*
-	Analog sensors
- */
- #define LIGHT_SENSOR								0							/**< Analog light sensor. */
- #define TEMPERATURE_SENSOR							1							/**< Analog temperature sensor. */
-
- /*
 	 On-board display
  */
  #define USE_SSD1306															/**< Use the SSD1306 display for the display manager service. */
