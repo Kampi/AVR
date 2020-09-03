@@ -170,9 +170,9 @@
       <SubType>compile</SubType>
       <Link>source\Common\FrameBuffer\FrameBuffer.c</Link>
     </Compile>
-    <Compile Include="..\..\..\..\source\Interfaces\IR\IR.c">
+    <Compile Include="..\..\..\..\source\Interfaces\IR-Remote\NEC_IR.c">
       <SubType>compile</SubType>
-      <Link>source\Interfaces\IR\IR.c</Link>
+      <Link>source\Interfaces\IR-Remote\NEC_IR.c</Link>
     </Compile>
     <Compile Include="..\..\..\..\source\Peripheral\ST7565R\ST7565R.c">
       <SubType>compile</SubType>
@@ -201,7 +201,7 @@
     <Folder Include="source\Common\Font" />
     <Folder Include="source\Common\FrameBuffer" />
     <Folder Include="source\Interfaces" />
-    <Folder Include="source\Interfaces\IR\" />
+    <Folder Include="source\Interfaces\IR-Remote" />
     <Folder Include="source\Peripheral\ST7565R" />
     <Folder Include="source\Services" />
     <Folder Include="source\Services\DisplayManager" />

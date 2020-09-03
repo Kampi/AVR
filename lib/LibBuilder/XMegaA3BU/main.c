@@ -290,8 +290,6 @@ int main(void)
 		Initialize CPU clock
 	*/
 	SysClock_Init();
-	
-	SystemThread_Init();
 
 	/*
 		Enable the LED outputs
@@ -466,7 +464,6 @@ int main(void)
 	{
 		//Watchdog_Reset();
 		//AC_WaitForComparator(Config_AC.Device, Config_AC.Comparator);
-		SystemThread_Run();
 	}
 	
 	return 0;

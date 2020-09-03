@@ -250,10 +250,6 @@
       <SubType>compile</SubType>
       <Link>source\Peripheral\AT45DB642D\AT45DB642D.c</Link>
     </Compile>
-    <Compile Include="..\..\..\source\Services\SystemThread\SystemThread.c">
-      <SubType>compile</SubType>
-      <Link>source\Services\SystemThread\SystemThread.c</Link>
-    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
@@ -263,9 +259,9 @@
     <Compile Include="source\Bitmaps\LogoUSB.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="source\Services\RTC\RTC.c">
+    <None Include="source\Services\RTC\RTC.c">
       <SubType>compile</SubType>
-    </Compile>
+    </None>
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

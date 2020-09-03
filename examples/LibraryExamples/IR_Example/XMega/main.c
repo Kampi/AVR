@@ -1,6 +1,6 @@
 /*
  * main.c
- * 
+ *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
  *  File info: IR remote receiver example for XMega.
@@ -31,10 +31,11 @@
  *  @author Daniel Kampert
  */
 
-#include "Interfaces/IR/IR.h"
+#include "Interfaces/IR-Remote/NEC_IR.h"
 #include "Services/DisplayManager/DisplayManager.h"
 
-uint32_t A;
+char DisplayBuffer[32];
+IR_Message_t Message;
 
 int main(void)
 {
@@ -42,11 +43,9 @@ int main(void)
 		Initialize the system clock
 	*/
 	SysClock_Init();
-	
-	PORTE.DIRSET = 0x00;
 
 	/*
-		Initialize the timer
+		Initialize the IR receiver
 	*/
 	IR_Init();
 
@@ -55,11 +54,49 @@ int main(void)
 	*/
 	DisplayManager_Init();
 	DisplayManager_Clear();
-	DisplayManager_DrawString(0, 0, "IR remote example");
+	DisplayManager_DrawString(20, 0, "IR remote example");
 
 	while(1)
 	{
-		
+		if(IR_GetMessage(&Message))
+		{
+			DisplayManager_ClearLine(2);
+
+			if(!Message.IsRepeat)
+			{
+				DisplayManager_DrawString(0, 8, "Button pressed!");
+
+				// Lets do some actions according to the pressed button
+				switch(Message.Data)
+				{
+					case IR_REMOTE_KEY_1:
+					{
+						DisplayManager_SwitchBacklight(true);
+
+						break;
+					}
+					case IR_REMOTE_KEY_9:
+					{
+						DisplayManager_SwitchBacklight(false);
+
+						break;
+					}
+					// Ignore all other values
+					default:
+					{
+						break;
+					}
+				}
+
+				// Print the received data
+				sprintf(DisplayBuffer, "Data: 0x%lX", Message.Data);
+				DisplayManager_DrawString(0, 16, DisplayBuffer);
+			}
+			else
+			{
+				DisplayManager_DrawString(0, 16, "Repeat");
+			}
+		}
 	}
 
 	return 0;

@@ -23,7 +23,7 @@
  */
 
 /** @file configs/Config_IR.h
- *  @brief Configuration example for the IR interface.
+ *  @brief Configuration example for the NEC IR interface.
  *
  *  @author Daniel Kampert
  */
@@ -35,18 +35,24 @@
 
  #define F_CPU										32000000UL					/**< CPU clock speed. */
 
- #define IR_INPUT									PORTE, 0
- #define IR_TIMEOUT									100							/**< Timeout time for a new message in us. */
+ // IR receiver interface definitions
+ #define IR_INTERRUPT_LEVEL							INT_LVL_HI					/**< Interrupt level used by the timer for the IR receiver. \n
+																					 NOTE: You only need this when you use the XMega architecture! */
+ #define IR_REC_INPUT								PORTE, 0					/**< IR receiver input. */
+ #undef IR_USE_LED																/**< Define this symbol to use an external LED to indicate an incoming transmission. */
+ #define IR_ACTIVE_LED								PORTE, 1					/**< I/O used by the external LED. \n
+																					 NOTE: You only need this when you define the symbol #IR_USE_LED. */
 
  #define USART_BUFFER_SIZE							32							/**< Size of USART buffer in bytes. */
 
- #define USE_ST7565R
-
- #define ST7565R_INTERFACE_TYPE						INTERFACE_USART_SPI			/**< SPI interface type for the display. */
- #define ST7565R_INTERFACE							USARTD, 0					/**< SPI interface for the display. */
- #define ST7565R_CLOCK								1000000UL					/**< SPI interface speed. */
+ #define USE_ST7565R															/**< Use the ST7565R display with the display manager. */
 
  // LCD interface definitions
+ #define ST7565R_INTERFACE_TYPE						INTERFACE_USART_SPI			/**< SPI interface type used by the display. */
+ #define ST7565R_INTERFACE							USARTD, 0					/**< SPI used by the display. */
+ #define ST7565R_CLOCK								1000000UL					/**< Display interface speed. */
+
+ // LCD control signals
  #define ST7565R_REGISTER_SELECT					PORTD, 0
  #define ST7565R_RESET								PORTA, 3
  #define ST7565R_BACKLIGHT							PORTE, 4
