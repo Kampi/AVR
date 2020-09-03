@@ -24,39 +24,28 @@
 
 /** @file Interfaces/IR/IR.h
  *  @brief AVR NEC IR interface implementation.
+ *		   Please check https://techdocs.altium.com/display/FPGA/NEC+Infrared+Transmission+Protocol if you need additional information.
  *
  *  This contains the prototypes and definitions for the IR interface.
  *
  *  @author Daniel Kampert
- *  @bug No known bugs
+ *  @bug	No known bugs
  */
 
 #ifndef IR_H_
 #define IR_H_
  
  #include "Common/Common.h"
- 
- #include "Services/SystemTimer/SystemTimer.h"
 
- /** @defgroup IR
-  *  @{
+ /** @brief States for the IR receiver state machine
   */
-	 /** @defgroup IR-Errors
-	  *  IR communication error codes.
-	  *  @{
-	  */
-	 typedef enum
-	 {
-		 ONEWIRE_NO_ERROR = 0x00,						/**< No error */
-		 ONEWIRE_INVALID_ADDRESS = 0x01,				/**< Invalid 1-Wire device address */
-		 ONEWIRE_CRC_ERROR = 0x02,						/**< CRC doesn't match */
-		 ONEWIRE_NO_DEVICE = 0x03,						/**< No 1-Wire device found */
-		 ONEWIRE_PARAMETER_ERROR = 0x04,				/**< General parameter error */
-		 ONEWIRE_INACTIVE_SEARCH = 0x05,				/**< No ROM search active */
-		 ONEWIRE_RESET_ERROR = 0x06,					/**< Error during 1-Wire reset */
-	 } OneWire_Error_t;
-	/** @} */ // end of OneWire-Errors
- /** @} */ // end of OneWire
+ typedef enum
+ {
+	 IR_STATE_IDLE = 0x00,						/**< Idle state. Wait for a transmission begin. */
+	 IR_STATE_REC_ONE = 0x01,					/**< Read a logical '1' from the receiver. */
+	 IR_STATE_REC_ZERO = 0x02,					/**< Read a logical '0' from the receiver. */
+	 IR_STATE_STOP = 0x03,						/**< State after stopping the state machine or when a transmission is complete. */
+ } IR_RecState_t;
 
  /** @brief	Initialize the IR interface.
   */

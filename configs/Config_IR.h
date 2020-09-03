@@ -33,16 +33,18 @@
 
  #include "Common/Common.h"
 
+ #define F_CPU										32000000UL					/**< CPU clock speed. */
+
  #define IR_INPUT									PORTE, 0
- #define IR_TIMEOUT									100							/**< Timeout time for a new message in µs. */
+ #define IR_TIMEOUT									100							/**< Timeout time for a new message in us. */
 
  #define USART_BUFFER_SIZE							32							/**< Size of USART buffer in bytes. */
 
  #define USE_ST7565R
 
- #define ST7565R_INTERFACE_TYPE						INTERFACE_USART_SPI
- #define DISPLAY_INTERFACE							USARTD, 0
- #define DISPLAY_CLOCK								1000000
+ #define ST7565R_INTERFACE_TYPE						INTERFACE_USART_SPI			/**< SPI interface type for the display. */
+ #define ST7565R_INTERFACE							USARTD, 0					/**< SPI interface for the display. */
+ #define ST7565R_CLOCK								1000000UL					/**< SPI interface speed. */
 
  // LCD interface definitions
  #define ST7565R_REGISTER_SELECT					PORTD, 0
