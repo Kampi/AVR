@@ -100,11 +100,11 @@
 	#error "Architecture not supported for 1-Wire!"
 #endif
 
-static uint8_t __LastFamilyDiscrepancy;
-static uint8_t __LastDiscrepancy;
-static bool __LastDevice;
-static bool __SearchActive;
-static bool __isAlarm;
+static uint8_t _LastFamilyDiscrepancy;
+static uint8_t _LastDiscrepancy;
+static bool _LastDevice;
+static bool _SearchActive;
+static bool _isAlarm;
 
 static const uint8_t __OneWire_CRCTable[] = 
 {
@@ -152,15 +152,15 @@ static OneWire_Error_t OneWire_SearchROM(const OneWire_ROM_t* ROM, const bool is
 	}
 
 	// Last device detected?
-	if(!__LastDevice)
+	if(!_LastDevice)
 	{
 		// Reset the devices
 		ErrorCode = OneWire_Reset();
 		if(ErrorCode != ONEWIRE_NO_ERROR)
 		{
-			__LastDiscrepancy = 0x00;
-			__LastDevice = false;
-			__LastDiscrepancy = 0x00;
+			_LastDiscrepancy = 0x00;
+			_LastDevice = false;
+			_LastDiscrepancy = 0x00;
 
 			return ErrorCode;
 		}
@@ -192,13 +192,13 @@ static OneWire_Error_t OneWire_SearchROM(const OneWire_ROM_t* ROM, const bool is
 			{
 				if(id_bit == cmp_id_bit)
 				{
-					if(id_bit_number == __LastDiscrepancy)
+					if(id_bit_number == _LastDiscrepancy)
 					{
 						search_direction = 0x01;
 					}
 					else
 					{
-						if(id_bit_number > __LastDiscrepancy)
+						if(id_bit_number > _LastDiscrepancy)
 						{
 							search_direction = 0x00;
 						}
@@ -217,7 +217,7 @@ static OneWire_Error_t OneWire_SearchROM(const OneWire_ROM_t* ROM, const bool is
 						// Check for Last discrepancy in family
 						if(last_zero < 0x09)
 						{
-							__LastFamilyDiscrepancy = last_zero;
+							_LastFamilyDiscrepancy = last_zero;
 						}
 					}
 				}
@@ -253,13 +253,13 @@ static OneWire_Error_t OneWire_SearchROM(const OneWire_ROM_t* ROM, const bool is
 
 		if(!((id_bit_number < 65) || (CRC8 != 0x00)))
 		{
-			__LastDiscrepancy = last_zero;
+			_LastDiscrepancy = last_zero;
 
 			// Check for last device
-			if(__LastDiscrepancy == 0x00)
+			if(_LastDiscrepancy == 0x00)
 			{
-				__LastDevice = true;
-				__SearchActive = false;
+				_LastDevice = true;
+				_SearchActive = false;
 			}
 		}
 	}
@@ -267,9 +267,9 @@ static OneWire_Error_t OneWire_SearchROM(const OneWire_ROM_t* ROM, const bool is
 	// No device found
 	if((ErrorCode != ONEWIRE_NO_ERROR) || !(*pROM))
 	{
-		__LastDiscrepancy = 0x00;
-		__LastDevice = false;
-		__LastFamilyDiscrepancy = 0x00;
+		_LastDiscrepancy = 0x00;
+		_LastDevice = false;
+		_LastFamilyDiscrepancy = 0x00;
 	
 		if(!(*pROM))
 		{
@@ -282,7 +282,7 @@ static OneWire_Error_t OneWire_SearchROM(const OneWire_ROM_t* ROM, const bool is
 
 OneWire_Error_t OneWire_Init(void)
 {
-	__SearchActive = false;
+	_SearchActive = false;
 
 	#if(ONEWIRE_INTERFACE == INTERFACE_GPIO)
 		// Set DQ as output and enable the pull up resistor for the input state
@@ -318,25 +318,25 @@ uint8_t OneWire_CRC(const uint8_t Length, const uint8_t* Data)
 
 OneWire_Error_t OneWire_StartSearch(const OneWire_ROM_t* ROM, const bool isAlarm)
 {
-	__LastFamilyDiscrepancy = 0x00;
-	__LastDiscrepancy = 0;
-	__LastDevice = false;
-	__SearchActive = true;
-	__isAlarm = isAlarm;
+	_LastFamilyDiscrepancy = 0x00;
+	_LastDiscrepancy = 0;
+	_LastDevice = false;
+	_SearchActive = true;
+	_isAlarm = isAlarm;
 
 	if(ROM == NULL)
 	{
 		return ONEWIRE_PARAMETER_ERROR;
 	}
 
-	return OneWire_SearchROM(ROM, __isAlarm);
+	return OneWire_SearchROM(ROM, _isAlarm);
 }
 
 OneWire_Error_t OneWire_SearchNext(const OneWire_ROM_t* ROM)
 {
-	if(__SearchActive == true)
+	if(_SearchActive == true)
 	{
-		return OneWire_SearchROM(ROM, __isAlarm);
+		return OneWire_SearchROM(ROM, _isAlarm);
 	}
 
 	return ONEWIRE_INACTIVE_SEARCH;
@@ -344,12 +344,12 @@ OneWire_Error_t OneWire_SearchNext(const OneWire_ROM_t* ROM)
 
 bool OneWire_IsLast(void)
 {
-	return __LastDevice;
+	return _LastDevice;
 }
 
 OneWire_Error_t OneWire_StopSearch(void)
 {
-	__SearchActive = false;
+	_SearchActive = false;
 
 	return OneWire_Reset();
 }

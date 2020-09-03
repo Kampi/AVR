@@ -31,12 +31,12 @@
 #ifndef CONFIG_DS18B20_H_
 #define CONFIG_DS18B20_H_
 
- #define F_CPU										16000000UL				/**< Oscillator frequency. */
+ #define F_CPU										32000000UL				/**< Oscillator frequency. */
 
  /*
 	 Console service configuration
  */
- #undef CONSOLE_STDIO														/**< USART interface for the console service. */
+ #define CONSOLE_STDIO								&USARTD, 0				/**< USART interface for the console service. */
 
  /*
 	 1-Wire configuration
