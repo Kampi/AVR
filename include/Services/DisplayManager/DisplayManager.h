@@ -163,7 +163,7 @@
   */
  void DisplayManager_Clear(void);
 
- /** @brief			Clear a single display line.
+ /** @brief			Clear a single display line (an entire page in the display controller).
   *  @param Line	Line number
   */
  void DisplayManager_ClearLine(const uint8_t Line);

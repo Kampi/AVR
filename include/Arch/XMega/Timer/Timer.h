@@ -352,6 +352,16 @@
 	 Device->PER = Period;
  }
 
+ /** @brief			Set the start value for a Timer0 device.
+  *  @param Device	Pointer to Timer0 object
+  *  @param Count	Initial counter value for the timer
+  */
+ static inline void Timer0_SetCount(TC0_t* Device, const uint16_t Count) __attribute__((always_inline));
+ static inline void Timer0_SetCount(TC0_t* Device, const uint16_t Count)
+ {
+	 Device->CNT = Count;
+ }
+
  /** @brief			Enable a capture or compare channel for a Timer0 device.
   *  @param Device	Pointer to Timer0 object
   *  @param Channel	Capture or compare channel
