@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Arch/AVR8/megaAVR/USART/USART.h
+/** @file Arch/AVR8/megaAVR/mega32/USART/USART.h
  *  @brief Driver for Atmel AVR8 megaAVR USART module.
  *
  *  This contains the prototypes and definitions for the megaAVR USART driver.
@@ -37,8 +37,8 @@
  #include "Common/Common.h"
  #include "Common/Ringbuffer/RingBuffer.h"
 
- #include "Arch/AVR8/megaAVR/CPU/CPU.h"
- #include "Arch/AVR8/megaAVR/GPIO/GPIO.h"
+ #include "Arch/AVR8/megaAVR/mega32/CPU/CPU.h"
+ #include "Arch/AVR8/megaAVR/mega32/GPIO/GPIO.h"
  
  /** @defgroup Serial
   *  @{

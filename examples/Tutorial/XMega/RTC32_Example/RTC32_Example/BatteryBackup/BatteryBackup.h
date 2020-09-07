@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: Battery backup for XMega.
+ *  File info: Driver for XMega battery backup.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file BatteryBackup.h
+/** @file BatteryBackup/BatteryBackup.h
  *  @brief Driver for XMega battery backup.
  *
  *  @author Daniel Kampert

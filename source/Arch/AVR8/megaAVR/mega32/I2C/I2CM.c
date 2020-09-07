@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Arch/AVR8/megaAVR/I2C/I2C.c
+/** @file Arch/AVR8/megaAVR/mega32/I2C/I2C.c
  *  @brief Driver for AVR8 I2C module in master mode.
  *
  *  This contains the implementation of the AVR8 I2C master mode driver.
@@ -30,7 +30,7 @@
  *  @author Daniel Kampert
  */
 
-#include "Arch/AVR8/megaAVR/I2C/I2C.h"
+#include "Arch/AVR8/megaAVR/mega32/I2C/I2C.h"
 
 /** @brief	Send a start condition.
  *  @return	I2C error code

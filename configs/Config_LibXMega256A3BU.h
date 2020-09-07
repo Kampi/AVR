@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file configs/Config.h
+/** @file configs/Config_LibXMega256A3BU.h
  *  @brief XMega256A3BU configuration file for library builder.
  *
  *  @author Daniel Kampert

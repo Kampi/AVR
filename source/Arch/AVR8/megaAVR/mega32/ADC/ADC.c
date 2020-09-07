@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Arch/AVR8/megaAVR/ADC/ADC.c
+/** @file Arch/AVR8/megaAVR/mega32/ADC/ADC.c
  *  @brief Driver for Atmel AVR8 megaAVR ADC module.
  *
  *  This file contains the implementation of the megaAVR ADC driver.
@@ -30,7 +30,7 @@
  *  @author Daniel Kampert
  */
 
-#include "Arch/AVR8/megaAVR/ADC/ADC.h"
+#include "Arch/AVR8/megaAVR/mega32/ADC/ADC.h"
 
 #ifndef DOXYGEN
 	ADC_Callback_t ConversionComplete;

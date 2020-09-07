@@ -1,7 +1,7 @@
 /*
  * DisplayManager_Drawing.c
  *
- *  Copyright (C) Daniel Kampert, 2020
+ *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
  *  File info: Display manager drawing functions.
 
@@ -30,35 +30,6 @@
 
 #include <stdlib.h>
 #include "Services/DisplayManager/DisplayManager.h"
-
-void DisplayManager_DrawPixel(const uint8_t x, const uint8_t y, const PixelMask_t Mask)
-{
-	// Check if the coordinates are outside of the screen
-	if((x > (DISPLAYMANAGER_LCD_WIDTH - 1)) || (y > (DISPLAYMANAGER_LCD_HEIGHT - 1)))
-	{
-		return;
-	}
-	
-	// Get the byte for the chosen pixel
-	uint8_t Page = y / DISPLAYMANAGER_LCD_PIXEL_PER_BYTE;
-	uint8_t ByteMask = (0x01 << (y - (Page * DISPLAYMANAGER_LCD_PIXEL_PER_BYTE)));
-	
-	// Read the byte from the frame buffer
-	uint8_t Byte = DisplayManager_ReadByte(Page, x);
-	
-	// Set the pixel
-	if(Mask == PIXELMASK_SET)
-	{
-		Byte |= ByteMask;
-	}
-	else
-	{
-		Byte &= ~ByteMask;
-	}
-	
-	// Write the new value to the display
-	DisplayManager_WriteByte(Page, x, Byte);
-}
 
 /*
 	Using Bresenham algorithm to draw the line

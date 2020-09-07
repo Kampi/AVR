@@ -349,7 +349,15 @@ ISR(USB_GEN_vect)
 		USB_Controller_DisableInterrupt(USB_SUSPEND_INTERRUPT);
 		USB_Controller_EnableInterrupt(USB_WAKE_INTERRUPT);
 
+		// Configure the default control endpoint
 		if(!Endpoint_Configure(ENDPOINT_CONTROL_ADDRESS, ENDPOINT_TYPE_CONTROL, ENDPOINT_CONTROL_SIZE, false))
+		{
+			if(_USBEvents.Error != NULL)
+			{
+				_USBEvents.Error();
+			}
+		}
+		else
 		{
 			if(_USBEvents.Error != NULL)
 			{

@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: RTC32 for XMega.
+ *  File info: Driver for XMega RTC32.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file RTC32.c
+/** @file RTC32/RTC32.c
  *  @brief Driver for XMega RTC32.
  *
  *  @author Daniel Kampert
@@ -36,28 +36,28 @@ void RTC32_Init(void)
 	RTC32.CTRL &= ~RTC32_ENABLE_bm;
 	while(RTC32_Sync());
 
-	RTC32.PER = 0x09;
-	RTC32.COMP = 0x04;
-	RTC32.CNT = 0x00;
+	RTC32.PER = 1023;
+	RTC32.COMP = 511;
+	RTC32.CNT = 0;
 
 	// Enable the RTC32 and wait for register sync
-	RTC32.CTRL |= RTC32_ENABLE_bm;
+	RTC32.CTRL = RTC32_ENABLE_bm;
 	while(RTC32_Sync());
 }
 
 uint8_t RTC32_GetCount(void)
 {
 	// Start the synchronization of the CNT register from the RTC32 domain to the system domain
-	RTC32.SYNCCTRL |= RTC32_SYNCCNT_bm;
+	RTC32.SYNCCTRL = RTC32_SYNCCNT_bm;
 	while(RTC32_Sync());
-	
+
 	return RTC32.CNT;
 }
 
 void RTC32_EnableInterrupts(void)
 {
 	// Enable interrupts
-	RTC32.INTCTRL = RTC32_COMPINTLVL_LO_gc | RTC32_OVFINTLVL_LO_gc;
+	RTC32.INTCTRL = RTC32_COMPINTLVL_MED_gc | RTC32_OVFINTLVL_LO_gc;
 }
 
 void RTC32_DisableInterrupts(void)
@@ -74,6 +74,6 @@ ISR(RTC32_COMP_vect)
 
 ISR(RTC32_OVF_vect)
 {
-	// Toggle LED0 on overflow interrupt
+	// Toggle LED1 on overflow interrupt
 	PORTR.OUTTGL = (0x01 << 0x01);
 }

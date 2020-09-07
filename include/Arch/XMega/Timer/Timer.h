@@ -57,95 +57,89 @@
   */
  typedef enum
  {
-	 TIMER_PRESCALER_1 = 0x01,						/**< Prescaler 1 */ 
-	 TIMER_PRESCALER_2 = 0x02,						/**< Prescaler 2 */ 
-	 TIMER_PRESCALER_4 = 0x03,						/**< Prescaler 4 */ 
-	 TIMER_PRESCALER_8 = 0x04,						/**< Prescaler 8 */ 
-	 TIMER_PRESCALER_64 = 0x05,						/**< Prescaler 64 */ 
-	 TIMER_PRESCALER_256 = 0x06,					/**< Prescaler 256 */ 
-	 TIMER_PRESCALER_1024 = 0x07,					/**< Prescaler 1024 */ 
+	 TIMER_PRESCALER_1 = 0x01,						/**< Prescaler 1 */
+	 TIMER_PRESCALER_2 = 0x02,						/**< Prescaler 2 */
+	 TIMER_PRESCALER_4 = 0x03,						/**< Prescaler 4 */
+	 TIMER_PRESCALER_8 = 0x04,						/**< Prescaler 8 */
+	 TIMER_PRESCALER_64 = 0x05,						/**< Prescaler 64 */
+	 TIMER_PRESCALER_256 = 0x06,					/**< Prescaler 256 */
+	 TIMER_PRESCALER_1024 = 0x07,					/**< Prescaler 1024 */
  } Timer_Prescaler_t;
 
  /** @brief Timer callback types.
   */
  typedef enum
  {
-	 TIMER_OVERFLOW_INTERRUPT = 0x01,				/**< Timer overflow interrupt */ 
-	 TIMER_ERROR_INTERRUPT = 0x02,					/**< Timer error interrupt */ 
-	 TIMER_CCA_INTERRUPT = 0x10,					/**< Timer capture compare A interrupt */ 
-	 TIMER_CCB_INTERRUPT = 0x20,					/**< Timer capture compare B interrupt */ 
-	 TIMER_CCC_INTERRUPT = 0x40,					/**< Timer capture compare C interrupt */ 
-	 TIMER_CCD_INTERRUPT = 0x80,					/**< Timer capture compare D interrupt */ 
-	 TIMER_COMPMATCH_INTERRUPT = 0x02,				/**< Timer output compare match interrupt */ 
-	 TIMER_COMPMATCH_A_INTERRUPT = 0x03,			/**< Timer output compare match A interrupt */ 
-	 TIMER_COMPMATCH_B_INTERRUPT = 0x04,			/**< Timer output compare match B interrupt */ 
-	 TIMER_CAPTURE_INTERRUPT = 0x05,				/**< Timer input capture interrupt */ 
+	 TIMER_OVERFLOW_INTERRUPT = 0x01,				/**< Timer overflow interrupt */
+	 TIMER_ERROR_INTERRUPT = 0x02,					/**< Timer error interrupt */
+	 TIMER_CCA_INTERRUPT = 0x10,					/**< Timer capture compare A interrupt */
+	 TIMER_CCB_INTERRUPT = 0x20,					/**< Timer capture compare B interrupt */
+	 TIMER_CCC_INTERRUPT = 0x40,					/**< Timer capture compare C interrupt */
+	 TIMER_CCD_INTERRUPT = 0x80,					/**< Timer capture compare D interrupt */
  } Timer_CallbackType_t;
 
  /** @brief Timer device modes.
   */
  typedef enum
  {
-	 TIMER_MODE_0 = 0x00,							/**< Timer mode 0 */ 
-	 TIMER_MODE_1 = 0x01,							/**< Timer mode 1 */ 
-	 TIMER_MODE_2 = 0x02,							/**< Timer mode 2 */ 
-	 TIMER_MODE_3 = 0x03,							/**< Timer mode 3 */ 
-	 TIMER_MODE_4 = 0x04,							/**< Timer mode 4 */ 
-	 TIMER_MODE_5 = 0x05,							/**< Timer mode 5 */ 
-	 TIMER_MODE_6 = 0x06,							/**< Timer mode 6 */ 
-	 TIMER_MODE_7 = 0x07,							/**< Timer mode 7 */ 
-	 TIMER_MODE_8 = 0x08,							/**< Timer mode 8 */ 
-	 TIMER_MODE_9 = 0x09,							/**< Timer mode 9 */ 
-	 TIMER_MODE_10 = 0x0A,							/**< Timer mode 10 */ 
-	 TIMER_MODE_11 = 0x0B,							/**< Timer mode 11 */ 
-	 TIMER_MODE_12 = 0x0C,							/**< Timer mode 12 */ 
-	 TIMER_MODE_13 = 0x0D,							/**< Timer mode 13 */ 
-	 TIMER_MODE_14 = 0x0E,							/**< Timer mode 14 */ 
-	 TIMER_MODE_15 = 0x0F,							/**< Timer mode 15 */ 
+	 TIMER_MODE_0 = 0x00,							/**< Timer mode 0 */
+	 TIMER_MODE_1 = 0x01,							/**< Timer mode 1 */
+	 TIMER_MODE_2 = 0x02,							/**< Timer mode 2 */
+	 TIMER_MODE_3 = 0x03,							/**< Timer mode 3 */
+	 TIMER_MODE_4 = 0x04,							/**< Timer mode 4 */
+	 TIMER_MODE_5 = 0x05,							/**< Timer mode 5 */
+	 TIMER_MODE_6 = 0x06,							/**< Timer mode 6 */
+	 TIMER_MODE_7 = 0x07,							/**< Timer mode 7 */
+	 TIMER_MODE_8 = 0x08,							/**< Timer mode 8 */
+	 TIMER_MODE_9 = 0x09,							/**< Timer mode 9 */
+	 TIMER_MODE_10 = 0x0A,							/**< Timer mode 10 */
+	 TIMER_MODE_11 = 0x0B,							/**< Timer mode 11 */
+	 TIMER_MODE_12 = 0x0C,							/**< Timer mode 12 */
+	 TIMER_MODE_13 = 0x0D,							/**< Timer mode 13 */
+	 TIMER_MODE_14 = 0x0E,							/**< Timer mode 14 */
+	 TIMER_MODE_15 = 0x0F,							/**< Timer mode 15 */
  } Timer_Mode_t;
 
  /** @brief Timer capture compare channels.
   */
  typedef enum
  {
-	 TIMER_CCA = 0x00,								/**< Capture compare channel A */ 
-	 TIMER_CCB = 0x01,								/**< Capture compare channel B */ 
-	 TIMER_CCC = 0x02,								/**< Capture compare channel C */ 
-	 TIMER_CCD = 0x03,								/**< Capture compare channel D */ 
+	 TIMER_CCA = 0x00,								/**< Capture compare channel A */
+	 TIMER_CCB = 0x01,								/**< Capture compare channel B */
+	 TIMER_CCC = 0x02,								/**< Capture compare channel C */
+	 TIMER_CCD = 0x03,								/**< Capture compare channel D */
  } Timer_CCChannel_t;
 
  /** @brief	Timer commands
  */
  typedef enum
  {
-	 TIMER_COMMAND_NONE = 0x00,						/**< Empty command */ 
-	 TIMER_COMMAND_UPDATE = 0x01,					/**< Force update */ 
-	 TIMER_COMMAND_RESTART = 0x02,					/**< Force restart */ 
-	 TIMER_COMMAND_RESET = 0x03,					/**< Force reset */ 
+	 TIMER_COMMAND_NONE = 0x00,						/**< Empty command */
+	 TIMER_COMMAND_UPDATE = 0x01,					/**< Force update */
+	 TIMER_COMMAND_RESTART = 0x02,					/**< Force restart */
+	 TIMER_COMMAND_RESET = 0x03,					/**< Force reset */
  } Timer_Command_t;
 
  /** @brief	Timer count directions.
  */
  typedef enum
  {
-	 TIMER_DIRECTION_TOP = 0x00,					/**< Count to top, Interrupt when overflow */ 
-	 TIMER_DIRECTION_BOTTOM = 0x01,					/**< Count to bottom, Interrupt when underflow */ 
+	 TIMER_DIRECTION_TOP = 0x00,					/**< Count to top, Interrupt when overflow */
+	 TIMER_DIRECTION_BOTTOM = 0x01,					/**< Count to bottom, Interrupt when underflow */
  } Timer_Direction_t;
 
  /** @brief	Macro to increase the duty cycle by a given value.
-  *
-  *	NOTE: Default value is 1.
+  *			NOTE: Default value is 1.
   */
  #define TIMER0_INCREASEDUTY(Timer, Channel, ...)			Timer0_IncreaseDutyCycle(Timer, Channel, (1, ##__VA_ARGS__))
  
  /** @brief	Macro to decrease the duty cycle by a given value.
-  *
-  *	NOTE: Default value is 1.
+  *			NOTE: Default value is 1.
   */
  #define TIMER0_DECREASEDUTY(Timer, Channel, ...)			Timer0_DecreaseDutyCycle(Timer, Channel, (1, ##__VA_ARGS__))
 
  /** 
-  * Timer0 input capture modes
+  * Timer0 input capture modes.
   */
  typedef enum
  {
@@ -155,7 +149,7 @@
  } Timer0_CaptureMode_t;
 
  /** 
-  * Timer0 configuration object
+  * Timer0 configuration object.
   */
  typedef struct
  {
@@ -164,9 +158,8 @@
 	 uint16_t Period;								/**< Timer period */ 
  } Timer0_Config_t;
 
-
  /** 
-  * Timer1 configuration object
+  * Timer1 configuration object.
   */
  typedef struct
  {
@@ -176,7 +169,7 @@
  } Timer1_Config_t;
 
  /** 
-  * Timer0 waveform configuration object
+  * Timer0 waveform configuration object.
   */
  typedef struct 
  {
@@ -186,11 +179,11 @@
 	 Timer_Mode_t Mode;								/**< Timer mode */ 
 	 uint16_t Period;								/**< Timer period */ 
 	 uint16_t DutyCycle;							/**< Timer duty cycle */ 
-	 bool EnableInvert;							/**< Set to #true to enable invert mode for the WGM pin */ 
+	 bool EnableInvert;								/**< Set to #true to enable invert mode for the WGM pin */ 
  } Timer0_WaveConfig_t;
  
  /** 
-  * Timer1 waveform configuration object
+  * Timer1 waveform configuration object.
   */
  typedef struct 
  {
@@ -204,7 +197,7 @@
  } Timer1_WaveConfig_t;
  
  /** 
-  * Timer0 compare configuration object
+  * Timer0 compare configuration object.
   */
  typedef struct 
  {
@@ -215,11 +208,12 @@
 	 Timer0_CaptureMode_t Mode;						/**< Capture mode */
 	 Timer_CCChannel_t Channel;						/**< Capture channel */
 	 Event_Channel_t EChannel;						/**< Event channel for capture mode */
-	 GPIO_InputSense_t Sense;						/**< GPIO input sense settings */
+	 GPIO_InputSense_t Sense;						/**< GPIO input sense settings \n
+														 NOTE: This field is only relevant when \ref Timer0_CaptureConfig_t.Mode is set to \ref Timer0_CaptureMode_t.TIMER_INPUT_CAPTURE! */
  } Timer0_CaptureConfig_t;
  
  /** 
-  * Timer0 interrupt configuration object
+  * Timer0 interrupt configuration object.
   */
  typedef struct
  {
@@ -230,7 +224,7 @@
  } Timer0_InterruptConfig_t;
 
  /** 
-  * Timer1 interrupt configuration object
+  * Timer1 interrupt configuration object.
   */
  typedef struct
  {
@@ -290,6 +284,7 @@
  {
 	 Device->CTRLD = (Device->CTRLD & (~(0x07 << 0x05))) | (Mode << 0x05);
  }
+
  /** @brief			Get the capture mode for a Timer0 device.
   *  @param Device	Pointer to Timer0 object
   *  @return		Capture mode
@@ -309,6 +304,7 @@
  {
 	 Device->CTRLA = Prescaler;
  }
+
  /** @brief			Set the prescaler for a Timer0 device.
   *  @param Device	Pointer to Timer0 object
   *  @return		Timer prescaler
@@ -356,6 +352,16 @@
 	 Device->PER = Period;
  }
 
+ /** @brief			Set the start value for a Timer0 device.
+  *  @param Device	Pointer to Timer0 object
+  *  @param Count	Initial counter value for the timer
+  */
+ static inline void Timer0_SetCount(TC0_t* Device, const uint16_t Count) __attribute__((always_inline));
+ static inline void Timer0_SetCount(TC0_t* Device, const uint16_t Count)
+ {
+	 Device->CNT = Count;
+ }
+
  /** @brief			Enable a capture or compare channel for a Timer0 device.
   *  @param Device	Pointer to Timer0 object
   *  @param Channel	Capture or compare channel
@@ -365,7 +371,7 @@
  {
 	 Device->CTRLB |= (0x01 << (0x04 + Channel));
  }
- 
+
  /** @brief			Disable a capture or compare channel for a Timer0 device.
   *  @param Device	Pointer to Timer0 object
   *  @param Channel	Capture or compare channel
@@ -392,7 +398,7 @@
 		 Device->CTRLFCLR |= 0x01;
 	 }
  }
- 
+
  /** @brief			Lock a Timer0 device.
   *  @param Device	Pointer to Timer0 object
   */
@@ -410,7 +416,7 @@
  {
 	 Device->CTRLFCLR |= (0x01 << 0x01);
  }
- 
+
  /** @brief			Execute a Timer0 command.
   *  @param Device	Pointer to Timer0 object
   *  @param Command	Timer command
@@ -420,7 +426,7 @@
  {
 	 Device->CTRLFSET |= (Command << 0x02);
  }
- 
+
  /** @brief				Clear an interrupt flag.
   *  @param Device		Pointer to Timer0 object
   *  @param Callback	Interrupt type
@@ -430,7 +436,7 @@
  {
 	 Device->INTFLAGS |= Callback;	
  }
- 
+
  /** @brief			Set the capture or compare value for a Timer0 device.
   *  @param Device	Pointer to Timer0 object
   *  @param Channel	Capture or compare channel
@@ -466,7 +472,7 @@
 	 register16_t* Timer = &Device->PER + ((Channel & 0x07) << 0x01);
 	 *Timer += Step;
  }
- 
+
  /** @brief			Decrease the capture or compare value by a given step.
   *  @param Device	Pointer to Timer0 object
   *  @param Channel	Capture or compare channel
@@ -483,28 +489,28 @@
   *  @param Config	Pointer to Timer0 configuration struct
   */
  void Timer0_Init(Timer0_Config_t* Config);
- 
+
  /** @brief			Initialize a Timer0 device with waveform option.
   *  @param Config	Pointer to Timer0 waveform configuration struct
   */
  void Timer0_WaveInit(Timer0_WaveConfig_t* Config);
- 
+
  /** @brief			Initialize a Timer0 device with capture option.
   *  @param Config	Pointer to Timer0 capture configuration struct
   */
  void Timer0_CaptureInit(Timer0_CaptureConfig_t* Config);
- 
+
  /** @brief			Install a new callback for a Timer0 device.
   *  @param Config	Pointer to interrupt configuration structure
   */
  void Timer0_InstallCallback(Timer0_InterruptConfig_t* Config);
- 
+
  /** @brief				Remove an installed callback.
   *  @param Device		Pointer to Timer0 object
   *  @param Callback	Callback which should be removed
   */
  void Timer0_RemoveCallback(TC0_t* Device, const Timer_CallbackType_t Callback);
- 
+
  /** @brief					Change the interrupt level of a timer interrupt.
   *  @param Device			Pointer to Timer0 object
   *  @param Callback		Callback which should be changed

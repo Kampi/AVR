@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: Battery backup for XMega.
+ *  File info: Driver for XMega battery backup.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file BatteryBackup.c
+/** @file BatteryBackup/BatteryBackup.c
  *  @brief Driver for XMega battery backup.
  *
  *  @author Daniel Kampert
@@ -86,7 +86,8 @@ void Battery_Init(void)
 		);
 	}
 
-	VBAT.CTRL |= VBAT_XOSCFDEN_bm | VBAT_XOSCEN_bm;
+	VBAT.CTRL |= VBAT_XOSCSEL_bm | VBAT_XOSCEN_bm | VBAT_XOSCFDEN_bm;
+	while(!(VBAT.STATUS & VBAT_XOSCRDY_bm));
 }
 
 void Battery_WriteRegister(uint8_t Register, uint8_t Data)
@@ -95,7 +96,7 @@ void Battery_WriteRegister(uint8_t Register, uint8_t Data)
 	{
 		VBAT.BACKUP0 = Data;
 	}
-	else
+	else if(Register == 1)
 	{
 		VBAT.BACKUP1 = Data;
 	}
@@ -107,8 +108,10 @@ uint8_t Battery_ReadRegister(uint8_t Register)
 	{
 		return VBAT.BACKUP0;
 	}
-	else
+	else if(Register == 1)
 	{
 		return VBAT.BACKUP1;
 	}
+
+	return 0xFF;
 }

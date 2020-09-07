@@ -61,7 +61,7 @@ static Endpoint_CS_ErrorCode_t USB_DeviceStream_GetControlEndpointState(void)
  *  @return			Error code
  */
 static Endpoint_DS_ErrorCode_t USB_DeviceStream_WaitReady(uint8_t Timeout)
-{	
+{
 	// Get the start frame
 	uint16_t StartFrame = USB_Device_GetFrameNumber();
 
@@ -165,9 +165,9 @@ Endpoint_CS_ErrorCode_t USB_DeviceStream_ControlIN(const void* Buffer, const uin
 
 Endpoint_DS_ErrorCode_t USB_DeviceStream_DataIN(const void* Buffer, const uint16_t Length, uint16_t* Offset)
 {
+	uint16_t Processed_Temp = 0x00;
 	uint16_t Length_Temp = Length;
 	uint8_t* Buffer_Temp = (uint8_t*)Buffer;
-	uint16_t Transfer = 0x00;
 
 	if(Offset != NULL)
 	{
@@ -175,30 +175,83 @@ Endpoint_DS_ErrorCode_t USB_DeviceStream_DataIN(const void* Buffer, const uint16
 		Buffer_Temp += *Offset;
 	}
 
-	for(uint16_t i = 0x00; i < Length_Temp; i++)
+	while(Length_Temp)
 	{
-		// Check if the bank is full and transmit the data
-		if(!(Endpoint_IsReadWriteAllowed()))
+		// Write the data into the transmit buffer
+		if(Endpoint_IsReadWriteAllowed())
 		{
-			*Offset += Transfer;
+			Endpoint_WriteByte(*Buffer_Temp++);
+			Length_Temp--;
+			Processed_Temp++;
+		}
+		// Buffer full
+		else
+		{
+			// Clear the buffer
+			Endpoint_FlushIN();
+
+			// Wait until the endpoint becomes ready
+			Endpoint_DS_ErrorCode_t ErrorCode = USB_DeviceStream_WaitReady(100);
+			if(ErrorCode != ENDPOINT_DS_NO_ERROR)
+			{
+				*Offset = Processed_Temp;
+
+				return ErrorCode;
+			}
+		}
+	}
+
+	// Clear the buffer and send the last packet
+	Endpoint_FlushIN();
+
+	*Offset = Processed_Temp;
+
+	return ENDPOINT_DS_NO_ERROR;
+}
+
+Endpoint_DS_ErrorCode_t USB_DeviceStream_DataOUT(const void* Buffer, const uint16_t Length, uint16_t* Offset)
+{
+	uint16_t Processed_Temp = 0x00;
+	uint16_t Length_Temp = Length;
+	uint8_t* Buffer_Temp = (uint8_t*)Buffer;
+
+	if(Offset != NULL)
+	{
+		Length_Temp -= *Offset;
+		Buffer_Temp += *Offset;
+	}
+
+	while(Length_Temp)
+	{
+		uint16_t Transfer = 0x00;
+
+		// Read the data from the receive buffer
+		if(Endpoint_IsReadWriteAllowed())
+		{
+			*Buffer_Temp++ = Endpoint_ReadByte();
+			Length_Temp--;
+			Transfer++;
+		}
+		// Buffer full
+		else
+		{
+			// Handshake the incoming data
+			Endpoint_AckOUT();
 
 			Endpoint_DS_ErrorCode_t ErrorCode = USB_DeviceStream_WaitReady(100);
 			if(ErrorCode != ENDPOINT_DS_NO_ERROR)
 			{
+				*Offset += Processed_Temp;
+
 				return ErrorCode;
 			}
-
-			Endpoint_FlushIN();
-		}
-		else
-		{
-			// Fill the buffer
-			Endpoint_WriteByte(*Buffer_Temp++);
-			Transfer++;
 		}
 	}
 
-	Endpoint_FlushIN();
+	// Handshake the last data packet
+	Endpoint_AckOUT();
+
+	*Offset += Processed_Temp;
 
 	return ENDPOINT_DS_NO_ERROR;
 }

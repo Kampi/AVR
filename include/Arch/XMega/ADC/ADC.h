@@ -205,16 +205,16 @@
  typedef struct
  {
 	 ADC_t* Device;									/**< Pointer to ADC object */
-	 
+
 	 #if(MCU_NAME == MCU_NAME_ATXMEGA256A3BU)
 		 ADC_DMARequest_t DMARequest;				/**< ADC DMA request settings */
 	 #endif
-	 
+
 	 ADC_ConversionMode_t ConversionMode;			/**< Conversion mode */
 	 ADC_ConversionFormat_t Format;					/**< Conversion format */
 	 ADC_Reference_t Reference;						/**< Reference voltage */
 	 ADC_Prescaler_t Prescaler;						/**< Clock prescaler */
-	 
+
 	 #if(MCU_NAME == MCU_NAME_ATXMEGA384C3)
 		uint8_t SamplingTime;						/**< ADC sampling time */
 	 #endif
@@ -239,7 +239,7 @@
  {
 	 Device->CTRLA |= ADC_ENABLE_bm;
  }
- 
+
  /** @brief			Disable an ADC module.
   *  @param Device	Pointer to ADC object
   */
@@ -248,7 +248,7 @@
  {
 	 Device->CTRLA &= ~ADC_ENABLE_bm;
  }
- 
+
  /** @brief					Set the ADC conversion mode.
   *  @param Device			Pointer to ADC object
   *  @param ConversionMode	Conversion mode
@@ -415,7 +415,7 @@
  {
 	 Device->REFCTRL &= ~ADC_TEMPREF_bm;
  }
- 
+
  /** @brief			Flush the ADC pipeline.
   *  @param Device	Pointer to ADC object
   */
@@ -429,62 +429,62 @@
   *  @param Config	Pointer to ADC configuration object
   */
  void ADC_Init(ADC_Config_t* Config);
- 
+
  /** @brief			Configure the ADC for event integration.
   *  @param Device	Pointer to ADC object
   *  @param Channel	Event channel for the ADC
   *  @param Mode	Event trigger mode
   */
  void ADC_ConfigEvent(ADC_t* Device, const ADC_EventChannel_t Channel, const ADC_EventMode_t Mode);
- 
+
  /** @brief				Configure the channel sweep of an ADC module.
   *  @param Device		Pointer to ADC object
   *  @param SweepOption	ADC channel sweep settings
   */
  void ADC_ConfigSweep(ADC_t* Device, const ADC_Sweep_t SweepOption);
- 
- /** @brief			Configure an ADC channel.
-  *  @param Config	Pointer to ADC channel configuration object
-  */
- void ADC_SetupInput(ADC_ChannelConfig_t* Config);
- 
+
  /** @brief			Calibrate an ADC module.
   *  @param Device	Pointer to ADC object
   */
  void ADC_Calibrate(ADC_t* Device);
- 
+
  /** @brief			Enable free run mode for the ADC module.
   *  @param Device	Pointer to ADC object
   */
  void ADC_EnableFreeRun(ADC_t* Device);
- 
+
  /** @brief			Disable free run mode for the ADC module.
   *  @param Device	Pointer to ADC object
   */
  void ADC_DisableFreeRun(ADC_t* Device);
- 
+
+ /** @brief			Configure an ADC channel.
+  *  @param Config	Pointer to ADC channel configuration object
+  */
+ void ADC_Channel_Init(ADC_ChannelConfig_t* Config);
+
  /** @brief			Start a new conversion.
   *  @param Config	Pointer to ADC configuration object
   */
  void ADC_Channel_StartConversion(ADC_CH_t* Channel);
- 
+
  /** @brief			Read the conversion result of an ADC channel.
   *  @param Channel	Pointer to ADC channel object
   *  @return		Conversion result
   */
  uint16_t ADC_Channel_ReadResult(ADC_CH_t* Channel);
- 
+
  /** @brief					Change the interrupt level of an installed ADC channel interrupt.
   *  @param Channel			Pointer to ADC channel object
   *  @param InterruptLevel	New interrupt level
   */
  void ADC_Channel_ChangeInterruptLevel(ADC_CH_t* Channel, const Interrupt_Level_t InterruptLevel);
- 
+
  /** @brief			Install a new ADC interrupt callback.
   *  @param Config	Pointer to ADC interrupt configuration object
   */
  void ADC_Channel_InstallCallback(ADC_InterruptConfig_t* Config);
- 
+
  /** @brief				Remove an installed callback.
   *  @param Channel		Pointer to ADC channel object
   *  @param Callback	Callback which should be removed

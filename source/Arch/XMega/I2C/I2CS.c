@@ -41,7 +41,7 @@
 void I2CS_Init(I2CS_Config_t* Config)
 {
 	uint8_t ID = 0x00;
-	
+
 	if(Config->Device == &TWIC)
 	{
 		ID = TWIC_ID;
@@ -50,7 +50,7 @@ void I2CS_Init(I2CS_Config_t* Config)
 	{
 		ID = TWIE_ID;
 	}
-	
+
 	I2C_PowerEnable(Config->Device);
 
 	I2C_SlaveEnable(Config->Device);
@@ -58,7 +58,7 @@ void I2CS_Init(I2CS_Config_t* Config)
 	I2CS_SetMask(Config->Device, Config->Mask);
 	I2CS_SwitchSmartMode(Config->Device, Config->EnableSmartMode);
 	I2CS_SwitchPromiscuousMode(Config->Device, Config->EnablePromiscuousMode);
-	
+
 	_I2CS_Buffer[ID].Buffer = Config->Buffer;
 	_I2CS_Buffer[ID].Device = Config->Device;
 
@@ -69,7 +69,7 @@ void I2CS_Init(I2CS_Config_t* Config)
 I2C_SlaveStatus_t I2CS_Status(TWI_t* Device)
 {
 	uint8_t ID = 0x00;
-	
+
 	if(Device == &TWIC)
 	{
 		ID = TWIC_ID;

@@ -28,12 +28,12 @@
  *  @author Daniel Kampert
  */
 
-#ifndef CONFIG_H_
-#define CONFIG_H_
+#ifndef CONFIG_AT90USBKEY_H_
+#define CONFIG_AT90USBKEY_H_
 
  #include "Common/Common.h"
 
- #define BOARD										BOARD_AT90USBKEY		/**< Use the AT90USBKey development board. */
+ #define BOARD										BOARD_AT90USBKEY		/**< Use the driver for the AT90USBKey development board. */
 
  /*
 	 Main clock
@@ -65,4 +65,4 @@
  #define USE_AT45DB642D
  #define DATAFLASH_COUNT							2	
  
-#endif /* CONFIG_H_ */
+#endif /* CONFIG_AT90USBKEY_H_ */

@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file configs/Config.h
+/** @file configs/Config_LibXMega384C3.h
  *  @brief XMega384C3 configuration file for library builder.
  *
  *  @author Daniel Kampert

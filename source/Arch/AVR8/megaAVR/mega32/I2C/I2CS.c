@@ -23,7 +23,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Arch/AVR8/megaAVR/I2C/I2CS.c
+/** @file Arch/AVR8/megaAVR/mega32/I2C/I2CS.c
  *  @brief Driver for AVR8 I2C slave mode.
  *
  *  This file contains the implementation of the AVR8 I2C slave mode driver.
@@ -31,7 +31,7 @@
  *  @author Daniel Kampert
  */
 
-#include "Arch/AVR8/megaAVR/I2C/I2C.h"
+#include "Arch/AVR8/megaAVR/mega32/I2C/I2C.h"
 
 void I2CS_Init(I2CS_Config_t* Config)
 {

@@ -1,7 +1,7 @@
 /*
  * DisplayManager.c
  *
- *  Copyright (C) Daniel Kampert, 2020
+ *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
  *  File info: Display manager service.
 
@@ -44,18 +44,47 @@
 	};
 #endif
 
-static uint8_t __DisplayMgrBuffer[DISPLAYMANAGER_LCD_FRAMEBUFFER_SIZE];
+static uint8_t _DisplayMgrBuffer[DISPLAYMANAGER_LCD_FRAMEBUFFER_SIZE];
+
+/** @brief			Write a single byte to the display.
+ *  @param Page		Display page
+ *  @param Column	Display column
+ *  @param Data		Display data
+ */
+static void DisplayManager_WriteByte(const uint8_t Page, const uint8_t Column, const uint8_t Data)
+{
+	FrameBuffer_WriteByte(Page, Column, Data);
+
+	Display_SetPage(Page);
+	Display_SetColumn(Column);
+	Display_WriteData(Data);
+}
+
+/** @brief			Read a single byte from the display.
+ *  @param Page		Display page
+ *  @param Column	Display column
+ *  @return			Display data
+ */
+static uint8_t DisplayManager_ReadByte(const uint8_t Page, const uint8_t Column)
+{
+	return FrameBuffer_ReadByte(Page, Column);
+}
 
 void DisplayManager_Init(void)
 {
 	Display_Init(&DisplayConfig);
 
 	// Initialize the frame buffer
-	FrameBuffer_Init(DISPLAYMANAGER_LCD_WIDTH, DISPLAYMANAGER_LCD_HEIGHT / DISPLAYMANAGER_LCD_PIXEL_PER_BYTE, DISPLAYMANAGER_LCD_PAGES, __DisplayMgrBuffer);
+	FrameBuffer_Init(DISPLAYMANAGER_LCD_WIDTH, DISPLAYMANAGER_LCD_HEIGHT / DISPLAYMANAGER_LCD_PIXEL_PER_BYTE, DISPLAYMANAGER_LCD_PAGES, _DisplayMgrBuffer);
 
 	Display_SetStartLine(0);
 
 	DisplayManager_Clear();
+}
+
+void DisplayManager_SwitchBacklight(const bool Enable)
+{
+	Display_SwitchBacklight(Enable);	
 }
 
 void DisplayManager_Clear(void)
@@ -89,16 +118,31 @@ void DisplayManager_ClearColumn(const uint8_t Column)
 	}
 }
 
-void DisplayManager_WriteByte(const uint8_t Page, const uint8_t Column, const uint8_t Data)
+void DisplayManager_DrawPixel(const uint8_t x, const uint8_t y, const PixelMask_t Mask)
 {
-	FrameBuffer_WriteByte(Page, Column, Data);
+	// Check if the coordinates are outside of the screen
+	if((x > (DISPLAYMANAGER_LCD_WIDTH - 1)) || (y > (DISPLAYMANAGER_LCD_HEIGHT - 1)))
+	{
+		return;
+	}
 
-	Display_SetPage(Page);
-	Display_SetColumn(Column);
-	Display_WriteData(Data);
-}
+	// Get the byte for the chosen pixel
+	uint8_t Page = y / DISPLAYMANAGER_LCD_PIXEL_PER_BYTE;
+	uint8_t ByteMask = (0x01 << (y - (Page * DISPLAYMANAGER_LCD_PIXEL_PER_BYTE)));
 
-uint8_t DisplayManager_ReadByte(const uint8_t Page, const uint8_t Column)
-{
-	return FrameBuffer_ReadByte(Page, Column);
+	// Read the byte from the frame buffer
+	uint8_t Byte = DisplayManager_ReadByte(Page, x);
+
+	// Set the pixel
+	if(Mask == PIXELMASK_SET)
+	{
+		Byte |= ByteMask;
+	}
+	else
+	{
+		Byte &= ~ByteMask;
+	}
+
+	// Write the new value to the display
+	DisplayManager_WriteByte(Page, x, Byte);
 }

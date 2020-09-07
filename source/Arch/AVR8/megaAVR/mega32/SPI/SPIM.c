@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Arch/AVR8/megaAVR/SPI/SPI.c
+/** @file Arch/AVR8/megaAVR/mega32/SPI/SPI.c
  *  @brief Driver for AVR8 SPI interface in master mode.
  *
  *  This contains the implementation of the AVR8 SPI driver.
@@ -30,7 +30,7 @@
  *  @author Daniel Kampert
  */
 
-#include "Arch/AVR8/megaAVR/SPI/SPI.h"
+#include "Arch/AVR8/megaAVR/mega32/SPI/SPI.h"
 
 #ifndef DOXYGEN
 	struct

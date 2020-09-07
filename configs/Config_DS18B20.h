@@ -1,5 +1,5 @@
 /*
- * Config_OneWire.h
+ * Config_DS18B20.h
  * 
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
@@ -22,21 +22,21 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file configs/Config_OneWire.h
+/** @file configs/Config_DS18B20.h
  *  @brief Configuration example for the Maxim Integrated DS18B20 1-Wire temperature sensor.
  *
  *  @author Daniel Kampert
  */
 
-#ifndef CONFIG_1WIRE_H_
-#define CONFIG_1WIRE_H_
+#ifndef CONFIG_DS18B20_H_
+#define CONFIG_DS18B20_H_
 
- #define F_CPU										16000000UL				/**< Oscillator frequency. */
+ #define F_CPU										32000000UL				/**< Oscillator frequency. */
 
  /*
 	 Console service configuration
  */
- #undef CONSOLE_STDIO														/**< USART interface for the console service. */
+ #define CONSOLE_STDIO								&USARTD, 0				/**< USART interface for the console service. */
 
  /*
 	 1-Wire configuration
@@ -53,4 +53,4 @@
 	 #define ONEWIRE_DQ								PORTB, 2				/**< DQ pin for the 1-Wire driver. Only needed when you set #INTERFACE_GPIO for the GPIO as 1-Wire interface. */
  #endif
 
-#endif /* CONFIG_1WIRE_H_ */
+#endif /* CONFIG_DS18B20_H_ */

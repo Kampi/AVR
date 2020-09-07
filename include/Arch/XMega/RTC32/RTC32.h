@@ -40,6 +40,8 @@
 
  #include "Arch/XMega/PMIC/PMIC.h"
  #include "Arch/XMega/ClockManagement/SysClock.h"
+ 
+ #include "BatteryBackup/BatteryBackup.h"
 
  /** @brief	RTC32 callback definition.
   */
@@ -49,26 +51,28 @@
   */
  typedef enum
  {
-	 RTC32_OVFL_INTERRUPT = 0x01,			/**< RTC32 overflow interrupt */ 
-	 RTC32_COMP_INTERRUPT = 0x02,			/**< RTC32 compare interrupt */ 
+	 RTC32_OVFL_INTERRUPT = 0x01,			/**< RTC32 overflow interrupt */
+	 RTC32_COMP_INTERRUPT = 0x02,			/**< RTC32 compare interrupt */
  } RTC32_CallbackType_t;
 
  /** @brief	RTC32 configuration object.
   */
  typedef struct
  {
-	 uint32_t Period;						/**< RTC period value */ 
-	 uint32_t Count;						/**< RTC count value */ 
-	 uint32_t Compare;						/**< RTC compare value */ 
+	 uint32_t Period;						/**< RTC period value */
+	 uint32_t Count;						/**< RTC count value */
+	 uint32_t Compare;						/**< RTC compare value */
+	 BatteryBackup_Clock_t ClockSource;		/**< Clock source for the RTC32 */
+	 bool HighESR;							/**< Enable to use the high ESR mode for the external oscillator */
  } RTC32_Config_t;
 
  /** @brief	RTC32 interrupt configuration object.
   */
  typedef struct
  {
-	 RTC32_CallbackType_t CallbackSource;	/**< RTC32 interrupt type */ 
-	 Interrupt_Level_t InterruptLevel;		/**< Interrupt level */ 
-	 RTC32_Callback_t Callback;				/**< Function pointer to RTC32 callback */ 
+	 RTC32_CallbackType_t CallbackSource;	/**< RTC32 interrupt type */
+	 Interrupt_Level_t InterruptLevel;		/**< Interrupt level */
+	 RTC32_Callback_t Callback;				/**< Function pointer to RTC32 callback */
  } RTC32_InterruptConfig_t;
 
  /** @brief Request a sync and wait for finish.
@@ -76,12 +80,11 @@
  static inline void RTC32_Sync(void) __attribute__((always_inline));
  static inline void RTC32_Sync(void)
  {
-	 RTC32.SYNCCTRL |= RTC32_SYNCCNT_bm;
 	 while(RTC32.SYNCCTRL & RTC32_SYNCBUSY_bm);
  }
 
  /** @brief			Set the count register of the RTC32 module.
-  *  @param Count	Count value
+  *  @param Count	Count register value
   */
  static inline void RTC32_SetCount(const uint32_t Count) __attribute__((always_inline));
  static inline void RTC32_SetCount(const uint32_t Count)
@@ -90,17 +93,23 @@
  }
 
  /** @brief		Get the count register of the RTC32 module.
-  *  @return	Count value
+  *  @return	Count register value
   */
  static inline uint32_t RTC32_GetCount(void) __attribute__((always_inline));
  static inline uint32_t RTC32_GetCount(void)
  {
-	 RTC32_Sync();
+	 // Wait until synchronization is complete
+	 while(RTC32.SYNCCTRL & RTC32_SYNCBUSY_bm);
+
+	 // Start a new synchronization of the CNT register
+	 RTC32.SYNCCTRL |= RTC32_SYNCCNT_bm;
+	 while(RTC32.SYNCCTRL & RTC32_SYNCBUSY_bm);
+
 	 return RTC32.CNT;
  }
 
  /** @brief			Set the period register of the RTC32 module.
-  *  @param Period	Period value
+  *  @param Period	Period register value
   */
  static inline void RTC32_SetPeriod(const uint32_t Period) __attribute__((always_inline));
  static inline void RTC32_SetPeriod(const uint32_t Period)
@@ -109,7 +118,7 @@
  }
 
  /** @brief		Get the period register of the RTC32 module.
-  *  @return	Period value
+  *  @return	Period register value
   */
  static inline const uint32_t RTC32_GetPeriod(void) __attribute__((always_inline));
  static inline const uint32_t RTC32_GetPeriod(void)
@@ -119,16 +128,16 @@
  }
 
  /** @brief			Set the compare register of the RTC32 module.
-  *  @param Compare	Compare value
+  *  @param Compare	Compare register value
   */
  static inline void RTC32_SetCompare(const uint32_t Compare) __attribute__((always_inline));
  static inline void RTC32_SetCompare(const uint32_t Compare)
  {
 	 RTC32.COMP = Compare;
- } 
+ }
 
  /** @brief		Get the compare register of the RTC32 module.
-  *  @return	Compare value
+  *  @return	Compare registr value
   */
  static inline const uint32_t RTC32_GetCompare(void) __attribute__((always_inline));
  static inline const uint32_t RTC32_GetCompare(void)
@@ -142,7 +151,7 @@
  static inline void RTC32_Enable(void) __attribute__((always_inline));
  static inline void RTC32_Enable(void)
  {
-	 RTC32.CTRL |= RTC32_ENABLE_bm;
+	 RTC32.CTRL = RTC32_ENABLE_bm;
 	 while(RTC32.SYNCCTRL & RTC32_SYNCBUSY_bm);
  }
 
@@ -151,7 +160,7 @@
  static inline void RTC32_Disable(void) __attribute__((always_inline));
  static inline void RTC32_Disable(void)
  {
-	 RTC32.CTRL &= ~RTC32_ENABLE_bm;
+	 RTC32.CTRL = ~RTC32_ENABLE_bm;
 	 while(RTC32.SYNCCTRL & RTC32_SYNCBUSY_bm);
  }
 

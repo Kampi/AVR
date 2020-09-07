@@ -1,5 +1,5 @@
 /*
- * Config.h
+ * Config_XMegaC3.h
  * 
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
@@ -22,14 +22,14 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Config.h
+/** @file configs/Config_XMegaC3.h
  *  @brief Project configuration example for the XMega-C3 XPlained development board.
  *
  *  @author Daniel Kampert
  */
 
-#ifndef CONFIG_H_
-#define CONFIG_H_
+#ifndef CONFIG_XMEGAC3_H_
+#define CONFIG_XMEGAC3_H_
 
  #include "Common/Common.h"
 
@@ -106,4 +106,4 @@
  */
  #define SD_BLOCK_SIZE								512							/**< Block size for the SD card. */
 
-#endif /* CONFIG_H_ */
+#endif /* CONFIG_XMEGAC3_H_ */

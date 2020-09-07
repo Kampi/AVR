@@ -34,13 +34,17 @@
 
 #include "Services/USB/Core/USB_DeviceStdRequest.h"
 
+uint8_t _Configuration;
+volatile USB_State_t _DeviceState;
+
+USB_DeviceCallbacks_t _USBEvents;
 static USB_SetupPacket_t _ControlRequest;
 
 void USB_Device_ControlRequest(void)
 {
 	uint8_t* RequestHeader = (uint8_t*)&_ControlRequest;
 
-	// Get the setup packet
+	// Get the SETUP packet
 	for(uint8_t i = 0x00; i < sizeof(USB_SetupPacket_t); i++)
 	{
 		*(RequestHeader++) = Endpoint_ReadByte();
@@ -231,7 +235,7 @@ void USB_Device_ControlRequest(void)
 				The request has a data length of n byte with the descriptor data.
 			*/
 
-			if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE) || 
+			if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE) ||
 			  (_ControlRequest.bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_INTERFACE)))
 			{
 				const void* Descriptor;

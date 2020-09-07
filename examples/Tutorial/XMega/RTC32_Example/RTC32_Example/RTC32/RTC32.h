@@ -3,7 +3,7 @@
  * 
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: RTC32 for XMega.
+ *  File info: Driver for XMega RTC32.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file RTC32.h
+/** @file RTC32/RTC32.h
  *  @brief Driver for XMega RTC32.
  *
  *  @author Daniel Kampert

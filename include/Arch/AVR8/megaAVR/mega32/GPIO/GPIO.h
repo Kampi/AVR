@@ -36,7 +36,7 @@
 
  #include "Common/Common.h"
 
- #include "Arch/AVR8/megaAVR/CPU/CPU.h"
+ #include "Arch/AVR8/megaAVR/mega32/CPU/CPU.h"
  
  /** @brief GPIO port definition
   */

@@ -31,7 +31,7 @@
  *  @author Daniel Kampert
  */
 
-#include "Arch/AVR8/megaAVR/I2C/I2C.h"
+#include "Arch/AVR8/megaAVR/mega32/I2C/I2C.h"
 
 #ifndef DOXYGEN
 	/*
