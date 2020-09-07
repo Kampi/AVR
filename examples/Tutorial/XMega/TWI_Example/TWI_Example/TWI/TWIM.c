@@ -115,9 +115,9 @@ static void TWIM_ReadHandler(void)
 void TWIM_Init(void)
 {
 	TWIC.CTRL = 0x00;
+	TWIC.MASTER.BAUD = 0x05;
 	TWIC.MASTER.CTRLA = TWI_MASTER_ENABLE_bm;
 	TWIC.MASTER.CTRLB = 0x00;
-	TWIC.MASTER.BAUD = 0x05;
 	
 	// Set the state machine into idle state
 	TWIC.MASTER.STATUS |= TWI_MASTER_BUSSTATE_IDLE_gc;
@@ -126,9 +126,9 @@ void TWIM_Init(void)
 void TWIM_InitInterrupt(void)
 {
 	TWIC.CTRL = 0x00;
+	TWIC.MASTER.BAUD = 0x05;
 	TWIC.MASTER.CTRLA = TWI_MASTER_INTLVL_LO_gc | TWI_MASTER_RIEN_bm | TWI_MASTER_WIEN_bm | TWI_MASTER_ENABLE_bm;
 	TWIC.MASTER.CTRLB = 0x00;
-	TWIC.MASTER.BAUD = 0x05;
 	
 	// Set the state machine into idle state
 	TWIC.MASTER.STATUS |= TWI_MASTER_BUSSTATE_IDLE_gc;
