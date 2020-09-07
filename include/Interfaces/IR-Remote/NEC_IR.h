@@ -51,8 +51,8 @@
  typedef enum
  {
 	 IR_STATE_IDLE = 0x00,						/**< Idle state. Wait for a transmission begin */
-	 IR_STATE_REC_ONE = 0x01,					/**< Read a logical '1' from the receiver */
-	 IR_STATE_REC_ZERO = 0x02,					/**< Read a logical '0' from the receiver */
+	 IR_STATE_REC_SPACE = 0x01,					/**< Wait for a space from the receiver */
+	 IR_STATE_REC_BURST = 0x02,					/**< Wait for a burst from the receiver */
 	 IR_STATE_STOP = 0x03,						/**< State after stopping the state machine or when a transmission is complete */
  } IR_RecState_t;
 
@@ -62,7 +62,11 @@
  {
 	 uint8_t Length;							/**< Length of the message in bytes \n
 													 (set by the state machine) */
-	 uint32_t Data;								/**< Message data of the received message */
+	 union										/**< Message data of the received message */
+	 {
+		 uint8_t Field[4];						/**< Message data as byte array */
+		 uint32_t Value;						/**< Message data as 32-bit integer */
+	 } Data;
 	 bool Valid;								/**< Set to #true when the message is valid \n
 													 (set by the state machine) */
 	 bool IsRepeat;								/**< Set to #true when a repeat code is received \n

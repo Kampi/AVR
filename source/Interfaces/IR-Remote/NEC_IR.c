@@ -125,7 +125,7 @@ static void _IR_Timer0OverflowCallback(void)
 
 	switch(_IR_RecState)
 	{
-		// Wait for the falling edge of the leading burst to indicate a new transmission
+		// Wait for a falling edge of the leading burst to indicate a new transmission
 		case IR_STATE_IDLE:
 		{
 			if(InputState)
@@ -133,26 +133,25 @@ static void _IR_Timer0OverflowCallback(void)
 				// Not enough ticks for a valid leading burst
 				if(_IR_TimerTicks < IR_PROTOCOL_BURST)
 				{
-					_IR_TimerTicks = 0x00;
-
 					// No leading burst detected. Increase the timeout.
 					_IR_TimeOutTicks++;					
 				}
 				// Receive a valid burst. Prepare to receive the following space.
 				else
 				{
-					_IR_TimerTicks = 0x00;
 					_IR_MessageBuffer->Length = 0x00;
 
-					_IR_RecState = IR_STATE_REC_ONE;
+					_IR_RecState = IR_STATE_REC_SPACE;
 				}
+
+				_IR_TimerTicks = 0x00;
 			}
 
 			break;
 		}
 		// Wait for a falling edge and store the ticks or wait for a transmission end
 		// when no falling edge occurs
-		case IR_STATE_REC_ONE:
+		case IR_STATE_REC_SPACE:
 		{
 			if(!InputState)
 			{
@@ -163,7 +162,7 @@ static void _IR_Timer0OverflowCallback(void)
 					GPIO_Set(GET_PERIPHERAL(IR_ACTIVE_LED), GET_INDEX(IR_ACTIVE_LED));
 				#endif
 
-				_IR_RecState = IR_STATE_REC_ZERO;
+				_IR_RecState = IR_STATE_REC_BURST;
 			}
 			else if(_IR_TimerTicks > (IR_TIMEOUT / IR_TICK_INTERVAL))
 			{
@@ -173,7 +172,7 @@ static void _IR_Timer0OverflowCallback(void)
 			break;
 		}
 		// Wait for a rising edge and store the ticks
-		case IR_STATE_REC_ZERO:
+		case IR_STATE_REC_BURST:
 		{
 			if(InputState)
 			{
@@ -184,7 +183,7 @@ static void _IR_Timer0OverflowCallback(void)
 					GPIO_Clear(GET_PERIPHERAL(IR_ACTIVE_LED), GET_INDEX(IR_ACTIVE_LED));
 				#endif
 
-				_IR_RecState = IR_STATE_REC_ONE;
+				_IR_RecState = IR_STATE_REC_SPACE;
 			}
 
 			break;
@@ -201,12 +200,22 @@ static void _IR_Timer0OverflowCallback(void)
 
 /** @brief Process the received message and create the final output message.
  */
-static void IR_ProcessData(void)
+static bool _IR_ProcessData(void)
 {
 	if(_IR_MessageBuffer->Length == 0x02)
 	{
 		_IR_MessageBuffer->IsRepeat = true;
-		_IR_MessageBuffer->Data = 0x00;
+		_IR_MessageBuffer->Data.Value = 0x00;
+
+		// Check the timing for a valid repeat code. Skip the final pulse
+		if((_IR_Data[0x00] < ((IR_PROTOCOL_SPACE / 2) + IR_PROTOCOL_TOLERANCE)) && (_IR_Data[0x00] > ((IR_PROTOCOL_SPACE / 2) - IR_PROTOCOL_TOLERANCE)))
+		{
+			_IR_MessageBuffer->Valid = true;
+		}
+		else
+		{
+			_IR_MessageBuffer->Valid = false;
+		}
 	}
 	else
 	{
@@ -216,30 +225,43 @@ static void IR_ProcessData(void)
 		if((_IR_Data[0] > (IR_PROTOCOL_SPACE + IR_PROTOCOL_TOLERANCE)) || (_IR_Data[0] < (IR_PROTOCOL_SPACE - IR_PROTOCOL_TOLERANCE)))
 		{
 			_IR_MessageBuffer->Valid = false;
-
-			return;
 		}
-
-		// Process the remaining message. Skip the final pulse
-		for(uint8_t i = 0x01; i < (_IR_MessageBuffer->Length - 0x01); i += 0x02)
+		else
 		{
-			_IR_MessageBuffer->Data <<= 0x01;
+			// Process the remaining message. Skip the final pulse
+			for(uint8_t i = 0x01; i < (_IR_MessageBuffer->Length - 0x01); i += 0x02)
+			{
+				_IR_MessageBuffer->Data.Value <<= 0x01;
 
-			// Compare the pulse and space timings to make a decision about the received bit
-			if((_IR_Data[i] < (IR_PROTOCOL_BIT_BURST + IR_PROTOCOL_TOLERANCE)) && (_IR_Data[i] > (IR_PROTOCOL_BIT_BURST - IR_PROTOCOL_TOLERANCE)) &&
-			   (_IR_Data[i + 0x01] < (IR_PROTOCOL_BIT_ZERO + IR_PROTOCOL_TOLERANCE)) && (_IR_Data[i + 0x01] > (IR_PROTOCOL_BIT_ZERO - IR_PROTOCOL_TOLERANCE))
-			   )
-			{
-				_IR_MessageBuffer->Data |= 0x00;
+				// Compare the pulse and space timings to make a decision about the received bit
+				if((_IR_Data[i] < (IR_PROTOCOL_BIT_BURST + IR_PROTOCOL_TOLERANCE)) && (_IR_Data[i] > (IR_PROTOCOL_BIT_BURST - IR_PROTOCOL_TOLERANCE)) &&
+				   (_IR_Data[i + 0x01] < (IR_PROTOCOL_BIT_ZERO + IR_PROTOCOL_TOLERANCE)) && (_IR_Data[i + 0x01] > (IR_PROTOCOL_BIT_ZERO - IR_PROTOCOL_TOLERANCE))
+				)
+				{
+					_IR_MessageBuffer->Data.Value |= 0x00;
+				}
+				else if((_IR_Data[i] < (IR_PROTOCOL_BIT_BURST + IR_PROTOCOL_TOLERANCE)) && (_IR_Data[i] > (IR_PROTOCOL_BIT_BURST - IR_PROTOCOL_TOLERANCE)) &&
+						(_IR_Data[i + 0x01] < (IR_PROTOCOL_BIT_ONE + IR_PROTOCOL_TOLERANCE)) && (_IR_Data[i + 0x01] > (IR_PROTOCOL_BIT_ONE - IR_PROTOCOL_TOLERANCE))
+				)
+				{
+					_IR_MessageBuffer->Data.Value |= 0x01;
+				}
 			}
-			else if((_IR_Data[i] < (IR_PROTOCOL_BIT_BURST + IR_PROTOCOL_TOLERANCE)) && (_IR_Data[i] > (IR_PROTOCOL_BIT_BURST - IR_PROTOCOL_TOLERANCE)) &&
-			        (_IR_Data[i + 0x01] < (IR_PROTOCOL_BIT_ONE + IR_PROTOCOL_TOLERANCE)) && (_IR_Data[i + 0x01] > (IR_PROTOCOL_BIT_ONE - IR_PROTOCOL_TOLERANCE))
-					)
+
+			// Check the data for errors by comparing the inverse fields with the non-inverse fields
+			if((_IR_MessageBuffer->Data.Field[0x00] == (~_IR_MessageBuffer->Data.Field[0x01])) &&
+			   (_IR_MessageBuffer->Data.Field[0x02] == (~_IR_MessageBuffer->Data.Field[0x03])))
 			{
-				_IR_MessageBuffer->Data |= 0x01;
+				_IR_MessageBuffer->Valid = false;
+			}
+			else
+			{
+				_IR_MessageBuffer->Valid = true;
 			}
 		}
 	}
+
+	return _IR_MessageBuffer->Valid;
 }
 
 void IR_Init(void)
@@ -279,11 +301,12 @@ bool IR_GetMessage(IR_Message_t* Message)
 		{
 			_IR_RecState = IR_STATE_STOP;
 
+			// Clear the valid flag
+			_IR_MessageBuffer->Valid = false;
+
 			return _IR_MessageBuffer->Valid;
 		}
 	}
 
-	IR_ProcessData();
-
-	return _IR_MessageBuffer->Valid;
+	return _IR_ProcessData();
 }

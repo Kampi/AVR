@@ -67,7 +67,7 @@ int main(void)
 				DisplayManager_DrawString(0, 8, "Button pressed!");
 
 				// Lets do some actions according to the pressed button
-				switch(Message.Data)
+				switch(Message.Data.Value)
 				{
 					case IR_REMOTE_KEY_1:
 					{
@@ -89,7 +89,7 @@ int main(void)
 				}
 
 				// Print the received data
-				sprintf(DisplayBuffer, "Data: 0x%lX", Message.Data);
+				sprintf(DisplayBuffer, "Data: 0x%lX", Message.Data.Value);
 				DisplayManager_DrawString(0, 16, DisplayBuffer);
 			}
 			else
