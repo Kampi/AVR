@@ -30,13 +30,13 @@
  *  @author Daniel Kampert
  */
 
-#include "Interfaces/IR-Remote/NEC_IR.h"
-
 #if(MCU_ARCH == MCU_ARCH_XMEGA)
 	#include "Arch/XMega/Timer/Timer.h"
 #else
 	#error "Architecture not supported for IR remote service!"
 #endif
+
+#include "Interfaces/IR-Remote/NEC_IR.h"
 
 /** @brief Timing tolerance in timer ticks.
  */
@@ -76,21 +76,11 @@ static void _IR_Timer0OverflowCallback(void);
 
 /** @brief Timer configuration object to create an interrupt every 50 us.
  */
-static Timer0_Config_t _TimerConfig = 
-{
-	.Device = &TCD0,
-	.Prescaler = TIMER_PRESCALER_8
-};
+extern Timer0_Config_t _IR_TimerConfig;
 
 /** @brief Timer interrupt configuration object.
  */
-static Timer0_InterruptConfig_t _TimerInterrupt =
-{
-	.Device = &TCD0,
-	.Source = TIMER_OVERFLOW_INTERRUPT,
-	.InterruptLevel = IR_INTERRUPT_LEVEL,
-	.Callback = _IR_Timer0OverflowCallback
-};
+extern Timer0_InterruptConfig_t _IR_TimerInterrupt;
 
 /** @brief Timer ticks to store the bit length information.
  */
@@ -274,13 +264,14 @@ void IR_Init(void)
 	#endif
 
 	// Calculate the period value for the timer
-	_TimerConfig.Period = F_CPU / ((((uint32_t)0x01) << (_TimerConfig.Prescaler - 0x01)) * (1000000 / IR_TICK_INTERVAL));
+	_IR_TimerConfig.Period = F_CPU / ((((uint32_t)0x01) << (_IR_TimerConfig.Prescaler - 0x01)) * (1000000 / IR_TICK_INTERVAL));
+	_IR_TimerInterrupt.Callback = _IR_Timer0OverflowCallback;
 
-	Timer0_Init(&_TimerConfig);
-	Timer0_InstallCallback(&_TimerInterrupt);
+	Timer0_Init(&_IR_TimerConfig);
+	Timer0_InstallCallback(&_IR_TimerInterrupt);
 
 	#if(MCU_ARCH == MCU_ARCH_XMEGA)
-		PMIC_EnableInterruptLevel(_TimerInterrupt.InterruptLevel);
+		PMIC_EnableInterruptLevel(_IR_TimerInterrupt.InterruptLevel);
 	#endif
 
 	EnableGlobalInterrupts();

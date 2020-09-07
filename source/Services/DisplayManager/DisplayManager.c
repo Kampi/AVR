@@ -32,17 +32,7 @@
 
 #include "Services/DisplayManager/DisplayManager.h"
 
-/*
-	Interface configuration
-*/
-#if((defined USE_SSD1306) || (defined USE_ST7565R))
-	static SPIM_Config_t DisplayConfig = {
-		.SPIClock = DISPLAY_CLOCK,
-		.DataOrder = SPI_DATAORDER_MSB_FIRST,
-		.Mode = SPI_MODE_0,
-		.Device = &CONCAT(DISPLAY_INTERFACE)
-	};
-#endif
+extern SPIM_Config_t _DisplayManagerConfig;
 
 static uint8_t _DisplayMgrBuffer[DISPLAYMANAGER_LCD_FRAMEBUFFER_SIZE];
 
@@ -72,7 +62,7 @@ static uint8_t DisplayManager_ReadByte(const uint8_t Page, const uint8_t Column)
 
 void DisplayManager_Init(void)
 {
-	Display_Init(&DisplayConfig);
+	Display_Init(&_DisplayManagerConfig);
 
 	// Initialize the frame buffer
 	FrameBuffer_Init(DISPLAYMANAGER_LCD_WIDTH, DISPLAYMANAGER_LCD_HEIGHT / DISPLAYMANAGER_LCD_PIXEL_PER_BYTE, DISPLAYMANAGER_LCD_PAGES, _DisplayMgrBuffer);
