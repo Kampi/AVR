@@ -48,14 +48,14 @@
 	 TWI_MASTER_BUFFEROVERFLOW = 0x06,
 	 TWI_MASTER_ERROR = 0xFF,
  } TWI_MasterStatus_t;
- 
+
  typedef enum
  {
 	 TWI_SLAVE_IDLE = 0x00,
 	 TWI_SLAVE_BUFFEROVERFLOW = 0x01,
 	 TWI_SLAVE_ERROR = 0xFF,
  } TWI_SlaveStatus_t;
- 
+
  typedef struct
  {
 	 TWI_t* Device;
@@ -69,7 +69,7 @@
 	 uint8_t* BufferRead;
 	 TWI_MasterStatus_t Status;
  } TWI_Message_t;
- 
+
  typedef struct 
  {
 	 TWI_t* Device;
@@ -80,15 +80,15 @@
 	 uint8_t ReadIndex;
 	 TWI_SlaveStatus_t Status;
  } TWI_Buffer_t;
- 
+
  void TWIM_Init(void);
  void TWIS_Init(uint8_t* Buffer);
- 
+
  void TWIM_SendAddress(uint8_t Address);
  void TWIM_SendData(uint8_t Data);
  uint8_t TWIM_ReadData(uint8_t NACK);
  void TWIM_SendStop(uint8_t NACK);
-
+ 
  void TWIM_InitInterrupt(void);
  void TWIM_TransmitBytes(uint8_t DeviceAddress, uint8_t Bytes, uint8_t* Data);
  void TWIM_Transmit(uint8_t DeviceAddress, uint8_t Register, uint8_t Bytes, uint8_t* Data);
