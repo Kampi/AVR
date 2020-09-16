@@ -170,6 +170,10 @@
       <SubType>compile</SubType>
       <Link>source\Common\FrameBuffer\FrameBuffer.c</Link>
     </Compile>
+    <Compile Include="..\..\..\..\source\Interfaces\IR-Remote\HW_Config.c">
+      <SubType>compile</SubType>
+      <Link>source\Interfaces\IR-Remote\HW_Config.c</Link>
+    </Compile>
     <Compile Include="..\..\..\..\source\Interfaces\IR-Remote\NEC_IR.c">
       <SubType>compile</SubType>
       <Link>source\Interfaces\IR-Remote\NEC_IR.c</Link>
@@ -185,6 +189,10 @@
     <Compile Include="..\..\..\..\source\Services\DisplayManager\DisplayManager_Drawing.c">
       <SubType>compile</SubType>
       <Link>source\Services\DisplayManager\DisplayManager_Drawing.c</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\source\Services\DisplayManager\HW_Config.c">
+      <SubType>compile</SubType>
+      <Link>source\Services\DisplayManager\HW_Config.c</Link>
     </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
