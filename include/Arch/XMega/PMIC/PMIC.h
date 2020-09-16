@@ -40,51 +40,50 @@
   */
  typedef enum
  {
-	 INT_LVL_OFF = 0x00,			/**< Disable interrupts */ 
 	 INT_LVL_LO = 0x01,				/**< Priority low */ 
 	 INT_LVL_MED = 0x02,			/**< Priority medium */ 
 	 INT_LVL_HI = 0x03,				/**< Priority high */ 
  } Interrupt_Level_t;
  
  /** @brief			Enable a specific interrupt level.
-  *  @param Level	Interrupt level which should be activated
+  *  @param Mask	Interrupt level mask
   */
- static inline void PMIC_EnableInterruptLevel(const Interrupt_Level_t Level) __attribute__((always_inline));
- static inline void PMIC_EnableInterruptLevel(const Interrupt_Level_t Level)
+ static inline void PMIC_EnableInterruptLevel(const Interrupt_Level_t Mask) __attribute__((always_inline));
+ static inline void PMIC_EnableInterruptLevel(const Interrupt_Level_t Mask)
  {
-	 if(Level & INT_LVL_LO)
+	 if(Mask & INT_LVL_LO)
 	 {
 		 PMIC.CTRL |= 0x01;
 	 }
-	 
-	 if(Level & INT_LVL_MED)
+
+	 if(Mask & INT_LVL_MED)
 	 {
 		 PMIC.CTRL |= 0x02;
 	 }
 	 
-	 if(Level & INT_LVL_HI)
+	 if(Mask & INT_LVL_HI)
 	 {
 		 PMIC.CTRL |= 0x04;
 	 }
  }
 
  /** @brief			Disable a specific interrupt level.
-  *  @param Level	Interrupt level which should be activated
+  *  @param Mask	Interrupt level mask
   */
- static inline void PMIC_DisableInterruptLevel(const Interrupt_Level_t Level) __attribute__((always_inline));
- static inline void PMIC_DisableInterruptLevel(const Interrupt_Level_t Level)
+ static inline void PMIC_DisableInterruptLevel(const Interrupt_Level_t Mask) __attribute__((always_inline));
+ static inline void PMIC_DisableInterruptLevel(const Interrupt_Level_t Mask)
  {
-	 if(Level & INT_LVL_LO)
+	 if(Mask & INT_LVL_LO)
 	 {
 		 PMIC.CTRL &= ~0x01;
 	 }
-	 
-	 if(Level & INT_LVL_MED)
+
+	 if(Mask & INT_LVL_MED)
 	 {
 		 PMIC.CTRL &= ~0x02;
 	 }
 	 
-	 if(Level & INT_LVL_HI)
+	 if(Mask & INT_LVL_HI)
 	 {
 		 PMIC.CTRL &= ~0x04;
 	 }

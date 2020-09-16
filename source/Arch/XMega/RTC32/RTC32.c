@@ -63,9 +63,10 @@ static void _RTC32_InterruptHandler(const RTC32_CallbackType_t Callback)
 }
 
 void RTC32_Init(RTC32_Config_t* Config)
-{	
+{
 	RTC32_Disable();
-	
+	BatteryBackup_Init(Config->ClockSource, Config->HighESR);
+
 	RTC32_SetPeriod(Config->Period);
 	RTC32_SetCompare(Config->Compare);
 	RTC32_SetCount(Config->Count);
@@ -79,7 +80,7 @@ void RTC32_ChangeInterruptLevel(const RTC32_CallbackType_t Callback, const Inter
 	{
 		RTC32.INTCTRL |= (RTC32.INTCTRL & (~InterruptLevel)) | InterruptLevel;
 	}
-	
+
 	if(Callback & RTC32_COMP_INTERRUPT)
 	{
 		RTC32.INTCTRL |= (RTC32.INTCTRL & (~(InterruptLevel << 0x02))) | (InterruptLevel << 0x02);
@@ -90,13 +91,13 @@ void RTC32_InstallCallback(const RTC32_InterruptConfig_t* Config)
 {
 	if(Config->CallbackSource & RTC32_OVFL_INTERRUPT)
 	{
-		RTC32.INTCTRL = (RTC32.INTCTRL & (~Config->InterruptLevel)) | Config->InterruptLevel;
+		RTC32.INTCTRL = (RTC32.INTCTRL & (~0x03)) | Config->InterruptLevel;
 		_RTC32_Callbacks.Overflow = Config->Callback;
 	}
-	
+
 	if(Config->CallbackSource & RTC32_COMP_INTERRUPT)
 	{
-		RTC32.INTCTRL = (RTC32.INTCTRL & (~(Config->InterruptLevel << 0x02))) | (Config->InterruptLevel << 0x02);
+		RTC32.INTCTRL = (RTC32.INTCTRL & (~(0x03 << 0x02))) | (Config->InterruptLevel << 0x02);
 		_RTC32_Callbacks.Compare = Config->Callback;
 	}
 }
@@ -107,7 +108,7 @@ void RTC32_RemoveCallback(const RTC32_CallbackType_t Callback)
 	{
 		_RTC32_Callbacks.Overflow = NULL;
 	}
-	
+
 	if(Callback & RTC32_COMP_INTERRUPT)
 	{
 		_RTC32_Callbacks.Compare = NULL;

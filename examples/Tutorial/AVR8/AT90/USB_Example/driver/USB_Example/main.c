@@ -1,7 +1,7 @@
 /*
  * main.c
  * 
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: USB example for AT90USB1287.
 
@@ -57,7 +57,7 @@ const USB_DeviceCallbacks_t Events_USB =
 USB_Config_t ConfigUSB = {
 	.Callbacks = &Events_USB,
 	.Mode = USB_MODE_DEVICE,
-	.Speed = USB_SPEED_FULL,
+	.Speed = USB_SPEED_LOW,
 };
 
 int main(void)
@@ -92,7 +92,7 @@ int main(void)
 
 	while(1) 
 	{
-	    USB_Poll();
+		USB_Poll();
 		USB_DeviceTask();
 	}
 }

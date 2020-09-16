@@ -1,7 +1,7 @@
 /*
  * Common.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Common includes for the USB example.
 
@@ -35,7 +35,9 @@
  #include <avr/io.h>
  #include <avr/pgmspace.h>
  #include <avr/interrupt.h>
+
  #include <stddef.h>
+ #include <string.h>
 
  #include "Macros.h"
  #include "USB/USB_Types.h"

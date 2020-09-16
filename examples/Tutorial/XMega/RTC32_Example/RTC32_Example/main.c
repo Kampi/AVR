@@ -24,7 +24,7 @@
 
 /** @file main.c
  *  @brief RTC32 example for XMega.
- *		   NOTE: You have to enable the brown out detection
+ *		   NOTE: You have to enable the brown out detection to use the battery backup system
  *					-> Set BODPD to "BOD enabled continously"
  *					-> Set BODACT to "BOD enabled continously"
  *
@@ -34,8 +34,8 @@
  *  @author Daniel Kampert
  */
 
-#include "BatteryBackup/BatteryBackup.h"
 #include "RTC32/RTC32.h"
+#include "BatteryBackup/BatteryBackup.h"
 
 int main(void)
 {
@@ -70,11 +70,11 @@ int main(void)
 		case(BATTERY_STATUS_BBBOD):
 		case(BATTERY_STATUS_XOSCFAIL):
 		default:
-		{			
+		{
 			/*
 				Initialize battery backup an error
 					-> Enable failure detection
-					-> 1 Hz output
+					-> 1024 Hz output
 					-> No high ESR mode
 			*/
 			Battery_Init();
@@ -87,6 +87,7 @@ int main(void)
 					-> Overflow interrupt (low level)
 			*/
 			RTC32_Init();
+			RTC32_EnableInterrupts();
 			
 			break;
 		}
@@ -96,7 +97,7 @@ int main(void)
 		Enable interrupts
 			-> Priority low
 	*/
-	PMIC.CTRL = PMIC_LOLVLEN_bm;
+	PMIC.CTRL = PMIC_MEDLVLEN_bm | PMIC_LOLVLEN_bm;
 	sei();
 
     while(1) 

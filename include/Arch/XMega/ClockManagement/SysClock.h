@@ -156,7 +156,7 @@
  static inline void SysClock_SetClockSource(const ClockSource_t Source)
  {
 	 uint8_t Flags = CPU_IRQSave();
-	 
+
 	 /* 
 	  * Use inline assembler, because otherwise the code will only run with at least
 	  * optimization level -O1. This level is bad for debugging purposes. You can avoid
@@ -215,19 +215,19 @@
  static inline void SysClock_ConfigUSBClock(const USB_ClockSource_t Source, const USB_Clock_t Clock)
  {
 	 USBClockPrescaler_t Prescaler = SYSCLOCK_USB_PRESCALER_1;
-	 
+
 	 if(Clock == USB_CLOCK_6MHZ)
 	 {
 		 Prescaler = CLK_USBPSDIV_8_gc;
 	 }
-	
+
 	 if(Source == USB_SOURCE_RC32)
 	 {
 		 if(!(OSC.STATUS & OSC_RC32MEN_bm))
 		 {
 			 SysClock_EnableClock(CLOCK_SOURCE_INT32MHZ);
 		 }
-		
+
 		 SysClock_SetUSBClockSource(USB_SOURCE_RC32);
 	 }
 
@@ -263,7 +263,7 @@
 	 {
 		 return 32000000;
 	 }
-	 
+
 	 // 2 MHz oscillator is always enabled
 	 return 2000000;
  }

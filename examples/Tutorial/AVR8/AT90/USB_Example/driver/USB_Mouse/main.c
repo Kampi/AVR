@@ -1,7 +1,7 @@
 /*
  * main.c
  * 
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: USB mouse example for the AT90USB1287.
 
@@ -33,7 +33,11 @@
 
 #include "USB/USB.h"
 #include "GPIO/GPIO.h"
+#include "Joystick/Joystick.h"
+
 #include "MouseDescriptor.h"
+
+#include <string.h>
 
 #define LED0_RED						PORTD, 4
 #define LED0_GREEN						PORTD, 5
@@ -59,7 +63,7 @@ const USB_DeviceCallbacks_t Events_USB =
 USB_Config_t ConfigUSB = {
 	.Callbacks = &Events_USB,
 	.Mode = USB_MODE_DEVICE,
-	.Speed = USB_SPEED_FULL,
+	.Speed = USB_SPEED_LOW,
 };
 
 int main(void)
@@ -71,6 +75,11 @@ int main(void)
 	*/
 	GPIO_SetDirection(GET_PERIPHERAL(LED0_RED), GET_INDEX(LED0_RED), GPIO_DIRECTION_OUT);
 	GPIO_SetDirection(GET_PERIPHERAL(LED0_GREEN), GET_INDEX(LED0_GREEN), GPIO_DIRECTION_OUT);
+
+	/*
+		Initialize the joystick
+	*/
+	Joystick_Init();
 
 	/*
 		Initialize the USB
@@ -86,16 +95,60 @@ int main(void)
 
 	while(1) 
 	{
-	    USB_Poll();
+		USB_Poll();
 		Mouse_Task();
 	}
 }
 
 void Mouse_Task(void)
 {
+	uint16_t BytesSend = 0x00;
+	USB_MouseReport_t MouseReportData;
+
 	if(USB_GetState() != USB_STATE_CONFIGURED)
 	{
 		return;
+	}
+
+	memset(&MouseReportData, 0x00, sizeof(MouseReportData));
+
+	switch(Joystick_Read())
+	{
+		case JOYSTICK_NO_ACTION:
+		{
+			break;
+		}
+		case JOYSTICK_DOWN:
+		{
+			MouseReportData.Y = -1;
+			break;
+		}
+		case JOYSTICK_UP:
+		{
+			MouseReportData.Y = 1;
+			break;
+		}
+		case JOYSTICK_RIGHT:
+		{
+			MouseReportData.X = -1;
+			break;
+		}
+		case JOYSTICK_LEFT:
+		{
+			MouseReportData.X = 1;
+			break;
+		}
+		case JOYSTICK_PRESS:
+		{
+			MouseReportData.Button |= (0x01 << 0x00);
+			break;
+		}
+	}
+
+	Endpoint_Select(MOUSE_IN_EP);
+	if(Endpoint_IsReadWriteAllowed())
+	{
+		USB_DeviceStream_DataIN(&MouseReportData, sizeof(USB_MouseReport_t), &BytesSend);
 	}
 }
 
@@ -154,8 +207,6 @@ void USB_Event_ControlRequest(const uint8_t bRequest, const uint8_t bmRequestTyp
 		{
 			if(bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_CLASS | REQUEST_RECIPIENT_INTERFACE))
 			{
-				Endpoint_ClearSETUP();
-
 				Endpoint_WriteByte(Idle >> 0x02);
 				Endpoint_FlushIN();
 
@@ -168,7 +219,6 @@ void USB_Event_ControlRequest(const uint8_t bRequest, const uint8_t bmRequestTyp
 		{
 			if(bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_CLASS | REQUEST_RECIPIENT_INTERFACE))
 			{
-				Endpoint_ClearSETUP();
 				Endpoint_HandleSTATUS(bmRequestType);
 
 				Idle = ((wValue & 0xFF00) >> 0x06);
@@ -180,8 +230,6 @@ void USB_Event_ControlRequest(const uint8_t bRequest, const uint8_t bmRequestTyp
 		{
 			if(bmRequestType == (REQUEST_DIRECTION_DEVICE_TO_HOST | REQUEST_TYPE_CLASS | REQUEST_RECIPIENT_INTERFACE))
 			{
-				Endpoint_ClearSETUP();
-
 				Endpoint_WriteByte(Protocol);
 				Endpoint_FlushIN();
 
@@ -194,7 +242,6 @@ void USB_Event_ControlRequest(const uint8_t bRequest, const uint8_t bmRequestTyp
 		{
 			if(bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_CLASS | REQUEST_RECIPIENT_INTERFACE))
 			{
-				Endpoint_ClearSETUP();
 				Endpoint_HandleSTATUS(bmRequestType);
 
 				Protocol = wValue;

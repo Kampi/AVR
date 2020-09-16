@@ -41,13 +41,11 @@
  #include "Arch/XMega/ClockManagement/ExtClock.h"
  #include "Arch/XMega/PowerManagement/PowerManagement.h"
 
- /** 
-  * RTC callback definition
+ /** @brief	Common RTC callback definition.
   */
  typedef void (*RTC_Callback_t)(void);
 
- /** 
-  * RTC clock sources
+ /** @brief	RTC clock sources.
   */
  typedef enum
  {
@@ -59,8 +57,7 @@
 	 RTC_CLOCK_EXT = 0x07,					/**< External clock on TOSC1 */
  } RTC_ClockSource_t;
 
- /** 
-  * RTC prescaler
+ /** @brief	RTC prescaler options.
   */
  typedef enum
  {
@@ -73,8 +70,7 @@
 	 RTC_PRESCALER_1024 = 0x07,				/**< Prescaler 1024 */
  } RTC_Prescaler_t;
 
- /** 
-  * RTC callback types
+ /** @brief	RTC callback types.
   */
  typedef enum
  {
@@ -82,8 +78,7 @@
 	 RTC_COMP_INTERRUPT = 0x02,				/**< RTC compare interrupt */
  } RTC_CallbackType_t;
 
- /** 
-  * RTC configuration object
+ /** @brief	RTC configuration object.
   */
  typedef struct
  {
@@ -94,14 +89,13 @@
 	 uint32_t Compare;						/**< RTC compare value */ 
  } RTC_Config_t;
 
- /** 
-  * RTC interrupt configuration object
+ /** @brief	RTC interrupt configuration object.
   */
  typedef struct
  {
 	 RTC_CallbackType_t CallbackSource;		/**< RTC interrupt type */ 
 	 Interrupt_Level_t InterruptLevel;		/**< Interrupt level */ 
-	 RTC_Callback_t Callback;				/**< Function pointer to RTC callback */ 
+	 RTC_Callback_t Callback;				/**< Pointer to RTC callbacks */ 
  } RTC_InterruptConfig_t;
 
  /** @brief			Enable the clock source for the RTC module.

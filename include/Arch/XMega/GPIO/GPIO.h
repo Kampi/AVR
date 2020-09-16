@@ -43,7 +43,7 @@
  */
  typedef void (*GPIO_Callback_t)(void);
 
- /** @brief GPIO output directions
+ /** @brief GPIO output directions.
   */
  typedef enum
  {
@@ -51,16 +51,16 @@
 	 GPIO_DIRECTION_OUT = 0x01,							/**< Direction output */ 
  } GPIO_Direction_t;
 
- /** @brief GPIO clock period outputs
+ /** @brief GPIO clock period outputs.
   */
  typedef enum
  {
-	 GPIO_CLKOUT_1X = 0x00,								/**< Output CLK_PER */ 
-	 GPIO_CLKOUT_2X = 0x01,								/**< Output CLK_PER2 */ 
-	 GPIO_CLKOUT_3X = 0x02,								/**< Output CLK_PER3 */ 
+	 GPIO_CLKOUT_1 = 0x00,								/**< Output CLK_PER */
+	 GPIO_CLKOUT_2 = 0x01,								/**< Output CLK_PER2 */
+	 GPIO_CLKOUT_3 = 0x02,								/**< Output CLK_PER3 */
  } GPIO_ClkOut_t;
 
- /** @brief GPIO pull configuration
+ /** @brief GPIO pull configuration.
   */
  typedef enum
  {
@@ -82,7 +82,7 @@
 	 GPIO_INTERRUPT_1 = 0x02,							/**< GPIO interrupt channel 1 */ 
  } GPIO_InterruptChannel_t;
 
- /** @brief GPIO input sense configurations
+ /** @brief GPIO input sense configurations.
   */
  typedef enum 
  {
@@ -92,7 +92,7 @@
 	GPIO_SENSE_LOWLEVEL = 0x03,							/**< Sense low level */
  } GPIO_InputSense_t;
 
- /** @brief GPIO interrupt configuration object
+ /** @brief GPIO interrupt configuration object.
   */
  typedef struct
  {
@@ -194,7 +194,7 @@
 
  /** @brief			Apply a data mask to set the complete port.
   *  @param Port	Pointer to port object
-  *  @param Mask	Data mask
+  *  @param Mask	I/O mask
   */
  static inline void GPIO_SetPort(PORT_t* Port, const uint8_t Mask) __attribute__((always_inline));
  static inline void GPIO_SetPort(PORT_t* Port, const uint8_t Mask)
@@ -214,7 +214,7 @@
 
  /** @brief			Apply a data mask to clear the complete port.
   *  @param Port	Pointer to port object
-  *  @param Mask	Data mask
+  *  @param Mask	I/O mask
   */
  static inline void GPIO_ClearPort(PORT_t* Port, const uint8_t Mask) __attribute__((always_inline));
  static inline void GPIO_ClearPort(PORT_t* Port, const uint8_t Mask)
@@ -271,7 +271,7 @@
  static inline void GPIO_SwitchSlewRate(PORT_t* Port, const uint8_t Mask, const bool Enable)
  {
 	 PORTCFG.MPCMASK = Mask;
-	 
+
 	 if(Enable == true)
 	 {
 		 Port->PIN0CTRL |= PORT_SRLEN_bm;
@@ -367,7 +367,7 @@
  {
 	 PORTCFG.CLKEVOUT |= PORTCFG_RTCOUT_bm;
  }
- 
+
  /** @brief	Disable the output of the RTC clock on port C pin 6.
   *			NOTE: Can not used together on the same port with the clock output.
   */
@@ -376,7 +376,7 @@
  {
 	 PORTCFG.CLKEVOUT &= ~PORTCFG_RTCOUT_bm;
  }
- 
+
  /** @brief			Output event channel 0 on pin 7 of a given port.
   *					NOTE: Can not used together on the same port with the clock output.
   *  @param Port	Pointer to port object
@@ -386,7 +386,7 @@
  static inline void GPIO_EnableEventOutput(PORT_t* Port, const Event_Channel_t Channel)
  {
 	 GPIO_SetDirection(Port, 0x07, GPIO_DIRECTION_OUT);
-	 
+
 	 if(Port == &PORTC)
 	 {
 		 PORTCFG.CLKEVOUT |= (0x01 << 0x04);
@@ -422,7 +422,7 @@
 	 {
 		 PORTCFG.CLKEVOUT &= ~(0x03 << 0x04);
 	 }
-	 
+
 	 PORTCFG.EVOUTSEL &= ~(Channel & 0x07);
  }
 
@@ -439,68 +439,62 @@
  /** @brief			Set the configuration of the masked I/O.
   *					NOTE: Use this to set the input and output configuration at the same time.
   *  @param Port	Pointer to port object
-  *  @param Pin		I/O pin
-  *  @param Config	Configuration mask
+  *  @param Mask	I/O mask
+  *  @param Config	Pin configuration
   */
- static inline void GPIO_SetConfig(PORT_t* Port, const uint8_t Pin, const uint8_t Config) __attribute__((always_inline));
- static inline void GPIO_SetConfig(PORT_t* Port, const uint8_t Pin, const uint8_t Config)
+ static inline void GPIO_SetConfig(PORT_t* Port, const uint8_t Mask, const uint8_t Config) __attribute__((always_inline));
+ static inline void GPIO_SetConfig(PORT_t* Port, const uint8_t Mask, const uint8_t Config)
  {
-	 asm volatile("break");
-	 PORTCFG.MPCMASK = (0x01 << Pin);
-	 
+	 PORTCFG.MPCMASK = (0x01 << Mask);
 	 Port->PIN0CTRL = (Port->PIN0CTRL & (~0x3F)) | Config;
  }
 
- /** @brief			Set the pull configuration of the I/O.
+ /** @brief			Set the pull configuration of the masked I/O.
   *  @param Port	Pointer to port object
-  *  @param Pin		I/O pin
+  *  @param Mask	I/O mask
   *  @param Config	Pull configuration
   */
- static inline void GPIO_SetPullConfig(PORT_t* Port, const uint8_t Pin, const GPIO_PullConfig_t Config) __attribute__((always_inline));
- static inline void GPIO_SetPullConfig(PORT_t* Port, const uint8_t Pin, const GPIO_PullConfig_t Config)
+ static inline void GPIO_SetPullConfig(PORT_t* Port, const uint8_t Mask, const GPIO_PullConfig_t Config) __attribute__((always_inline));
+ static inline void GPIO_SetPullConfig(PORT_t* Port, const uint8_t Mask, const GPIO_PullConfig_t Config)
  {
-	 PORTCFG.MPCMASK = (0x01 << Pin);
-	 
+	 PORTCFG.MPCMASK = (0x01 << Mask);
 	 Port->PIN0CTRL = (Port->PIN0CTRL & (~0x38)) | Config;
  }
- 
+
  /** @brief			Set the interrupt sense of the I/O.
 					NOTE: Only PORTA - PORTF support this option.
   *  @param Port	Pointer to port object
-  *  @param Pin		I/O pin
+  *  @param Mask	I/O mask
   *  @param Sense	Interrupt sense
   */
- static inline void GPIO_SetInputSense(PORT_t* Port, const uint8_t Pin, const GPIO_InputSense_t Sense) __attribute__((always_inline));
- static inline void GPIO_SetInputSense(PORT_t* Port, const uint8_t Pin, const GPIO_InputSense_t Sense)
+ static inline void GPIO_SetInputSense(PORT_t* Port, const uint8_t Mask, const GPIO_InputSense_t Sense) __attribute__((always_inline));
+ static inline void GPIO_SetInputSense(PORT_t* Port, const uint8_t Mask, const GPIO_InputSense_t Sense)
  {
-	 PORTCFG.MPCMASK = (0x01 << Pin);
-	 
+	 PORTCFG.MPCMASK = (0x01 << Mask);
 	 Port->PIN0CTRL = (Port->PIN0CTRL & (~0x07)) | Sense;
  }
 
  /** @brief			Enable the digital buffer of the I/O.
 					NOTE: Only PORTA - PORTF support this option.
   *  @param Port	Pointer to port object
-  *  @param Pin		I/O pin
+  *  @param Mask	I/O mask
   */
- static inline void GPIO_EnableBuffer(PORT_t* Port, const uint8_t Pin) __attribute__((always_inline));
- static inline void GPIO_EnableBuffer(PORT_t* Port, const uint8_t Pin)
+ static inline void GPIO_EnableBuffer(PORT_t* Port, const uint8_t Mask) __attribute__((always_inline));
+ static inline void GPIO_EnableBuffer(PORT_t* Port, const uint8_t Mask)
  {
-	 PORTCFG.MPCMASK = (0x01 << Pin);
-	 
+	 PORTCFG.MPCMASK = (0x01 << Mask);
 	 Port->PIN0CTRL &= ~0x07;
  }
 
  /** @brief			Disable the digital buffer of the I/O.
 					NOTE: Only PORTA - PORTF support this option.
   *  @param Port	Pointer to port object
-  *  @param Pin		I/O pin
+  *  @param Mask	I/O mask
   */
- static inline void GPIO_DisableBuffer(PORT_t* Port, const uint8_t Pin) __attribute__((always_inline));
- static inline void GPIO_DisableBuffer(PORT_t* Port, const uint8_t Pin)
+ static inline void GPIO_DisableBuffer(PORT_t* Port, const uint8_t Mask) __attribute__((always_inline));
+ static inline void GPIO_DisableBuffer(PORT_t* Port, const uint8_t Mask)
  {
-	 PORTCFG.MPCMASK = (0x01 << Pin);
-	 
+	 PORTCFG.MPCMASK = (0x01 << Mask);
 	 Port->PIN0CTRL |= 0x07;
  }
 
@@ -508,7 +502,7 @@
   *  @param Config	Pointer to configuration structure.
   */
  void GPIO_InstallCallback(GPIO_InterruptConfig_t* Config);
- 
+
  /** @brief				Remove an installed callback.
   *  @param Port		Pointer to GPIO port object
   *  @param Channel		Interrupt channel

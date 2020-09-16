@@ -20,7 +20,7 @@ Please check the docs or write an e-mail to [DanielKampert@kampis-elektroecke.de
 
 | **Version** | **Description** | **Date** |
 |:---------:|:------------------------------:|:----------:|
-| 0.1       | Initial release                | 10.12.2019 |
+| 0.1       | Initial release                | 07.09.2020 |
 
 ## Maintainer
 

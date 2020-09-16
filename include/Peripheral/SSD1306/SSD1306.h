@@ -54,33 +54,31 @@
 	  #error "Architecture not supported for SSD1306!"
  #endif
 
- #if(!defined SSD1306_DATA)
-	 #warning "Invalid configuration for the SSD1306 chip select. Use default."
+ #if(!defined SSD1306_INTERFACE)
+	 #error "Invalid interface for the SSD1306!"
+ #endif
 
-	 #define SSD1306_DATA							PORTD, 0
+ #if(!defined SSD1306_DATA)
+	 #warning "Invalid configuration for the SSD1306 chip select!"
  #endif
 
  #if(!defined SSD1306_RESET)
-	 #warning "Invalid configuration for the SSD1306 register select. Use default."
-
-	 #define SSD1306_RESET							PORTA, 3
+	 #warning "Invalid configuration for the SSD1306 register select!"
  #endif
- 
+
  #if(!defined SSD1306_SS)
-	 #warning "Invalid configuration for the SSD1306 reset. Use default."
-
-	 #define SSD1306_SS								PORTF, 3
+	 #warning "Invalid configuration for the SSD1306 reset!"
  #endif
-
- /*
-	Public API
- */
 
  /** @brief			Initialize the display controller.
   *  @param Config	Pointer to SPI master configuration object
   *					NOTE: Set to #NULL when the SPI is already initialized!
   */
  void Display_Init(SPIM_Config_t* Config);
+
+ /** @brief	Perform a reset of the display controller.
+  */
+ void Display_Reset(void);
 
  /** @brief			Write data to the display controller.
   *  @param Command	Display data
@@ -101,10 +99,6 @@
   *  @param Line	Display line
   */
  void Display_SetStartLine(const uint8_t Line);
-
- /** @brief	Perform a reset of the display controller.
-  */
- void Display_Reset(void);
 
  /** @brief			Enable/Disable the display controller.
   *  @param Enable	Enable/Disable

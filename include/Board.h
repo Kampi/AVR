@@ -35,7 +35,7 @@
  
  #include "Common/Common.h"
  
- #ifdef BOARD
+ #if(defined BOARD)
 	 #if(BOARD == BOARD_XMEGA256A3_XPLAINED)
 		 #include "Common/Board/XMegaA3XPlained.h"
 	 #elif(BOARD == BOARD_XMEGA384C3_XPLAINED)

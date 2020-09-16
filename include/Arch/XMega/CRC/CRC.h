@@ -40,34 +40,34 @@
   */
  typedef enum
  {
-	 CRC_CHECKSUM_ZERO = 0x02,		/**< Reset with zeros */ 
-	 CRC_CHECKSUM_ONES = 0x03		/**< Reset with ones */ 
+	 CRC_ZERO = 0x02,				/**< Reset with zeros */
+	 CRC_CONES = 0x03				/**< Reset with ones */
  } CRC_ResetOptions_t;
 
  /** @brief	CRC DMA channels.
   */
  typedef enum
  {
-	 CRC_DMA_0 = 0x04,				/**< Use DMA channel 0 */ 
-	 CRC_DMA_1 = 0x05,				/**< Use DMA channel 1 */ 
-	 CRC_DMA_2 = 0x06,				/**< Use DMA channel 2 */ 
-	 CRC_DMA_3 = 0x07,				/**< Use DMA channel 3 */ 
+	 CRC_DMA_0 = 0x04,				/**< Use DMA channel 0 */
+	 CRC_DMA_1 = 0x05,				/**< Use DMA channel 1 */
+	 CRC_DMA_2 = 0x06,				/**< Use DMA channel 2 */
+	 CRC_DMA_3 = 0x07,				/**< Use DMA channel 3 */
  } CRC_DMA_t;
 
  /** @brief	Memory segments for CRC calculation.
   */
  typedef enum
  {
-	 CRC_SEGMENT_BOOT = 0x00,		/**< Bootloader section */ 
-	 CRC_SEGMENT_APP = 0x01,		/**< Application section */ 
+	 CRC_SEGMENT_BOOT = 0x00,		/**< Bootloader section */
+	 CRC_SEGMENT_APP = 0x01,		/**< Application section */
  } CRC_MemorySegment_t;
 
  /** @brief	Length of the CRC checksum..
   */
  typedef enum
  {
-	 CRC_LENGTH_16 = 0x00,			/**< 16 bit CRC */ 
-	 CRC_LENGTH_32 = 0x01			/**< 32 bit CRC */ 
+	 CRC_LENGTH_16 = 0x00,			/**< 16 bit CRC */
+	 CRC_LENGTH_32 = 0x01			/**< 32 bit CRC */
  } CRC_ChecksumLength_t;
 
  /** @brief	Disable the CRC module.
@@ -78,8 +78,8 @@
 	 CRC.CTRL &= ~0x0F;
  }
 
- /** @brief					Reset the CRC module.
-  *  @param Options			Reset mode for the module
+ /** @brief			Reset the CRC module.
+  *  @param Options	Reset mode for the module
   */
  static inline void CRC_Reset(const CRC_ResetOptions_t Options) __attribute__((always_inline));
  static inline void CRC_Reset(const CRC_ResetOptions_t Options)
@@ -90,9 +90,10 @@
  /** @brief					Enable the DMA mode of the CRC module.
   *  @param Channel			DMA channel
   *  @param ChecksumLength	Length of the checksum
+  *  @param Options			Reset mode for the module
   */
- void CRC_EnableDMA(const CRC_DMA_t Channel, const CRC_ChecksumLength_t ChecksumLength);
- 
+ void CRC_EnableDMA(const CRC_DMA_t Channel, const CRC_ChecksumLength_t ChecksumLength, const CRC_ResetOptions_t Options);
+
  /** @brief		Disable the DMA mode of the CRC module.
   *  @return	CRC Checksum 
   */
@@ -106,31 +107,35 @@
  /** @brief				Calculate a IEEE 802.3 CRC32 of a memory region.
   *  @param StartAddr	Memory Start address
   *  @param Length		Length of the region
+  *  @param Options		Reset mode for the module
   *  @return			Checksum of the memory region
   */
- const uint32_t CRC_MemoryRegion(const uint32_t StartAddr, const uint32_t Length);
- 
+ const uint32_t CRC_MemoryRegion(const uint32_t StartAddr, const uint32_t Length, const CRC_ResetOptions_t Options);
+
  /** @brief			Calculate a IEEE 802.3 CRC32 of a memory segment.
   *  @param Segment	Memory Segment
+  *  @param Options	Reset mode for the module
   *  @return		Checksum of the memory region
   */
- const uint32_t CRC_MemorySegment(const CRC_MemorySegment_t Segment);
+ const uint32_t CRC_MemorySegment(const CRC_MemorySegment_t Segment, const CRC_ResetOptions_t Options);
  
  /** @brief					Calculate a CCITT or IEEE 802.3 CRC of a data array.
   *  @param Data			Pointer to data
   *  @param Length			Length of the array
   *  @param ChecksumLength	Length of the checksum
+  *  @param Options			Reset mode for the module
   *  @return				Checksum
   */
- const uint32_t CRC_Data(const uint8_t* Data, const uint32_t Length, const CRC_ChecksumLength_t ChecksumLength);
+ const uint32_t CRC_Data(uint8_t* Data, const uint32_t Length, const CRC_ChecksumLength_t ChecksumLength, const CRC_ResetOptions_t Options);
 
  /** @brief					Calculate a custom CRC of a data array.
   *  @param Data			Pointer to data
   *  @param Length			Length of the array
   *  @param ChecksumLength	Length of the checksum
-  *  @param Polynomial		CRC Polynomial	
+  *  @param Polynomial		CRC Polynomial
+  *  @param Options			Reset mode for the module
   *  @return				Checksum
   */
- const uint32_t CRC_CustomData(const uint8_t* Data, const uint32_t Length, const CRC_ChecksumLength_t ChecksumLength, const uint32_t Polynomial);
+ const uint32_t CRC_CustomData(const uint8_t* Data, const uint32_t Length, const CRC_ChecksumLength_t ChecksumLength, const uint32_t Polynomial, const CRC_ResetOptions_t Options);
 
-#endif /* CRC_H_ */ 
+#endif /* CRC_H_ */

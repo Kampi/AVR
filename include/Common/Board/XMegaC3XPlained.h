@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: Hardware driver for the Atmel XPlainedC3 Development board.
+ *  File info: Hardware driver and on-board peripherals of the Atmel AVR XPlainedC3 development board.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file Common/Board/XMegaC3XPlained.h
- *  @brief Hardware driver driver and on-board peripheral the Atmel AVR XPlainedC3 development board.
+ *  @brief Hardware driver and on-board peripherals of the Atmel AVR XPlainedC3 development board.
  *
  *  @author Daniel Kampert
  */
@@ -35,10 +35,6 @@
 	Define the MCU for the board
  */
  #include "Common/Board/MCU/XMega384C3.h"
-
- /*
-	 Board specific configurations
- */
 
  /* 
 	LEDs
@@ -71,7 +67,7 @@
 	 Default interfaces 
  */
  #define SPI_CLOCK									1000000
- #define SPI_DEFAULT_INTERFACE						&USARTD0							
+ #define SPI_DEFAULT_INTERFACE						&USARTD0
 
  #define I2C_CLOCK									100000
  #define I2C_DEFAULT_INTERFACE						&TWIC

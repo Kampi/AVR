@@ -40,7 +40,7 @@
 static uint32_t CRC_GetChecksum(void)
 {
 	uint32_t Checksum = 0x00;
-	
+
 	while((CRC.STATUS & CRC_BUSY_bm));
 
 	if(CRC.CTRL & CRC_CRC32_bm)
@@ -55,7 +55,7 @@ static uint32_t CRC_GetChecksum(void)
 		Checksum = ((uint16_t)CRC.CHECKSUM0 & 0x00FF);
 		Checksum |= (((uint16_t)CRC.CHECKSUM1 << 0x08) & 0xFF00);
 	}
-	
+
 	return Checksum;
 }
 
@@ -65,20 +65,20 @@ static uint32_t CRC_GetChecksum(void)
 static void CRC_WritePolynomial(const uint32_t Polynomial)
 {
 	CRC_Disable();
-	
+
 	CRC.CHECKSUM0 = Polynomial & 0x000000FF;
 	CRC.CHECKSUM1 = (Polynomial & 0x0000FF00) >> 0x08;
 	CRC.CHECKSUM2 = (Polynomial & 0x00FF0000) >> 0x10;
 	CRC.CHECKSUM3 = (Polynomial & 0xFF000000) >> 0x18;
 }
 
-void CRC_EnableDMA(const CRC_DMA_t Channel, const CRC_ChecksumLength_t ChecksumLength)
+void CRC_EnableDMA(const CRC_DMA_t Channel, const CRC_ChecksumLength_t ChecksumLength, const CRC_ResetOptions_t Options)
 {
-	CRC_Reset(CRC_CHECKSUM_ONES);
-	
+	CRC_Reset(Options);
+
 	// Clear the busy flag
 	CRC.STATUS |= CRC_BUSY_bm;
-	
+
 	// Set the length of the checksum
 	if(ChecksumLength == CRC_LENGTH_32)
 	{
@@ -88,10 +88,10 @@ void CRC_EnableDMA(const CRC_DMA_t Channel, const CRC_ChecksumLength_t ChecksumL
 	{
 		CRC.CTRL &= ~CRC_CRC32_bm;
 	}
-	
+
 	// Clear the source
 	CRC.CTRL &= ~0x0F;
-	
+
 	if(Channel == CRC_DMA_0) 
 	{
 		CRC.CTRL |= CRC_SOURCE_DMAC0_gc;
@@ -100,14 +100,14 @@ void CRC_EnableDMA(const CRC_DMA_t Channel, const CRC_ChecksumLength_t ChecksumL
 	{
 		CRC.CTRL |= CRC_SOURCE_DMAC1_gc;
 	}
-	
+
 	#if defined(CRC_SOURCE_DMAC2_gc)
 		else if(Channel == CRC_DMA_2)
 		{
 			CRC.CTRL |= CRC_SOURCE_DMAC2_gc;
 		}
 	#endif
-	
+
 	#if defined(CRC_SOURCE_DMAC3_gc)
 		else if(Channel == CRC_DMA_3)
 		{
@@ -130,36 +130,36 @@ const uint32_t CRC_GetResult(void)
 	return Checksum;
 }
 
-const uint32_t CRC_MemoryRegion(const uint32_t StartAddr, const uint32_t Length)
+const uint32_t CRC_MemoryRegion(const uint32_t StartAddr, const uint32_t Length, const CRC_ResetOptions_t Options)
 {	
 	// Reset the module
-	CRC_Reset(CRC_CHECKSUM_ONES);
-	
+	CRC_Reset(Options);
+
 	// Clear the source
 	CRC.CTRL &= ~0x0F;
-	
+
 	// Wait until the module has finished
 	while(CRC.STATUS & CRC_BUSY_bm);
-	
+
 	// Enable 32-bit mode
 	CRC.CTRL |= CRC_CRC32_bm;
-	
+
 	// Set the source to flash memory
 	CRC.CTRL |= CRC_SOURCE_FLASH_gc;
-	
+
 	NVM_FlashRangeCRC(StartAddr, Length);
-	
+
 	return CRC_GetResult();
 }
 
-const uint32_t CRC_MemorySegment(const CRC_MemorySegment_t Segment)
+const uint32_t CRC_MemorySegment(const CRC_MemorySegment_t Segment, const CRC_ResetOptions_t Options)
 {
 	// Reset the module
-	CRC_Reset(CRC_CHECKSUM_ONES);
-	
+	CRC_Reset(Options);
+
 	// Wait until the module has finished
 	while(CRC.STATUS & CRC_BUSY_bm);
-	
+
 	// Enable 32-bit mode
 	CRC.CTRL |= CRC_CRC32_bm;
 
@@ -177,18 +177,18 @@ const uint32_t CRC_MemorySegment(const CRC_MemorySegment_t Segment)
 	{
 		NVM_ExecuteCommand(NVM_CMD_APP_CRC_gc);
 	}
-	
+
 	return CRC_GetResult();
 }
 
-const uint32_t CRC_Data(const uint8_t* Data, const uint32_t Length, const CRC_ChecksumLength_t ChecksumLength)
+const uint32_t CRC_Data(uint8_t* Data, const uint32_t Length, const CRC_ChecksumLength_t ChecksumLength, const CRC_ResetOptions_t Options)
 {	
 	// Reset the module
-	CRC_Reset(CRC_CHECKSUM_ONES);
-	
+	CRC_Reset(Options);
+
 	// Clear the busy flag
 	CRC.STATUS |= CRC_BUSY_bm;
-	
+
 	if(ChecksumLength == CRC_LENGTH_32)
 	{
 		CRC.CTRL |= CRC_CRC32_bm;
@@ -197,31 +197,31 @@ const uint32_t CRC_Data(const uint8_t* Data, const uint32_t Length, const CRC_Ch
 	{
 		CRC.CTRL &= ~CRC_CRC32_bm;
 	}
-	
+
 	// Set the source to I/O interface
 	CRC.CTRL &= ~CRC_SOURCE_gm;
 	CRC.CTRL |= CRC_SOURCE_IO_gc;
-	
+
 	for(uint8_t i = 0x00; i < Length; i++)
 	{
 		CRC.DATAIN = Data[i];
 	}
-	
+
 	CRC.STATUS |= CRC_BUSY_bm;
-	
+
 	return CRC_GetResult();
 }
 
-const uint32_t CRC_CustomData(const uint8_t* Data, const uint32_t Length, const CRC_ChecksumLength_t ChecksumLength, const uint32_t Polynomial)
+const uint32_t CRC_CustomData(const uint8_t* Data, const uint32_t Length, const CRC_ChecksumLength_t ChecksumLength, const uint32_t Polynomial, const CRC_ResetOptions_t Options)
 {
 	// Reset the module
-	CRC_Reset(CRC_CHECKSUM_ONES);
-	
+	CRC_Reset(Options);
+
 	CRC_WritePolynomial(Polynomial);
-	
+
 	// Clear the busy flag
 	CRC.STATUS |= CRC_BUSY_bm;
-	
+
 	if(ChecksumLength == CRC_LENGTH_32)
 	{
 		CRC.CTRL |= CRC_CRC32_bm;
@@ -230,17 +230,17 @@ const uint32_t CRC_CustomData(const uint8_t* Data, const uint32_t Length, const 
 	{
 		CRC.CTRL &= ~CRC_CRC32_bm;
 	}
-	
+
 	// Set the source to I/O interface
 	CRC.CTRL &= ~CRC_SOURCE_gm;
 	CRC.CTRL |= CRC_SOURCE_IO_gc;
-	
+
 	for(uint8_t i = 0x00; i < Length; i++)
 	{
 		CRC.DATAIN = Data[i];
 	}
-	
+
 	CRC.STATUS |= CRC_BUSY_bm;
-	
+
 	return CRC_GetResult();
 }

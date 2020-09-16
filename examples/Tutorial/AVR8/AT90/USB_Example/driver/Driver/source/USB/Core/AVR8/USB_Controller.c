@@ -1,9 +1,9 @@
 /*
  * USB_Controller.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: USB controller for AT90USB1287.
+ *  File info: USB controller for Atmel AVR8 AT90 MCUs.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file USB/Core/AVR8/USB_Controller.c
- *  @brief USB controller for AT90USB1287.
+ *  @brief USB controller for Atmel AVR8 AT90 MCUs.
  * 
  *  This file contains the implementation of the AT90USB1287 USB driver.
  *
@@ -39,8 +39,9 @@ volatile USB_State_t _DeviceState = USB_STATE_UNATTACHED;
 void USB_Controller_Init(const USB_Mode_t Mode, const USB_Speed_t Speed)
 {
 	USB_Controller_ResetInterface();
-	USB_Controller_EnableClk();
+
 	USB_Controller_EnableReg();
+	USB_Controller_EnableClk();
 	USB_Controller_EnableVBUSPad();
 
 	USB_Controller_SetMode(Mode);
@@ -53,7 +54,7 @@ void USB_Controller_Init(const USB_Mode_t Mode, const USB_Speed_t Speed)
 		USB_Controller_EnableInterrupt(USB_EOR_INTERRUPT);
 		
 		// Attach the device to the bus
-		USB_Controller_Attach();
+		USB_Device_Attach();
 	}
 }
 
@@ -62,13 +63,14 @@ void USB_Controller_Disable(void)
 	USB_Controller_DisableAllInterrupts();
 	USB_Controller_ClearInterrupts();
 
-	USB_Controller_Detach();
+	USB_Device_Detach();
 	USB_Controller_Disable();
 }
 
 void USB_Controller_ResetInterface(void)
 {
 	USB_Controller_Reset();
-	
+
+	_Configuration = 0x00;
 	_DeviceState = USB_STATE_UNATTACHED;
 }

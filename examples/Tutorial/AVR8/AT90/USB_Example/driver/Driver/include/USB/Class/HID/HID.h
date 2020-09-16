@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Services/USB/Class/HID/HID.h
+/** @file USB/Class/HID/HID.h
  *  @brief USB HID class.
  *
  *  @author Daniel Kampert
@@ -33,6 +33,5 @@
 #define HID_H_
 
  #include "HID_Common.h"
- #include "HID_Report.h"
 
 #endif /* HID_H_  */

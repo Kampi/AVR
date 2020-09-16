@@ -1,7 +1,7 @@
 /*
  * USB_Device.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: USB device controller definition for AT90USB1287.
 
@@ -77,6 +77,22 @@
  static inline uint16_t USB_Device_GetFrameNumber(void)
  {
 	 return UDFNUM;
+ }
+
+ /** @brief	Attach the device to the USB bus.
+  */
+ static inline void USB_Device_Attach(void) __attribute__ ((always_inline));
+ static inline void USB_Device_Attach(void)
+ {
+	 UDCON &= ~(0x01 << DETACH);
+ }
+
+ /** @brief	Detach the device from the USB bus.
+  */
+ static inline void USB_Device_Detach(void) __attribute__ ((always_inline));
+ static inline void USB_Device_Detach(void)
+ {
+	 UDCON &= ~(0x01 << DETACH);
  }
 
 #endif /* USB_DEVICE_H_  */ 

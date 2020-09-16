@@ -1,9 +1,9 @@
 /*
  * USB_Interrupt.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: Interrupt functions for AT90USB1287 USB.
+ *  File info: Interrupt functions for Atmel AVR AT90 USB interface.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file USB/Core/AVR8/USB_Interrupt.c
- *  @brief Interrupt functions for AT90USB1287 USB.
+ *  @brief Interrupt functions for Atmel AVR AT90 USB interface.
  * 
  *  This file contains the implementation of the AVR8 AT90USB1287 driver interrupts.
  *
@@ -251,6 +251,7 @@ ISR(USB_GEN_vect)
 		if(USB_Controller_CheckVBUS())
 		{
 			USB_Controller_EnablePLL();
+
 			_DeviceState = USB_STATE_POWERED;
 
 			if(_USBEvents.ConnectWithBus != NULL)
@@ -261,6 +262,7 @@ ISR(USB_GEN_vect)
 		else
 		{
 			USB_Controller_DisablePLL();
+
 			_DeviceState = USB_STATE_UNATTACHED;
 
 			if(_USBEvents.DisconnectFromBus != NULL)
@@ -274,14 +276,12 @@ ISR(USB_GEN_vect)
 	{
 		USB_Controller_ClearInterruptFlag(USB_EOR_INTERRUPT);
 
-		_DeviceState = USB_STATE_RESET;
-
 		// Configure the default control endpoint
-		if(Endpoint_Configure(ENDPOINT_CONTROL_ADDRESS, ENDPOINT_TYPE_CONTROL, ENDPOINT_CONTROL_SIZE, 0))
+		if(!Endpoint_Configure(ENDPOINT_CONTROL_ADDRESS, ENDPOINT_TYPE_CONTROL, ENDPOINT_CONTROL_SIZE, 0x00))
 		{
-			if(_USBEvents.EndOfReset != NULL)
+			if(_USBEvents.Error != NULL)
 			{
-				_USBEvents.EndOfReset();
+				_USBEvents.Error();
 			}
 		}
 		else
@@ -291,5 +291,7 @@ ISR(USB_GEN_vect)
 				_USBEvents.Error();
 			}
 		}
+
+		_DeviceState = USB_STATE_RESET;
 	}
 }

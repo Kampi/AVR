@@ -41,8 +41,8 @@
  */
  #if(MCU_ARCH == MCU_ARCH_AVR8)
  	 #if(MCU_NAME == MCU_NAME_ATMEGA32)
- 		 #include "Arch/AVR8/megaAVR/GPIO/GPIO.h"
- 		 #include "Arch/AVR8/megaAVR/I2C/I2C.h"
+ 		 #include "Arch/AVR8/megaAVR/mega32/GPIO/GPIO.h"
+ 		 #include "Arch/AVR8/megaAVR/mega32/I2C/I2C.h"
 	 #else
 		 #error "Invalid CPU for PCA9685!"
 	 #endif 

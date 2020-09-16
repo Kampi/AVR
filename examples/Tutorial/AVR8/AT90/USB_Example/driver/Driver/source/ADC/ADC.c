@@ -1,7 +1,7 @@
 /*
  * ADC.c
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: Driver for Atmel AT90 ADC.
 
@@ -32,7 +32,7 @@
 
 #include "ADC/ADC.h"
 
-static ADC_Callback_t __ADC_Callback;
+static ADC_Callback_t _ADC_Callback;
 
 void ADC_Init(const ADC_Callback_t Callback)
 {
@@ -43,7 +43,7 @@ void ADC_Init(const ADC_Callback_t Callback)
 	ADC_StartConversion();
 	ADC_Wait();
 
-	__ADC_Callback = Callback;
+	_ADC_Callback = Callback;
 }
 
 /*
@@ -52,9 +52,9 @@ void ADC_Init(const ADC_Callback_t Callback)
 #ifndef DOXYGEN
 	ISR(ADC_vect)
 	{
-		if(__ADC_Callback != NULL)
+		if(_ADC_Callback != NULL)
 		{
-			__ADC_Callback(ADMUX & 0x07, ADC);
+			_ADC_Callback(ADMUX & 0x07, ADC);
 		}
 	}
 #endif

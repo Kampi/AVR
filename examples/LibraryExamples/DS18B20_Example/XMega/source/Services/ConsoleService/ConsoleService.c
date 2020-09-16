@@ -36,8 +36,8 @@
 /** @brief	USART interface definition for the console service.
  *			NOTE: The values are chosen for a clock speed of 2 MHz or 32 MHz.
  */
-static USART_Config_t __Config_USART = {
-	.Device = &CONCAT(CONSOLE_STDIO),
+static USART_Config_t _Config_USART = {
+	.Device = CONCAT(CONSOLE_STDIO),
 	.DeviceMode = USART_MODE_ASYNCH,
 	.Direction = USART_DIRECTION_BOTH,
 	.Baudrate = 115200,
@@ -50,21 +50,21 @@ static USART_Config_t __Config_USART = {
 
 static int USART_Put(char c, FILE* stream)
 {
-	USART_SendChar(__Config_USART.Device, c);
+	USART_SendChar(_Config_USART.Device, c);
 	
 	return 0;
 }
 
 static int USART_Get(FILE* stream)
 {
-	return USART_GetChar(__Config_USART.Device);
+	return USART_GetChar(_Config_USART.Device);
 }
 
 static FILE USART_stdio = FDEV_SETUP_STREAM(USART_Put, USART_Get, _FDEV_SETUP_RW);
 
 void ConsoleService_Init(void)
 {
-	USART_Init(&__Config_USART);
+	USART_Init(&_Config_USART);
 
 	stdout = &USART_stdio;
 	stdin = &USART_stdio;

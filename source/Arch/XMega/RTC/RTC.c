@@ -45,7 +45,7 @@
  *  @param Callback	Type of interrupt
  */
 static void _RTC_InterruptHandler(const RTC_CallbackType_t Callback)
-{	
+{
 	if(Callback == RTC_OVFL_INTERRUPT)
 	{
 		if(_RTC_Callbacks.Overflow)
@@ -77,7 +77,7 @@ void RTC_ChangeInterruptLevel(const RTC_CallbackType_t Callback, const Interrupt
 	{
 		RTC.INTCTRL |= (RTC.INTCTRL & (~InterruptLevel)) | InterruptLevel;
 	}
-	
+
 	if(Callback & RTC_COMP_INTERRUPT)
 	{
 		RTC.INTCTRL |= (RTC.INTCTRL & (~(InterruptLevel << 0x02))) | (InterruptLevel << 0x02);
@@ -91,7 +91,7 @@ void RTC_InstallCallback(const RTC_InterruptConfig_t* Config)
 		RTC.INTCTRL = (RTC.INTCTRL & (~Config->InterruptLevel)) | Config->InterruptLevel;
 		_RTC_Callbacks.Overflow = Config->Callback;
 	}
-	
+
 	if(Config->CallbackSource & RTC_COMP_INTERRUPT)
 	{
 		RTC.INTCTRL = (RTC.INTCTRL & (~(Config->InterruptLevel << 0x02))) | (Config->InterruptLevel << 0x02);

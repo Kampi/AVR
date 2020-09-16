@@ -35,16 +35,11 @@
 #include "Arch/XMega/DAC/DAC.h"
 #include "Arch/XMega/PowerManagement/PowerManagement.h"
 
-#ifndef DOXYGEN
-	static float _DAC_VoltagePerStep;
-#endif
-
 void DAC_Init(DAC_Config_t* Config)
 {
 	DAC_PowerEnable(Config->Device);
 	DAC_EnableChannel(Config->Device, Config->Channel);
 	DAC_SetOutputConfig(Config->Device, Config->OutputConfig);
-	DAC_SetVoltageDivider(Config->RefVoltage);
 	DAC_SetReference(Config->Device, Config->Reference);
 	DAC_SetAdjustment(Config->Device, Config->Adjustment);
 	DAC_Calibrate(Config->Device, Config->Channel);
@@ -54,7 +49,7 @@ void DAC_Init(DAC_Config_t* Config)
 void DAC_Calibrate(DAC_t* Device, DAC_Channel_t Channel)
 {
 	NVM.CMD  = NVM_CMD_READ_CALIB_ROW_gc;
-	
+
 	if(Device == &DACB)
 	{
 		if(Channel & DAC_CHANNEL_0)
@@ -62,14 +57,14 @@ void DAC_Calibrate(DAC_t* Device, DAC_Channel_t Channel)
 			Device->CH0OFFSETCAL = NVM_ReadCalibrationByte(offsetof(NVM_PROD_SIGNATURES_t, DACB0OFFCAL));
 			Device->CH0GAINCAL = NVM_ReadCalibrationByte(offsetof(NVM_PROD_SIGNATURES_t, DACB0GAINCAL));
 		}
-		
+
 		if(Channel & DAC_CHANNEL_1)
 		{
 			Device->CH1OFFSETCAL = NVM_ReadCalibrationByte(offsetof(NVM_PROD_SIGNATURES_t, DACB1OFFCAL));
 			Device->CH1GAINCAL = NVM_ReadCalibrationByte(offsetof(NVM_PROD_SIGNATURES_t, DACB1GAINCAL));
 		}
 	}
-	#ifdef DACA
+	#if(defined DACA)
 		else if(Device == &DACA)
 		{
 			if(Channel & DAC_CHANNEL_0)
@@ -130,12 +125,12 @@ void DAC_DisableChannel(DAC_t* Device, const DAC_Channel_t Channel)
 	{
 		Device->CTRLA &= ~(0x01 << 0x02);
 	}
-	
+
 	if(Channel & DAC_CHANNEL_1)
 	{
 		Device->CTRLA &= ~(0x01 << 0x03);
 	}
-	
+
 	if(Channel & DAC_CHANNEL_INT)
 	{
 		Device->CTRLA &= ~(0x01 << 0x04);
@@ -162,11 +157,6 @@ void DAC_SetReference(DAC_t* Device, const DAC_Reference_t Reference)
 	Device->CTRLC = (Device->CTRLC & (~(Reference << 0x03))) | (Reference << 0x03);
 }
 
-void DAC_SetVoltageDivider(const float Reference)
-{
-	_DAC_VoltagePerStep = ((float)Reference / (0x01 << DAC_RESOLUTION)) / 1000.0;
-}
-
 DAC_Reference_t DAC_GetReference(DAC_t* Device)
 {
 	return ((Device->CTRLC & 0x18) >> 0x03);
@@ -189,17 +179,12 @@ void DAC_WriteChannel(DAC_t* Device, const DAC_Channel_t Channel, const uint16_t
 		while(!(Device->STATUS & DAC_CH0DRE_bm));
 		Device->CH0DATA = Value;
 	}
-	
+
 	if(Channel & DAC_CHANNEL_1)
 	{
 		while(!(Device->STATUS & DAC_CH1DRE_bm));
 		Device->CH1DATA = Value;
 	}
-}
-
-void DAC_WriteVoltage(DAC_t* Device, const DAC_Channel_t Channel, const float Voltage)
-{
-	DAC_WriteChannel(Device, Channel, (Voltage / _DAC_VoltagePerStep) - 0x01);
 }
 
 void DAC_ConfigEvent(DAC_t* Device, const DAC_EventChannel_t EventChannel, const DAC_Channel_t Channel)
@@ -208,7 +193,7 @@ void DAC_ConfigEvent(DAC_t* Device, const DAC_EventChannel_t EventChannel, const
 	{
 		Device->EVCTRL = 0x00;
 	}
-	
+
 	if(Channel & DAC_CHANNEL_1)
 	{
 		Device->EVCTRL = (0x01 << 0x03);

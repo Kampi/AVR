@@ -81,18 +81,18 @@
   */
  typedef enum
  {
-	 I2C_SLAVE = 0x00,							/**< I2C slave mode */ 
-	 I2C_MASTER = 0x01,							/**< I2C master mode */ 
+	 I2C_SLAVE = 0x00,							/**< I2C slave mode */
+	 I2C_MASTER = 0x01,							/**< I2C master mode */
  } I2C_DeviceMode_t;
 
  /** @brief I2C clock prescaler.
   */
  typedef enum
  {
-	 I2C_PRESCALER_1 = 0x00,					/**< Clock prescaler 1  */ 
-	 I2C_PRESCALER_4 = 0x01,					/**< Clock prescaler 4  */ 
-	 I2C_PRESCALER_16 = 0x02,					/**< Clock prescaler 16 */ 
-	 I2C_PRESCALER_64 = 0x03,					/**< Clock prescaler 64 */ 
+	 I2C_PRESCALER_1 = 0x00,					/**< Clock prescaler 1  */
+	 I2C_PRESCALER_4 = 0x01,					/**< Clock prescaler 4  */
+	 I2C_PRESCALER_16 = 0x02,					/**< Clock prescaler 16 */
+	 I2C_PRESCALER_64 = 0x03,					/**< Clock prescaler 64 */
  } I2C_ClockPrescaler_t;
 
  /** @brief I2C callback types.
@@ -268,7 +268,7 @@
 	 else
 	 {
 		 Device->CTRL &= ~TWI_EDIEN_bm;
-	 }	
+	 }
  }
 
  /** @brief			Install a new callback for the interrupt driven transmissions.
@@ -370,6 +370,45 @@
 	 Device->MASTER.CTRLB = (Device->MASTER.CTRLB & (~0x01)) | Enable;
  }
  
+  /** @brief		Send the address (including R/W bit) of a bus slave in master mode.
+  *  @param Device	Pointer to TWI device object
+  *  @param Address	Slave device address
+  */
+ static inline void I2CM_SendAddress(TWI_t* Device, const uint8_t Address) __attribute__((always_inline));
+ static inline void I2CM_SendAddress(TWI_t* Device, const uint8_t Address)
+ {
+	 Device->MASTER.ADDR = Address;
+	 while(!((Device->MASTER.STATUS & TWI_MASTER_WIF_bm) || (Device->MASTER.STATUS & TWI_MASTER_RIF_bm)));
+ }
+
+ /** @brief			Write a data byte in master mode to the I2C.
+  *  @param Device	Pointer to TWI device object
+  *  @param Data	Data byte
+  */
+ static inline void I2CM_SendData(TWI_t* Device, const uint8_t Data) __attribute__((always_inline));
+ static inline void I2CM_SendData(TWI_t* Device, const uint8_t Data)
+ {
+	 Device->MASTER.DATA = Data;
+	 while(!(Device->MASTER.STATUS & TWI_MASTER_WIF_bm));
+ }
+
+ /** @brief			Write a stop condition in master mode.
+  *  @param Device	Pointer to TWI device object
+  *  @param NACK	#true if NACK should generated
+  */
+ static inline void I2CM_SendStop(TWI_t* Device, const bool NACK) __attribute__((always_inline));
+ static inline void I2CM_SendStop(TWI_t* Device, const bool NACK)
+ {
+	 if(NACK)
+	 {
+		 Device->MASTER.CTRLC = TWI_MASTER_ACKACT_bm | TWI_MASTER_CMD_STOP_gc;
+	 }
+	 else
+	 {
+		 Device->MASTER.CTRLC = TWI_MASTER_CMD_STOP_gc;
+	 }
+ }
+
  /** @brief			Initialize a TWI master interface.
   *  @param Config	Pointer to TWI master configuration object
   */

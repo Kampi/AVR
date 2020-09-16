@@ -55,7 +55,7 @@ int main(void)
 		*/
 		DACB.CTRLC &= ~(DAC_REFSEL1_bm | DAC_REFSEL0_bm | DAC_LEFTADJ_bm);
 		DACB.CTRLB &= ~(DAC_CH1TRIG_bm | DAC_CH0TRIG_bm | DAC_CHSEL1_bm | DAC_CHSEL0_bm);
-		DACB.CTRLA &= DAC_CH0EN_bm | DAC_ENABLE_bm;
+		DACB.CTRLA |= DAC_CH0EN_bm | DAC_ENABLE_bm;
 	
 		/*
 			Initialize the ADC

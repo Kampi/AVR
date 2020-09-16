@@ -22,7 +22,7 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file config/Config.h
+/** @file Config.h
  *  @brief Configuration file for the AT90USB1287 USB examples.
  *
  *  @author Daniel Kampert

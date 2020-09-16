@@ -49,6 +49,9 @@
  #include <util/delay.h>
  #include <util/atomic.h>
 
+ #include <stdio.h>
+ #include <stdlib.h>
+
  #if(MCU_NAME == MCU_NAME_ATMEGA32)
 	 #include "Common/Board/MCU/ATmega32.h"
  #elif(MCU_NAME == MCU_NAME_AT90USB1287)

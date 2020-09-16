@@ -143,7 +143,10 @@ static void SSD1306_WriteCommandBytes(const uint8_t* Data, const uint8_t Length)
 	SSD1306_SPIM_CHIP_DESELECT(GET_PERIPHERAL(SSD1306_SS), GET_INDEX(SSD1306_SS));
 }
 
-void Display_Init(SPIM_Config_t* Config)
+/** @brief			Initialize the display controller.
+ *  @param Config	Pointer to SPI master configuration object
+ */
+static void SSD1306_Init(SPIM_Config_t* Config)
 {
 	// Set Data/Command pin as output in low state
 	GPIO_SetDirection(GET_PERIPHERAL(SSD1306_DATA), GET_INDEX(SSD1306_DATA), GPIO_DIRECTION_OUT);
@@ -165,7 +168,19 @@ void Display_Init(SPIM_Config_t* Config)
 		SSD1306_SPIM_INIT(Config);
 	}
 	
-	SSD1306_WriteCommandBytes(DisplayInitialization, sizeof(DisplayInitialization));	
+	SSD1306_WriteCommandBytes(DisplayInitialization, sizeof(DisplayInitialization));
+}
+
+void Display_Init(SPIM_Config_t* Config)
+{
+	SSD1306_Init(Config);
+}
+
+void Display_Reset(void)
+{
+	GPIO_Clear(GET_PERIPHERAL(SSD1306_DATA), GET_INDEX(SSD1306_DATA));
+	for(uint16_t i = 0x00; i < 0xFFFF; i++);
+	GPIO_Set(GET_PERIPHERAL(SSD1306_DATA), GET_INDEX(SSD1306_DATA));
 }
 
 void Display_WriteData(const uint8_t Data)
@@ -194,13 +209,6 @@ void Display_SetStartLine(const uint8_t Line)
 {	
 	// Use only the lower 6 bits, because the controller supports only 64 lines
 	SSD1306_WriteCommand(SSD1306_CMD_START_LINE(Line & 0x3F));
-}
-
-void Display_Reset(void)
-{
-	GPIO_Clear(GET_PERIPHERAL(SSD1306_DATA), GET_INDEX(SSD1306_DATA));
-	for(uint16_t i = 0x00; i < 0xFFFF; i++);
-	GPIO_Set(GET_PERIPHERAL(SSD1306_DATA), GET_INDEX(SSD1306_DATA));
 }
 
 void Display_SwitchDisplay(const bool Enable)

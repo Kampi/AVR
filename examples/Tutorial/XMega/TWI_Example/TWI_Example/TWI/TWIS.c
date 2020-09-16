@@ -35,7 +35,7 @@ static void TWIS_AddressMatchHandler(void)
 {
 	SlaveBuffer.BytesReceived = 0x00;
 	SlaveBuffer.BytesSend = 0x00;
-	
+
 	SlaveBuffer.Device->SLAVE.CTRLB = TWI_SLAVE_CMD_RESPONSE_gc;
 }
 
@@ -60,7 +60,7 @@ static void TWIS_DataHandler(void)
 		{
 			SlaveBuffer.BytesSend++;
 			SlaveBuffer.Device->SLAVE.DATA = SlaveBuffer.Buffer[SlaveBuffer.ReadIndex++];
-			
+
 			if(SlaveBuffer.ReadIndex > TWI_BUFFER_SIZE)
 			{
 				SlaveBuffer.ReadIndex = 0x00;
@@ -75,7 +75,7 @@ static void TWIS_DataHandler(void)
 	{
 		SlaveBuffer.BytesReceived++;
 		SlaveBuffer.Buffer[SlaveBuffer.WriteIndex++] = SlaveBuffer.Device->SLAVE.DATA;
-		
+
 		if(SlaveBuffer.WriteIndex > TWI_BUFFER_SIZE)
 		{
 			SlaveBuffer.Device->SLAVE.CTRLB = TWI_SLAVE_ACKACT_bm;
@@ -97,10 +97,10 @@ void TWIS_Init(uint8_t* Buffer)
 	SlaveBuffer.Status = TWI_SLAVE_IDLE;
 
 	TWIE.SLAVE.CTRLA = TWI_SLAVE_INTLVL_LO_gc | TWI_SLAVE_DIEN_bm | TWI_SLAVE_APIEN_bm | TWI_SLAVE_PIEN_bm | TWI_SLAVE_ENABLE_bm;
-	
+
 	// Set the slave address
 	TWIE.SLAVE.ADDR = (TWI_SLAVE_ADDRESS << 0x01);
-	
+
 	// Use no mask or second device address
 	TWIE.SLAVE.ADDRMASK = 0x00;
 }
@@ -113,7 +113,7 @@ TWI_SlaveStatus_t TWIS_Status(void)
 ISR(TWIE_TWIS_vect)
 {
 	uint8_t Status = SlaveBuffer.Device->SLAVE.STATUS;
-	
+
 	/*
 		Check for bus error
 	*/
@@ -152,7 +152,7 @@ ISR(TWIE_TWIS_vect)
 	/*
 		Error
 	*/
-	else 
+	else
 	{
 		TWIS_ErrorHandler();
 	}

@@ -1,9 +1,9 @@
 /*
  * TestDescriptor.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: Test descriptor.
+ *  File info: Simple test descriptor for the AVR USB tutorial.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  */
 
 /** @file TestDescriptor.h
- *  @brief Test descriptor.
+ *  @brief Simple test descriptor for the AVR USB tutorial.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs

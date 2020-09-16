@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Arch/AVR8/megaAVR/USART/USART.c
+/** @file Arch/AVR8/megaAVR/mega32/USART/USART.c
  *  @brief Driver for Atmel AVR8 megaAVR USART module.
  *
  *  This contains the implementation of the megaAVR USART driver.
@@ -30,7 +30,7 @@
  *  @author Daniel Kampert
  */
 
-#include "Arch/AVR8/megaAVR/USART/USART.h"
+#include "Arch/AVR8/megaAVR/mega32/USART/USART.h"
 
  /**
   * Rx ring buffer for each USART interface

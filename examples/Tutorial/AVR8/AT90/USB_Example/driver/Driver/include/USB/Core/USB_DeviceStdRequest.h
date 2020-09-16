@@ -1,7 +1,7 @@
 /*
  * USB_DeviceStdRequest.h
  *
- *  Copyright (C) Daniel Kampert, 2018
+ *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
  *  File info: USB standard device request implementation.
 
@@ -43,6 +43,6 @@
  
  /** @brief	Handle the standard USB device requests.
   */
- void USBDevice_ControlRequest(void);
+ void USB_Device_ControlRequest(void);
 
 #endif /* USB_DEVICESTDREQUEST_H_  */ 

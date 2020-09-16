@@ -118,8 +118,8 @@ void Timer0_Init(Timer0_Config_t* Config)
 {	
 	Timer0_PowerEnable(Config->Device);
 	Timer0_SetMode(Config->Device, TIMER_MODE_0);
-	Timer0_SetPrescaler(Config->Device, Config->Prescaler);
 	Timer0_SetPeriod(Config->Device, Config->Period);
+	Timer0_SetPrescaler(Config->Device, Config->Prescaler);
 }
 
 void Timer0_WaveInit(Timer0_WaveConfig_t* Config)
@@ -167,13 +167,28 @@ void Timer0_WaveInit(Timer0_WaveConfig_t* Config)
 void Timer0_CaptureInit(Timer0_CaptureConfig_t* Config)
 {
 	GPIO_SetDirection(Config->Port, Config->Pin, GPIO_DIRECTION_IN);
-	GPIO_SetInputSense(Config->Port, Config->Pin, Config->Sense);
 	Event_SetPinSource(Config->EChannel, Config->Port, Config->Pin);
 	
 	Timer0_SetMode(Config->Device, TIMER_MODE_0);
 	Timer0_EnableCC(Config->Device, Config->Channel);
 	Timer0_SetEventChannel(Config->Device, Config->EChannel);
+
 	Timer0_SetCaptureMode(Config->Device, Config->Mode);
+
+	if(Config->Mode == TIMER_FRQ_CAPTURE)
+	{
+		GPIO_SetInputSense(Config->Port, Config->Pin, GPIO_SENSE_RISING);
+	}
+	else if(Config->Mode == TIMER_PW_CAPTURE)
+	{
+		GPIO_SetInputSense(Config->Port, Config->Pin, GPIO_SENSE_BOTH);
+	}
+	else if(Config->Mode == TIMER_INPUT_CAPTURE)
+	{
+		Timer0_SetPeriod(Config->Device, 0x7FFF);
+		//GPIO_SetInputSense(Config->Port, Config->Pin, Config->Sense);
+	}
+	
 	Timer0_SetPrescaler(Config->Device, Config->Prescaler);
 }
 

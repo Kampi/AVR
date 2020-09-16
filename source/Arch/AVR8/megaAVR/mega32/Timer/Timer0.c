@@ -22,7 +22,7 @@
   Errors and omissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Arch/AVR8/megaAVR/Timer0/Timer0.c
+/** @file Arch/AVR8/megaAVR/mega32/Timer0/Timer0.c
  *  @brief Driver for Atmel AVR8 megaAVR Timer0 module.
  *
  *  This contains the implementation of the megaAVR Timer0 driver.
@@ -30,7 +30,7 @@
  *  @author Daniel Kampert
  */
 
-#include "Arch/AVR8/megaAVR/Timer/Timer.h"
+#include "Arch/AVR8/megaAVR/mega32/Timer/Timer.h"
 
 #ifndef DOXYGEN
 	struct

@@ -54,34 +54,26 @@
 	  #error "Architecture not supported for ST7565R!"
  #endif
 
- #if(!defined ST7565R_SS)
-	#warning "Invalid configuration for the ST7565R chip select. Use default."
+ #if(!defined ST7565R_INTERFACE)
+	 #error "Invalid interface for the ST7565R!"
+ #endif
 
-	#define ST7565R_SS								PORTF, 3
+ #if(!defined ST7565R_SS)
+	 #error "Invalid configuration for the ST7565R chip select!"
  #endif
 
  #if(!defined ST7565R_REGISTER_SELECT)
-	 #warning "Invalid configuration for the ST7565R register select. Use default."
-
-	 #define ST7565R_REGISTER_SELECT				PORTD, 0
+	 #error "Invalid configuration for the ST7565R register select!"
  #endif
  
  #if(!defined ST7565R_RESET)
-	 #warning "Invalid configuration for the ST7565R reset. Use default."
-
-	 #define ST7565R_RESET							PORTA, 3
+	 #error "Invalid configuration for the ST7565R reset!"
  #endif
  
  #if(!defined ST7565R_BACKLIGHT)
-	 #warning "Invalid configuration for the ST7565R backlight. Use default."
-
-	 #define ST7565R_BACKLIGHT						PORTE, 4
+	 #error "Invalid configuration for the ST7565R backlight!"
  #endif
 
- /*
-	Public API
- */
- 
  /** @brief			Initialize the display controller.
   *  @param Config	Pointer to SPI master configuration object
   */
@@ -91,10 +83,10 @@
   */
  void Display_Reset(void);
  
- /** @brief			Enable/disable the display.
-  *  @param State	Enable/disable
+ /** @brief			Enable/Disable the display back light.
+  *  @param Enable	#true to enable the back light.
   */
- void Display_Switch(const bool State);
+ void Display_SwitchBacklight(const bool Enable);
  
  /** @brief			Write data to the display.
   *  @param Command	Display data
@@ -115,46 +107,20 @@
   *  @param Line	Line number
   */
  void Display_SetStartLine(const uint8_t Line);
- 
- /*
-	Display driver functions
- */
- 
- /** @brief	Perform a hardware reset of the display.
+
+ /** @brief			Enable/Disable the display controller.
+  *  @param Enable	Enable/Disable
   */
- void ST7565R_HardwareReset(void);
- 
- /** @brief	Perform a software reset of the display.
+ void Display_SwitchDisplay(const bool Enable);
+
+ /** @brief			Enable/Disable the invert mode of the display controller.
+  *  @param Enable	Enable/Disable
   */
- void ST7565R_SoftwareReset(void);
- 
- /** @brief			Enable/disable the sleep mode of the display.
- *  @param State	Enable/disable
+ void Display_SwitchInvert(const bool Enable);
+
+ /** @brief				Set the contrast of the display controller.
+  *  @param Contrast	Contrast value
   */
- void ST7565R_SleepEnable(const bool State);
- 
- /** @brief			Enable/disable invert mode.
-  *  @param Invert	Enable/disable
-  */
- void ST7565R_SwitchInvert(const bool Invert);
- 
- /** @brief				Set the contrast of the display.
-  *  @param Contrast	Display contrast
-  */
- void ST7565R_SetContrast(const uint8_t Contrast);
- 
- /** @brief			Enable/disable the display back light.
-  *  @param Invert	Enable/disable
-  */
- void ST7565R_SwitchBacklight(const bool State);
- 
- /** @brief			Clear the display.
-  */
- void ST7565R_Clear(void);
- 
- /** @brief			Clear one line of the display.
-  *  @param Line	Line number
-  */
- void ST7565R_ClearLine(const uint8_t Line);
- 
+ void Display_SetContrast(const uint8_t Contrast);
+
 #endif /* ST7565R_H_ */

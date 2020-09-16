@@ -29,7 +29,7 @@ static TWI_Message_t Message;
 static void TWIM_ErrorHandler(void)
 {
 	Message.Status = TWI_MASTER_ERROR;
-	
+
 	Message.Device->MASTER.CTRLC = TWI_MASTER_CMD_STOP_gc;
 }
 
@@ -115,10 +115,10 @@ static void TWIM_ReadHandler(void)
 void TWIM_Init(void)
 {
 	TWIC.CTRL = 0x00;
+	TWIC.MASTER.BAUD = 0x05;
 	TWIC.MASTER.CTRLA = TWI_MASTER_ENABLE_bm;
 	TWIC.MASTER.CTRLB = 0x00;
-	TWIC.MASTER.BAUD = 0x05;
-	
+
 	// Set the state machine into idle state
 	TWIC.MASTER.STATUS |= TWI_MASTER_BUSSTATE_IDLE_gc;
 }
@@ -126,10 +126,10 @@ void TWIM_Init(void)
 void TWIM_InitInterrupt(void)
 {
 	TWIC.CTRL = 0x00;
+	TWIC.MASTER.BAUD = 0x05;
 	TWIC.MASTER.CTRLA = TWI_MASTER_INTLVL_LO_gc | TWI_MASTER_RIEN_bm | TWI_MASTER_WIEN_bm | TWI_MASTER_ENABLE_bm;
 	TWIC.MASTER.CTRLB = 0x00;
-	TWIC.MASTER.BAUD = 0x05;
-	
+
 	// Set the state machine into idle state
 	TWIC.MASTER.STATUS |= TWI_MASTER_BUSSTATE_IDLE_gc;
 }
@@ -152,20 +152,20 @@ void TWIM_SendData(uint8_t Data)
 uint8_t TWIM_ReadData(uint8_t NACK)
 {
 	uint8_t Data = 0x00;
-	
+
 	while(!(TWIC.MASTER.STATUS & TWI_MASTER_RIF_bm));
 	Data = TWIC.MASTER.DATA;
-	
+
 	if(!NACK)
 	{
 		TWIC.MASTER.CTRLC = TWI_MASTER_CMD_RECVTRANS_gc;
 	}
-	
+
 	return Data;
 }
 
 void TWIM_SendStop(uint8_t NACK)
-{	
+{
 	if(NACK)
 	{
 		TWIC.MASTER.CTRLC = TWI_MASTER_ACKACT_bm | TWI_MASTER_CMD_STOP_gc;
@@ -180,7 +180,7 @@ void TWIM_TransmitBytes(uint8_t DeviceAddress, uint8_t Bytes, uint8_t* Data)
 {
 	Message.BufferRead = 0x00;
 	Message.BytesRead = 0x00;
-	
+
 	Message.IndexWrite = 0x00;
 	Message.BufferWrite = Data;
 	Message.BytesWrite = Bytes;
@@ -188,7 +188,7 @@ void TWIM_TransmitBytes(uint8_t DeviceAddress, uint8_t Bytes, uint8_t* Data)
 	Message.DeviceAddress = DeviceAddress;
 	Message.Register = 0x00;
 	Message.Status = TWI_MASTER_WRITE;
-	
+
 	// Start the transmission by writing the address
 	Message.Device->MASTER.ADDR = TWI_WRITE(Message.DeviceAddress);
 }
@@ -197,7 +197,7 @@ void TWIM_Transmit(uint8_t DeviceAddress, uint8_t Register, uint8_t Bytes, uint8
 {
 	Message.BufferRead = 0x00;
 	Message.BytesRead = 0x00;	
-	
+
 	Message.IndexWrite = 0x00;
 	Message.BufferWrite = Data;
 	Message.BytesWrite = Bytes;
@@ -205,7 +205,7 @@ void TWIM_Transmit(uint8_t DeviceAddress, uint8_t Register, uint8_t Bytes, uint8
 	Message.DeviceAddress = DeviceAddress;
 	Message.Register = Register;
 	Message.Status = TWI_MASTER_REGISTER;
-	
+
 	// Start the transmission by writing the address
 	Message.Device->MASTER.ADDR = TWI_WRITE(Message.DeviceAddress);
 }
@@ -214,7 +214,7 @@ void TWIM_ReceiveBytes(uint8_t DeviceAddress, uint8_t Bytes, uint8_t* Data)
 {
 	Message.BufferWrite = 0x00;
 	Message.BytesWrite = 0x00;
-	
+
 	Message.IndexRead = 0x00;
 	Message.BufferRead = Data;
 	Message.BytesRead = Bytes;
@@ -222,7 +222,7 @@ void TWIM_ReceiveBytes(uint8_t DeviceAddress, uint8_t Bytes, uint8_t* Data)
 	Message.DeviceAddress = DeviceAddress;
 	Message.Register = 0x00;
 	Message.Status = TWI_MASTER_READ;
-	
+
 	// Start the transmission by writing the address
 	Message.Device->MASTER.ADDR = TWI_READ(Message.DeviceAddress);
 }
@@ -231,7 +231,7 @@ void TWIM_Receive(uint8_t DeviceAddress, uint8_t Register, uint8_t Bytes, uint8_
 {
 	Message.BufferWrite = 0x00;
 	Message.BytesWrite = 0x00;
-	
+
 	Message.IndexRead = 0x00;
 	Message.BufferRead = Data;
 	Message.BytesRead = Bytes;
@@ -239,7 +239,7 @@ void TWIM_Receive(uint8_t DeviceAddress, uint8_t Register, uint8_t Bytes, uint8_
 	Message.DeviceAddress = DeviceAddress;
 	Message.Register = Register;
 	Message.Status = TWI_MASTER_REGISTER;
-	
+
 	// Start the transmission by writing the address
 	Message.Device->MASTER.ADDR = TWI_WRITE(Message.DeviceAddress);
 }
@@ -250,9 +250,9 @@ TWI_MasterStatus_t TWIM_Status(void)
 }
 
 ISR(TWIC_TWIM_vect)
-{	
+{
 	uint8_t Status = Message.Device->MASTER.STATUS;
-	
+
 	/*
 		Arbitration lost
 	*/
@@ -264,7 +264,7 @@ ISR(TWIC_TWIM_vect)
 		Write interrupt
 	*/
 	else if(Status & TWI_MASTER_WIF_bm)
-	{		
+	{	
 		TWIM_WriteHandler();
 	}
 	/*
