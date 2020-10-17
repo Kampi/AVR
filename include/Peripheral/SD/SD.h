@@ -149,58 +149,85 @@
   */
  typedef struct  
  {
-	 uint8_t MID;						/**< Manufacturer ID */ 
-	 uint16_t OID;						/**< OEM ID */ 
-	 uint8_t PNM[5];					/**< Product name */ 
-	 uint8_t PRV;						/**< Product revision */ 
-	 uint32_t PSN;						/**< Product serial number */ 
-	 uint8_t Reserved0:3;				/**< Reserved */ 
-	 uint16_t MDT0:11;					/**< Manufacturing date */ 
-	 uint8_t CRC0:6;					/**< CRC */ 
-	 uint8_t Reserved1:1;				/**< Reserved */ 
+	 uint8_t Reserved1:1;				/**< Reserved */
+	 uint8_t CRC7:6;					/**< CRC */
+	 uint16_t MDT:11;					/**< Manufacturing date */
+	 uint8_t Reserved0:3;				/**< Reserved */
+	 uint32_t PSN;						/**< Product serial number */
+	 uint8_t PRV;						/**< Product revision */
+	 uint8_t PNM[5];					/**< Product name */
+	 uint16_t OID;						/**< OEM ID */
+	 uint8_t MID;						/**< Manufacturer ID */	 
  } __attribute__((packed)) SD_CID_t;
  
  /** @brief SD card CSD object.
   *			NOTE: Please check http://users.ece.utexas.edu/~valvano/EE345M/SD_Physical_Layer_Spec.pdf if you need additional information.
   */
- typedef struct  
+ typedef union  
  {
-	 uint8_t CSD_STRUCTURE:2;			/**< CSD structure */
-	 uint8_t Reserved:6;				/**< Reserved */
-	 uint8_t TAAC;						/**< Data read access time 1 */
-	 uint8_t NSAC;						/**< Data read access time 2
-											 Time in clock cycles (Value * 100) */
-	 uint8_t TRAN_SPEED;				/**< Max. data transfer rate */
-	 uint16_t CCC:12;					/**< Card command classes */
-	 uint8_t READ_BL_LEN:4;				/**< Max. read data block length */
-	 uint8_t READ_BL_PARTIAL:1;			/**< Partial blocks for read allowed */
-	 uint8_t WRITE_BLK_MISALIGN:1;		/**< Write block misalignment */
-	 uint8_t READ_BLK_MISALIGN:1;		/**< Read block misalignment */
-	 uint8_t DSR_IMPL:1;				/**< DSR implemented */
-	 uint8_t Reserved1:2;				/**< Reserved */
-	 uint16_t C_SIZE:12;				/**< Device size */
-	 uint8_t VDD_R_CURR_MIN:3;			/**< Max. read current Vdd min */
-	 uint8_t VDD_R_CURR_MAX:3;			/**< Max. read current Vdd max */
-	 uint8_t VDD_W_CURR_MIN:3;			/**< Max. write current Vdd min */
-	 uint8_t VDD_W_CURR_MAX:3;			/**< Max. write current Vdd max */
-	 uint8_t C_SIZE_MULT:3;				/**< Device size multiplier */
-	 uint8_t ERASE_BLK_EN:1;			/**< Erase single block enable */
-	 uint8_t SECTOR_SIZE:7;				/**< Erase sector size */
-	 uint8_t WP_GRP_SIZE:7;				/**< Write protect group size */
-	 uint8_t WP_GRP_ENABLE:1;			/**< Write protect group enable */
-	 uint8_t Reserved2:2;				/**< Reserved */
-	 uint8_t R2W_FACTOR:3;				/**< Write speed factor */
-	 uint8_t WRITE_BL_LEN:4;			/**< Max. write data block length */
-	 uint8_t WRITE_BL_PARTIAL:1;		/**< Partial blocks for write allowed */
-	 uint8_t Reserved3:5;				/**< Reserved */
-	 uint8_t FILE_FORMAT_GRP:1;			/**< File format group */
-	 uint8_t COPY:1;					/**< Copy flag (OTP) */
-	 uint8_t PERM_WRITE_PROTECT:1;		/**< Permanent write protection */
-	 uint8_t TMP_WRITE_PROTECT:1;		/**< Temporary write protection */
-	 uint8_t FILE_FORMAT:2;				/**< File format */
-	 uint8_t Reserved4:2;				/**< Reserved */
-	 uint8_t CHECK:7;					/**< CRC checksum */	 
-	 uint8_t Reserved5:1;				/**< Reserved */
+	 struct  
+	 {
+		 uint8_t Reserved5:1;				/**< Reserved */
+		 uint8_t CHECK:7;					/**< CRC checksum */
+		 uint8_t Reserved4:2;				/**< Reserved */
+		 uint8_t FILE_FORMAT:2;				/**< File format */
+		 uint8_t TMP_WRITE_PROTECT:1;		/**< Temporary write protection */
+		 uint8_t PERM_WRITE_PROTECT:1;		/**< Permanent write protection */
+		 uint8_t COPY:1;					/**< Copy flag (OTP) */
+		 uint8_t FILE_FORMAT_GRP:1;			/**< File format group */
+		 uint8_t Reserved3:5;				/**< Reserved */
+		 uint8_t WRITE_BL_PARTIAL:1;		/**< Partial blocks for write allowed */
+		 uint8_t WRITE_BL_LEN:4;			/**< Max. write data block length */
+		 uint8_t R2W_FACTOR:3;				/**< Write speed factor */
+		 uint8_t Reserved2:2;				/**< Reserved */
+		 uint8_t WP_GRP_ENABLE:1;			/**< Write protect group enable */
+		 uint8_t WP_GRP_SIZE:7;				/**< Write protect group size */
+		 uint8_t SECTOR_SIZE:7;				/**< Erase sector size */
+		 uint8_t ERASE_BLK_EN:1;			/**< Erase single block enable */
+		 uint8_t C_SIZE_MULT:3;				/**< Device size multiplier */
+		 uint8_t VDD_W_CURR_MAX:3;			/**< Max. write current Vdd max */
+		 uint8_t VDD_W_CURR_MIN:3;			/**< Max. write current Vdd min */
+		 uint8_t VDD_R_CURR_MAX:3;			/**< Max. read current Vdd max */
+		 uint8_t VDD_R_CURR_MIN:3;			/**< Max. read current Vdd min */
+		 uint16_t C_SIZE:12;				/**< Device size */
+		 uint8_t Reserved1:2;				/**< Reserved */
+	 } SD_CSD1_t;
+	 struct
+	 {
+		 uint8_t Reserved6:1;				/**< Reserved */
+		 uint8_t CHECK:7;					/**< CRC checksum */
+		 uint8_t Reserved5:2;				/**< Reserved */
+		 uint8_t FILE_FORMAT:2;				/**< File format */
+		 uint8_t TMP_WRITE_PROTECT:1;		/**< Temporary write protection */
+		 uint8_t PERM_WRITE_PROTECT:1;		/**< Permanent write protection */
+		 uint8_t COPY:1;					/**< Copy flag (OTP) */
+		 uint8_t FILE_FORMAT_GRP:1;			/**< File format group */
+		 uint8_t Reserved4:5;				/**< Reserved */
+		 uint8_t WRITE_BL_PARTIAL:1;		/**< Partial blocks for write allowed */
+		 uint8_t WRITE_BL_LEN:4;			/**< Max. write data block length */
+		 uint8_t R2W_FACTOR:3;				/**< Write speed factor */
+		 uint8_t Reserved3:2;				/**< Reserved */
+		 uint8_t WP_GRP_ENABLE:1;			/**< Write protect group enable */
+		 uint8_t WP_GRP_SIZE:7;				/**< Write protect group size */
+		 uint8_t SECTOR_SIZE:7;				/**< Erase sector size */
+		 uint8_t ERASE_BLK_EN:1;			/**< Erase single block enable */
+		 uint8_t Reserved2:1;				/**< Reserved */
+		 uint32_t C_SIZE:22;				/**< Device size */
+		 uint8_t Reserved1:6;				/**< Reserved */
+	 } SD_CSD2_t;
+	 
+	 uint8_t DSR_IMPL:1;					/**< DSR implemented */
+	 uint8_t READ_BLK_MISALIGN:1;			/**< Read block misalignment */
+	 uint8_t WRITE_BLK_MISALIGN:1;			/**< Write block misalignment */
+	 uint8_t READ_BL_PARTIAL:1;				/**< Partial blocks for read allowed */
+	 uint8_t READ_BL_LEN:4;					/**< Max. read data block length */
+	 uint16_t CCC:12;						/**< Card command classes */
+	 uint8_t TRAN_SPEED;					/**< Max. data transfer rate */
+	 uint8_t NSAC;							/**< Data read access time 2
+												 Time in clock cycles (Value * 100) */
+	 uint8_t TAAC;							/**< Data read access time 1 */
+	 uint8_t Reserved:6;					/**< Reserved */
+	 uint8_t CSD_STRUCTURE:2;				/**< CSD structure */
  } __attribute__((packed)) SD_CSD_t;
 
  /** @brief SD card status object.
