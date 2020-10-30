@@ -1,9 +1,9 @@
 /*
- * Wave.h
+ * WaveFormat.h
  *
  *  Copyright (C) Daniel Kampert, 2020
  *  Website: www.kampis-elektroecke.de
- *  File info: Wave file format definitions.
+ *  File info: Wave file implementation for AVR microcontroller.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -22,15 +22,15 @@
   Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
  */
 
-/** @file Common/Wave/Wave.h
- *  @brief Wave file format definitions for the I2S audio player project.
+/** @file Common/WaveFormat/WaveFormat.h
+ *  @brief Wave file implementation for AVR microcontroller.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs
  */
 
-#ifndef WAVE_H_
-#define WAVE_H_
+#ifndef WAVEFORMAT_H_
+#define WAVEFORMAT_H_
 
  #include <stdint.h>
 
@@ -95,4 +95,4 @@
 	 Wave_Header_t DataHeader;			/**< Contains wave file data chunk header. */
  } __attribute__((packed)) Wave_t;
 
-#endif /* WAVE_H_ */
+#endif /* WAVEFORMAT_H_ */
