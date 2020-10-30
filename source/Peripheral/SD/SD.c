@@ -240,9 +240,10 @@ static const uint8_t SD_SendCommand(const uint8_t Command, const uint32_t Arg)
 		SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), 0xFF);
 	}
 
-	// Wait for the response (0 - 8 bytes for SD cards and 1 - 8 bytes for MMC)
+	// Wait for the response by processing the NCR field (0 - 8 bytes for SD cards and 1 - 8 bytes for MMC)
 	for(uint8_t i = 0x00; i < 0x08; i++)
 	{
+		// Get the response
 		uint8_t DataIn = SD_SPIM_TRANSMIT(&CONCAT(SD_INTERFACE), 0xFF);
 		if(DataIn != 0xFF)
 		{
@@ -294,7 +295,7 @@ static const SD_Error_t SD_ReadBlock(const uint32_t Length, uint8_t* Buffer)
 	return SD_SUCCESSFULL;
 }
 
-/** @brief			Read a single block of data from the SD card.
+/** @brief			Write a single block of data to the SD card.
  *  @param Buffer	Pointer to data buffer
  *  @param Length	Block length
  *  @param Token	Stop token
@@ -763,16 +764,16 @@ const SD_Error_t SD_ReadDataBlocks(const uint32_t Address, const uint32_t Blocks
 
 const SD_Error_t SD_WriteDataBlock(const uint32_t Address, const uint8_t* Buffer)
 {
+	uint8_t Status = SD_NO_RESPONSE;
+
 	if((SD_SendCommand(SD_ID_TO_CMD(SD_CMD_WRITE_SINGLE_BLOCK), Address) == SD_SUCCESSFULL) && (SD_WriteBlock(Buffer, SD_BLOCK_SIZE, SD_TOKEN_DATA) == SD_SUCCESSFULL))
 	{
-		SD_Deselect();
-
-		return SD_SUCCESSFULL;
+		Status = SD_SUCCESSFULL;
 	}
 
 	SD_Deselect();
 
-	return SD_NO_RESPONSE;
+	return Status;
 }
 
 const SD_Error_t SD_WriteDataBlocks(const uint32_t Address, const uint32_t Blocks, const uint8_t* Buffer)

@@ -92,7 +92,7 @@ int main(void)
 
 	while(1) 
 	{
-	    USB_Poll();
+		USB_Poll();
 		USB_DeviceTask();
 	}
 }
