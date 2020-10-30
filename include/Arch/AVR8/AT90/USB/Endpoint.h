@@ -84,27 +84,35 @@
  /** @brief			Select an endpoint.
   *  @param Address	Endpoint address
   */
- static inline void Endpoint_Select(const uint8_t Address) __attribute__ ((always_inline));
+ static inline void Endpoint_Select(const uint8_t Address) __attribute__((always_inline));
  static inline void Endpoint_Select(const uint8_t Address)
  {
 	 UENUM = (Address & 0x0F);
  }
 
  /** @brief			Reset the selected endpoint.
-  *					NOTE: You have so use #Endpoint_Select first!
   *  @param Address	Endpoint address
   */
- static inline void Endpoint_Reset(const uint8_t Address) __attribute__ ((always_inline));
+ static inline void Endpoint_Reset(const uint8_t Address) __attribute__((always_inline));
  static inline void Endpoint_Reset(const uint8_t Address)
  {
 	 UERST = (0x01 << (Address & 0x0F));
 	 UERST = 0x00;
  }
 
+ /** @brief	Reset the data toggle for the selected endpoint.
+  *			NOTE: You have so use #Endpoint_Select first!
+  */
+ static inline void Endpoint_ResetDataToggle(void) __attribute__((always_inline));
+ static inline void Endpoint_ResetDataToggle(void)
+ {
+	 UECONX |= (0x01 << RSTDT);
+ }
+
  /** @brief	Enable the selected endpoint.
   *			NOTE: You have so use #Endpoint_Select first!
   */
- static inline void Endpoint_Enable(void) __attribute__ ((always_inline));
+ static inline void Endpoint_Enable(void) __attribute__((always_inline));
  static inline void Endpoint_Enable(void)
  {
 	 UECONX |= (0x01 << EPEN);
@@ -113,7 +121,7 @@
  /** @brief	Disable the selected endpoint.
   *			NOTE: You have so use #Endpoint_Select first!
   */
- static inline void Endpoint_Disable(void) __attribute__ ((always_inline));
+ static inline void Endpoint_Disable(void) __attribute__((always_inline));
  static inline void Endpoint_Disable(void)
  {
 	 UECONX &= ~(0x01 << EPEN);
@@ -123,7 +131,7 @@
   *				NOTE: You have so use #Endpoint_Select first!
   *  @return	Endpoint direction
   */
- static inline Endpoint_Direction_t Endpoint_GetDirection(void) __attribute__ ((always_inline));
+ static inline Endpoint_Direction_t Endpoint_GetDirection(void) __attribute__((always_inline));
  static inline Endpoint_Direction_t Endpoint_GetDirection(void)
  {
 	 if(UECFG0X & (0x01 << EPDIR))
@@ -137,7 +145,7 @@
  /** @brief		Get the current active endpoint.
   *  @return	Endpoint address
   */
- static inline uint8_t Endpoint_GetCurrent(void) __attribute__ ((always_inline));
+ static inline uint8_t Endpoint_GetCurrent(void) __attribute__((always_inline));
  static inline uint8_t Endpoint_GetCurrent(void)
  {
 	 return (UENUM & 0x0F);
@@ -147,7 +155,7 @@
   *				NOTE: You have so use #Endpoint_Select first!
   *  @return	Endpoint data
   */
- static inline uint8_t Endpoint_ReadByte(void) __attribute__ ((always_inline));
+ static inline uint8_t Endpoint_ReadByte(void) __attribute__((always_inline));
  static inline uint8_t Endpoint_ReadByte(void)
  {
 	 return UEDATX;
@@ -156,7 +164,7 @@
  /** @brief		Acknowledge the packet and clear the endpoint bank.
   *				NOTE: You have so use #Endpoint_Select first!
   */
- static inline void Endpoint_ClearSETUP(void) __attribute__ ((always_inline));
+ static inline void Endpoint_ClearSETUP(void) __attribute__((always_inline));
  static inline void Endpoint_ClearSETUP(void)
  {
 	 UEINTX &= ~(0x01 << RXSTPI);
@@ -165,7 +173,7 @@
  /** @brief		Acknowledge OUT data and clear the endpoint bank.
   *				NOTE: You have so use #Endpoint_Select first!
   */
- static inline void Endpoint_AckOUT(void) __attribute__ ((always_inline));
+ static inline void Endpoint_AckOUT(void) __attribute__((always_inline));
  static inline void Endpoint_AckOUT(void)
  {
 	 UEINTX &= ~((0x01 << RXOUTI) | (0x01 << FIFOCON));
@@ -174,7 +182,7 @@
  /** @brief		Send the packet and clear the endpoint bank.
   *				NOTE: You have so use #Endpoint_Select first!
   */
- static inline void Endpoint_FlushIN(void) __attribute__ ((always_inline));
+ static inline void Endpoint_FlushIN(void) __attribute__((always_inline));
  static inline void Endpoint_FlushIN(void)
  {
 	 UEINTX &= ~((0x01 << TXINI) | (0x01 << FIFOCON));
@@ -184,7 +192,7 @@
   *				NOTE: You have so use #Endpoint_Select first!
   *  @return	#true when a setup packed was received
   */
- static inline uint8_t Endpoint_SETUPReceived(void) __attribute__ ((always_inline));
+ static inline uint8_t Endpoint_SETUPReceived(void) __attribute__((always_inline));
  static inline uint8_t Endpoint_SETUPReceived(void)
  {
 	 return UEINTX & (0x01 << RXSTPI);
@@ -194,7 +202,7 @@
   *				NOTE: You have so use #Endpoint_Select first!
   *  @return	#true when OUT data received.
   */
- static inline uint8_t Endpoint_OUTReceived(void) __attribute__ ((always_inline));
+ static inline uint8_t Endpoint_OUTReceived(void) __attribute__((always_inline));
  static inline uint8_t Endpoint_OUTReceived(void)
  {
 	 return UEINTX & (0x01 << RXOUTI);
@@ -204,7 +212,7 @@
   *				NOTE: You have so use #Endpoint_Select first!
   *  @return	#true when bank is ready
   */
- static inline uint8_t Endpoint_INReady(void) __attribute__ ((always_inline));
+ static inline uint8_t Endpoint_INReady(void) __attribute__((always_inline));
  static inline uint8_t Endpoint_INReady(void)
  {
 	 return UEINTX & (0x01 << TXINI);
@@ -213,7 +221,7 @@
  /** @brief	Stall the current endpoint.
   *			NOTE: You have so use #Endpoint_Select first!
   */
- static inline void Endpoint_STALLTransaction(void) __attribute__ ((always_inline));
+ static inline void Endpoint_STALLTransaction(void) __attribute__((always_inline));
  static inline void Endpoint_STALLTransaction(void)
  {
 	 UECONX |= (0x01 << STALLRQ);
@@ -222,7 +230,7 @@
  /** @brief	Clear the stall condition.
   *			NOTE: You have so use #Endpoint_Select first!
   */
- static inline void Endpoint_ClearSTALL(void) __attribute__ ((always_inline));
+ static inline void Endpoint_ClearSTALL(void) __attribute__((always_inline));
  static inline void Endpoint_ClearSTALL(void)
  {
 	 UECONX |= (0x01 << STALLRQC);
@@ -232,27 +240,47 @@
   *				NOTE: You have so use #Endpoint_Select first!
   *  @return	#true when stalled
   */
- static inline uint8_t Endpoint_IsSTALL(void) __attribute__ ((always_inline));
- static inline uint8_t Endpoint_IsSTALL(void)
+ static inline bool Endpoint_IsSTALL(void) __attribute__((always_inline));
+ static inline bool Endpoint_IsSTALL(void)
  { 
-	 return UECONX & (0x01 << STALLRQ);
+	 return (UECONX & (0x01 << STALLRQ));
  }
 
  /** @brief		Test if the application can read data from the endpoint or can write data to the endpoint.
   *				NOTE: You have so use #Endpoint_Select first!
   *  @return	#true when IN endpoint and write is allowed, #true when OUT endpoint and read is allowed
   */
- static inline uint8_t Endpoint_IsReadWriteAllowed(void) __attribute__ ((always_inline));
- static inline uint8_t Endpoint_IsReadWriteAllowed(void)
+ static inline bool Endpoint_IsReadWriteAllowed(void) __attribute__((always_inline));
+ static inline bool Endpoint_IsReadWriteAllowed(void)
  { 
-	 return UEINTX & (0x01 << RWAL);
+	 return (UEINTX & (0x01 << RWAL));
+ }
+
+ /** @brief		Test if the endpoint is configured successfully.
+  *				NOTE: You have so use #Endpoint_Select first!
+  *  @return	#true when IN endpoint and write is allowed, #true when OUT endpoint and read is allowed
+  */
+ static inline bool Endpoint_IsConfigured(void) __attribute__((always_inline));
+ static inline bool Endpoint_IsConfigured(void)
+ {
+	 return (UESTA0X & (0x01 << CFGOK));
+ }
+
+ /** @brief		Test if the endpoint is enabled.
+  *				NOTE: You have so use #Endpoint_Select first!
+  *  @return	#true when IN endpoint and write is allowed, #true when OUT endpoint and read is allowed
+  */
+ static inline bool Endpoint_IsEnabled(void) __attribute__((always_inline));
+ static inline bool Endpoint_IsEnabled(void)
+ {
+	 return (UECONX & (0x01 << EPEN));
  }
 
  /** @brief		Get the number of bytes currently stored in the endpoint FIFO.
   *				NOTE: You have so use #Endpoint_Select first!
   *  @return	Byte count
   */
- static inline uint16_t Endpoint_GetBytes(void) __attribute__ ((always_inline));
+ static inline uint16_t Endpoint_GetBytes(void) __attribute__((always_inline));
  static inline uint16_t Endpoint_GetBytes(void)
  {
 	 return UEBCX;
@@ -262,7 +290,7 @@
   *			NOTE: You have so use #Endpoint_Select first!
   *  @Data	Data byte
   */
- static inline void Endpoint_WriteByte(const uint8_t Data) __attribute__ ((always_inline));
+ static inline void Endpoint_WriteByte(const uint8_t Data) __attribute__((always_inline));
  static inline void Endpoint_WriteByte(const uint8_t Data)
  {
 	 UEDATX = Data;
@@ -272,7 +300,7 @@
   *			NOTE: You have so use #Endpoint_Select first!
   *  @Data	Data bytes
   */
- static inline void Endpoint_WriteInteger(const uint16_t Data) __attribute__ ((always_inline));
+ static inline void Endpoint_WriteInteger(const uint16_t Data) __attribute__((always_inline));
  static inline void Endpoint_WriteInteger(const uint16_t Data)
  {
 	 UEDATX = (Data & 0xFF);

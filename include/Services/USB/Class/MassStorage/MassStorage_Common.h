@@ -38,6 +38,8 @@
 
  #include "Common/Common.h"
 
+ #include "Interfaces/SCSI/SCSI.h"
+
  /** @brief	Command block wrapper magic number.
   */
  #define MASSSTORAGE_CBW_SIGNATURE					0x43425355UL
@@ -86,6 +88,25 @@
  } USB_MassStorage_ClassRequests_t;
 
  /** @ingroup 	USB-MassStorage
+  *  @brief		USB mass storage command status codes, used by \ref USB_MassStorage_CommandStatusWrapper_t.bCSWStatus.
+  */
+ typedef enum
+ {
+	 MS_STATUS_COMMAND_PASS = 0x00,										/**< Command Passed ("good status") */
+	 MS_STATUS_COMMAND_FAIL = 0x01,										/**< Command failed */
+	 MS_STATUS_COMMAND_PHASE_ERROR = 0x02,								/**< Phase error */
+ } USB_MassStorage_CommandStatus_t;
+
+ /** @ingroup 	USB-MassStorage
+  *  @brief		USB mass storage flags used by \ref USB_MassStorage_CommandBlockWrapper_t.bmCBWFlags.
+  */
+ typedef enum
+ {
+	 MS_FLAGS_DIR_OUT_HOST_DEVICE = 0x00,								/**< Data-Out from host to the device */
+	 MS_FLAGS_DIR_IN_DEVICE_HOST = 0x80,								/**< Data-In from device to the host */
+ } USB_MassStorage_Flags_t;
+
+ /** @ingroup 	USB-MassStorage
   *  @brief		USB mass storage class command block wrapper object.
   */
  typedef struct
@@ -104,7 +125,8 @@
 																										0 = Data-Out from host to the device \n
 																										1 = Data-In from the device to the host \n
 																				Bit[6] Obsolete		The host shall set this bit to zero. \n
-																				Bit[5:0] Reserved	The host shall set these bits to zero. */
+																				Bit[5:0] Reserved	The host shall set these bits to zero.
+																				You can use the \ref USB_MassStorage_Flags_t enum for processing the values. */
 	 uint8_t bCBWLUN;													/**< The device Logical Unit Number (LUN) to which the command block is being sent. For devices that \n
 																			 support multiple LUNs, the host shall place into this field the LUN to which this command block is \n
 																			 addressed. Otherwise, the host shall set this field to zero. */
@@ -137,7 +159,8 @@
 																				 0x01			Command Failed \n
 																				 0x02			Phase Error
 																				 0x03 / 0x04	Reserved (Obsolete) \n
-																				 0x05 to 0xFF	Reserved */
+																				 0x05 to 0xFF	Reserved
+																			 You can use the \ref USB_MassStorage_CommandStatus_t enum for processing the values. */
  } __attribute__((packed)) USB_MassStorage_CommandStatusWrapper_t;
 
 #endif /* MASSSTORAGE_COMMON_H_ */

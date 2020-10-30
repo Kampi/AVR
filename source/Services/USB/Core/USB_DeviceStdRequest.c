@@ -131,6 +131,7 @@ void USB_Device_ControlRequest(void)
 		{
 			break;
 		}
+		case REQUEST_SET_FEATURE:
 		case REQUEST_CLEAR_FEATURE:
 		{
 			/*
@@ -138,54 +139,33 @@ void USB_Device_ControlRequest(void)
 					- SETUP stage
 					- STATUS stage
 			*/
-
-			if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE))
-			{
-			}
-			else if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_INTERFACE))
-			{
-			}
-			else if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_ENDPOINT))
+			if((_ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE)) ||
+			   (_ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_ENDPOINT)))
 			{
 				if(_ControlRequest.wValue == REQUEST_FEATURE_ENDPOINT_HALT)
 				{
-					// Select the endpoint and clear HALT
-					Endpoint_Select(_ControlRequest.wIndex);
-					Endpoint_ClearSTALL();
-				}
-			}
+					uint8_t Address = ((uint8_t)_ControlRequest.wIndex & 0x0F);
 
-			// Select the control endpoint
-			Endpoint_Select(ENDPOINT_CONTROL_ADDRESS);
+					if((Address == ENDPOINT_CONTROL_ADDRESS) || (Address >= USB_MAX_ENDPOINTS))
+					{
+						return;
+					}
 
-			// Process the STATUS stage
-			Endpoint_HandleSTATUS(_ControlRequest.bmRequestType);
+					Endpoint_Select(Address);
 
-			break;
-		}
-		case REQUEST_SET_FEATURE:
-		{
-			/*
-				SET_FEATURE request contains
-					- SETUP stage
-					- STATUS stage
-			*/
-
-			if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_DEVICE))
-			{
-				if(_ControlRequest.wValue == REQUEST_FEATURE_DEVICE_TEST)
-				{
-					// Select test with _ControlRequest.wIndex
-				}
-			}
-			else if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_INTERFACE))
-			{
-			}
-			else if(_ControlRequest.bmRequestType == (REQUEST_DIRECTION_HOST_TO_DEVICE | REQUEST_TYPE_STANDARD | REQUEST_RECIPIENT_ENDPOINT))
-			{
-				if(_ControlRequest.wValue == REQUEST_FEATURE_ENDPOINT_HALT)
-				{
-					// Select the endpoint and set HALT
+					if(Endpoint_IsEnabled())
+					{
+						if(_ControlRequest.bRequest == REQUEST_SET_FEATURE)
+						{
+							Endpoint_STALLTransaction();
+						}
+						else
+						{
+							Endpoint_ClearSTALL();
+							Endpoint_Reset(Address);
+							Endpoint_ResetDataToggle();
+						}
+					}
 				}
 			}
 

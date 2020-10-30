@@ -65,20 +65,20 @@
   */
  Endpoint_CS_ErrorCode_t USB_DeviceStream_ControlIN(const void* const Buffer, const uint16_t Length, const uint16_t RequestedLength);
  
- /** @brief			Send data to the host by using an IN endpoint.
-  *  @param Buffer	Pointer to data buffer
-  *  @param Length	Length of data
-  *  @param Offset	Pointer for processed data bytes
-  *  @return		Error code
+ /** @brief				Send data to the host by using an IN endpoint.
+  *  @param Buffer		Pointer to data buffer
+  *  @param Length		Length of data
+  *  @param BytesSend	BytesSend for transmitted data bytes
+  *  @return			Error code
   */
- Endpoint_DS_ErrorCode_t USB_DeviceStream_DataIN(const void* Buffer, const uint16_t Length, uint16_t* Offset);
+ Endpoint_DS_ErrorCode_t USB_DeviceStream_DataIN(const void* Buffer, const uint16_t Length, uint16_t* BytesSend);
  
- /** @brief			Receive data from the host by using an OUT endpoint.
-  *  @param Buffer	Pointer to data buffer
-  *  @param Length	Length of data
-  *  @param Offset	Pointer for processed data bytes
-  *  @return		Error code
+ /** @brief				Receive data from the host by using an OUT endpoint.
+  *  @param Buffer		Pointer to data buffer
+  *  @param Length		Length of data
+  *  @param BytesSend	Pointer for transmitted data bytes
+  *  @return			Error code
   */
- Endpoint_DS_ErrorCode_t USB_DeviceStream_DataOUT(const void* Buffer, const uint16_t Length, uint16_t* Offset);
+ Endpoint_DS_ErrorCode_t USB_DeviceStream_DataOUT(const void* Buffer, const uint16_t Length, uint16_t* BytesSend);
 
 #endif /* USB_DEVICESTREAM_H_ */

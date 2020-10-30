@@ -33,5 +33,6 @@
 #define CLASS_H_
 
  #include "HID/HID.h"
+ #include "MassStorage/MassStorage.h"
 
 #endif /* CLASS_H_ */

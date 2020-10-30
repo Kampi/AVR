@@ -163,16 +163,16 @@ Endpoint_CS_ErrorCode_t USB_DeviceStream_ControlIN(const void* Buffer, const uin
 	return ENDPOINT_CS_NO_ERROR;
 }
 
-Endpoint_DS_ErrorCode_t USB_DeviceStream_DataIN(const void* Buffer, const uint16_t Length, uint16_t* Offset)
+Endpoint_DS_ErrorCode_t USB_DeviceStream_DataIN(const void* Buffer, const uint16_t Length, uint16_t* BytesSend)
 {
-	uint16_t Processed_Temp = 0x00;
+	uint16_t BytesSend_Temp = 0x00;
 	uint16_t Length_Temp = Length;
 	uint8_t* Buffer_Temp = (uint8_t*)Buffer;
 
-	if(Offset != NULL)
+	if(BytesSend != NULL)
 	{
-		Length_Temp -= *Offset;
-		Buffer_Temp += *Offset;
+		Length_Temp -= *BytesSend;
+		Buffer_Temp += *BytesSend;
 	}
 
 	while(Length_Temp)
@@ -182,7 +182,7 @@ Endpoint_DS_ErrorCode_t USB_DeviceStream_DataIN(const void* Buffer, const uint16
 		{
 			Endpoint_WriteByte(*Buffer_Temp++);
 			Length_Temp--;
-			Processed_Temp++;
+			BytesSend_Temp++;
 		}
 		// Buffer full
 		else
@@ -194,7 +194,7 @@ Endpoint_DS_ErrorCode_t USB_DeviceStream_DataIN(const void* Buffer, const uint16
 			Endpoint_DS_ErrorCode_t ErrorCode = USB_DeviceStream_WaitReady(100);
 			if(ErrorCode != ENDPOINT_DS_NO_ERROR)
 			{
-				*Offset = Processed_Temp;
+				*BytesSend = BytesSend_Temp;
 
 				return ErrorCode;
 			}
@@ -204,33 +204,31 @@ Endpoint_DS_ErrorCode_t USB_DeviceStream_DataIN(const void* Buffer, const uint16
 	// Clear the buffer and send the last packet
 	Endpoint_FlushIN();
 
-	*Offset = Processed_Temp;
+	*BytesSend = BytesSend_Temp;
 
 	return ENDPOINT_DS_NO_ERROR;
 }
 
-Endpoint_DS_ErrorCode_t USB_DeviceStream_DataOUT(const void* Buffer, const uint16_t Length, uint16_t* Offset)
+Endpoint_DS_ErrorCode_t USB_DeviceStream_DataOUT(const void* Buffer, const uint16_t Length, uint16_t* BytesSend)
 {
-	uint16_t Processed_Temp = 0x00;
+	uint16_t BytesSend_Temp = 0x00;
 	uint16_t Length_Temp = Length;
 	uint8_t* Buffer_Temp = (uint8_t*)Buffer;
 
-	if(Offset != NULL)
+	if(BytesSend != NULL)
 	{
-		Length_Temp -= *Offset;
-		Buffer_Temp += *Offset;
+		Length_Temp -= *BytesSend;
+		Buffer_Temp += *BytesSend;
 	}
 
 	while(Length_Temp)
 	{
-		uint16_t Transfer = 0x00;
-
 		// Read the data from the receive buffer
 		if(Endpoint_IsReadWriteAllowed())
 		{
 			*Buffer_Temp++ = Endpoint_ReadByte();
 			Length_Temp--;
-			Transfer++;
+			BytesSend_Temp++;
 		}
 		// Buffer full
 		else
@@ -241,7 +239,7 @@ Endpoint_DS_ErrorCode_t USB_DeviceStream_DataOUT(const void* Buffer, const uint1
 			Endpoint_DS_ErrorCode_t ErrorCode = USB_DeviceStream_WaitReady(100);
 			if(ErrorCode != ENDPOINT_DS_NO_ERROR)
 			{
-				*Offset += Processed_Temp;
+				*BytesSend += BytesSend_Temp;
 
 				return ErrorCode;
 			}
@@ -251,7 +249,7 @@ Endpoint_DS_ErrorCode_t USB_DeviceStream_DataOUT(const void* Buffer, const uint1
 	// Handshake the last data packet
 	Endpoint_AckOUT();
 
-	*Offset += Processed_Temp;
+	*BytesSend += BytesSend_Temp;
 
 	return ENDPOINT_DS_NO_ERROR;
 }

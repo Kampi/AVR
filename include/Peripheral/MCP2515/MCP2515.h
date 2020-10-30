@@ -49,8 +49,8 @@
 
  #if(MCU_ARCH == MCU_ARCH_AVR8)
 	 #if(MCU_NAME == MCU_NAME_ATMEGA32)
-		 #include "Arch/AVR8/megaAVR/GPIO/GPIO.h"
-		 #include "Arch/AVR8/megaAVR/SPI/SPI.h"
+		 #include "Arch/AVR8/megaAVR/mega32/GPIO/GPIO.h"
+		 #include "Arch/AVR8/megaAVR/mega32/SPI/SPI.h"
 	 #else
 		 #error "Invalid CPU for MCP2515!"
 	 #endif
@@ -262,7 +262,7 @@
   *							NOTE: Set it to #NULL if you have initialized the SPI already
   *  @param DeviceConfig	Pointer to MCP2515 configuration object
   */
- void MCP2515_Init(SPIM_Config_t* Config, MCP2515_Config_t* DeviceConfig, MCP2515_ErrorCallback_t Bla);
+ void MCP2515_Init(SPIM_Config_t* Config, const MCP2515_Config_t* DeviceConfig);
 
  /** @brief					Configure the bit timing.
   *  @param Config			Pointer to bit timing configuration object
@@ -343,9 +343,8 @@
  /** @brief				Send a CAN message.
   *  @param Message		Pointer to CAN message object
   *  @param Priority	Message priority
-  *  @param Buffer		Transmit buffer
   *  @return			Error code
   */
- MCP2515_ErrorCode_t MCP2515_PrepareMessage(CAN_Message_t* Message, const MCP2515_MessagePriority_t Priority, const MCP2515_TransmitBuffer_t Buffer);
+ MCP2515_ErrorCode_t MCP2515_PrepareMessage(CAN_Message_t* Message, const MCP2515_MessagePriority_t Priority);
  
 #endif /* MCP2515_H_ */

@@ -111,7 +111,7 @@ bool Endpoint_Configure(const uint8_t Address, const Endpoint_Type_t Type, const
 		UEIENX = UEIENX_Temp;
 
 		// Check the configuration
-		if(!(UESTA0X & (0x01 << CFGOK)))
+		if(!Endpoint_IsConfigured())
 		{
 			return false;
 		}
