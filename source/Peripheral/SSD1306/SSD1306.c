@@ -36,7 +36,7 @@
  *  @{
  */
  	/** @defgroup SSD1306-Commands
-	 *  SD card commands.
+	 *  SSD1306 commands.
 	 *  @{
 	 */
 		#define SSD1306_CMD_LOW_COL(Column)					(0x00 | (Column))
