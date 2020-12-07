@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for MCP2515 CAN controller.
+ *  File info: Driver for MCP2515 SPI CAN controller.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,10 +23,10 @@
  */
 
 /** @file Peripheral/MCP2515/MCP2515.h
- *  @brief	Driver for Microchip MCP2515 CAN controller.
+ *  @brief	Driver for Microchip MCP2515 SPI CAN controller.
  *			NOTE: This driver needs interrupt support!
  *
- *  This file contains the prototypes and definitions for the CAN controller driver.
+ *  This file contains the prototypes and definitions for the Microchip MCP2515 CAN controller driver.
  *
  *  @bug	Error handling is missing
  *  @author Daniel Kampert
@@ -257,9 +257,9 @@
 															 NOTE: Set it to #NULL if you do not want to use it. */
  } MCP2515_Config_t;
 
- /** @brief					Initialize the MCP2515 controller.
+ /** @brief					Initialize the MCP2515 CAN controller.
   *  @param Config			Pointer to SPI configuration object
-  *							NOTE: Set it to #NULL if you have initialized the SPI already
+  *							NOTE: Set it to #NULL if you have initialized the SPI already.
   *  @param DeviceConfig	Pointer to MCP2515 configuration object
   */
  void MCP2515_Init(SPIM_Config_t* Config, const MCP2515_Config_t* DeviceConfig);

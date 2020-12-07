@@ -25,7 +25,7 @@
 /** @file main.c
  *  @brief PCA9685 example for XMega.
  *
- *  Software for the XMega PXA9685 example from
+ *  Software for the XMega PCA9685 example from
  *  <>
  *
  *  @author Daniel Kampert

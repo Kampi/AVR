@@ -42,7 +42,7 @@
 void SPIS_Init(SPIS_Config_t* Config)
 {
 	uint8_t ID = 0x00;
-	
+
 	if(Config->Device == &SPIC)
 	{
 		ID = SPIC_ID;
@@ -51,26 +51,26 @@ void SPIS_Init(SPIS_Config_t* Config)
 	{
 		ID = SPIE_ID;
 	}
-	
+
 	#if(defined SPIE)
 		else if(Config->Device == &SPIE)
 		{
 			ID = SPIE_ID;
 		}
 	#endif
-	
+
 	#if(defined SPIF)
 		else if(Config->Device == &SPIF)
 		{
 			ID = SPIF_ID;
 		}
 	#endif
-	
+
 	SPI_t* Device = (SPI_t*)Config->Device;
 	SPI_PowerEnable(Device);
-	
+
 	_SPI_DeviceModes[ID] = SPI_SLAVE;
-	
+
 	if(ID == SPIC_ID)
 	{
 		GPIO_SetDirection(&PORTC, SPI_MISO_PIN, GPIO_DIRECTION_OUT);
@@ -87,14 +87,14 @@ void SPIS_Init(SPIS_Config_t* Config)
 	{
 		GPIO_SetDirection(&PORTF, SPI_MISO_PIN, GPIO_DIRECTION_OUT);
 	}
-	
+
 	SPI_Enable(Device);
 }
 
 const SPI_Status_t SPIS_Status(const SPI_t* Device)
 {
 	uint8_t ID = 0x00;
-	
+
 	if(Device == &SPIC)
 	{
 		ID = SPIC_ID;
@@ -103,20 +103,20 @@ const SPI_Status_t SPIS_Status(const SPI_t* Device)
 	{
 		ID = SPIE_ID;
 	}
-	
+
 	#if(defined SPIE)
 		else if(Device == &SPIE)
 		{
 			ID = SPIE_ID;
 		}
 	#endif
-	
+
 	#if(defined SPIF)
 		else if(Device == &SPIF)
 		{
 			ID = SPIF_ID;
 		}
 	#endif
-	
+
 	return _SPIS_Buffer[ID].Status;
 }

@@ -49,7 +49,7 @@ void SPIM_Init(SPIM_Config_t* Config)
 	}
 	else if(Config->Device == &SPID)
 	{
-		ID = SPIE_ID;
+		ID = SPID_ID;
 	}
 	
 	#if(defined SPIE)
@@ -73,9 +73,21 @@ void SPIM_Init(SPIM_Config_t* Config)
 	
 	if(ID == SPIC_ID)
 	{
+		GPIO_SetDirection(&PORTC, SPI_SS_PIN, GPIO_DIRECTION_OUT);
+		GPIO_SetDirection(&PORTC, SPI_SCK_PIN, GPIO_DIRECTION_OUT);
+
+		if((Config->Mode == SPI_MODE_2) || (Config->Mode == SPI_MODE_3))
+		{
+			GPIO_Set(&PORTC, SPI_SCK_PIN);
+		}
+
+		GPIO_SetDirection(&PORTC, SPI_MOSI_PIN, GPIO_DIRECTION_OUT);
+	}
+	else if(ID == SPID_ID)
+	{
 		GPIO_SetDirection(&PORTD, SPI_SS_PIN, GPIO_DIRECTION_OUT);
 		GPIO_SetDirection(&PORTD, SPI_SCK_PIN, GPIO_DIRECTION_OUT);
-			
+
 		if((Config->Mode == SPI_MODE_2) || (Config->Mode == SPI_MODE_3))
 		{
 			GPIO_Set(&PORTD, SPI_SCK_PIN);
@@ -83,24 +95,52 @@ void SPIM_Init(SPIM_Config_t* Config)
 
 		GPIO_SetDirection(&PORTD, SPI_MOSI_PIN, GPIO_DIRECTION_OUT);
 	}
-	
+	#if(defined SPIE)
+		else if(ID == SPID_IE)
+		{
+			GPIO_SetDirection(&PORTE, SPI_SS_PIN, GPIO_DIRECTION_OUT);
+			GPIO_SetDirection(&PORTE, SPI_SCK_PIN, GPIO_DIRECTION_OUT);
+
+			if((Config->Mode == SPI_MODE_2) || (Config->Mode == SPI_MODE_3))
+			{
+				GPIO_Set(&PORTE, SPI_SCK_PIN);
+			}
+
+			GPIO_SetDirection(&PORTE, SPI_MOSI_PIN, GPIO_DIRECTION_OUT);
+		}
+	#endif
+	#if(defined SPIE)
+		else if(ID == SPID_IF)
+		{
+			GPIO_SetDirection(&PORTF, SPI_SS_PIN, GPIO_DIRECTION_OUT);
+			GPIO_SetDirection(&PORTF, SPI_SCK_PIN, GPIO_DIRECTION_OUT);
+
+			if((Config->Mode == SPI_MODE_2) || (Config->Mode == SPI_MODE_3))
+			{
+				GPIO_Set(&PORTF, SPI_SCK_PIN);
+			}
+
+			GPIO_SetDirection(&PORTF, SPI_MOSI_PIN, GPIO_DIRECTION_OUT);
+		}
+	#endif
+
 	_SPI_DeviceModes[ID] = SPI_MASTER;
-	
+
 	Device->CTRL = (Device->CTRL & (~(0x01 << 0x04))) | (SPI_MASTER << 0x04);
 	SPI_SetMode(Device, Config->Mode);
 	SPI_SetDataOrder(Device, Config->DataOrder);
 	SPIM_SetPrescaler(Device, Config->Prescaler);
-	
+
 	SPI_Enable(Device);
 }
 
 void SPIM_SetClock(SPI_t* Device, const uint32_t SPIClock, const uint32_t Clock)
 {
 	uint8_t Prescaler = Clock / SPIClock;
-	
+
 	// Clear Prescaler bits
 	Device->CTRL &= ~0x03;
-	
+
 	if(Prescaler < 2)
 	{
 		Device->CTRL |= SPI_PRESCALER_2;
@@ -159,16 +199,16 @@ const uint32_t SPIM_GetClock(SPI_t* Device, const uint32_t Clock)
 const uint8_t SPIM_SendData(SPI_t* Device, const uint8_t Data)
 {
 	Device->DATA = Data;
-	
+
 	while(!(Device->STATUS & SPI_IF_bm));
-	
+
 	return Device->DATA;
 }
 
 SPI_Status_t SPIM_Transmit(SPI_t* Device, const uint8_t Bytes, uint8_t* WriteBuffer, uint8_t* ReadBuffer, PORT_t* Port, const uint8_t Pin)
 {
 	uint8_t ID = 0x00;
-	
+
 	if(Device == &SPIC)
 	{
 		ID = SPIC_ID;
@@ -177,27 +217,26 @@ SPI_Status_t SPIM_Transmit(SPI_t* Device, const uint8_t Bytes, uint8_t* WriteBuf
 	{
 		ID = SPIE_ID;
 	}
-	
+
 	#if(defined SPIE)
 		else if(Device == &SPIE)
 		{
 			ID = SPIE_ID;
 		}
 	#endif
-	
+
 	#if(defined SPIF)
 		else if(>Device == &SPIF)
 		{
 			ID = SPIF_ID;
 		}
 	#endif
-	
 
 	if(_SPIM_Messages[ID].Status != SPI_MESSAGE_COMPLETE)
 	{
 		return _SPIM_Messages[ID].Status;
 	}
-	
+
 	_SPIM_Messages[ID].Device = Device;
 	_SPIM_Messages[ID].BufferIn = ReadBuffer;
 	_SPIM_Messages[ID].BufferOut = WriteBuffer;
@@ -206,16 +245,16 @@ SPI_Status_t SPIM_Transmit(SPI_t* Device, const uint8_t Bytes, uint8_t* WriteBuf
 	_SPIM_Messages[ID].Status = SPI_MESSAGE_PENDING;
 	_SPIM_Messages[ID].Port = Port;
 	_SPIM_Messages[ID].Pin = Pin;
-	
+
 	SPIM_SelectDevice(_SPIM_Messages[ID].Port, _SPIM_Messages[ID].Pin);
-	
+
 	return SPI_MESSAGE_PENDING;
 }
 
 const SPI_Status_t SPIM_Status(const SPI_t* Device)
 {
 	uint8_t ID = 0x00;
-	
+
 	if(Device == &SPIC)
 	{
 		ID = SPIC_ID;
@@ -224,20 +263,20 @@ const SPI_Status_t SPIM_Status(const SPI_t* Device)
 	{
 		ID = SPIE_ID;
 	}
-	
+
 	#if(defined SPIE)
 		else if(Device == &SPIE)
 		{
 			ID = SPIE_ID;
 		}
 	#endif
-		
+
 	#if(defined SPIF)
 		else if(Device == &SPIF)
 		{
 			ID = SPIF_ID;
 		}
 	#endif
-	
+
 	return _SPIM_Messages[ID].Status;
 }

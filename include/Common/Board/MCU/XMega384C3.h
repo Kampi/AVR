@@ -112,9 +112,9 @@
  */
  #define SPI_DEVICES									2							/**< SPI device count in MCU */
  #define SPI_SS_PIN										4							/**< Pin number of SPI SS pin */
- #define SPI_MOSI_PIN									3							/**< Pin number of SPI MOSI pin */
- #define SPI_MISO_PIN									2							/**< Pin number of SPI MISO pin */
- #define SPI_SCK_PIN									1							/**< Pin number of SPI SCK pin */
+ #define SPI_MOSI_PIN									5							/**< Pin number of SPI MOSI pin */
+ #define SPI_MISO_PIN									6							/**< Pin number of SPI MISO pin */
+ #define SPI_SCK_PIN									7							/**< Pin number of SPI SCK pin */
 
  /*
 	TWI

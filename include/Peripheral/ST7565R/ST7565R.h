@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for ST7565R Graphic LCD.
+ *  File info: Driver for ST7565R SPI display controller.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -23,9 +23,9 @@
  */
 
 /** @file Peripheral/ST7565R/ST7565R.h
- *  @brief Driver for ST7565R Graphic LCD.
+ *  @brief Driver for the ST7565R SPI display controller.
  *
- *  This contains the prototypes and definitions for the display driver.
+ *  This contains the prototypes and definitions for the display controller driver.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs

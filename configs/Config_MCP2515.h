@@ -49,13 +49,13 @@
 																				 NOTE: Only used by XMega architecture. */
  #define MCP2515_USE_EXT_RESET												/**< Set to use an GPIO instead of the SPI as reset for the MCP2515. */
  #define MCP2515_EXT_RESET						PORTB, 1					/**< Pin used for external reset. \n
-																				 NOTE: Only used when #MCP2515_USE_EXT_RESET is set */
+																				 NOTE: Only used when #MCP2515_USE_EXT_RESET is set. */
  #undef MCP2515_USE_EXT_TX													/**< Set to use GPIO instead of the SPI to request a transmission. */
  #undef MCP2515_EXT_TX0														/**< Pin used for external transmission request for buffer 0. \n
-																				 NOTE: Only used when #MCP2515_USE_EXT_TX is set */
+																				 NOTE: Only used when #MCP2515_USE_EXT_TX is set. */
  #undef MCP2515_EXT_TX1														/**< Pin used for external transmission request for buffer 1. \n
-																				 NOTE: Only used when #MCP2515_USE_EXT_TX is set */
+																				 NOTE: Only used when #MCP2515_USE_EXT_TX is set. */
  #undef MCP2515_EXT_TX2														/**< Pin used for external transmission request for buffer 2. \n
-																				 NOTE: Only used when #MCP2515_USE_EXT_TX is set */
+																				 NOTE: Only used when #MCP2515_USE_EXT_TX is set. */
 
 #endif /* CONFIG_MCP2515_H_ */

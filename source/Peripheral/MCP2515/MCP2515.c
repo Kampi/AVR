@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- * File info: Driver for the MCP2515 CAN controller.
+ * File info: Driver for the MCP2515 SPI CAN controller.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -265,19 +265,19 @@
 
 #if(MCU_ARCH == MCU_ARCH_AVR8)
 	#define MCP2515_SPI_INIT(Config)							SPIM_Init(Config)
-	#define MCP2515_SPI_TRANSMIT(Command)						SPIM_SendData(Command)
+	#define MCP2515_SPI_TRANSMIT(Data)							SPIM_SendData(Data)
 	#define MCP2515_SPI_CHIP_SELECT()							SPIM_SelectDevice(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS))
 	#define MCP2515_SPI_CHIP_DESELECT()							SPIM_DeselectDevice(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS))
 #elif(MCU_ARCH == MCU_ARCH_XMEGA)
 	#if(MCP2515_INTERFACE_TYPE == INTERFACE_USART_SPI)
 		#define MCP2515_SPI_INIT(Config)						USART_SPI_Init(Config)
-		#define MCP2515_SPI_TRANSMIT(Command)					USART_SPI_SendData(&MCP2515_INTERFACE, Command)
+		#define MCP2515_SPI_TRANSMIT(Data)						USART_SPI_SendData(&MCP2515_INTERFACE, Data)
 		#define MCP2515_SPI_CHIP_SELECT()						USART_SPI_SelectDevice(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS))
 		#define MCP2515_SPI_CHIP_DESELECT()						USART_SPI_DeselectDevice(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS))
 
 	 #elif(MCP2515_INTERFACE_TYPE == INTERFACE_SPI) 
 		#define MCP2515_SPI_INIT(Config)						SPIM_Init(Config)
-		#define MCP2515_SPI_TRANSMIT(Command)					SPIM_SendData(&MCP2515_INTERFACE, Command)
+		#define MCP2515_SPI_TRANSMIT(Data)						SPIM_SendData(&MCP2515_INTERFACE, Data)
 		#define MCP2515_SPI_CHIP_SELECT()						SPIM_SelectDevice(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS))
 		#define MCP2515_SPI_CHIP_DESELECT()						SPIM_DeselectDevice(GET_PERIPHERAL(MCP2515_SS), GET_INDEX(MCP2515_SS))
 	 #else
@@ -348,7 +348,7 @@ static uint8_t MCP2515_ReadRegister(const uint8_t Address)
 	Data = MCP2515_SPI_TRANSMIT(0xFF);
 
 	MCP2515_SPI_CHIP_DESELECT();
-	
+
 	return Data;
 }
 
@@ -569,7 +569,7 @@ void MCP2515_Reset(void)
 	#endif
 
 	// Wait until the reset has finished
-	for(uint8_t i = 0x00; i < 0xFF; i++);
+	for(uint16_t i = 0x00; i < 0xFFFF; i++);
 }
 
 void MCP2515_InstallCallback(const MCP2515_Config_t* Config)

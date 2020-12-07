@@ -50,7 +50,7 @@
 void SPI_InstallCallback(const SPI_InterruptConfig_t* Config)
 {
 	uint8_t ID = 0x00;
-	
+
 	if(Config->Device == &SPIC)
 	{
 		ID = SPIC_ID;
@@ -59,14 +59,14 @@ void SPI_InstallCallback(const SPI_InterruptConfig_t* Config)
 	{
 		ID = SPIE_ID;
 	}
-	
+
 	#if(defined SPIE)
 		else if(Config->Device == &SPIE)
 		{
 			ID = SPIE_ID;
 		}
 	#endif
-	
+
 	#if(defined SPIF)
 		else if(Config->Device == &SPIF)
 		{
@@ -83,13 +83,12 @@ void SPI_InstallCallback(const SPI_InterruptConfig_t* Config)
 	{
 		_SPI_Callbacks[ID].ErrorCallback = Config->Callback;
 	}
-
 }
 
 void SPI_RemoveCallback(SPI_t* Device, const SPI_CallbackType_t Callback)
 {
 	uint8_t ID = 0x00;
-	
+
 	if(Device == &SPIC)
 	{
 		ID = SPIC_ID;
@@ -98,26 +97,26 @@ void SPI_RemoveCallback(SPI_t* Device, const SPI_CallbackType_t Callback)
 	{
 		ID = SPIE_ID;
 	}
-	
+
 	#if(defined SPIE)
 		else if(Device == &SPIE)
 		{
 			ID = SPIE_ID;
 		}
 	#endif
-		
+
 	#if(defined SPIF)
 		else if(>Device == &SPIF)
 		{
 			ID = SPIF_ID;
 		}
 	#endif
-	
+
 	if(Callback & SPI_COMPLETE_INTERRUPT)
 	{
 		_SPI_Callbacks[ID].CompleteInterrupt = NULL;
 	}
-	
+
 	if(Callback & SPI_ERROR_INTERRUPT)
 	{
 		_SPI_Callbacks[ID].ErrorCallback = NULL;
