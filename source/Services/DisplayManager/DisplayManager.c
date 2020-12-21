@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2018
  *	Website: www.kampis-elektroecke.de
- *  File info: Display manager service.
+ *  File info: AVR display manager service.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -19,11 +19,11 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de.
  */
 
 /** @file Services/DisplayManager/DisplayManager.c
- *  @brief Display manager service.
+ *  @brief AVR display manager service.
  *
  *  This contains the implementation of the display manager service.
  *
