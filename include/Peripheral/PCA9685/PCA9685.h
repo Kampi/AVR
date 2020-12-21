@@ -129,7 +129,7 @@
  /** @brief			Initialize the PCA9685 PWM controller and the I2C interface.
   *  @param Config	Pointer to I2C master configuration object
   *					NOTE: Set it to #NULL if you have initialized the I2C already
-  *  @param Source	Clock source
+  *  @param Source	Clock source for the PCA9685
   *  @return		I2C error code
   */
  const I2C_Error_t PCA9685_Init(I2CM_Config_t* Config, const PCA9685_ClockSource_t Source);
