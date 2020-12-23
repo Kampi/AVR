@@ -36,12 +36,32 @@
  /*
 	 TWI configuration
  */
- #define TWI_BUFFER_SIZE						32							/**< Size of TWI buffer in bytes. */
+ #define TWI_BUFFER_SIZE							32							/**< Size of TWI buffer in bytes. */
 
  #if(MCU_ARCH == MCU_ARCH_XMEGA)
-	 #define NUNCHUK_INTERFACE					TWIC						/**< I2C interface used by the Nunchuk. */
+	 #define NUNCHUK_INTERFACE						TWIC						/**< I2C interface used by the Nunchuk. */
  #endif
 
- #define NUNCHUK_CLOCK							100000						/**< Clock used by the I2C interface. */
+ #define NUNCHUK_CLOCK								100000						/**< Clock used by the I2C interface. */
+
+ #define SSD1306_INTERFACE_TYPE						INTERFACE_USART_SPI			/**< SPI interface type for the display. */
+
+ #define SSD1306_INTERFACE_TYPE						INTERFACE_USART_SPI			/**< SPI interface type for the display. */
+ #define DISPLAY_INTERFACE							USARTD, 0					/**< SPI interface for the display. */
+ #define DISPLAY_CLOCK								1000000UL					/**< Display interface speed. */
+
+ /*
+	 Display interface connections
+ */
+ #define SSD1306_DATA								PORTD, 0					/**< Display DATA pin (used by display driver). */
+ #define SSD1306_RESET								PORTA, 3					/**< Display RESET pin (used by display driver). */
+ #define SSD1306_SS									PORTF, 3					/**< Display SS pin (used by display driver). */
+
+ /*
+	 Display settings
+ */
+ #define DISPLAY_WIDTH								128							/**< Width of the display in pixel. */
+ #define DISPLAY_HEIGHT								32							/**< Height of the display in pixel. */
+ #define DISPLAY_PIXEL_PER_BYTE						8							/**< Number of pixel which can fit into one byte. */
 
 #endif /* CONFIG_NUNCHUK_H_ */

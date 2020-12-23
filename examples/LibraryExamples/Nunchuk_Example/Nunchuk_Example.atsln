@@ -7,7 +7,7 @@ Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "XMega", "XMega\XMega.cproj"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{1AC6A83C-B32B-4325-86BD-26596CEA6867}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\..\configs\Config_PCA9685.h = ..\..\..\configs\Config_PCA9685.h
+		..\..\..\configs\Config_Nunchuk.h = ..\..\..\configs\Config_Nunchuk.h
 	EndProjectSection
 EndProject
 Global

@@ -112,6 +112,7 @@
       <Value>MCU_NAME=MCU_NAME_ATXMEGA384C3</Value>
       <Value>MCU_ARCH=MCU_ARCH_XMEGA</Value>
       <Value>MCU_LITTLE_ENDIAN</Value>
+      <Value>USE_SSD1306</Value>
       <Value>CONFIG="Config_Nunchuk.h"</Value>
     </ListValues>
   </avrgcc.compiler.symbols.DefSymbols>
@@ -147,9 +148,33 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\..\source\Common\Font\Font.c">
+      <SubType>compile</SubType>
+      <Link>source\Common\Font\Font.c</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\source\Common\FrameBuffer\FrameBuffer.c">
+      <SubType>compile</SubType>
+      <Link>source\Common\FrameBuffer\FrameBuffer.c</Link>
+    </Compile>
     <Compile Include="..\..\..\..\source\Peripheral\Nunchuk\Nunchuk.c">
       <SubType>compile</SubType>
       <Link>source\Peripheral\Nunchuk\Nunchuk.c</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\source\Peripheral\SSD1306\SSD1306.c">
+      <SubType>compile</SubType>
+      <Link>source\Peripheral\SSD1306\SSD1306.c</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\source\Services\DisplayManager\DisplayManager.c">
+      <SubType>compile</SubType>
+      <Link>source\Services\DisplayManager\DisplayManager.c</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\source\Services\DisplayManager\DisplayManager_Drawing.c">
+      <SubType>compile</SubType>
+      <Link>source\Services\DisplayManager\DisplayManager_Drawing.c</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\source\Services\DisplayManager\HW_Config.c">
+      <SubType>compile</SubType>
+      <Link>source\Services\DisplayManager\HW_Config.c</Link>
     </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
@@ -157,8 +182,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="source" />
+    <Folder Include="source\Common" />
+    <Folder Include="source\Common\Font" />
+    <Folder Include="source\Common\FrameBuffer" />
+    <Folder Include="source\Peripheral\SSD1306" />
+    <Folder Include="source\Services" />
     <Folder Include="source\Peripheral" />
     <Folder Include="source\Peripheral\Nunchuk" />
+    <Folder Include="source\Services\DisplayManager" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>
