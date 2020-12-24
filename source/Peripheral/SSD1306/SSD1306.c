@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de.
  */
 
 /** @file Peripheral/SSD1306/SSD1306.c
@@ -36,7 +36,7 @@
  *  @{
  */
  	/** @defgroup SSD1306-Commands
-	 *  SD card commands.
+	 *  SSD1306 commands.
 	 *  @{
 	 */
 		#define SSD1306_CMD_LOW_COL(Column)					(0x00 | (Column))
@@ -66,12 +66,12 @@
 #if(MCU_ARCH == MCU_ARCH_XMEGA)
 	#if(SSD1306_INTERFACE_TYPE == INTERFACE_USART_SPI)
 		#define SSD1306_SPIM_INIT(Config)											USART_SPI_Init(Config)
-		#define SSD1306_SPIM_TRANSMIT(Data)											USART_SPI_SendData(&CONCAT(DISPLAY_INTERFACE), Data)
+		#define SSD1306_SPIM_TRANSMIT(Data)											USART_SPI_SendData(&CONCAT(SSD1306_INTERFACE), Data)
 		#define SSD1306_SPIM_CHIP_SELECT(Port, Pin)									USART_SPI_SelectDevice(Port, Pin)
 		#define SSD1306_SPIM_CHIP_DESELECT(Port, Pin)								USART_SPI_DeselectDevice(Port, Pin)
 		#elif(SSD1306_INTERFACE_TYPE == INTERFACE_SPI)
 	#define SSD1306_SPIM_INIT(Config)												SPIM_Init(Config)
-		#define SSD1306_SPIM_TRANSMIT(Data)											SPIM_SendData(&CONCAT(DISPLAY_INTERFACE), Data)
+		#define SSD1306_SPIM_TRANSMIT(Data)											SPIM_SendData(&CONCAT(SSD1306_INTERFACE), Data)
 		#define SSD1306_SPIM_CHIP_SELECT(Port, Pin)									SPIM_SelectDevice(Port, Pin)
 		#define SSD1306_SPIM_CHIP_DESELECT(Port, Pin)								SPIM_DeselectDevice(Port, Pin)
 	#else

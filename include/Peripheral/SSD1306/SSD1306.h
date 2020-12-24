@@ -3,7 +3,7 @@
  *
  *  Copyright (C) Daniel Kampert, 2020
  *	Website: www.kampis-elektroecke.de
- *  File info: Driver for SSD1306 display controller.
+ *  File info: Driver for SSD1306 SPI display controller.
 
   GNU GENERAL PUBLIC LICENSE:
   This program is free software: you can redistribute it and/or modify
@@ -19,13 +19,13 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de.
  */
 
 /** @file Peripheral/SSD1306/SSD1306.h
- *  @brief Driver for SSD1306 display controller.
+ *  @brief Driver for SSD1306 SPI display controller.
  *
- *  This contains the prototypes and definitions for the display driver.
+ *  This contains the prototypes and definitions for the display controller driver.
  *
  *  @author Daniel Kampert
  *  @bug No known bugs.
