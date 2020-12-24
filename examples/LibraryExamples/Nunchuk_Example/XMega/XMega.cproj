@@ -112,7 +112,6 @@
       <Value>MCU_NAME=MCU_NAME_ATXMEGA384C3</Value>
       <Value>MCU_ARCH=MCU_ARCH_XMEGA</Value>
       <Value>MCU_LITTLE_ENDIAN</Value>
-      <Value>USE_SSD1306</Value>
       <Value>CONFIG="Config_Nunchuk.h"</Value>
     </ListValues>
   </avrgcc.compiler.symbols.DefSymbols>
@@ -148,6 +147,18 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\..\source\Arch\XMega\USART\USART.c">
+      <SubType>compile</SubType>
+      <Link>source\Arch\XMega\USART\USART.c</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\source\Arch\XMega\USART\USART_Interrupt.c">
+      <SubType>compile</SubType>
+      <Link>source\Arch\XMega\USART\USART_Interrupt.c</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\source\Arch\XMega\USART\USART_SPI.c">
+      <SubType>compile</SubType>
+      <Link>source\Arch\XMega\USART\USART_SPI.c</Link>
+    </Compile>
     <Compile Include="..\..\..\..\source\Common\Font\Font.c">
       <SubType>compile</SubType>
       <Link>source\Common\Font\Font.c</Link>
@@ -182,6 +193,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="source" />
+    <Folder Include="source\Arch\" />
+    <Folder Include="source\Arch\XMega\" />
+    <Folder Include="source\Arch\XMega\USART" />
     <Folder Include="source\Common" />
     <Folder Include="source\Common\Font" />
     <Folder Include="source\Common\FrameBuffer" />

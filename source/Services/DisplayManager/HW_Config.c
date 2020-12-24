@@ -34,9 +34,13 @@
  */
 #if((defined USE_SSD1306) || (defined USE_ST7565R))
 	SPIM_Config_t _DisplayManagerConfig = {
-		.SPIClock = DISPLAY_CLOCK,
+		#if(defined SSD1306_CLOCK)
+			.SPIClock = SSD1306_CLOCK,
+		#elif(defined ST7565R_CLOCK)
+			.SPIClock = ST7565R_CLOCK,
+		#endif
 		.DataOrder = SPI_DATAORDER_MSB_FIRST,
 		.Mode = SPI_MODE_0,
-		.Device = &CONCAT(DISPLAY_INTERFACE)
+		.Device = &CONCAT(SSD1306_INTERFACE)
 	};
 #endif

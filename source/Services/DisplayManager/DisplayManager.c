@@ -36,20 +36,6 @@ extern SPIM_Config_t _DisplayManagerConfig;
 
 static uint8_t _DisplayMgrBuffer[DISPLAYMANAGER_LCD_FRAMEBUFFER_SIZE];
 
-/** @brief			Write a single byte to the display.
- *  @param Page		Display page
- *  @param Column	Display column
- *  @param Data		Display data
- */
-static void DisplayManager_WriteByte(const uint8_t Page, const uint8_t Column, const uint8_t Data)
-{
-	FrameBuffer_WriteByte(Page, Column, Data);
-
-	Display_SetPage(Page);
-	Display_SetColumn(Column);
-	Display_WriteData(Data);
-}
-
 /** @brief			Read a single byte from the display.
  *  @param Page		Display page
  *  @param Column	Display column
@@ -58,6 +44,25 @@ static void DisplayManager_WriteByte(const uint8_t Page, const uint8_t Column, c
 static uint8_t DisplayManager_ReadByte(const uint8_t Page, const uint8_t Column)
 {
 	return FrameBuffer_ReadByte(Page, Column);
+}
+
+/** @brief			Write a single byte to the display.
+ *  @param Page		Display page
+ *  @param Column	Display column
+ *  @param Data		Display data
+ */
+static void DisplayManager_WriteByte(const uint8_t Page, const uint8_t Column, const uint8_t Data)
+{
+	if(DisplayManager_ReadByte(Page, Column) == Data)
+	{
+		return;
+	}
+
+	FrameBuffer_WriteByte(Page, Column, Data);
+
+	Display_SetPage(Page);
+	Display_SetColumn(Column);
+	Display_WriteData(Data);
 }
 
 void DisplayManager_Init(void)
@@ -81,9 +86,13 @@ void DisplayManager_Clear(void)
 {
 	for(uint8_t Page = 0x00; Page < DISPLAYMANAGER_LCD_PAGES; Page++)
 	{
+		Display_SetPage(Page);
+
 		for(uint8_t Column = 0x00; Column < DISPLAYMANAGER_LCD_WIDTH; Column++)
 		{
-			DisplayManager_WriteByte(Page, Column, 0x00);
+			FrameBuffer_WriteByte(Page, Column, 0x00);
+			Display_SetColumn(Column);
+			Display_WriteData(0x00);
 		}
 	}
 }
@@ -91,20 +100,26 @@ void DisplayManager_Clear(void)
 void DisplayManager_ClearLine(const uint8_t Line)
 {
 	uint8_t Page = Line & (DISPLAYMANAGER_LCD_PAGES - 0x01);
+	Display_SetPage(Page);
 
 	for(uint8_t Column = 0x00; Column < DISPLAYMANAGER_LCD_WIDTH; Column++)
 	{
-		DisplayManager_WriteByte(Page, Column, 0x00);
+		FrameBuffer_WriteByte(Page, Column, 0x00);
+		Display_SetColumn(Column);
+		Display_WriteData(0x00);
 	}
 }
 
 void DisplayManager_ClearColumn(const uint8_t Column)
 {
 	uint8_t Column_Temp = Column & (DISPLAYMANAGER_LCD_WIDTH - 0x01);
+	Display_SetColumn(Column_Temp);
 
 	for(uint8_t Page = 0x00; Page < DISPLAYMANAGER_LCD_PAGES; Page++)
 	{
-		DisplayManager_WriteByte(Page, Column_Temp, 0x00);
+		Display_SetPage(Page);
+		FrameBuffer_WriteByte(Page, Column_Temp, 0x00);
+		Display_WriteData(0x00);
 	}
 }
 

@@ -32,6 +32,7 @@
  */
 
 #include "Peripheral/Nunchuk/Nunchuk.h"
+#include "Services/DisplayManager/DisplayManager.h"
 
 /*
 	I2C configuration
@@ -42,15 +43,86 @@ I2CM_Config_t Config_I2CM = {
 	.Timeout = I2C_TIMEOUT_DISABLE,
 };
 
-Nunchuk_Data_t Data;
+Nunchuk_Data_t NewData;
+
+uint8_t x;
+uint8_t y;
+
+uint8_t NeutralX;
+uint8_t NeutralY;
 
 int main(void)
 {
+	/*
+		Initialize the system clock
+	*/
+	SysClock_Init();
+
+	/*
+		Initialize the display manager
+	*/
+	DisplayManager_Init();
+
+	/*
+		Initialize the Nunchuck driver
+	*/
 	Nunchuk_Init(&Config_I2CM);
 
-    while(1) 
+	// Get the neutral position
+	Nunchuk_Read(&NewData);
+	NeutralX = NewData.Joy_X;
+	NeutralY = NewData.Joy_Y;
+
+    while(1)
     {
-		Nunchuk_Read(&Data);
-		_delay_ms(1000);
+		Nunchuk_Read(&NewData);
+
+		// Clear the screen when the "C" button is pressed
+		if(NewData.Button_C)
+		{
+			x = 0x00;
+			y = 0x00;
+			DisplayManager_Clear();
+		}		
+		else
+		{
+			if(NewData.Joy_X > NeutralX)
+			{
+				if(x < (DISPLAYMANAGER_LCD_WIDTH - 0x01))
+				{
+					x++;
+				}
+			}
+			else if(NewData.Joy_X < NeutralX)
+			{
+				if(x)
+				{
+					x--;
+				}
+			}
+
+			if(NewData.Joy_Y < NeutralY)
+			{
+				if(y < (DISPLAYMANAGER_LCD_HEIGHT - 0x01))
+				{
+					y++;
+				}
+			}
+			else if(NewData.Joy_Y > NeutralY)
+			{
+				if(y > 0)
+				{
+					y--;
+				}
+			}
+
+			// Only draw when the "Z" button isn´t pressed
+			if(!NewData.Button_Z)
+			{
+				DisplayManager_DrawPixel(x, y, PIXELMASK_SET);
+			}
+		}
+		
+		_delay_ms(50);
     }
 }

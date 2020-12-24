@@ -39,15 +39,9 @@
  #if(defined USE_SSD1306)
 	 #include "Peripheral/SSD1306/SSD1306.h"
 	 typedef SPIM_Config_t DisplayInterface_t;
-
-	 #define DISPLAY_INTERFACE				SSD1306_INTERFACE
-	 #define DISPLAY_CLOCK					SSD1306_CLOCK
  #elif(defined USE_ST7565R)
 	 #include "Peripheral/ST7565R/ST7565R.h"
 	 typedef SPIM_Config_t DisplayInterface_t;
-
-	 #define DISPLAY_INTERFACE				ST7565R_INTERFACE
-	 #define DISPLAY_CLOCK					ST7565R_CLOCK
  #endif
 
  #include "Common/Font/Font.h"

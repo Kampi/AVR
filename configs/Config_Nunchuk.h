@@ -33,10 +33,9 @@
 
  #include "Common/Common.h"
 
- /*
-	 TWI configuration
- */
+ #define F_CPU										32000000					/**< CPU clock in MHz. */
  #define TWI_BUFFER_SIZE							32							/**< Size of TWI buffer in bytes. */
+ #define USART_BUFFER_SIZE							32							/**< Size of USART buffer in bytes. */
 
  #if(MCU_ARCH == MCU_ARCH_XMEGA)
 	 #define NUNCHUK_INTERFACE						TWIC						/**< I2C interface used by the Nunchuk. */
@@ -44,11 +43,10 @@
 
  #define NUNCHUK_CLOCK								100000						/**< Clock used by the I2C interface. */
 
+ #define USE_SSD1306
  #define SSD1306_INTERFACE_TYPE						INTERFACE_USART_SPI			/**< SPI interface type for the display. */
-
- #define SSD1306_INTERFACE_TYPE						INTERFACE_USART_SPI			/**< SPI interface type for the display. */
- #define DISPLAY_INTERFACE							USARTD, 0					/**< SPI interface for the display. */
- #define DISPLAY_CLOCK								1000000UL					/**< Display interface speed. */
+ #define SSD1306_INTERFACE							USARTD, 0					/**< SPI interface for the display. */
+ #define SSD1306_CLOCK								8000000UL					/**< Display interface speed. */
 
  /*
 	 Display interface connections
