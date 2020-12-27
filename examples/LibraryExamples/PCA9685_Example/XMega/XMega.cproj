@@ -147,10 +147,11 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="main.c">
+    <Compile Include="..\..\..\..\source\Peripheral\PCA9685\PCA9685.c">
       <SubType>compile</SubType>
+      <Link>source\Peripheral\PCA9685\PCA9685.c</Link>
     </Compile>
-    <Compile Include="source\Peripheral\PCA9685\PCA9685.c">
+    <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

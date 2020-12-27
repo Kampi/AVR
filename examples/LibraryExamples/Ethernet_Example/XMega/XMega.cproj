@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>7.0</ProjectVersion>
     <ToolchainName>com.Atmel.AVRGCC8.C</ToolchainName>
-    <ProjectGuid>{bb442ee7-397f-4e46-b35e-54f830ceed2e}</ProjectGuid>
+    <ProjectGuid>dce6c7e3-ee26-4d79-826b-08594b9ad897</ProjectGuid>
     <avrdevice>ATxmega384C3</avrdevice>
     <avrdeviceseries>none</avrdeviceseries>
     <OutputType>Executable</OutputType>
@@ -12,9 +12,9 @@
     <OutputFileName>$(MSBuildProjectName)</OutputFileName>
     <OutputFileExtension>.elf</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
-    <AssemblyName>Bootloader</AssemblyName>
-    <Name>Bootloader</Name>
-    <RootNamespace>Bootloader</RootNamespace>
+    <AssemblyName>PCA9685_Example</AssemblyName>
+    <Name>XMega</Name>
+    <RootNamespace>PCA9685_Example</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
@@ -98,66 +98,83 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <ToolchainSettings>
       <AvrGcc>
-        <avrgcc.common.Device>-mmcu=atxmega384c3 -B "%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\gcc\dev\atxmega384c3"</avrgcc.common.Device>
-        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
-        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
-        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
-        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
-        <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
-        <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
-        <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
-        <avrgcc.compiler.symbols.DefSymbols>
-          <ListValues>
-            <Value>DEBUG</Value>
-            <Value>MCU_NAME=MCU_NAME_ATXMEGA384C3</Value>
-            <Value>MCU_ARCH=MCU_ARCH_XMEGA</Value>
-            <Value>MCU_LITTLE_ENDIAN</Value>
-            <Value>CONFIG="Config_Bootloader.h"</Value>
-          </ListValues>
-        </avrgcc.compiler.symbols.DefSymbols>
-        <avrgcc.compiler.directories.IncludePaths>
-          <ListValues>
-            <Value>%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\include</Value>
-            <Value>../../../../../include</Value>
-            <Value>../../../../../configs</Value>
-          </ListValues>
-        </avrgcc.compiler.directories.IncludePaths>
-        <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
-        <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
-        <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
-        <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
-        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
-        <avrgcc.linker.libraries.Libraries>
-          <ListValues>
-            <Value>libm</Value>
-          </ListValues>
-        </avrgcc.linker.libraries.Libraries>
-        <avrgcc.linker.memorysettings.Flash>
-          <ListValues>
-            <Value>.text=0x030000</Value>
-          </ListValues>
-        </avrgcc.linker.memorysettings.Flash>
-        <avrgcc.assembler.general.IncludePaths>
-          <ListValues>
-            <Value>%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\include</Value>
-          </ListValues>
-        </avrgcc.assembler.general.IncludePaths>
-        <avrgcc.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcc.assembler.debugging.DebugLevel>
-      </AvrGcc>
+  <avrgcc.common.Device>-mmcu=atxmega384c3 -B "%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\gcc\dev\atxmega384c3"</avrgcc.common.Device>
+  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+  <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+  <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcc.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>DEBUG</Value>
+      <Value>MCU_NAME=MCU_NAME_ATXMEGA384C3</Value>
+      <Value>MCU_ARCH=MCU_ARCH_XMEGA</Value>
+      <Value>MCU_LITTLE_ENDIAN</Value>
+      <Value>CONFIG="Config_W5100.h"</Value>
+      <Value>USE_W5100</Value>
+    </ListValues>
+  </avrgcc.compiler.symbols.DefSymbols>
+  <avrgcc.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\include</Value>
+      <Value>../../../../../configs</Value>
+      <Value>../../../../../include</Value>
+    </ListValues>
+  </avrgcc.compiler.directories.IncludePaths>
+  <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+  <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
+  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcc.linker.libraries.Libraries>
+    <ListValues>
+      <Value>libm</Value>
+      <Value>libXMega384C3</Value>
+    </ListValues>
+  </avrgcc.linker.libraries.Libraries>
+  <avrgcc.linker.libraries.LibrarySearchPaths>
+    <ListValues>
+      <Value>../../../../../lib</Value>
+    </ListValues>
+  </avrgcc.linker.libraries.LibrarySearchPaths>
+  <avrgcc.assembler.general.IncludePaths>
+    <ListValues>
+      <Value>%24(PackRepoDir)\atmel\XMEGAC_DFP\1.1.50\include</Value>
+    </ListValues>
+  </avrgcc.assembler.general.IncludePaths>
+  <avrgcc.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcc.assembler.debugging.DebugLevel>
+</AvrGcc>
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\..\source\Bootloader\Arch\XMega\NVM_Bootloader_XMega.s">
+    <Compile Include="..\..\..\..\source\Arch\XMega\SPI\SPI.c">
       <SubType>compile</SubType>
-      <Link>source\Bootloader\Arch\XMega\NVM_Bootloader_XMega.s</Link>
+      <Link>source\Arch\XMega\SPI\SPI.c</Link>
     </Compile>
-    <Compile Include="..\..\..\..\source\Bootloader\Arch\XMega\USART_Bootloader_XMega.c">
+    <Compile Include="..\..\..\..\source\Arch\XMega\SPI\SPIM.c">
       <SubType>compile</SubType>
-      <Link>source\Bootloader\Arch\XMega\USART_Bootloader_XMega.c</Link>
+      <Link>source\Arch\XMega\SPI\SPIM.c</Link>
     </Compile>
-    <Compile Include="..\..\..\..\source\Bootloader\Parser\IntelHexParser.c">
+    <Compile Include="..\..\..\..\source\Arch\XMega\SPI\SPIS.c">
       <SubType>compile</SubType>
-      <Link>source\Bootloader\Parser\IntelHexParser.c</Link>
+      <Link>source\Arch\XMega\SPI\SPIS.c</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\source\Arch\XMega\SPI\SPI_Interrupt.c">
+      <SubType>compile</SubType>
+      <Link>source\Arch\XMega\SPI\SPI_Interrupt.c</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\source\Peripheral\W5100\W5100.c">
+      <SubType>compile</SubType>
+      <Link>source\Peripheral\W5100\W5100.c</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\source\Services\Ethernet\HW_Config.c">
+      <SubType>compile</SubType>
+      <Link>source\Services\Ethernet\HW_Config.c</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\source\Services\Ethernet\Socket.c">
+      <SubType>compile</SubType>
+      <Link>source\Services\Ethernet\Socket.c</Link>
     </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
@@ -165,10 +182,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="source" />
-    <Folder Include="source\Bootloader\" />
-    <Folder Include="source\Bootloader\Arch\" />
-    <Folder Include="source\Bootloader\Arch\XMega\" />
-    <Folder Include="source\Bootloader\Parser\" />
+    <Folder Include="source\Arch" />
+    <Folder Include="source\Arch\XMega" />
+    <Folder Include="source\Arch\XMega\SPI" />
+    <Folder Include="source\Services" />
+    <Folder Include="source\Peripheral" />
+    <Folder Include="source\Peripheral\W5100" />
+    <Folder Include="source\Services\Ethernet" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

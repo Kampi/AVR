@@ -8,7 +8,7 @@ void MCP2515_ErrorCallback(uint8_t Error);
 /*
 	SPI configuration
 */
-SPIM_Config_t Config_SPI = {
+SPIM_Config_t Config_SPIM = {
 	.Mode = SPI_MODE_0,
 	.Prescaler = SPI_PRESCALER_64
 };
@@ -70,7 +70,7 @@ CAN_Message_t RxMessage = {
 int main(void)
 {
 	// Initialize the MCP2515 CAN controller
-	MCP2515_Init(&Config_SPI, &Config, MCP2515_ErrorCallback);
+	MCP2515_Init(&Config_SPIM, &Config);
 	
 	// Enable global interrupts
 	EnableGlobalInterrupts();
@@ -87,7 +87,7 @@ int main(void)
 
 	//MCP2515_ConfigFilter(&Filter0);
 
-	MCP2515_PrepareMessage(&TxExtendedRemote, MCP2515_PRIO_HIGHEST, MCP2515_TX0);
+	MCP2515_PrepareMessage(&TxExtendedRemote, MCP2515_PRIO_HIGHEST);
 	MCP2515_RequestTransmission(MCP2515_TX0);
 
 	//MCP2515_PrepareMessage(&TxExtendedData, MCP2515_PRIO_HIGHEST, MCP2515_TX1);

@@ -19,13 +19,13 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de.
  */
 
 /** @file main.c
  *  @brief PCA9685 example for ATmega32.
  *
- *  Software for the XMega PXA9685 example from
+ *  Software for the XMega PCA9685 example from
  *  <>
  *
  *  @author Daniel Kampert

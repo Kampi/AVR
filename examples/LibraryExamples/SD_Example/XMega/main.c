@@ -19,22 +19,22 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de
+  Errors and commissions should be reported to DanielKampert@kampis-elektroecke.de.
  */
 
 /** @file main.c
  *  @brief SD card example for XMega.
  *
  *  Software for the XMega SD card example from
- *  https://www.kampis-elektroecke.de/2020/11/avr-mit-einer-sd-karte-erweitern-teil-1/
- *  https://www.kampis-elektroecke.de/2019/04/avr-mit-einer-sd-karte-erweitern-teil-2/
- * 	https://www.kampis-elektroecke.de/2019/05/avr-mit-einer-sd-karte-erweitern-teil-3/
+ *		https://www.kampis-elektroecke.de/2020/11/avr-mit-einer-sd-karte-erweitern-teil-1/
+ *		https://www.kampis-elektroecke.de/2019/04/avr-mit-einer-sd-karte-erweitern-teil-2/
+ * 		https://www.kampis-elektroecke.de/2019/05/avr-mit-einer-sd-karte-erweitern-teil-3/
  *
  *  @author Daniel Kampert
  */
 
 #include "Peripheral/SD/SD.h"
-#include "source/Services/FatFs/fatfs-r0.13c/source/ff.h"
+#include "../source/Services/FatFs/fatfs-r0.13c/source/ff.h"
 
 SPIM_Config_t SDConfig = {
 	.SPIClock = 1000000,
