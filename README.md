@@ -12,9 +12,20 @@ This is a my public library for Atmel MCUs. It contains driver for the MCU perip
 
 Please check the docs or write an e-mail to [DanielKampert@kampis-elektroecke.de](DanielKampert@kampis-elektroecke.de) if you have any questions.
 
-## Device support
+## Example projects and drivers
 
-> Work in progress...
+| **Example** | **Description** |
+|:-----------:|:------------------------------:|
+| AD5933      | High precission I2C impedance converter. |
+| BH1750FVI   | Ambient light sensor with I2C interface. |
+| BMP180      | Pressure sensor with I2C interface. |
+| Bootloader  | USART bootloader for XMega. |
+| DS18B20     | Temperature sensor with 1-Wire interface. |
+| IR          | IR remote controller interface. |
+| MCP2515     | CAN controller with SPI. |
+| Nunchuk     | Nintento Nunchuk scratchpad with a SSD1306 display. |
+| PCA9685     | PWM controller with I2C interface. |
+| SD          | SD card and FAT interface for XMega microcontroller. |
 
 ## History
 
