@@ -205,7 +205,7 @@ DRESULT disk_ioctl (
 						return RES_OK;
 					}
 					
-					return RES_OK;
+					return RES_ERROR;
 				}
 				case GET_SECTOR_COUNT:
 				{
