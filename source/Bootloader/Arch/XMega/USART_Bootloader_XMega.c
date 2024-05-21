@@ -134,7 +134,7 @@ bool Bootloader_Enter(void)
 						NVM_LoadFlashBuffer(Offset + (i >> 0x01), CodeWord);
 
 						// Write the page when the buffer is full
-						if(Words++ == (APP_SECTION_PAGE_SIZE / 2))
+						if(Words++ == ((APP_SECTION_PAGE_SIZE / 2) - 1))
 						{
 							NVM_FlushFlash(Page);
 							Words = 0x00;
